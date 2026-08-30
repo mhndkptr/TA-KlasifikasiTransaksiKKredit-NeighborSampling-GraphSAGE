@@ -1,0 +1,41 @@
+experiment:
+  seeds: [42, 43, 44, 45, 46]
+  strategies: [uniform, topology, importance]
+  device: cuda
+  max_rows: 200000
+  cache_graph: false
+
+data:
+  transactions: ../../dataset/credit_card_transactions-ibm_v2.csv
+  split: [0.70, 0.15, 0.15]
+
+model:
+  hidden_channels: 256
+  num_layers: 2
+  dropout: 0.2
+
+sampling:
+  fanouts: [25, 10]
+  topology_alpha: 0.5
+  importance_gamma: 0.3
+  ppr_beta: 0.15
+  proposal_factor: 4       # kandidat per slot untuk weighted GPU sampling
+
+training:
+  batch_size: 4096
+  epochs: 100
+  learning_rate: 0.001
+  lr_patience: 5
+  early_stopping_patience: 15
+  log_every_batches: 10
+  amp: true
+
+evaluation:
+  threshold: 0.5
+  camouflage_normal_ratio: 0.70
+  latency_nodes: 1000
+
+paths:
+  model_dir: ../../model
+  result_dir: ../../result
+

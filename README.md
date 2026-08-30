@@ -151,11 +151,16 @@ penelitian.
 ```text
 repository/
 ├── code/
-│   └── exp1_starter/
+│   ├── exp1_starter/
 │       ├── config.yaml       # konfigurasi eksperimen
 │       ├── requirements.txt  # dependensi Python
 │       ├── run.py            # preprocessing, graph, training, dan evaluasi
 │       └── README.md         # petunjuk khusus Experiment 1
+│   └── exp2_gpu_bound/        # varian training dan sampling berbasis GPU
+│       ├── config.yaml
+│       ├── requirements.txt
+│       ├── run.py
+│       └── README.md
 ├── dataset/                  # dataset lokal, diabaikan oleh Git
 │   └── .gitkeep
 ├── model/                    # cache graf dan checkpoint terbaik
@@ -256,4 +261,3 @@ Fokus repository saat ini adalah eksperimen komparatif neighbor sampling pada
 GraphSAGE. Penelitian tidak berfokus pada perubahan fungsi agregasi, graph data
 augmentation, atau perbandingan banyak arsitektur GNN. Pembatasan ini menjaga
 agar pengaruh mekanisme pemilihan tetangga dapat diamati secara lebih adil.
-
