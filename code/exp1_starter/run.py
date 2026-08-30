@@ -4,8 +4,12 @@ import argparse
 import copy
 import csv
 import json
+import logging
 import math
+import os
+import platform
 import random
+import sys
 import time
 from dataclasses import dataclass
 from pathlib import Path
@@ -19,6 +23,89 @@ from sklearn.metrics import average_precision_score, confusion_matrix, f1_score,
 from torch import nn
 from torch_geometric.data import HeteroData
 from torch_geometric.nn import SAGEConv
+
+
+LOGGER = logging.getLogger("exp1")
+
+
+def configure_logging() -> None:
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(asctime)s | %(levelname)s | %(message)s",
+        datefmt="%Y-%m-%d %H:%M:%S",
+        force=True,
+    )
+
+
+def format_duration(seconds: float) -> str:
+    minutes, seconds = divmod(max(0, int(seconds)), 60)
+    hours, minutes = divmod(minutes, 60)
+    if hours:
+        return f"{hours:d}h {minutes:02d}m {seconds:02d}s"
+    if minutes:
+        return f"{minutes:d}m {seconds:02d}s"
+    return f"{seconds:d}s"
+
+
+def system_memory_gb() -> float | None:
+    """Return total physical memory without adding a third-party dependency."""
+    try:
+        if sys.platform == "win32":
+            import ctypes
+
+            class MemoryStatus(ctypes.Structure):
+                _fields_ = [
+                    ("length", ctypes.c_ulong),
+                    ("memory_load", ctypes.c_ulong),
+                    ("total_physical", ctypes.c_ulonglong),
+                    ("available_physical", ctypes.c_ulonglong),
+                    ("total_page_file", ctypes.c_ulonglong),
+                    ("available_page_file", ctypes.c_ulonglong),
+                    ("total_virtual", ctypes.c_ulonglong),
+                    ("available_virtual", ctypes.c_ulonglong),
+                    ("available_extended_virtual", ctypes.c_ulonglong),
+                ]
+
+            status = MemoryStatus()
+            status.length = ctypes.sizeof(status)
+            if ctypes.windll.kernel32.GlobalMemoryStatusEx(ctypes.byref(status)):
+                return status.total_physical / (1024 ** 3)
+        if hasattr(os, "sysconf"):
+            pages = os.sysconf("SC_PHYS_PAGES")
+            page_size = os.sysconf("SC_PAGE_SIZE")
+            return pages * page_size / (1024 ** 3)
+    except (AttributeError, OSError, ValueError):
+        pass
+    return None
+
+
+def log_hardware(device: torch.device) -> None:
+    cpu_name = platform.processor() or os.environ.get("PROCESSOR_IDENTIFIER", "tidak terdeteksi")
+    ram_gb = system_memory_gb()
+    LOGGER.info("=" * 72)
+    LOGGER.info("HARDWARE DAN RUNTIME TRAINING")
+    LOGGER.info("OS              : %s", platform.platform())
+    LOGGER.info("Python          : %s", platform.python_version())
+    LOGGER.info("PyTorch         : %s", torch.__version__)
+    LOGGER.info("CPU             : %s", cpu_name)
+    LOGGER.info("CPU cores       : %s | PyTorch threads=%d | interop_threads=%d",
+                os.cpu_count() or "?", torch.get_num_threads(), torch.get_num_interop_threads())
+    LOGGER.info("RAM total       : %s", f"{ram_gb:.2f} GB" if ram_gb is not None else "tidak terdeteksi")
+    LOGGER.info("Device dipilih  : %s", device)
+    LOGGER.info("CUDA tersedia   : %s", torch.cuda.is_available())
+    if device.type == "cuda":
+        index = device.index if device.index is not None else torch.cuda.current_device()
+        props = torch.cuda.get_device_properties(index)
+        LOGGER.info("GPU             : %s", props.name)
+        LOGGER.info("GPU VRAM        : %.2f GB", props.total_memory / (1024 ** 3))
+        LOGGER.info("CUDA runtime    : %s | cuDNN=%s | capability=%d.%d",
+                    torch.version.cuda or "tidak diketahui", torch.backends.cudnn.version() or "tidak tersedia",
+                    props.major, props.minor)
+    else:
+        LOGGER.info("GPU             : tidak digunakan; training berjalan pada CPU")
+        if torch.cuda.is_available():
+            LOGGER.info("Catatan         : CUDA tersedia, tetapi konfigurasi memilih CPU")
+    LOGGER.info("=" * 72)
 
 
 def seed_everything(seed: int) -> None:
@@ -291,6 +378,7 @@ def metric_dict(y, p, threshold):
 
 
 def run_one(cfg, graph, strategy, seed, model_dir, result_dir, device):
+    run_started = time.perf_counter()
     seed_everything(seed)
     sampler = WeightedSampler(graph.adjacency, graph.known_labels, strategy,
                               cfg["sampling"]["fanouts"], cfg["sampling"], seed)
@@ -300,34 +388,64 @@ def run_one(cfg, graph, strategy, seed, model_dir, result_dir, device):
     val_nodes = torch.where(graph.masks["val"])[0].numpy()
     test_nodes = torch.where(graph.masks["test"])[0].numpy()
     positives = float(graph.y[train_nodes].sum())
+    LOGGER.info(
+        "Mulai run | strategy=%s | seed=%d | device=%s | train=%s | val=%s | test=%s | fraud_train=%d",
+        strategy, seed, device, f"{len(train_nodes):,}", f"{len(val_nodes):,}",
+        f"{len(test_nodes):,}", int(positives),
+    )
     pos_weight = torch.tensor([(len(train_nodes) - positives) / max(positives, 1.0)], device=device)
     optimizer = torch.optim.Adam(model.parameters(), lr=tc["learning_rate"])
     scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode="max", factor=0.5,
                                                            patience=tc["lr_patience"])
     best, stale, best_state, history = -1.0, 0, None, []
     rng = np.random.default_rng(seed)
+    total_batches = math.ceil(len(train_nodes) / tc["batch_size"])
+    log_every = int(tc.get("log_every_batches", 10))
     for epoch in range(1, tc["epochs"] + 1):
+        epoch_started = time.perf_counter()
+        LOGGER.info("Epoch %d/%d dimulai (%d batch)", epoch, tc["epochs"], total_batches)
         model.train(); losses = []
-        for roots in batches(train_nodes, tc["batch_size"], rng, True):
+        for batch_index, roots in enumerate(batches(train_nodes, tc["batch_size"], rng, True), start=1):
             ids, edge, target = sampler.sample(roots)
             logits = model(graph.x[ids].to(device), edge.to(device))[target.to(device)]
             target_y = graph.y[roots].to(device)
             loss = F.binary_cross_entropy_with_logits(logits, target_y, pos_weight=pos_weight)
-            optimizer.zero_grad(); loss.backward(); optimizer.step(); losses.append(float(loss))
+            optimizer.zero_grad(); loss.backward(); optimizer.step(); losses.append(loss.item())
+            if log_every > 0 and (batch_index == 1 or batch_index % log_every == 0 or batch_index == total_batches):
+                elapsed = time.perf_counter() - epoch_started
+                rate = batch_index / max(elapsed, 1e-9)
+                remaining = (total_batches - batch_index) / max(rate, 1e-9)
+                LOGGER.info(
+                    "Epoch %d/%d | batch %d/%d (%.1f%%) | mean_loss=%.6f | ETA=%s",
+                    epoch, tc["epochs"], batch_index, total_batches,
+                    100 * batch_index / total_batches, float(np.mean(losses)), format_duration(remaining),
+                )
+        LOGGER.info("Epoch %d | training selesai; menjalankan validasi...", epoch)
         vy, vp, _ = predict(model, graph, sampler, val_nodes, tc["batch_size"], device)
         score = average_precision_score(vy, vp)
         scheduler.step(score)
         history.append({"epoch": epoch, "loss": float(np.mean(losses)), "val_auprc": score})
+        improved = score > best
         if score > best:
             best, stale, best_state = score, 0, copy.deepcopy(model.state_dict())
         else:
             stale += 1
+        LOGGER.info(
+            "Epoch %d/%d selesai | loss=%.6f | val_AUPRC=%.6f | best=%.6f%s | lr=%.2e | stale=%d/%d | durasi=%s",
+            epoch, tc["epochs"], float(np.mean(losses)), score, best,
+            " (baru)" if improved else "", optimizer.param_groups[0]["lr"], stale,
+            tc["early_stopping_patience"], format_duration(time.perf_counter() - epoch_started),
+        )
         if stale >= tc["early_stopping_patience"]:
+            LOGGER.info("Early stopping pada epoch %d: AUPRC tidak membaik selama %d epoch.",
+                        epoch, tc["early_stopping_patience"])
             break
     model.load_state_dict(best_state)
     checkpoint = model_dir / f"exp1_{strategy}_seed{seed}.pt"
     torch.save({"model_state": best_state, "strategy": strategy, "seed": seed, "config": cfg,
                 "input_channels": graph.x.shape[1]}, checkpoint)
+    LOGGER.info("Checkpoint terbaik disimpan: %s", checkpoint)
+    LOGGER.info("Menjalankan evaluasi test untuk strategy=%s seed=%d...", strategy, seed)
     y, p, elapsed = predict(model, graph, sampler, test_nodes, tc["batch_size"], device)
     metrics = metric_dict(y, p, cfg["evaluation"]["threshold"])
     # Camouflage: fraud transaction with >70% normal labelled transaction neighbors via shared entities.
@@ -351,10 +469,16 @@ def run_one(cfg, graph, strategy, seed, model_dir, result_dir, device):
                     "split_policy": "temporal_70_15_15"})
     (result_dir / f"exp1_{strategy}_seed{seed}.json").write_text(
         json.dumps({"metrics": metrics, "history": history}, indent=2), encoding="utf-8")
+    LOGGER.info(
+        "Run selesai | strategy=%s | seed=%d | F1=%.6f | Recall=%.6f | AUPRC=%.6f | inference=%.3fs | total=%s",
+        strategy, seed, metrics["f1"], metrics["recall"], metrics["auprc"], elapsed,
+        format_duration(time.perf_counter() - run_started),
+    )
     return metrics
 
 
 def main():
+    configure_logging()
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", default="config.yaml")
     parser.add_argument("--strategy", choices=["uniform", "topology", "importance"])
@@ -368,19 +492,39 @@ def main():
     base = config_path.parent
     model_dir, result_dir = resolve(base, cfg["paths"]["model_dir"]), resolve(base, cfg["paths"]["result_dir"])
     model_dir.mkdir(parents=True, exist_ok=True); result_dir.mkdir(parents=True, exist_ok=True)
-    df = load_transactions(resolve(base, cfg["data"]["transactions"]), cfg["experiment"]["max_rows"])
+    data_path = resolve(base, cfg["data"]["transactions"])
+    LOGGER.info("Konfigurasi: %s", config_path)
+    LOGGER.info("Dataset: %s | max_rows=%s", data_path, cfg["experiment"]["max_rows"])
+    stage_started = time.perf_counter()
+    LOGGER.info("Membaca dan mengurutkan dataset...")
+    df = load_transactions(data_path, cfg["experiment"]["max_rows"])
+    LOGGER.info("Dataset siap: %s transaksi (%s)", f"{len(df):,}", format_duration(time.perf_counter() - stage_started))
     split = split_masks(len(df), cfg["data"]["split"])
+    LOGGER.info("Split temporal: train=%s | val=%s | test=%s",
+                f"{int(split[0].sum()):,}", f"{int(split[1].sum()):,}", f"{int(split[2].sum()):,}")
+    stage_started = time.perf_counter()
+    LOGGER.info("Melakukan preprocessing dan feature engineering...")
     features, feature_names = fit_features(df, split[0])
+    LOGGER.info("Fitur siap: shape=%s | fitur=%s (%s)", features.shape, ", ".join(feature_names),
+                format_duration(time.perf_counter() - stage_started))
+    stage_started = time.perf_counter()
+    LOGGER.info("Membangun graf User-Transaction-Merchant...")
     graph = build_graph(df, features, split)
+    LOGGER.info("Graf siap: nodes=%s | directed_edges=%s (%s)", f"{graph.x.shape[0]:,}",
+                f"{graph.edge_index.shape[1]:,}", format_duration(time.perf_counter() - stage_started))
     cache = model_dir / f"exp1_graph_{len(df)}.pt"
     if cfg["experiment"]["cache_graph"]:
         torch.save({"hetero_data": graph.data, "feature_names": feature_names,
                     "rows": len(df), "split": cfg["data"]["split"]}, cache)
+        LOGGER.info("Cache graf disimpan: %s", cache)
     requested_device = cfg["experiment"]["device"]
     device = torch.device("cuda" if requested_device == "auto" and torch.cuda.is_available()
                           else "cpu" if requested_device == "auto" else requested_device)
+    log_hardware(device)
     strategies = [args.strategy] if args.strategy else cfg["experiment"]["strategies"]
     seeds = [args.seed] if args.seed is not None else cfg["experiment"]["seeds"]
+    LOGGER.info("Rencana eksperimen: strategies=%s | seeds=%s | total_runs=%d",
+                strategies, seeds, len(strategies) * len(seeds))
     rows = [run_one(cfg, graph, strategy, seed, model_dir, result_dir, device)
             for strategy in strategies for seed in seeds]
     summary = result_dir / "exp1_summary.csv"
@@ -388,6 +532,7 @@ def main():
     keys = {(r["strategy"], int(r["seed"])) for r in rows}
     merged = [r for r in existing if (r["strategy"], int(r["seed"])) not in keys] + rows
     pd.DataFrame(merged).sort_values(["strategy", "seed"]).to_csv(summary, index=False, quoting=csv.QUOTE_MINIMAL)
+    LOGGER.info("Ringkasan eksperimen diperbarui: %s", summary)
     print(pd.DataFrame(rows).to_string(index=False))
 
 

@@ -28,6 +28,7 @@ training:
   lr_patience: 5
   early_stopping_patience: 15
   num_workers: 0
+  log_every_batches: 10      # tampilkan progres setiap N batch; 0 untuk nonaktif
 
 evaluation:
   threshold: 0.5
@@ -37,4 +38,3 @@ evaluation:
 paths:
   model_dir: ../../model
   result_dir: ../../result
-

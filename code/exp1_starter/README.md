@@ -21,6 +21,23 @@ Untuk satu strategi/seed saat smoke test:
 python run.py --config config.yaml --strategy uniform --seed 42 --max-rows 10000
 ```
 
+Selama proses berjalan, terminal menampilkan tahap preprocessing dan
+konstruksi graf, progres batch, loss rata-rata, AUPRC validation, learning
+rate, estimasi waktu batch tersisa, checkpoint terbaik, serta metrik test.
+Sebelum training dimulai, log juga mencatat OS, versi Python dan PyTorch, CPU,
+jumlah core/thread, RAM, device yang dipilih, dan ketersediaan CUDA. Jika GPU
+digunakan, nama GPU, kapasitas VRAM, versi CUDA/cuDNN, dan compute capability
+ikut dicatat.
+Frekuensi progres batch dapat diatur melalui:
+
+```yaml
+training:
+  log_every_batches: 10
+```
+
+Gunakan nilai `1` untuk mencetak setiap batch atau `0` untuk menonaktifkan log
+per batch. Log pergantian epoch dan hasil evaluasi tetap ditampilkan.
+
 Artefak graph cache disimpan di `model/`, checkpoint terbaik per eksperimen
 di `model/exp1_<strategy>_seed<seed>.pt`, metrik tiap run dalam JSON di
 `result/`, dan ringkasan semua run dalam `result/exp1_summary.csv`.
