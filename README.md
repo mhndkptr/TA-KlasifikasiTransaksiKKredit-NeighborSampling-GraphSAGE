@@ -156,7 +156,12 @@ repository/
 │       ├── requirements.txt  # dependensi Python
 │       ├── run.py            # preprocessing, graph, training, dan evaluasi
 │       └── README.md         # petunjuk khusus Experiment 1
-│   └── exp2_gpu_bound/        # varian training dan sampling berbasis GPU
+│   ├── exp2_gpu_bound/        # varian training dan sampling berbasis GPU
+│       ├── config.yaml
+│       ├── requirements.txt
+│       ├── run.py
+│       └── README.md
+│   └── exp3_stable_training/  # early stopping dan evaluasi deterministik
 │       ├── config.yaml
 │       ├── requirements.txt
 │       ├── run.py
