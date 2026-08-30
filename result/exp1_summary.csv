@@ -1,0 +1,2 @@
+f1,recall,auprc,tn,fp,fn,tp,strategy,seed,best_val_auprc,epochs,inference_seconds,inference_ms_per_1000,long_tail_count,long_tail_recall,split_policy
+0.0,0.0,0.0,1500,0,0,0,uniform,42,0.17433682820203047,17,0.022083799998654285,14.722533332436191,0,,temporal_70_15_15
