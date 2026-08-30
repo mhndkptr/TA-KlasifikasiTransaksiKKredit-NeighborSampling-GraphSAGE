@@ -161,7 +161,12 @@ repository/
 │       ├── requirements.txt
 │       ├── run.py
 │       └── README.md
-│   └── exp3_stable_training/  # early stopping dan evaluasi deterministik
+│   ├── exp3_stable_training/  # early stopping dan evaluasi deterministik
+│       ├── config.yaml
+│       ├── requirements.txt
+│       ├── run.py
+│       └── README.md
+│   └── exp4_gpu_stable/       # GPU-bound dengan evaluasi deterministik
 │       ├── config.yaml
 │       ├── requirements.txt
 │       ├── run.py

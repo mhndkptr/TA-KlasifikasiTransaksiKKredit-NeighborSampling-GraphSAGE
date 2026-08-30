@@ -1,0 +1,1 @@
+-r ../exp2_gpu_bound/requirements.txt
