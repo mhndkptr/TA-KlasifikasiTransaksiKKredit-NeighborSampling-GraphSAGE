@@ -1,0 +1,47 @@
+experiment:
+  seeds: [42, 43, 44, 45, 46]
+  strategies: [uniform, topology, importance]
+  device: cuda
+  # Sama dengan data yang menghasilkan artefak EXP1 saat ini.
+  max_rows: 200000
+  cache_graph: false
+
+data:
+  transactions: ../../dataset/credit_card_transactions-ibm_v2.csv
+  split: [0.70, 0.15, 0.15]
+
+model:
+  hidden_channels: 256
+  num_layers: 2
+  dropout: 0.2
+
+sampling:
+  fanouts: [25, 10]
+  topology_alpha: 0.5
+  importance_gamma: 0.3
+  ppr_beta: 0.15
+  ppr_steps: 3
+  ppr_root_chunk_size: 32
+
+training:
+  # Sama dengan EXP1 agar jumlah optimizer step dan statistik BatchNorm sebanding.
+  batch_size: 1024
+  epochs: 100
+  learning_rate: 0.001
+  lr_patience: 5
+  early_stopping_patience: 15
+  log_every_batches: 100
+  # FP32 aman untuk BCE dengan positive weight yang sangat besar.
+  amp: false
+
+evaluation:
+  # Fixed seperti EXP1. Threshold auto EXP3/EXP4 (~0.99) menyebabkan TP=0.
+  threshold: 0.5
+  sampling_passes: 1
+  seed: 10000
+  camouflage_normal_ratio: 0.70
+  latency_nodes: 1000
+
+paths:
+  model_dir: ../../model
+  result_dir: ../../result
