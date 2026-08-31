@@ -1,4 +1,7 @@
 dataset/*
 !dataset/.gitkeep
 
+model/*
+!model/.gitkeep
+
 /code/*/.venv/

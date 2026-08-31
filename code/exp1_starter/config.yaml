@@ -2,7 +2,7 @@ experiment:
   seeds: [42, 43, 44, 45, 46]
   strategies: [uniform, topology, importance]
   device: auto
-  max_rows: 200000          # null untuk memakai seluruh 24.386.900 transaksi
+  max_rows: null          # null untuk memakai seluruh 24.386.900 transaksi
   cache_graph: true
 
 data:
@@ -28,7 +28,7 @@ training:
   lr_patience: 5
   early_stopping_patience: 15
   num_workers: 0
-  log_every_batches: 10      # tampilkan progres setiap N batch; 0 untuk nonaktif
+  log_every_batches: 100      # tampilkan progres setiap N batch; 0 untuk nonaktif
 
 evaluation:
   threshold: 0.5
