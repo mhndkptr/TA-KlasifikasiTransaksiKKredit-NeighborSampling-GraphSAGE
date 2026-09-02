@@ -99,6 +99,24 @@ lebih besar pada kelas fraud, optimizer Adam dengan learning rate 0,001,
 scheduler berbasis AUPRC validation, dan early stopping. Setiap strategi
 dirancang untuk dijalankan dengan lima random seed: 42, 43, 44, 45, dan 46.
 
+## Perkembangan eksperimen
+
+Setiap folder eksperimen mempertahankan tujuan penelitian yang sama, tetapi
+memperbaiki aspek implementasi atau evaluasi secara bertahap:
+
+| Eksperimen | Fokus perubahan |
+|---|---|
+| EXP1 | Baseline GraphSAGE dan weighted neighbor sampling berbasis CPU |
+| EXP2 | Pemindahan training dan sampling ke GPU |
+| EXP3 | Early stopping dan evaluasi sampling yang lebih stabil |
+| EXP4 | Penggabungan GPU-bound training dengan evaluasi deterministik |
+| EXP5 | Exact GPU sampler dengan semantik sampling dan multigraph EXP1 |
+| EXP6 | Kalibrasi threshold validation, audit generalization gap, dan monitoring TQDM |
+
+EXP6 merupakan implementasi yang direkomendasikan untuk run berikutnya. Exact
+GPU sampler tetap berasal dari EXP5 agar perubahan hasil dapat dikaitkan dengan
+kalibrasi/evaluasi, bukan pergantian algoritma sampling.
+
 ## Strategi neighbor sampling
 
 Penelitian membandingkan tiga pendekatan berikut.
@@ -132,6 +150,7 @@ Metrik utama yang dicatat adalah:
 
 - **Recall**, untuk menilai berapa banyak transaksi fraud yang berhasil
   ditemukan;
+- **Precision**, untuk mengukur proporsi prediksi fraud yang benar;
 - **F1-Score**, untuk menyeimbangkan precision dan recall;
 - **AUPRC**, yang lebih informatif daripada accuracy pada data dengan kelas
   sangat tidak seimbang;
@@ -146,30 +165,64 @@ menarik kesimpulan final. Berkas yang saat ini berada di `model/` dan `result/`
 dapat berupa hasil percobaan atau smoke test dan bukan otomatis hasil final
 penelitian.
 
+Pada EXP6, threshold keputusan dipilih dengan memaksimalkan F1 pada validation
+set saja. Test set tidak digunakan untuk memilih threshold. Output juga
+menyimpan metrik test pada threshold tetap 0,5 sebagai pembanding, statistik
+probabilitas validation/test, serta selisih AUPRC validation terhadap test.
+
+### Temuan full-data EXP5 seed 42
+
+Run uniform sampling pada seluruh data menghasilkan:
+
+- 17.070.830 node transaksi train dengan 20.886 fraud;
+- 3.658.035 node validation dengan 4.417 fraud;
+- 3.658.035 node test dengan 4.454 fraud;
+- best validation AUPRC 0,6679 pada epoch 30;
+- test AUPRC 0,0237;
+- 179.533 false positive dan recall 0,0855 pada threshold tetap 0,5.
+
+Perbedaan besar antara validation dan test menunjukkan temporal generalization
+gap. Karena validation ranking sudah kuat, EXP6 mempertahankan full imbalance
+class weight EXP5 dan memusatkan perubahan pada kalibrasi threshold serta audit
+gap tersebut. Hasil ini masih berasal dari satu strategi dan satu seed sehingga
+belum cukup untuk menjadi kesimpulan akhir penelitian.
+
 ## Struktur repository
 
 ```text
 repository/
 ├── code/
 │   ├── exp1_starter/
-│       ├── config.yaml       # konfigurasi eksperimen
-│       ├── requirements.txt  # dependensi Python
-│       ├── run.py            # preprocessing, graph, training, dan evaluasi
-│       └── README.md         # petunjuk khusus Experiment 1
+│   │   ├── config.yaml       # konfigurasi eksperimen
+│   │   ├── requirements.txt  # dependensi Python
+│   │   ├── run.py            # preprocessing, graph, training, dan evaluasi
+│   │   └── README.md         # petunjuk khusus Experiment 1
 │   ├── exp2_gpu_bound/        # varian training dan sampling berbasis GPU
-│       ├── config.yaml
-│       ├── requirements.txt
-│       ├── run.py
-│       └── README.md
+│   │   ├── config.yaml
+│   │   ├── requirements.txt
+│   │   ├── run.py
+│   │   └── README.md
 │   ├── exp3_stable_training/  # early stopping dan evaluasi deterministik
+│   │   ├── config.yaml
+│   │   ├── requirements.txt
+│   │   ├── run.py
+│   │   └── README.md
+│   ├── exp4_gpu_stable/       # GPU-bound dengan evaluasi deterministik
+│   │   ├── config.yaml
+│   │   ├── requirements.txt
+│   │   ├── run.py
+│   │   └── README.md
+│   ├── exp5_gpu_corrected/    # GPU-bound dengan semantik sampling EXP1
+│   │   ├── config.yaml
+│   │   ├── requirements.txt
+│   │   ├── run.py
+│   │   ├── test_sampler.py
+│   │   └── README.md
+│   └── exp6_gpu_tqdm/         # full-data, threshold validation, dan TQDM
 │       ├── config.yaml
 │       ├── requirements.txt
 │       ├── run.py
-│       └── README.md
-│   └── exp4_gpu_stable/       # GPU-bound dengan evaluasi deterministik
-│       ├── config.yaml
-│       ├── requirements.txt
-│       ├── run.py
+│       ├── test_exp6.py
 │       └── README.md
 ├── dataset/                  # dataset lokal, diabaikan oleh Git
 │   └── .gitkeep
@@ -188,11 +241,11 @@ dataset/credit_card_transactions-ibm_v2.csv
 
 ## Instalasi
 
-Direkomendasikan menggunakan Python 3.10 atau lebih baru. Dari root
-repository, jalankan:
+Direkomendasikan menggunakan Python 3.10 atau lebih baru dan PyTorch dengan
+dukungan CUDA. Dari root repository, instal dependensi EXP6:
 
 ```powershell
-cd code/exp1_starter
+cd code/exp6_gpu_tqdm
 python -m venv .venv
 .venv\Scripts\Activate.ps1
 python -m pip install --upgrade pip
@@ -204,17 +257,25 @@ menjalankan eksperimen.
 
 ## Menjalankan eksperimen
 
-### Smoke test
+Perintah berikut dijalankan dari folder `code/exp6_gpu_tqdm` setelah virtual
+environment diaktifkan.
 
-Gunakan sebagian kecil data untuk memastikan lingkungan dan pipeline berjalan:
+### Validasi subset
+
+Gunakan 100.000 transaksi untuk memvalidasi pipeline. Subset yang terlalu kecil
+dapat tidak memiliki fraud pada salah satu temporal split dan akan dihentikan:
 
 ```powershell
-python run.py --config config.yaml --strategy uniform --seed 42 --max-rows 10000
+python run.py --config config.yaml --strategy uniform --seed 42 --max-rows 100000
 ```
 
-### Menjalankan satu strategi
+### Menjalankan satu strategi pada full data
+
+`config.yaml` EXP6 menggunakan `max_rows: null`, sehingga perintah berikut
+memakai seluruh dataset:
 
 ```powershell
+python run.py --config config.yaml --strategy uniform --seed 42
 python run.py --config config.yaml --strategy topology --seed 42
 python run.py --config config.yaml --strategy importance --seed 42
 ```
@@ -226,36 +287,40 @@ python run.py --config config.yaml
 ```
 
 Perintah terakhir menjalankan seluruh strategi dan seed yang didefinisikan di
-`config.yaml`. Konfigurasi awal membatasi data menjadi 200.000 transaksi agar
-pipeline dapat divalidasi. Untuk menggunakan seluruh dataset, ubah:
+`config.yaml`, yaitu 3 strategi x 5 seed atau 15 run. Eksperimen penuh
+membutuhkan RAM, VRAM, ruang penyimpanan, dan waktu komputasi yang besar.
 
-```yaml
-experiment:
-  max_rows: null
+Progress bar TQDM menampilkan progres run, epoch, training batch,
+validation/test batch, loss, learning rate, dan penggunaan VRAM. Logger memakai
+handler yang kompatibel dengan TQDM agar pesan tidak merusak progress bar.
+Progress bar dapat dinonaktifkan ketika output diarahkan ke file:
+
+```powershell
+python run.py --config config.yaml --strategy uniform --seed 42 --no-progress
 ```
-
-Eksperimen penuh membutuhkan RAM, ruang penyimpanan, dan waktu komputasi yang
-jauh lebih besar. Naikkan jumlah baris secara bertahap sebelum menjalankan
-seluruh 24,3 juta transaksi.
 
 ## Artefak keluaran
 
 Pipeline menghasilkan:
 
 ```text
-model/exp1_graph_<jumlah_baris>.pt
-model/exp1_<strategy>_seed<seed>.pt
-result/exp1_<strategy>_seed<seed>.json
-result/exp1_summary.csv
+model/exp6_<strategy>_seed<seed>.pt
+result/exp6_<strategy>_seed<seed>.json
+result/exp6_summary.csv
 ```
 
-File JSON menyimpan metrik dan riwayat pelatihan setiap run. CSV ringkasan
-digunakan untuk membandingkan strategi dan seed secara berdampingan.
+Checkpoint menyimpan model terbaik, konfigurasi, seed, strategi, dan threshold
+keputusan. File JSON menyimpan metrik utama, confusion matrix, statistik split,
+riwayat training, threshold validation, metrik pembanding threshold 0,5,
+generalization gap, latensi inferensi, serta peak VRAM. CSV ringkasan digunakan
+untuk membandingkan strategi dan seed secara berdampingan.
 
 ## Reproduksibilitas dan catatan eksperimen
 
 - Gunakan subset temporal, konfigurasi model, dan threshold yang sama ketika
   membandingkan strategi.
+- Jika threshold otomatis digunakan, pilih threshold hanya dari validation set
+  dan jangan mengoptimalkannya menggunakan test set.
 - Jangan menggunakan label validation atau test untuk menghitung bobot
   sampler maupun fitur preprocessing.
 - Catat versi Python, PyTorch, PyTorch Geometric, jenis GPU/CPU, RAM, dan waktu

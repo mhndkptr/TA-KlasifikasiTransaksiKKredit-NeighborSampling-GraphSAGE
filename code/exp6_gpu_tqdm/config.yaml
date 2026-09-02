@@ -1,0 +1,63 @@
+experiment:
+  seeds: [42, 43, 44, 45, 46]
+  strategies: [uniform, topology, importance]
+  # EXP6 GPU-bound: tidak ada fallback CPU agar salah interpreter segera terlihat.
+  device: cuda
+  # null memakai seluruh 24,3 juta transaksi seperti run EXP5 terbaru.
+  max_rows: 100000
+  cache_graph: false
+
+data:
+  transactions: ../../dataset/credit_card_transactions-ibm_v2.csv
+  split: [0.70, 0.15, 0.15]
+
+model:
+  hidden_channels: 256
+  num_layers: 2
+  dropout: 0.2
+
+sampling:
+  fanouts: [25, 10]
+  topology_alpha: 0.5
+  importance_gamma: 0.3
+  ppr_beta: 0.15
+  ppr_steps: 3
+  ppr_root_chunk_size: 32
+
+training:
+  batch_size: 1024
+  epochs: 100
+  learning_rate: 0.001
+  lr_factor: 0.5
+  lr_patience: 5
+  min_learning_rate: 0.00001
+  early_stopping_patience: 15
+  early_stopping_min_delta: 0.0001
+  # Pertahankan objective EXP5 sebagai kontrol. Pada full data, weight 816,33
+  # menghasilkan best validation AUPRC 0,6679; false positive utamanya terkait
+  # threshold tetap 0,5 dan temporal generalization gap, bukan ranking validation.
+  positive_class_weight_power: 1.0
+  max_positive_class_weight: null
+  gradient_clip_norm: 5.0
+  # Progress training ditampilkan oleh TQDM tanpa log per-batch/per-epoch.
+  # FP32 dipertahankan karena weighted BCE pada kelas yang sangat langka.
+  amp: false
+
+evaluation:
+  # Dipilih dari validation set saja; test set tidak digunakan untuk tuning threshold.
+  threshold: auto
+  threshold_beta: 1.0
+  # Satu pass deterministik cukup untuk validation full-data (3,66 juta node).
+  # Tiga pass akan melipatgandakan biaya evaluasi pada setiap epoch.
+  sampling_passes: 1
+  seed: 10000
+  camouflage_normal_ratio: 0.70
+  latency_nodes: 1000
+
+monitoring:
+  progress_bar: true
+  min_interval_seconds: 0.2
+
+paths:
+  model_dir: ../../model
+  result_dir: ../../result
