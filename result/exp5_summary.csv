@@ -1,0 +1,2 @@
+f1,recall,auprc,tn,fp,fn,tp,experiment,strategy,seed,best_val_auprc,best_epoch,epochs,decision_threshold,evaluation_sampling_passes,inference_seconds,inference_ms_per_1000,peak_vram_gb,long_tail_count,long_tail_recall,sampler,split_policy
+0.005573534699748292,0.7209302325581395,0.012105183654620396,3907,11050,12,31,exp5_gpu_corrected,uniform,42,0.011415539332952796,1,16,0.5,1,0.19602329999906942,13.068219999937961,0.10285615921020508,43,0.7209302325581395,exact_gpu_gumbel_topk_multigraph,temporal_70_15_15

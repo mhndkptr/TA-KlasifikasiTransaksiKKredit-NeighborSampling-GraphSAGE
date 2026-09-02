@@ -3,7 +3,7 @@ experiment:
   strategies: [uniform, topology, importance]
   device: cuda
   # Sama dengan data yang menghasilkan artefak EXP1 saat ini.
-  max_rows: 200000
+  max_rows: null
   cache_graph: false
 
 data:
