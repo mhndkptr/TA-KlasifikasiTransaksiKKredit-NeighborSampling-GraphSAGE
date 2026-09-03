@@ -4,7 +4,7 @@ experiment:
   # EXP6 GPU-bound: tidak ada fallback CPU agar salah interpreter segera terlihat.
   device: cuda
   # null memakai seluruh 24,3 juta transaksi seperti run EXP5 terbaru.
-  max_rows: 100000
+  max_rows: null
   cache_graph: false
 
 data:
@@ -25,7 +25,7 @@ sampling:
   ppr_root_chunk_size: 32
 
 training:
-  batch_size: 1024
+  batch_size: 512
   epochs: 100
   learning_rate: 0.001
   lr_factor: 0.5
