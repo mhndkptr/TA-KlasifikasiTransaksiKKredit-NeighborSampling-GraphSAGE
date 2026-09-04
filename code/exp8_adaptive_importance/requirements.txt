@@ -1,0 +1,2 @@
+-r ../exp5_gpu_corrected/requirements.txt
+tqdm>=4.66,<5
