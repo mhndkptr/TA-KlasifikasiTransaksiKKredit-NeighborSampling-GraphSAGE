@@ -3,6 +3,10 @@
 Tanggal pengujian: **7 September 2026**. Ini catatan pemeriksaan implementasi;
 belum merupakan hasil eksperimen full-data atau bukti peningkatan terhadap EXP8.
 
+Bagian awal mempertahankan catatan implementasi pertama. Hasil terbaru untuk
+optimasi GPU, 21 tes, dan subset 1 juta baris terdapat pada bagian
+**Validasi pembaruan GPU dan topology** di bawah.
+
 ## Pengujian otomatis
 
 Perintah dari root repository:
@@ -92,6 +96,97 @@ Ringkasan numerik yang dapat dilacak disertakan di
 besar/checkpoint/cache berada di `outputs/` yang diabaikan Git. Waktu dan
 probabilitas dapat sedikit berbeda saat dijalankan ulang karena reduksi CUDA dan
 kondisi perangkat, meskipun seed tetap.
+
+## Validasi pembaruan GPU dan topology
+
+### Pemeriksaan otomatis terbaru
+
+Perintah unittest sama seperti di atas. Hasil: **21 tes lulus dalam 3,648 detik**,
+termasuk tes CUDA yang benar-benar dieksekusi, bukan dilewati. Tambahan pemeriksaan:
+
+- Output, semua gradien parameter, statistik BatchNorm, dan dropout sama dalam
+  toleransi numerik antara backend blocks dan factorized pada CPU/CUDA.
+- Training CUDA juga bekerja saat fitur disimpan di CPU; history kosong tetap
+  memiliki mean tetangga nol.
+- Cache sampler CUDA mempertahankan tabel pada seed yang sama dan tidak mengubah
+  bobot sumber. Pemindahan permutation sekali per epoch mempertahankan urutan CPU.
+- Topology dengan label int8, 17.070.830 transaksi train dan total fraud 20.886
+  tidak overflow. Bug awal direproduksi saat persiapan topology pada subset
+  1 juta baris (608 fraud train), lalu diperbaiki dengan promosi tipe per chunk.
+- Run lengkap dilewati; run terputus mendapat attempt baru dan checkpoint lama
+  tetap utuh; lock melindungi overwrite; exception dicatat; attempt seed yang sama
+  hanya dihitung satu kali pada ringkasan.
+
+### Benchmark training dengan input yang sama
+
+Perintah dari root repository:
+
+```powershell
+& .\code\exp6_gpu_tqdm\.venv\Scripts\python.exe code/exp9_reference_sampling/benchmark.py --config code/exp9_reference_sampling/config.gpu16gb.yaml --max-rows 1000000 --steps 200 --warmup 20 --repeats 3 --output code/exp9_reference_sampling/outputs/benchmark/gpu_optimization_1m.json
+```
+
+Lingkungan tetap RTX 3050 Laptop 4 GiB, Python 3.13.7, PyTorch 2.13.0+cu130,
+PyG 2.8.0.post1, NumPy 2.5.2. Thread CPU 8. Dataset asli dibatasi ke 1 juta baris,
+dengan 700.000 transaksi train dan 10.528 entitas. Topology historical,
+batch 1.024, hidden 256, fanout 25/10, dropout 0,2, dan FP32 sama pada setiap varian.
+
+| Varian | Waktu 200 batch, tiga repeat (detik) | Median (detik) | Transaksi/detik | Rasio median |
+|---|---|---:|---:|---:|
+| Blocks + Adam | 3,546 / 6,540 / 5,857 | 5,857 | 34.967 | 1,00x |
+| Factorized + Adam | 2,716 / 4,509 / 4,407 | 4,407 | 46.467 | 1,33x |
+| Factorized + fused Adam | 3,140 / 3,396 / 2,871 | 3,140 | 65.218 | 1,87x |
+
+Root, tabel sampling dan state awal model sama; urutan varian dirotasi. Pengukuran
+mencakup forward, loss, backward, clipping, finite check dan optimizer. Tidak
+mencakup preprocessing, sampling, pembuatan mean, permutation atau validation.
+Mean fitur mentah membutuhkan 0,088 detik di luar timer training. Semua varian
+menggunakan root yang sudah berada pada GPU, sehingga ini tidak mengukur biaya
+transfer root per batch pada versi lama. Backend blocks yang dipertahankan menjadi
+baseline komputasi, bukan checkout penuh versi lama.
+
+Variasi waktunya terlihat besar; rasio median bukan jaminan speedup setiap run.
+Benchmark awal 100.000 baris juga dijalankan, kemudian pengukuran diperpanjang ke
+1 juta baris untuk mengurangi ketergantungan pada interval yang sangat pendek.
+Tidak ada benchmark pada RTX 5060 Ti dan tidak ada klaim utilisasi GPU 100%.
+
+### Smoke test GPU 1 juta baris
+
+```powershell
+& .\code\exp6_gpu_tqdm\.venv\Scripts\python.exe code/exp9_reference_sampling/run.py --config code/exp9_reference_sampling/config.smoke.gpu.yaml --max-rows 1000000 --epochs 1 --name exp9_gpu_1m_verified --no-progress
+```
+
+Ketiga strategi selesai, satu epoch dan seed 42. Split: train 700.000/608 fraud,
+validation 150.000/193 fraud, test 150.000/191 fraud. Backend factorized, fitur dan
+indeks CUDA, fused Adam aktif. `comparison_id` ketiganya adalah
+`d86bf4de62df21f9`. Status, keberadaan checkpoint, dan kecocokan source hash dengan
+kode yang diserahkan telah diperiksa.
+Perintah yang sama kemudian dijalankan ulang: ketiganya mencetak
+`Run selesai ditemukan; dilewati`, tanpa menjalankan epoch baru.
+
+| Strategi | Val AUPRC | Test AUPRC | Test F1 @0,5 | Durasi run (detik) |
+|---|---:|---:|---:|---:|
+| Uniform | 0,019148 | 0,004002 | 0,009155 | 6,886 |
+| Topology | 0,041491 | 0,003664 | 0,008440 | 6,500 |
+| Importance | 0,018397 | 0,004249 | 0,009480 | 10,076 |
+
+Angka kualitas tersebut berasal dari **satu epoch untuk pemeriksaan pipeline**.
+AUPRC/F1 rendah; tidak digunakan untuk menyatakan optimasi meningkatkan kualitas
+deteksi atau memilih strategi. Durasi antarsmoke juga bukan perbandingan efisiensi
+sampling yang terkontrol. Preprocessing sebelum `run_one` tidak masuk durasi run.
+
+Artefak lengkap lokal berada di:
+
+```text
+outputs/benchmark/gpu_optimization_1m.json
+outputs/smoke/result/exp9_gpu_1m_verified_d86bf4de62df21f9_<strategy>_seed42/
+outputs/smoke/model/exp9_gpu_1m_verified_d86bf4de62df21f9_<strategy>_seed42/best.pt
+```
+
+Salinan benchmark beserta metadata, hash source, metrik, history, dan timing
+smoke tersedia pada [validation/performance_summary.json](validation/performance_summary.json)
+agar angka yang diringkas dapat diaudit tanpa memasukkan cache/checkpoint ke Git.
+Kode preprocessing tidak berubah sehingga cache graf lama masih dapat digunakan;
+source optimasi membuat identitas run training baru berbeda dari validasi awal.
 
 ## Pekerjaan evaluasi penelitian yang masih diperlukan
 

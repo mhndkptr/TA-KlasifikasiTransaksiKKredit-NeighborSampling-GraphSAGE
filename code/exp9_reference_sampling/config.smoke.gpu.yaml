@@ -1,0 +1,11 @@
+# Short end-to-end check with GPU-resident features/indices.
+extends: config.gpu16gb.yaml
+experiment:
+  name: exp9_gpu_smoke
+  seeds: [42]
+  max_rows: 100000
+training:
+  epochs: 2
+paths:
+  model_dir: outputs/smoke/model
+  result_dir: outputs/smoke/result

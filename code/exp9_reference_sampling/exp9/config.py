@@ -7,6 +7,12 @@ import math
 import re
 import yaml
 
+RUNTIME_DEFAULTS = {
+    "experiment": {"on_existing": "auto"},
+    "runtime": {"training_backend": "factorized", "cache_sampler_on_device": True, "progress_update_batches": 100},
+    "training": {"fused_adam": True},
+}
+
 
 def merge(base, update):
     result = deepcopy(base)
@@ -16,6 +22,7 @@ def merge(base, update):
 
 
 def load_config(path, seen=None):
+    top_level = seen is None
     path = Path(path).resolve()
     seen = set() if seen is None else seen
     if path in seen:
@@ -30,10 +37,17 @@ def load_config(path, seen=None):
         for key in keys:
             if key in cfg.get(section, {}):
                 cfg[section][key] = str((path.parent / cfg[section][key]).resolve())
-    return merge(load_config(path.parent / parent, seen), cfg) if parent else cfg
+    cfg = merge(load_config(path.parent / parent, seen), cfg) if parent else cfg
+    return merge(RUNTIME_DEFAULTS, cfg) if top_level else cfg
 
 
 def validate_config(cfg):
+    if cfg["experiment"].get("on_existing", "auto") not in {"auto", "new", "error"}:
+        raise ValueError("experiment.on_existing harus auto/new/error")
+    if cfg["runtime"].get("training_backend", "factorized") not in {"factorized", "blocks"}:
+        raise ValueError("runtime.training_backend harus factorized/blocks")
+    if not isinstance(cfg["runtime"].get("progress_update_batches", 100), int) or cfg["runtime"].get("progress_update_batches", 100) < 1:
+        raise ValueError("runtime.progress_update_batches harus integer positif")
     ratios = cfg["data"]["split"]
     if len(ratios) != 3 or any(not 0 < r < 1 for r in ratios) or not math.isclose(sum(ratios), 1.0, abs_tol=1e-8):
         raise ValueError("data.split harus tiga proporsi positif dengan jumlah 1")

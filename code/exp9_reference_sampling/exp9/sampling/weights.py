@@ -23,6 +23,10 @@ def historical_topology(degree_root, degree_other, pair_count, fraud_root, fraud
     # It is an implicit two-hop structural score; no projected edges are added.
     jaccard = pair_count / (degree_root + degree_other - pair_count)
     # Leave the candidate's own label out of BOTH entity histories and prior.
+    # NumPy 2 preserves int8 array dtype for Python integer subtraction; a total
+    # fraud count >127 then raises OverflowError before division can promote it.
+    # Promote only this chunk, leaving the compact graph labels/cache unchanged.
+    candidate_label = np.asarray(candidate_label, dtype=np.float64)
     prior = np.clip((total_fraud - candidate_label) / max(total_train - 1, 1), 1e-9, 1 - 1e-9)
     smoothing = cfg["topology_smoothing"]
     p_root = (fraud_root - candidate_label + smoothing * prior) / (degree_root - 1 + smoothing)

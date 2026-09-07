@@ -89,12 +89,20 @@ def write_summaries(result_dir):
     rows = []
     for path in sorted(result_dir.glob("*/metrics.json")):
         result = json.loads(path.read_text(encoding="utf-8"))
-        rows.append({"run": path.parent.name, "comparison_id": result["comparison_id"], **result["metrics"]})
+        status = path.with_name("status.json")
+        if status.exists() and json.loads(status.read_text(encoding="utf-8")).get("status") != "complete":
+            continue
+        rows.append({"run": path.parent.name, "comparison_id": result["comparison_id"],
+                     "completed_mtime_ns": path.stat().st_mtime_ns, **result["metrics"]})
     if not rows:
         return
     frame = pd.DataFrame(rows)
+    keys = ["comparison_id", "strategy", "seed"]
+    frame = frame.sort_values(["completed_mtime_ns", "run"])
+    frame["included_in_summary"] = ~frame.duplicated(keys, keep="last")
     frame.to_csv(result_dir / "runs.csv", index=False)
     measures = ["auprc", "recall", "f1", "precision", "inference_ms_per_1000", "long_tail_recall"]
-    grouped = frame.groupby(["comparison_id", "strategy"], dropna=False)[measures].agg(["count", "mean", "std"])
+    selected = frame[frame["included_in_summary"]]
+    grouped = selected.groupby(["comparison_id", "strategy"], dropna=False)[measures].agg(["count", "mean", "std"])
     grouped.columns = ["_".join(c) for c in grouped.columns]
     grouped.to_csv(result_dir / "summary.csv")

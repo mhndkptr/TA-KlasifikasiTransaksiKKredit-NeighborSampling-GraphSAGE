@@ -5,7 +5,8 @@ experiment:
   device: cuda
   max_rows: null
   cache_graph: true
-  # Fail rather than silently overwrite a completed run.
+  # Skip complete runs; incomplete runs restart in a separate attempt folder.
+  on_existing: auto
   overwrite: false
 
 data:
@@ -46,6 +47,8 @@ training:
   # Keep the full inverse-frequency weighted BCE objective from the proposal.
   positive_class_weight_power: 1.0
   max_positive_class_weight: null
+  # CUDA fusion reduces optimizer launch overhead, retaining FP32 Adam.
+  fused_adam: true
 
 evaluation:
   threshold: 0.5
@@ -59,6 +62,10 @@ evaluation:
   latency_repeats: 5
 
 runtime:
+  # Exact mean-SAGE factorization for the two-layer User-Transaction-Merchant graph.
+  training_backend: factorized
+  cache_sampler_on_device: true
+  progress_update_batches: 100
   # Keep transaction features in RAM; only sampled features enter CUDA.
   feature_device: cpu
   cpu_threads: 4

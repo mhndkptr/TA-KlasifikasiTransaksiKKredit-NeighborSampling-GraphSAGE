@@ -236,6 +236,9 @@ class ModelEvaluationTests(unittest.TestCase):
                 self.assertAlmostEqual(result["metrics"]["best_val_auprc"], result["metrics"]["checkpoint_val_auprc"])
                 self.assertTrue(Path(result["checkpoint"]).exists())
             self.assertEqual(len(set(groups)), 1)
+            skipped = run_one(cfg, graph, "uniform", 42, torch.device("cpu"))
+            self.assertEqual(skipped["comparison_id"], groups[0])
+            cfg["experiment"]["on_existing"] = "error"
             with self.assertRaises(FileExistsError):
                 run_one(cfg, graph, "uniform", 42, torch.device("cpu"))
             write_summaries(cfg["paths"]["result_dir"])

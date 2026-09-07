@@ -1,0 +1,415 @@
+{
+    "date":  "2026-09-07",
+    "automated_tests":  {
+                            "seconds":  3.648,
+                            "cuda_tests_executed":  true,
+                            "passed":  21
+                        },
+    "benchmark":  {
+                      "environment":  {
+                                          "python":  "3.13.7",
+                                          "platform":  "Windows-11-10.0.26200-SP0",
+                                          "torch":  "2.13.0+cu130",
+                                          "torch_geometric":  "2.8.0.post1",
+                                          "numpy":  "2.5.2",
+                                          "device":  "cuda",
+                                          "cpu_threads":  8,
+                                          "pandas":  "2.3.3",
+                                          "scikit_learn":  "1.9.0",
+                                          "pyyaml":  "6.0.3",
+                                          "float32_matmul_precision":  "highest",
+                                          "cuda":  "13.0",
+                                          "gpu":  "NVIDIA GeForce RTX 3050 Laptop GPU",
+                                          "gpu_memory_gb":  3.99951171875,
+                                          "determinism":  "fixed_seeds_and_evaluation_tables; CUDA scatter reductions may not be bitwise deterministic"
+                                      },
+                      "source_manifest":  {
+                                              "__init__.py":  "95ab5846d6734e91ddba45f6a178ce59ba9d536bfb94a65843df0d2ace7f621e",
+                                              "artifacts.py":  "c6b2794fee21e867d4fded9000a710b6bb5559c92e90c87e777b1c5588c2f3a9",
+                                              "cli.py":  "ebd83b158a21458df9ec62c42f0014fd6bd97231492428af47b10e7ee5f1964b",
+                                              "config.py":  "46ac4b32621f768f5927d8da064f52ffbc09cffcbfc493d79f3db0d58deabbe8",
+                                              "data.py":  "d10e54bb03ee5f2683eecb342d78696cc4296ed8d5f08cdba3bf5f7d7c1cc8c5",
+                                              "evaluation.py":  "50a75b28e659e0c0feceefb2d910fc914fb962e609dd4f9e53890a9694ab2f2b",
+                                              "factorized.py":  "561fd0a95542f5f50ae31263764ad8e717e08a7edea22c8ea88be884f1689966",
+                                              "features.py":  "ecfde5fea03cae14d69f8e81ff4749f7b61fee92cb14db2a8ed66c76c6947ea1",
+                                              "graph.py":  "c8af58aa35313b4ff3222c4cd3deee7e44660aaeb7ed3332938c5fa2694557a1",
+                                              "metrics.py":  "20c7e50751facf4616783a1c533fa154fa8cdfaa31bf88db5a251f3701cb0bd6",
+                                              "minibatch.py":  "60a046a5220ea1133532c0abb57a65fd3f467b62068eebe3b461be4edd5fc295",
+                                              "model.py":  "df088336b8eb786596ba4c5ab4a4554eb79159962e4e0b2882f00fd81661d1bc",
+                                              "runs.py":  "65093f914c32dd6f91c60d8d8ca851aff14a0575e5b7d1f7e8806990ff37687f",
+                                              "runtime.py":  "103d14c7c037f35f97cf345f977d3d01c4a52d823653e9f5e03553d82c5076ad",
+                                              "sampling/__init__.py":  "a2e0e7fcbad285ae681b19704b273171408412248bac24e343aca274abe2efc7",
+                                              "sampling/tables.py":  "16cc35a99dcf07405caa72fda2958090674243e071bffd6303fb06cf43d7ee60",
+                                              "sampling/weights.py":  "f2c5f1fb59587cdc97352ab0b48f2d49265b55e47a03531fcc689ab58a2179b2",
+                                              "trainer.py":  "99e75e0ead16c0be51bea8660b625ceafdae569c77ce9d47b0b3de6a3c24c59f"
+                                          },
+                      "data_fingerprint":  "132f579b0e708896e487c9fc0d5d394ee21713a6c17bc59505656f57fa10d013",
+                      "transactions":  1000000,
+                      "training_transactions":  700000,
+                      "entities":  10528,
+                      "strategy":  "topology",
+                      "batch_size":  1024,
+                      "model":  {
+                                    "hidden_channels":  256,
+                                    "num_layers":  2,
+                                    "dropout":  0.2
+                                },
+                      "fanouts":  [
+                                      25,
+                                      10
+                                  ],
+                      "precision":  "float32",
+                      "steps_per_repeat":  200,
+                      "warmup_steps":  20,
+                      "repeats":  3,
+                      "neighbor_feature_means_seconds":  0.08810120000271127,
+                      "scope":  "warm forward + weighted BCE + backward + clipping + finite check + Adam; identical roots/table/initial weights; excludes preprocessing, sampling, mean preparation, permutation and validation",
+                      "variants":  {
+                                       "blocks_adam_default":  {
+                                                                   "seconds":  [
+                                                                                   3.5463664999988396,
+                                                                                   6.540079099999275,
+                                                                                   5.856953499998781
+                                                                               ],
+                                                                   "median_seconds":  5.856953499998781,
+                                                                   "transactions_per_second":  34966.98411555472,
+                                                                   "speedup_over_blocks_default_adam":  1.0,
+                                                                   "peak_allocated_vram_gib":  [
+                                                                                                   0.10671329498291016,
+                                                                                                   0.10671329498291016,
+                                                                                                   0.10671329498291016
+                                                                                               ]
+                                                               },
+                                       "factorized_adam_default":  {
+                                                                       "seconds":  [
+                                                                                       2.716326100002334,
+                                                                                       4.509224699999322,
+                                                                                       4.407442000003357
+                                                                                   ],
+                                                                       "median_seconds":  4.407442000003357,
+                                                                       "transactions_per_second":  46466.86218442444,
+                                                                       "speedup_over_blocks_default_adam":  1.3288781792237583,
+                                                                       "peak_allocated_vram_gib":  [
+                                                                                                       0.10595083236694336,
+                                                                                                       0.10595083236694336,
+                                                                                                       0.10595083236694336
+                                                                                                   ]
+                                                                   },
+                                       "factorized_adam_fused":  {
+                                                                     "seconds":  [
+                                                                                     3.140226800001983,
+                                                                                     3.3959021999980905,
+                                                                                     2.870799199998146
+                                                                                 ],
+                                                                     "median_seconds":  3.140226800001983,
+                                                                     "transactions_per_second":  65218.21926998097,
+                                                                     "speedup_over_blocks_default_adam":  1.8651370977392723,
+                                                                     "peak_allocated_vram_gib":  [
+                                                                                                     0.1059565544128418,
+                                                                                                     0.1059565544128418,
+                                                                                                     0.1059565544128418
+                                                                                                 ]
+                                                                 }
+                                   }
+                  },
+    "smoke_runs":  [
+                       {
+                           "run":  "exp9_gpu_1m_verified_d86bf4de62df21f9_importance_seed42",
+                           "comparison_id":  "d86bf4de62df21f9",
+                           "metrics":  {
+                                           "auprc":  0.00424943654964119,
+                                           "roc_auc":  0.6818742567106129,
+                                           "accuracy":  0.8941266666666666,
+                                           "precision":  0.00479737406893069,
+                                           "recall":  0.39790575916230364,
+                                           "f1":  0.009480446578930955,
+                                           "tn":  134043,
+                                           "fp":  15766,
+                                           "fn":  115,
+                                           "tp":  76,
+                                           "strategy":  "importance",
+                                           "seed":  42,
+                                           "best_epoch":  1,
+                                           "epochs":  1,
+                                           "best_val_auprc":  0.018397072280209682,
+                                           "checkpoint_val_auprc":  0.018397072280209682,
+                                           "val_test_auprc_gap":  0.014147635730568493,
+                                           "decision_threshold":  0.5,
+                                           "long_tail_count":  191,
+                                           "long_tail_recall":  0.39790575916230364,
+                                           "long_tail_unknown_history_fraud":  0,
+                                           "inference_seconds":  0.09676049999688985,
+                                           "inference_ms_per_1000":  0.6450699999792656,
+                                           "inference_with_preparation_ms_per_1000":  2.3072513333560587,
+                                           "peak_vram_gb":  0.15317869186401367,
+                                           "duration_seconds":  10.076139999997395
+                                       },
+                           "training":  {
+                                            "positive_class_weight":  1150.3157894736842,
+                                            "imbalance_ratio":  1150.3157894736842,
+                                            "precision":  "float32",
+                                            "backend":  "factorized",
+                                            "fused_adam":  true
+                                        },
+                           "timing":  {
+                                          "weight_preparation_seconds":  0.2204944000040996,
+                                          "evaluation_tables_seconds":  0.024832600000081584,
+                                          "evaluation_feature_means_seconds":  0.001024700002744794,
+                                          "final_entity_embeddings_seconds":  0.002975499999593012,
+                                          "test_query_seconds":  0.09676049999688985,
+                                          "latency_benchmark":  {
+                                                                    "nodes":  1000,
+                                                                    "repeats":  5,
+                                                                    "seconds":  [
+                                                                                    0.004429500004334841,
+                                                                                    0.005291000001307111,
+                                                                                    0.004960199999914039,
+                                                                                    0.0055844000016804785,
+                                                                                    0.0055522999973618425
+                                                                                ],
+                                                                    "median_ms_per_1000":  5.291000001307111,
+                                                                    "scope":  "warm query: feature transfer + two mean-SAGE layers using cached entity h1 + probability transfer; context preparation reported separately"
+                                                                }
+                                      },
+                           "history":  [
+                                           {
+                                               "epoch":  1,
+                                               "loss":  1.071490982142857,
+                                               "val_auprc":  0.018397072280209682,
+                                               "learning_rate":  0.001,
+                                               "checkpoint_improved":  true,
+                                               "stale_epochs":  0,
+                                               "sampled_table_seconds":  0.02598020000004908,
+                                               "entity_context_seconds":  0.0015824000001884997,
+                                               "neighbor_feature_mean_seconds":  0.0015670000066165812,
+                                               "training_seconds":  8.871310399998038,
+                                               "training_nodes_per_second":  78906.04301255819,
+                                               "validation_query_seconds":  0.10297120000177529,
+                                               "epoch_seconds":  9.124679699998524
+                                           }
+                                       ],
+                           "split_stats":  {
+                                               "train":  {
+                                                             "total":  700000,
+                                                             "fraud":  608,
+                                                             "fraud_rate":  0.0008685714285714286,
+                                                             "start":  "1996-04-01 09:07:00",
+                                                             "end":  "2015-11-07 16:45:00"
+                                                         },
+                                               "val":  {
+                                                           "total":  150000,
+                                                           "fraud":  193,
+                                                           "fraud_rate":  0.0012866666666666666,
+                                                           "start":  "2015-11-07 16:45:00",
+                                                           "end":  "2018-01-16 06:31:00"
+                                                       },
+                                               "test":  {
+                                                            "total":  150000,
+                                                            "fraud":  191,
+                                                            "fraud_rate":  0.0012733333333333333,
+                                                            "start":  "2018-01-16 06:35:00",
+                                                            "end":  "2020-02-28 23:49:00"
+                                                        }
+                                           }
+                       },
+                       {
+                           "run":  "exp9_gpu_1m_verified_d86bf4de62df21f9_topology_seed42",
+                           "comparison_id":  "d86bf4de62df21f9",
+                           "metrics":  {
+                                           "auprc":  0.0036644772449289627,
+                                           "roc_auc":  0.6683696961565615,
+                                           "accuracy":  0.8840866666666667,
+                                           "precision":  0.004266605166051661,
+                                           "recall":  0.387434554973822,
+                                           "f1":  0.008440262332477902,
+                                           "tn":  132539,
+                                           "fp":  17270,
+                                           "fn":  117,
+                                           "tp":  74,
+                                           "strategy":  "topology",
+                                           "seed":  42,
+                                           "best_epoch":  1,
+                                           "epochs":  1,
+                                           "best_val_auprc":  0.04149053524664681,
+                                           "checkpoint_val_auprc":  0.04149053524664681,
+                                           "val_test_auprc_gap":  0.037826058001717844,
+                                           "decision_threshold":  0.5,
+                                           "long_tail_count":  191,
+                                           "long_tail_recall":  0.387434554973822,
+                                           "long_tail_unknown_history_fraud":  0,
+                                           "inference_seconds":  0.05979329999536276,
+                                           "inference_ms_per_1000":  0.39862199996908504,
+                                           "inference_with_preparation_ms_per_1000":  3.7074739999661688,
+                                           "peak_vram_gb":  0.15317869186401367,
+                                           "duration_seconds":  6.499676100000215
+                                       },
+                           "training":  {
+                                            "positive_class_weight":  1150.3157894736842,
+                                            "imbalance_ratio":  1150.3157894736842,
+                                            "precision":  "float32",
+                                            "backend":  "factorized",
+                                            "fused_adam":  true
+                                        },
+                           "timing":  {
+                                          "weight_preparation_seconds":  0.4647624999997788,
+                                          "evaluation_tables_seconds":  0.028090899999369867,
+                                          "evaluation_feature_means_seconds":  0.0015067999993334524,
+                                          "final_entity_embeddings_seconds":  0.0019676000010804273,
+                                          "test_query_seconds":  0.05979329999536276,
+                                          "latency_benchmark":  {
+                                                                    "nodes":  1000,
+                                                                    "repeats":  5,
+                                                                    "seconds":  [
+                                                                                    0.001164599998446647,
+                                                                                    0.0019738000046345405,
+                                                                                    0.0013631999972858466,
+                                                                                    0.0013707000034628436,
+                                                                                    0.0015127999940887094
+                                                                                ],
+                                                                    "median_ms_per_1000":  1.3707000034628436,
+                                                                    "scope":  "warm query: feature transfer + two mean-SAGE layers using cached entity h1 + probability transfer; context preparation reported separately"
+                                                                }
+                                      },
+                           "history":  [
+                                           {
+                                               "epoch":  1,
+                                               "loss":  1.0953300892857143,
+                                               "val_auprc":  0.04149053524664681,
+                                               "learning_rate":  0.001,
+                                               "checkpoint_improved":  true,
+                                               "stale_epochs":  0,
+                                               "sampled_table_seconds":  0.027012400001694914,
+                                               "entity_context_seconds":  0.0012472000016714446,
+                                               "neighbor_feature_mean_seconds":  0.000978299998678267,
+                                               "training_seconds":  5.485809500001778,
+                                               "training_nodes_per_second":  127601.95190878813,
+                                               "validation_query_seconds":  0.053246400006173644,
+                                               "epoch_seconds":  5.619298999998136
+                                           }
+                                       ],
+                           "split_stats":  {
+                                               "train":  {
+                                                             "total":  700000,
+                                                             "fraud":  608,
+                                                             "fraud_rate":  0.0008685714285714286,
+                                                             "start":  "1996-04-01 09:07:00",
+                                                             "end":  "2015-11-07 16:45:00"
+                                                         },
+                                               "val":  {
+                                                           "total":  150000,
+                                                           "fraud":  193,
+                                                           "fraud_rate":  0.0012866666666666666,
+                                                           "start":  "2015-11-07 16:45:00",
+                                                           "end":  "2018-01-16 06:31:00"
+                                                       },
+                                               "test":  {
+                                                            "total":  150000,
+                                                            "fraud":  191,
+                                                            "fraud_rate":  0.0012733333333333333,
+                                                            "start":  "2018-01-16 06:35:00",
+                                                            "end":  "2020-02-28 23:49:00"
+                                                        }
+                                           }
+                       },
+                       {
+                           "run":  "exp9_gpu_1m_verified_d86bf4de62df21f9_uniform_seed42",
+                           "comparison_id":  "d86bf4de62df21f9",
+                           "metrics":  {
+                                           "auprc":  0.0040021961369852,
+                                           "roc_auc":  0.674659065877217,
+                                           "accuracy":  0.8874466666666667,
+                                           "precision":  0.004629629629629629,
+                                           "recall":  0.4083769633507853,
+                                           "f1":  0.009155466870121486,
+                                           "tn":  133039,
+                                           "fp":  16770,
+                                           "fn":  113,
+                                           "tp":  78,
+                                           "strategy":  "uniform",
+                                           "seed":  42,
+                                           "best_epoch":  1,
+                                           "epochs":  1,
+                                           "best_val_auprc":  0.019148409950096573,
+                                           "checkpoint_val_auprc":  0.019148409950096573,
+                                           "val_test_auprc_gap":  0.015146213813111372,
+                                           "decision_threshold":  0.5,
+                                           "long_tail_count":  191,
+                                           "long_tail_recall":  0.4083769633507853,
+                                           "long_tail_unknown_history_fraud":  0,
+                                           "inference_seconds":  0.04852519999985816,
+                                           "inference_ms_per_1000":  0.32350133333238773,
+                                           "inference_with_preparation_ms_per_1000":  1.3046819999969255,
+                                           "peak_vram_gb":  0.14249181747436523,
+                                           "duration_seconds":  6.886299400001008
+                                       },
+                           "training":  {
+                                            "positive_class_weight":  1150.3157894736842,
+                                            "imbalance_ratio":  1150.3157894736842,
+                                            "precision":  "float32",
+                                            "backend":  "factorized",
+                                            "fused_adam":  true
+                                        },
+                           "timing":  {
+                                          "weight_preparation_seconds":  0.01282579999679001,
+                                          "evaluation_tables_seconds":  0.11489509999955771,
+                                          "evaluation_feature_means_seconds":  0.018110500001057517,
+                                          "final_entity_embeddings_seconds":  0.0013457000022754073,
+                                          "test_query_seconds":  0.04852519999985816,
+                                          "latency_benchmark":  {
+                                                                    "nodes":  1000,
+                                                                    "repeats":  5,
+                                                                    "seconds":  [
+                                                                                    0.0017866999987745658,
+                                                                                    0.0038215000022319146,
+                                                                                    0.0056753000026219524,
+                                                                                    0.004846199997700751,
+                                                                                    0.003236500000639353
+                                                                                ],
+                                                                    "median_ms_per_1000":  3.8215000022319146,
+                                                                    "scope":  "warm query: feature transfer + two mean-SAGE layers using cached entity h1 + probability transfer; context preparation reported separately"
+                                                                }
+                                      },
+                           "history":  [
+                                           {
+                                               "epoch":  1,
+                                               "loss":  1.0750917857142857,
+                                               "val_auprc":  0.019148409950096573,
+                                               "learning_rate":  0.001,
+                                               "checkpoint_improved":  true,
+                                               "stale_epochs":  0,
+                                               "sampled_table_seconds":  0.021343799999158364,
+                                               "entity_context_seconds":  0.0037646000055246986,
+                                               "neighbor_feature_mean_seconds":  0.0013499999986379407,
+                                               "training_seconds":  5.932581100001698,
+                                               "training_nodes_per_second":  117992.48728345233,
+                                               "validation_query_seconds":  0.05648469999869121,
+                                               "epoch_seconds":  6.077874700000393
+                                           }
+                                       ],
+                           "split_stats":  {
+                                               "train":  {
+                                                             "total":  700000,
+                                                             "fraud":  608,
+                                                             "fraud_rate":  0.0008685714285714286,
+                                                             "start":  "1996-04-01 09:07:00",
+                                                             "end":  "2015-11-07 16:45:00"
+                                                         },
+                                               "val":  {
+                                                           "total":  150000,
+                                                           "fraud":  193,
+                                                           "fraud_rate":  0.0012866666666666666,
+                                                           "start":  "2015-11-07 16:45:00",
+                                                           "end":  "2018-01-16 06:31:00"
+                                                       },
+                                               "test":  {
+                                                            "total":  150000,
+                                                            "fraud":  191,
+                                                            "fraud_rate":  0.0012733333333333333,
+                                                            "start":  "2018-01-16 06:35:00",
+                                                            "end":  "2020-02-28 23:49:00"
+                                                        }
+                                           }
+                       }
+                   ],
+    "limits":  "Local RTX 3050 Laptop 4 GiB; 1M-row subset; one-epoch smoke is not a quality comparison or full-data result. Benchmark timings vary; no claim for RTX 5060 Ti throughput."
+}

@@ -26,6 +26,8 @@ def main(argv=None):
     parser.add_argument("--rebuild-cache", action="store_true")
     parser.add_argument("--export-heterodata", action="store_true", help="Export training HeteroData for inspection")
     parser.add_argument("--overwrite", action="store_true", help="Explicitly replace the artifacts for an existing run")
+    parser.add_argument("--on-existing", choices=["auto", "new", "error"],
+                        help="auto: skip complete/start new attempt for incomplete; new: always create a new attempt")
     args = parser.parse_args(argv)
     cfg = load_config(args.config)
     for argument, section, key in (("device", "experiment", "device"), ("max_rows", "experiment", "max_rows"),
@@ -41,6 +43,8 @@ def main(argv=None):
         cfg["runtime"]["progress_bar"] = False
     if args.overwrite:
         cfg["experiment"]["overwrite"] = True
+    if args.on_existing:
+        cfg["experiment"]["on_existing"] = args.on_existing
     validate_config(cfg)
     torch.set_num_threads(cfg["runtime"]["cpu_threads"])
     logging.basicConfig(level=logging.INFO, format="%(asctime)s | %(message)s")

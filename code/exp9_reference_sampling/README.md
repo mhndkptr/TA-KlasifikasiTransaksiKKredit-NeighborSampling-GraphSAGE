@@ -14,6 +14,13 @@ memerlukan instalasi TensorFlow/DGL/StellarGraph dari repository referensi.
 atau recall atas EXP8 pada seluruh dataset **belum terbukti**. Smoke test adalah
 pemeriksaan teknis, bukan hasil akhir penelitian. Lihat [VALIDATION.md](VALIDATION.md).
 
+**Pembaruan GPU dan topology (7 September 2026):** tersedia backend training
+`factorized`, cache indeks CUDA, fused Adam, preset [config.gpu16gb.yaml](config.gpu16gb.yaml),
+dan penanganan folder run yang dapat dijalankan ulang tanpa menimpa hasil lama.
+Perbaikan overflow bobot topology pada NumPy 2 juga disertakan.
+Penjelasan matematis, langkah migrasi, dan cara mengukur throughput ada di
+[bagian 12](#12-optimasi-gpu-dan-perbaikan-run-topology).
+
 ## 1. Temuan EXP8 dan alasan perbaikan
 
 Sumber historis: [exp8_importance_seed42.json](../../result/exp8_importance_seed42.json).
@@ -121,8 +128,11 @@ Semantik GraphSAGE juga diperiksa terhadap
 exp9_reference_sampling/
   run.py                         # entry point pendek
   compare.py                     # membandingkan JSON pada threshold 0,5
+  benchmark.py                   # benchmark training dengan batch/tabel/model sama
   config.yaml                    # full-data, tiga strategi x lima seed
   config.smoke.yaml              # 100.000 baris, dua epoch, satu seed
+  config.gpu16gb.yaml             # fitur/indeks CUDA, batch penelitian tetap 1.024
+  config.smoke.gpu.yaml           # smoke test seluruh jalur optimasi CUDA
   config.literal.yaml            # audit topology literal
   config.exp8_batch.yaml          # ablation batch size 4.096
   config.unbalanced_topology.yaml # ablation koreksi prior kelas
@@ -132,6 +142,8 @@ exp9_reference_sampling/
     config.py                    # inheritance, path, validasi konfigurasi
     data.py                      # CSV, waktu, fit/transform fitur
     graph.py                     # TransactionGraph, CSR, HeteroData, FeatureStore
+    features.py                  # penempatan fitur/indeks dan mean fitur mentah
+    factorized.py                # forward ekuivalen tanpa membangun dua-hop Block
     sampling/
       weights.py                 # uniform/topology/PPR closed-form
       tables.py                  # Gumbel top-k, chunk dan streaming hub
@@ -141,12 +153,14 @@ exp9_reference_sampling/
     evaluation.py                # cache embedding, prediksi, latensi
     metrics.py                   # metrik, kalibrasi, long-tail, temporal bins
     artifacts.py                 # fingerprint, cache, JSON, checkpoint, ringkasan
+    runs.py                      # skip complete, attempt baru, status dan lock
     runtime.py                   # seed, perangkat, versi, timer
   tests/test_exp9.py              # pengujian matematis dan integrasi
+  tests/test_performance.py       # kesetaraan gradien/BN, NumPy 2, kebijakan attempt
 ```
 
 Alur eksekusi: `CLI -> preprocessing/cache -> frozen training graph -> bobot ->
-tabel tetangga -> blok per lapisan -> GraphSAGE -> validation/checkpoint ->
+tabel tetangga -> mean fitur mentah / blok referensi -> GraphSAGE -> validation/checkpoint ->
 kalibrasi validation -> test -> laporan`.
 
 Konfigurasi mendukung `extends`. Setiap path relatif dihitung terhadap file
@@ -347,10 +361,15 @@ dan tabel O(jumlah_entitas * fanout).
 maksimum 25 transaksi history per entitas; lapisan kedua mengambil maksimum 10
 entitas per transaksi, tetapi graf hanya menyediakan dua sehingga keduanya diambil.
 
-Ekspansi dilakukan dari output menuju input, kemudian forward dijalankan
+Pada backend referensi `blocks`, ekspansi dilakukan dari output menuju input, kemudian forward dijalankan
 sebaliknya. Setiap blok memiliki source, destination dan self index. Edge pesan
 hanya dari source ke destination pada blok terkait. Sharing node konteks tidak
 menambahkan root batch lain atau edge balik ke konteks sebuah entitas.
+
+Default sekarang menggunakan backend `factorized`: agregat fitur mentah dari
+tabel yang sama dihitung sekali, kemudian persamaan dua lapisan tersebut
+dijalankan langsung. Populasi unik BatchNorm dan urutan dropout dipertahankan.
+Backend `blocks` tetap tersedia untuk audit kesetaraan. Lihat bagian 12.
 
 ### Cache embedding evaluasi
 
@@ -362,7 +381,7 @@ yang sudah dihitung.
 
 Hasil ekuivalen dengan forward dua blok pada tabel sama; tidak ada aggregator atau
 lapisan yang diganti. Cache dibangun ulang setiap epoch dan setelah best checkpoint
-dimuat. Cache tidak dipakai untuk training karena parameter dan BatchNorm berubah
+dimuat. **Cache embedding terpelajar** tidak dipakai untuk training karena parameter dan BatchNorm berubah
 di setiap optimizer step. Dengan tabel tetap dan BatchNorm evaluation, prediksi
 query tidak bergantung pada ukuran/komposisi batch, selain pembulatan numerik.
 
@@ -466,9 +485,13 @@ Untuk subset tambahan dengan nama terpisah:
 python run.py --config config.yaml --max-rows 1000000 --epochs 20 --seed 42 --name exp9_subset_1m
 ```
 
-Folder run yang sudah ada ditolak agar hasil tidak tertukar. Gunakan nama baru
-atau `--overwrite` untuk secara eksplisit mengganti run sama. Resume optimizer
-belum tersedia; `best.pt` merupakan checkpoint model terbaik untuk evaluasi.
+Default `experiment.on_existing: auto` melewati run lengkap yang identitasnya
+sama. Run yang belum lengkap dimulai dari epoch 1 dalam folder `_attempt0001`
+atau nomor berikutnya; artefak lama dipertahankan. `--on-existing new` memaksa
+attempt terpisah, sedangkan `--on-existing error` mengaktifkan guard ketat lama.
+`--overwrite` tetap tersedia sebagai pilihan eksplisit untuk mengganti run dasar;
+lock run aktif/tersisa akan menolak penimpaan. Resume optimizer belum tersedia:
+`best.pt` menyimpan model terbaik untuk evaluasi, bukan state optimizer/RNG terakhir.
 
 ### Ablation
 
@@ -513,6 +536,10 @@ dan lingkungan eksekusi. Strategi/seed dalam eksperimen sama tetap dikelompokkan
 bersama. Ringkasan menghitung count, mean dan **sample standard deviation**.
 Satu seed tidak mempunyai std yang bermakna; kolom std dibiarkan kosong.
 Subset, batch size atau source berbeda tidak dicampur dalam satu rata-rata.
+Semua attempt lengkap tetap tercatat di `runs.csv`. Hanya attempt lengkap terakhir
+(mtime `metrics.json`, dengan nama run sebagai tie-breaker) per
+`comparison_id/strategy/seed` yang diberi `included_in_summary=true` dan masuk
+`summary.csv`; pengulangan seed tidak menambah jumlah seed penelitian.
 
 Seed ditetapkan untuk training/tabel/evaluation. CUDA scatter/reduction tetap
 dapat memberi selisih pembulatan; reproduksibilitas bitwise lintas GPU/versi tidak
@@ -541,7 +568,9 @@ invalidasinya, isolasi label holdout, PPR versus matriks dense, distribusi weigh
 sampling versus probabilitas Plackett-Luce, hub melampaui anggaran chunk, entitas
 kosong/kecil, literal fallback, batas pesan per lapisan, kesetaraan cache/blok,
 invariansi batch query, checkpoint roundtrip, batch singleton, deduplikasi
-long-tail, training tiga strategi, guard overwrite dan ringkasan CSV.
+long-tail, training tiga strategi, guard overwrite dan ringkasan CSV. Tes tambahan
+memeriksa kesetaraan output/gradien/dropout/BatchNorm CPU-CUDA, cache sampler CUDA,
+urutan shuffle, overflow topology dengan total fraud 20.886, dan restart attempt.
 
 Hasil aktual ada di [VALIDATION.md](VALIDATION.md). Full-data 15 run belum
 dijalankan pada tahap implementasi. Lulus tes membuktikan perilaku yang diperiksa,
@@ -554,3 +583,187 @@ query setelah cache, training, dan VRAM pada perangkat sama. Jika hasil belum
 meningkat, laporkan hasil negatif dan batasi penyesuaian pada validation. Test
 yang dipakai berulang untuk memilih konfigurasi tidak lagi menjadi holdout yang
 sepenuhnya independen.
+
+## 12. Optimasi GPU dan perbaikan run topology
+
+### Diagnosis berdasarkan laporan pengguna
+
+Konfigurasi yang dilaporkan memakai RTX 5060 Ti 16 GB, fitur di CUDA, batch 1.024,
+hidden 256, fanout 25/10, dan evaluation batch 8.192. Screenshot menunjukkan
+utilisasi GPU sekitar 21% dengan dedicated memory sekitar 2,4/16 GB. Screenshot
+sesaat belum mengidentifikasi bottleneck atau throughput sepanjang epoch.
+
+Audit kode menemukan pekerjaan yang memang berulang: pemindahan endpoint dari
+CPU, pemilahan tipe node dengan mask CUDA, `unique/searchsorted` untuk dua blok,
+dan pengambilan fitur transaksi history pada setiap batch. `feature_device: cuda`
+pada versi sebelumnya hanya menempatkan fitur di GPU; jalur indeks tetap
+melibatkan CPU. Persiapan bobot, metrik sklearn, JSON, dan checkpoint juga memiliki
+tahap CPU yang tetap ada setelah optimasi.
+
+Ukuran model dan jumlah tetangga yang dibatasi sampling membuat kebutuhan memori
+relatif kecil dibanding 16 GB. Memenuhi VRAM bukan tujuan pengukuran kecepatan.
+Gunakan `training_nodes_per_second` dan durasi epoch untuk menilai perbaikan;
+utilisasi 100% tidak dijamin. Mengurangi pekerjaan berulang bahkan dapat membuat
+waktu training turun tanpa menaikkan persentase utilisasi secara proporsional.
+
+### Perubahan komputasi
+
+| Perubahan | Pelaksanaan dan manfaat |
+|---|---|
+| Fitur dan endpoint transaksi | `features.py` menempatkan keduanya pada `feature_device`. Akses transaksi langsung tidak memerlukan mask untuk membedakan tipe node. |
+| Cache kandidat sampler | CSR `col` dan log bobot topology/importance disimpan di CUDA jika `cache_sampler_on_device: true`; indeks hasil sampling tidak perlu bolak-balik ke CPU. Bobot dan top-k tetap float64. |
+| Cache mean fitur mentah | Dihitung per entitas setelah tabel training di-refresh. Tabel evaluation memiliki cache mean terpisah yang digunakan kembali sepanjang run. |
+| Forward factorized | `factorized.py` menjalankan persamaan mean-SAGE langsung, menghindari konstruksi ulang blok dua hop pada tiap batch. |
+| Shuffle | Tetap memakai generator CPU yang sama; satu permutation dipindah ke device per epoch. Setiap transaksi train tetap muncul sekali. |
+| Fused Adam | Default aktif di CUDA, nonaktif di CPU. Mengurangi overhead pemanggilan kernel optimizer; tetap menggunakan Adam dan FP32. |
+| Monitoring | Log memisahkan waktu training, sampling, pembuatan mean, dan validation. Progress menampilkan loss dan transaksi/detik setiap 100 batch. |
+
+Pengurangan transfer dan sinkronisasi CPU-GPU serta operasi yang digabungkan
+sejalan dengan [PyTorch Performance Tuning Guide](https://docs.pytorch.org/tutorials/recipes/recipes/tuning_guide.html).
+Pemeriksaan loss dan norm gradien finite tetap dilakukan sebelum optimizer step;
+optimasi ini tidak menghilangkan deteksi NaN/Inf.
+
+### Mengapa cache mean tetap sesuai GraphSAGE dan BatchNorm?
+
+Misalkan `x_t` fitur transaksi dan `x_e` fitur user/merchant, termasuk degree dan
+penanda tipe. Untuk tabel sampling `S(e)` yang tetap sepanjang epoch:
+
+```text
+m_e = mean{x_t : t dalam S(e)}                  # zero jika history kosong
+m_t = (x_user(t) + x_merchant(t)) / 2
+
+h1(v) = Dropout(ReLU(BN1(W1_neigh m_v + b1 + W1_self x_v)))
+h2(t) = Dropout(ReLU(BN2(W2_neigh mean(h1(user), h1(merchant))
+                        + b2 + W2_self h1(t))))
+logit(t) = classifier(h2(t))
+```
+
+`m_e` hanya bergantung pada fitur mentah dan tabel sampling. Karena keduanya tetap,
+nilai ini boleh dihitung sekali. Semua transformasi `W`, BatchNorm, dropout, dan
+classifier masih dieksekusi setiap batch dan memperoleh gradien. Saat tabel
+berubah, cache mean juga dibuat ulang. Ini khusus graf EXP9 dengan satu user dan
+satu merchant per transaksi, dua lapisan mean-SAGE, dan fitur input yang tidak
+dipelajari; perlu ditinjau ulang jika model/graf diubah.
+
+BatchNorm lapisan pertama tetap menerima **root transaksi unik yang diurutkan,
+diikuti entitas unik yang diurutkan**, persis urutan destination backend `blocks`.
+Entitas yang dipakai beberapa root dihitung sekali dalam populasi BatchNorm.
+Sebelum lapisan kedua, urutan root dikembalikan ke urutan shuffle. Menggandakan
+embedding satu entitas untuk setiap root sebelum BatchNorm akan mengubah model;
+implementasi ini mempertahankan populasi unik tersebut.
+
+Pengujian membandingkan output, seluruh gradien parameter, running mean/variance,
+dan penghitung BatchNorm dengan dropout 0 dan 0,2, di CPU/CUDA serta kasus history
+kosong. Kesetaraan bersifat numerik dengan toleransi floating point. Perbedaan
+urutan reduction dan implementasi optimizer dapat menghasilkan lintasan training
+yang tidak identik bitwise. Model, objective, distribusi sampling, batch, dan
+kebijakan checkpoint tetap sama untuk semua strategi.
+
+### Konfigurasi dan perintah untuk RTX 5060 Ti 16 GB
+
+Salin seluruh folder EXP9 yang diperbarui ke repository pada komputer training,
+termasuk paket `exp9/` dan preset YAML. Mengganti `run.py` saja tidak memasang
+perbaikan. Jalankan perintah berikut dari `code/exp9_reference_sampling`:
+
+```powershell
+# Pemeriksaan singkat: 100.000 baris, dua epoch, ketiga strategi.
+python run.py --config config.smoke.gpu.yaml
+
+# Full-data topology seed 42 menggunakan preset 16 GB.
+python run.py --config config.gpu16gb.yaml --strategy topology --seed 42
+
+# Eksperimen lengkap: ketiga strategi x seed 42-46.
+python run.py --config config.gpu16gb.yaml
+```
+
+Preset 16 GB mempertahankan batch 1.024, hidden 256, dua lapisan, dropout 0,2,
+fanout 25/10, FP32, full weighted BCE, learning rate 0,001, dan split 70/15/15.
+Yang disetel adalah `feature_device: cuda`, thread CPU 8, chunk 500.000,
+evaluation batch 8.192, backend factorized, cache sampler, dan fused Adam.
+
+Konfigurasi YAML lama tetap dapat dibaca: field optimasi baru memiliki default
+di `exp9/config.py`. Untuk melihat seluruh field secara eksplisit, gunakan preset
+dan `config.yaml` yang diperbarui. Saat butuh mengurangi penggunaan VRAM, ubah
+`cache_sampler_on_device: false` atau `feature_device: cpu`; ada biaya transfer.
+Backend referensi dapat diaktifkan melalui `runtime.training_backend: blocks`.
+`training.fused_adam: false` tersedia untuk audit optimizer tanpa fusion.
+
+Cache preprocessing lama tetap kompatibel selama CSV, path, mtime, subset, dan
+split tetap sama: `data.py` dan `graph.py` tidak diubah oleh pembaruan ini.
+`comparison_id` hasil training **berubah** karena source/runtime berubah. Run baru
+tidak dicampur dengan hasil versi lama; untuk perbandingan sampling, jalankan
+seluruh strategi pada versi/config yang sama.
+
+### Penyebab FileExistsError dan kebijakan menjalankan ulang
+
+Traceback pengguna berhenti pada pengecekan folder sebelum model atau bobot
+topology dibuat. Penyebabnya adalah folder bernama sama sudah tersedia, bukan
+kegagalan CUDA atau algoritma topology. Folder tersebut dapat berasal dari run
+yang selesai, terputus, atau gagal. Pembaruan ini menangani masing-masing kondisi:
+
+| Kondisi | Default `on_existing: auto` |
+|---|---|
+| `metrics.json`, status `complete`, checkpoint, dan identitas run cocok | Dilewati dengan log `Run selesai ditemukan; dilewati`. |
+| Folder/artefak ada tetapi belum lengkap | Mulai epoch 1 di `_attempt0001`, `_attempt0002`, dan seterusnya; folder lama tetap ada. |
+| Belum ada folder hasil maupun model | Mulai run baru pada nama dasar. |
+| Exception atau Ctrl+C dalam run baru | Catat status `failed` atau `interrupted`, lepaskan lock milik proses. |
+
+```powershell
+# Default: skip jika lengkap, attempt baru jika belum lengkap.
+python run.py --config config.gpu16gb.yaml --strategy topology --seed 42 --on-existing auto
+
+# Sengaja mengulang meskipun sudah lengkap, tetap mempertahankan hasil lama.
+python run.py --config config.gpu16gb.yaml --strategy topology --seed 42 --on-existing new
+
+# Kembalikan kebijakan ketat yang menolak folder tersedia.
+python run.py --config config.gpu16gb.yaml --strategy topology --seed 42 --on-existing error
+```
+
+Attempt baru **bukan resume epoch terakhir**. Checkpoint lama belum menyimpan
+optimizer, scheduler, RNG, dan progres minibatch untuk resume yang setara. Lock
+yang tertinggal akibat proses dimatikan paksa juga tidak perlu dihapus untuk
+membuat attempt baru. `--overwrite` tetap eksplisit dan menolak lock aktif/tersisa.
+Attempt bersamaan memakai folder berbeda; hindari menjalankan beberapa training
+secara bersamaan jika ingin throughput tiap run dapat dibandingkan.
+
+Ada perbaikan topology terpisah yang ditemukan pada uji 1 juta baris: ekspresi
+`total_fraud - candidate_label` gagal ketika label `int8` bertemu total fraud
+di atas 127 pada NumPy 2. Label kandidat kini dikonversi ke float64 **per chunk**
+sebelum menghitung prior dan affinity. Label graf yang disimpan tetap int8 dan
+rumus leave-one-out tetap sama. Lihat [panduan perubahan promosi tipe NumPy 2](https://numpy.org/doc/stable/numpy_2_0_migration_guide.html#changes-to-numpy-data-type-promotion).
+
+### Mengukur hasil optimasi di komputer training
+
+```powershell
+python benchmark.py --config config.gpu16gb.yaml --max-rows 1000000 --steps 200 --warmup 20 --repeats 3 --output outputs/benchmark/rtx5060ti_1m.json
+```
+
+Benchmark membandingkan `blocks + Adam`, `factorized + Adam`, dan
+`factorized + fused Adam` pada tabel topology, root, bobot awal, batch, fanout,
+dan presisi yang sama. Warmup tidak dihitung; urutan varian dirotasi antar-repeat.
+Timer CUDA disinkronkan pada batas pengukuran. Yang dihitung adalah forward,
+weighted BCE, backward, clipping, pemeriksaan finite, dan optimizer. Preprocessing,
+sampling, pembuatan mean, shuffle, serta validation tidak termasuk. Biaya mean
+dicatat terpisah. File benchmark tidak masuk ringkasan eksperimen penelitian.
+
+Pada **RTX 3050 Laptop 4 GiB lokal**, 1 juta baris dengan 700.000 transaksi train,
+10.528 entitas, batch 1.024, hidden 256, dan FP32 memberikan median berikut:
+
+| Jalur | Median waktu 200 batch | Transaksi/detik | Rasio terhadap blocks |
+|---|---:|---:|---:|
+| Blocks + Adam | 5,857 detik | 34.967 | 1,00x |
+| Factorized + Adam | 4,407 detik | 46.467 | 1,33x |
+| Factorized + fused Adam | 3,140 detik | 65.218 | 1,87x |
+
+Pembuatan mean fitur membutuhkan 0,088 detik pada pengukuran tersebut. Variasi
+antar-repeat cukup besar: blocks 3,546-6,540 detik dan factorized-fused
+2,871-3,396 detik. Laporkan median beserta variasinya. Angka ini bukan pengukuran
+RTX 5060 Ti, durasi full-data satu epoch, atau bukti peningkatan akurasi. Laporan
+mentah dan validasi pipeline dijelaskan di [VALIDATION.md](VALIDATION.md).
+
+Untuk run sesungguhnya, `history.json` sekarang mencatat `training_seconds`,
+`training_nodes_per_second`, `sampled_table_seconds`, `neighbor_feature_mean_seconds`,
+`entity_context_seconds`, `validation_query_seconds`, dan `epoch_seconds`.
+`metrics.json` juga mencatat backend, fused Adam efektif, memori cache sampler,
+dan biaya mean evaluation. Gunakan waktu epoch lengkap untuk estimasi pekerjaan
+15 run; jangan mengekstrapolasi mikrobenchmark sebagai durasi akhir tanpa pengukuran.

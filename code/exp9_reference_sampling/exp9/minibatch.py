@@ -41,8 +41,10 @@ def sample_blocks(graph, roots, table, fanouts):
     return [first, last]
 
 
-def training_batches(count, batch_size, generator):
-    permutation = torch.randperm(count, generator=generator)
+def training_batches(count, batch_size, generator, device=None):
+    permutation = torch.randperm(count, generator=generator, device=generator.device)
+    if device is not None:
+        permutation = permutation.to(device)
     for start in range(0, count, batch_size):
         # Merge a final singleton, rather than dropping a possibly rare fraud.
         stop = min(start+batch_size, count)

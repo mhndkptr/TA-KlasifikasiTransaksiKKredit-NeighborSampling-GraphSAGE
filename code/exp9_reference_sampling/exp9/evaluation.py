@@ -3,7 +3,7 @@ from dataclasses import dataclass
 import numpy as np
 import torch
 
-from .minibatch import sample_block
+from .features import neighbor_feature_means
 from .runtime import timestamp
 
 
@@ -14,19 +14,18 @@ class EvaluationContext:
 
 
 @torch.no_grad()
-def build_contexts(model, graph, store, tables, batch_size, device):
+def build_contexts(model, graph, store, tables, batch_size, device, cached_means=None):
     model.eval()
     started = timestamp(device)
     contexts = []
-    raw = store.entity.to(device)
-    for table in tables:
+    raw = store.entity_features(device) if hasattr(store, "entity_features") else store.entity.to(device)
+    for pass_index, table in enumerate(tables):
+        means = (cached_means[pass_index] if cached_means is not None else
+                 neighbor_feature_means(graph, store, table, batch_size, device))
         hidden = torch.empty(graph.num_entities, model.classifier.in_features, device=device)
         for start in range(0, graph.num_entities, batch_size):
             stop = min(start+batch_size, graph.num_entities)
-            ids = torch.arange(start, stop, device=device) + graph.num_transactions
-            block = sample_block(graph, ids, table, table.shape[1])
-            features = store.get(block.source, device)
-            hidden[start:stop] = model.activate(0, model.convs[0]((features, features[block.self_index]), block.edge_index))
+            hidden[start:stop] = model.from_mean(0, raw[start:stop], means[start:stop])
         contexts.append(EvaluationContext(raw, hidden))
     return contexts, timestamp(device)-started
 
@@ -34,13 +33,14 @@ def build_contexts(model, graph, store, tables, batch_size, device):
 @torch.no_grad()
 def predict(model, graph, store, nodes, contexts, batch_size, device):
     model.eval()
-    nodes = torch.as_tensor(nodes, dtype=torch.long, device="cpu")
+    nodes = torch.as_tensor(nodes, dtype=torch.long, device=store.device)
     probability = np.empty(len(nodes), dtype=np.float64)
     started = timestamp(device)
     for start in range(0, len(nodes), batch_size):
         roots = nodes[start:start+batch_size]
-        features = store.get(roots, device)
-        endpoints = graph.entities[roots].to(device)
+        features = store.transactions(roots, device) if hasattr(store, "transactions") else store.get(roots, device)
+        endpoints = (store.transaction_endpoints(roots, device) if hasattr(store, "transaction_endpoints")
+                     else graph.entities[roots.cpu()].to(device))
         accumulated = torch.zeros(len(roots), dtype=torch.float64, device=device)
         for context in contexts:
             raw_mean = context.raw_entities[endpoints].mean(dim=1)

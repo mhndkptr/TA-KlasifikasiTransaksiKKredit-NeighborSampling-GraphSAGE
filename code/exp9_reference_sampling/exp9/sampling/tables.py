@@ -8,7 +8,7 @@ import torch
 
 
 class NeighborTableSampler:
-    def __init__(self, graph, weights, fanout, edge_budget, device):
+    def __init__(self, graph, weights, fanout, edge_budget, device, cache_on_device=True):
         self.graph, self.weights = graph, weights
         self.fanout, self.edge_budget = int(fanout), int(edge_budget)
         self.device = torch.device(device)
@@ -18,12 +18,26 @@ class NeighborTableSampler:
         if weights is not None and (len(weights) != len(graph.col) or not np.isfinite(weights).all() or (weights <= 0).any()):
             raise ValueError("Bobot harus positif, finite dan sesuai CSR")
         self.rowptr = graph.rowptr.numpy()
+        self.col_device = graph.col.to(self.device) if cache_on_device and self.device.type == "cuda" else None
+        self.log_weights = (torch.as_tensor(weights, device=self.device).log_()
+                            if self.col_device is not None and weights is not None else None)
+
+    def candidates(self, positions):
+        if self.col_device is not None:
+            return self.col_device[positions]
+        return self.graph.col[positions.cpu()].to(self.device)
+
+    @property
+    def device_cache_bytes(self):
+        return sum(value.numel()*value.element_size() for value in (self.col_device, self.log_weights) if value is not None)
 
     def scores(self, lo, hi, generator):
         self.max_temporary_edges = max(self.max_temporary_edges, hi-lo)
         uniform = torch.rand(hi-lo, dtype=torch.float64, device=self.device, generator=generator)
         scores = -torch.log(-torch.log(uniform.clamp_min(torch.finfo(torch.float64).tiny)))
-        if self.weights is not None:
+        if self.log_weights is not None:
+            scores += self.log_weights[lo:hi]
+        elif self.weights is not None:
             scores += torch.as_tensor(self.weights[lo:hi], device=self.device).log()
         return scores
 
@@ -47,7 +61,7 @@ class NeighborTableSampler:
                     combined_pos = torch.cat([best_pos, pos])
                     best_score, idx = torch.topk(combined_score, min(self.fanout, len(combined_score)), sorted=True)
                     best_pos = combined_pos[idx]
-                table[first, :len(best_pos)] = self.graph.col[best_pos.cpu()].to(self.device)
+                table[first, :len(best_pos)] = self.candidates(best_pos)
                 first += 1
                 continue
             # Pack complete rows up to the edge budget; zero-degree rows are safe.
@@ -65,7 +79,6 @@ class NeighborTableSampler:
                 rank = torch.arange(hi-lo, device=self.device) - starts[sorted_segment]
                 keep = rank < self.fanout
                 selected = order[keep]
-                positions = selected.cpu() + lo
-                table[first+sorted_segment[keep], rank[keep]] = self.graph.col[positions].to(self.device)
+                table[first+sorted_segment[keep], rank[keep]] = self.candidates(selected+lo)
             first = last
         return table
