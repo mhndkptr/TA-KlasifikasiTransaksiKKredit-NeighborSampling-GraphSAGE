@@ -1,0 +1,11 @@
+# Pipeline check only; same architecture and sampling as the main experiment.
+extends: config.yaml
+experiment:
+  name: exp9_smoke
+  seeds: [42]
+  max_rows: 100000
+training:
+  epochs: 2
+paths:
+  model_dir: outputs/smoke/model
+  result_dir: outputs/smoke/result

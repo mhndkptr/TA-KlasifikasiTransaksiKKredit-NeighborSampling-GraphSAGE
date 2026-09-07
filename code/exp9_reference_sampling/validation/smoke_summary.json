@@ -1,0 +1,400 @@
+{
+  "date": "2026-09-07",
+  "purpose": "pipeline smoke test, not full-data research evidence",
+  "command_from_repository_root": "python code/exp9_reference_sampling/run.py --config code/exp9_reference_sampling/config.smoke.yaml --name exp9_smoke_verified --no-progress",
+  "unit_tests": {
+    "passed": 12,
+    "seconds": 1.768
+  },
+  "comparison_id": "ad3e02d4d6f0a9ed",
+  "environment": {
+    "python": "3.13.7",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "torch": "2.13.0+cu130",
+    "torch_geometric": "2.8.0.post1",
+    "numpy": "2.5.2",
+    "device": "cuda",
+    "cpu_threads": 4,
+    "pandas": "2.3.3",
+    "scikit_learn": "1.9.0",
+    "pyyaml": "6.0.3",
+    "float32_matmul_precision": "highest",
+    "cuda": "13.0",
+    "gpu": "NVIDIA GeForce RTX 3050 Laptop GPU",
+    "gpu_memory_gb": 3.99951171875,
+    "determinism": "fixed_seeds_and_evaluation_tables; CUDA scatter reductions may not be bitwise deterministic"
+  },
+  "data_fingerprint": "e4959e684e662a83b410498ad6745b043178429ea0e0bbdb01d2381eecb9be4f",
+  "split_stats": {
+    "train": {
+      "total": 70000,
+      "fraud": 51,
+      "fraud_rate": 0.0007285714285714286,
+      "start": "1999-11-26 15:03:00",
+      "end": "2015-05-17 22:12:00"
+    },
+    "val": {
+      "total": 15000,
+      "fraud": 32,
+      "fraud_rate": 0.0021333333333333334,
+      "start": "2015-05-17 23:58:00",
+      "end": "2017-10-01 10:48:00"
+    },
+    "test": {
+      "total": 15000,
+      "fraud": 43,
+      "fraud_rate": 0.0028666666666666667,
+      "start": "2017-10-01 12:21:00",
+      "end": "2020-02-28 23:49:00"
+    }
+  },
+  "source_manifest": {
+    "__init__.py": "95ab5846d6734e91ddba45f6a178ce59ba9d536bfb94a65843df0d2ace7f621e",
+    "artifacts.py": "d93032fd8c8f20fe6f57beb7ac8988c18fcfc54d52e2db6ec75287541901d01b",
+    "cli.py": "a9bca9ef76a589bb85718bae0ca846e1255d4c413ef8d27a221f5e3569b6b1f0",
+    "config.py": "e8b7ce55843d21cdfb8debdfa94cb3dbf6b03a971a067e2a658e31c9c77ab700",
+    "data.py": "d10e54bb03ee5f2683eecb342d78696cc4296ed8d5f08cdba3bf5f7d7c1cc8c5",
+    "evaluation.py": "8c6f286d1fd93b9ac0bf6d43c6466003e7ae0e835b0ffe593aaee44d951ae5bb",
+    "graph.py": "c8af58aa35313b4ff3222c4cd3deee7e44660aaeb7ed3332938c5fa2694557a1",
+    "metrics.py": "20c7e50751facf4616783a1c533fa154fa8cdfaa31bf88db5a251f3701cb0bd6",
+    "minibatch.py": "c5205f8f2d021d8aa9bbc219604d1b35c6785e38d174b408f4e69c39f46f7863",
+    "model.py": "df088336b8eb786596ba4c5ab4a4554eb79159962e4e0b2882f00fd81661d1bc",
+    "runtime.py": "103d14c7c037f35f97cf345f977d3d01c4a52d823653e9f5e03553d82c5076ad",
+    "sampling/__init__.py": "a2e0e7fcbad285ae681b19704b273171408412248bac24e343aca274abe2efc7",
+    "sampling/tables.py": "d428ad530c2a303dec64271f65bca9dc27b778b9eb6eb5d15e1577f9b88a272c",
+    "sampling/weights.py": "4e3809c2f3d7bba34192e5dada4c68c30818372bf4f6a535e9494bc97524ab8c",
+    "trainer.py": "059321a1bc6b1126f842235983b87687d849b3a194aafde8392979b613084e76"
+  },
+  "settings": {
+    "model": {
+      "hidden_channels": 256,
+      "num_layers": 2,
+      "dropout": 0.2
+    },
+    "sampling": {
+      "fanouts": [
+        25,
+        10
+      ],
+      "topology_alpha": 0.5,
+      "topology_mode": "historical",
+      "topology_smoothing": 20.0,
+      "topology_balance": true,
+      "importance_gamma": 0.3,
+      "ppr_beta": 0.15,
+      "ppr_steps": 3,
+      "edge_chunk_size": 250000,
+      "refresh_epochs": 1
+    },
+    "training": {
+      "batch_size": 1024,
+      "epochs": 2,
+      "learning_rate": 0.001,
+      "lr_factor": 0.5,
+      "lr_patience": 5,
+      "min_learning_rate": 1e-05,
+      "early_stopping_patience": 15,
+      "early_stopping_min_delta": 0.0001,
+      "gradient_clip_norm": 5.0,
+      "positive_class_weight_power": 1.0,
+      "max_positive_class_weight": null
+    },
+    "evaluation": {
+      "threshold": 0.5,
+      "calibrate_threshold": true,
+      "threshold_beta": 1.0,
+      "sampling_passes": 1,
+      "seed": 10000,
+      "batch_size": 4096,
+      "camouflage_normal_ratio": 0.7,
+      "latency_nodes": 1000,
+      "latency_repeats": 5
+    },
+    "runtime": {
+      "feature_device": "cpu",
+      "cpu_threads": 4,
+      "progress_bar": false
+    }
+  },
+  "runs": [
+    {
+      "metrics": {
+        "auprc": 0.009956719911777361,
+        "roc_auc": 0.6415616239421225,
+        "accuracy": 0.5941333333333333,
+        "precision": 0.004426955238563699,
+        "recall": 0.627906976744186,
+        "f1": 0.008791924454575058,
+        "tn": 8885,
+        "fp": 6072,
+        "fn": 16,
+        "tp": 27,
+        "strategy": "importance",
+        "seed": 42,
+        "best_epoch": 1,
+        "epochs": 2,
+        "best_val_auprc": 0.007979317627058856,
+        "checkpoint_val_auprc": 0.007979341892682528,
+        "val_test_auprc_gap": -0.0019774022847185053,
+        "decision_threshold": 0.5,
+        "long_tail_count": 43,
+        "long_tail_recall": 0.627906976744186,
+        "long_tail_unknown_history_fraud": 0,
+        "inference_seconds": 0.034055300000545685,
+        "inference_ms_per_1000": 2.2703533333697123,
+        "inference_with_preparation_ms_per_1000": 6.6367866666648,
+        "peak_vram_gb": 0.041912078857421875,
+        "duration_seconds": 3.6784032999985357
+      },
+      "timing": {
+        "weight_preparation_seconds": 0.04490380000061123,
+        "evaluation_tables_seconds": 0.012710599999991246,
+        "final_entity_embeddings_seconds": 0.007882099998823833,
+        "test_query_seconds": 0.034055300000545685,
+        "latency_benchmark": {
+          "nodes": 1000,
+          "repeats": 5,
+          "seconds": [
+            0.0027127999983349582,
+            0.0029816000005666865,
+            0.004257899998265202,
+            0.004898400000456604,
+            0.004540099998848746
+          ],
+          "median_ms_per_1000": 4.257899998265202,
+          "scope": "warm query: feature transfer + two mean-SAGE layers using cached entity h1 + probability transfer; context preparation reported separately"
+        }
+      },
+      "threshold_validation": {
+        "f_beta": 0.027993779160186628,
+        "precision": 0.014729950900163666,
+        "recall": 0.28125
+      },
+      "calibrated_threshold": 0.9204046130180359,
+      "test_metrics_at_validation_threshold": {
+        "auprc": 0.009956719911777361,
+        "roc_auc": 0.6415616239421225,
+        "accuracy": 0.9577333333333333,
+        "precision": 0.013179571663920923,
+        "recall": 0.18604651162790697,
+        "f1": 0.024615384615384615,
+        "tn": 14358,
+        "fp": 599,
+        "fn": 35,
+        "tp": 8
+      },
+      "history": [
+        {
+          "epoch": 1,
+          "loss": 1.1328056919642857,
+          "val_auprc": 0.007979317627058856,
+          "learning_rate": 0.001,
+          "checkpoint_improved": true,
+          "stale_epochs": 0,
+          "sampled_table_seconds": 0.01120939999964321,
+          "entity_context_seconds": 0.007836400000087451,
+          "validation_query_seconds": 0.03236979999928735,
+          "epoch_seconds": 1.7124098999993294
+        },
+        {
+          "epoch": 2,
+          "loss": 1.0942552455357142,
+          "val_auprc": 0.006134514612797193,
+          "learning_rate": 0.001,
+          "checkpoint_improved": false,
+          "stale_epochs": 1,
+          "sampled_table_seconds": 0.01318150000042806,
+          "entity_context_seconds": 0.007686900000408059,
+          "validation_query_seconds": 0.032332300001144176,
+          "epoch_seconds": 1.7154362000001129
+        }
+      ]
+    },
+    {
+      "metrics": {
+        "auprc": 0.01007025328924551,
+        "roc_auc": 0.6393708475925561,
+        "accuracy": 0.5942,
+        "precision": 0.0044276812069531,
+        "recall": 0.627906976744186,
+        "f1": 0.008793356130923302,
+        "tn": 8886,
+        "fp": 6071,
+        "fn": 16,
+        "tp": 27,
+        "strategy": "topology",
+        "seed": 42,
+        "best_epoch": 1,
+        "epochs": 2,
+        "best_val_auprc": 0.008026222089670512,
+        "checkpoint_val_auprc": 0.008026222089670512,
+        "val_test_auprc_gap": -0.002044031199574999,
+        "decision_threshold": 0.5,
+        "long_tail_count": 43,
+        "long_tail_recall": 0.627906976744186,
+        "long_tail_unknown_history_fraud": 0,
+        "inference_seconds": 0.01964130000123987,
+        "inference_ms_per_1000": 1.309420000082658,
+        "inference_with_preparation_ms_per_1000": 4.339240000020557,
+        "peak_vram_gb": 0.041912078857421875,
+        "duration_seconds": 2.278783299998395
+      },
+      "timing": {
+        "weight_preparation_seconds": 0.03206069999941974,
+        "evaluation_tables_seconds": 0.005000000001018634,
+        "final_entity_embeddings_seconds": 0.008386599998630118,
+        "test_query_seconds": 0.01964130000123987,
+        "latency_benchmark": {
+          "nodes": 1000,
+          "repeats": 5,
+          "seconds": [
+            0.0040854999988368945,
+            0.004600700000082725,
+            0.003393399998458335,
+            0.0030270999995991588,
+            0.004261000000042259
+          ],
+          "median_ms_per_1000": 4.0854999988368945,
+          "scope": "warm query: feature transfer + two mean-SAGE layers using cached entity h1 + probability transfer; context preparation reported separately"
+        }
+      },
+      "threshold_validation": {
+        "f_beta": 0.029197080291970802,
+        "precision": 0.01652892561983471,
+        "recall": 0.125
+      },
+      "calibrated_threshold": 0.9498069882392883,
+      "test_metrics_at_validation_threshold": {
+        "auprc": 0.01007025328924551,
+        "roc_auc": 0.6393708475925561,
+        "accuracy": 0.9792666666666666,
+        "precision": 0.024822695035460994,
+        "recall": 0.16279069767441862,
+        "f1": 0.043076923076923075,
+        "tn": 14682,
+        "fp": 275,
+        "fn": 36,
+        "tp": 7
+      },
+      "history": [
+        {
+          "epoch": 1,
+          "loss": 1.13005546875,
+          "val_auprc": 0.008026222089670512,
+          "learning_rate": 0.001,
+          "checkpoint_improved": true,
+          "stale_epochs": 0,
+          "sampled_table_seconds": 0.003855999999359483,
+          "entity_context_seconds": 0.0038264000013441546,
+          "validation_query_seconds": 0.010206700000708224,
+          "epoch_seconds": 0.773068599999533
+        },
+        {
+          "epoch": 2,
+          "loss": 1.0867162946428572,
+          "val_auprc": 0.0060931493351447895,
+          "learning_rate": 0.001,
+          "checkpoint_improved": false,
+          "stale_epochs": 1,
+          "sampled_table_seconds": 0.003916899999239831,
+          "entity_context_seconds": 0.0077132000005804,
+          "validation_query_seconds": 0.01387310000063735,
+          "epoch_seconds": 1.33642079999845
+        }
+      ]
+    },
+    {
+      "metrics": {
+        "auprc": 0.01095168381352308,
+        "roc_auc": 0.6462059454156177,
+        "accuracy": 0.5952666666666667,
+        "precision": 0.00443932916803683,
+        "recall": 0.627906976744186,
+        "f1": 0.008816326530612244,
+        "tn": 8902,
+        "fp": 6055,
+        "fn": 16,
+        "tp": 27,
+        "strategy": "uniform",
+        "seed": 42,
+        "best_epoch": 1,
+        "epochs": 2,
+        "best_val_auprc": 0.008371384685475193,
+        "checkpoint_val_auprc": 0.008371384685475193,
+        "val_test_auprc_gap": -0.0025802991280478877,
+        "decision_threshold": 0.5,
+        "long_tail_count": 43,
+        "long_tail_recall": 0.627906976744186,
+        "long_tail_unknown_history_fraud": 0,
+        "inference_seconds": 0.015177799999946728,
+        "inference_ms_per_1000": 1.011853333329782,
+        "inference_with_preparation_ms_per_1000": 9.460206666699378,
+        "peak_vram_gb": 0.041912078857421875,
+        "duration_seconds": 2.6645181000003504
+      },
+      "timing": {
+        "weight_preparation_seconds": 9.470000077271834e-05,
+        "evaluation_tables_seconds": 0.1221599000000424,
+        "final_entity_embeddings_seconds": 0.004470699999728822,
+        "test_query_seconds": 0.015177799999946728,
+        "latency_benchmark": {
+          "nodes": 1000,
+          "repeats": 5,
+          "seconds": [
+            0.0016398999996454222,
+            0.0014638000011473196,
+            0.0014936000006855465,
+            0.0014929000008123694,
+            0.0014840999992884463
+          ],
+          "median_ms_per_1000": 1.4929000008123694,
+          "scope": "warm query: feature transfer + two mean-SAGE layers using cached entity h1 + probability transfer; context preparation reported separately"
+        }
+      },
+      "threshold_validation": {
+        "f_beta": 0.03305785123966943,
+        "precision": 0.01904761904761905,
+        "recall": 0.125
+      },
+      "calibrated_threshold": 0.9567846059799194,
+      "test_metrics_at_validation_threshold": {
+        "auprc": 0.01095168381352308,
+        "roc_auc": 0.6462059454156177,
+        "accuracy": 0.9808,
+        "precision": 0.02702702702702703,
+        "recall": 0.16279069767441862,
+        "f1": 0.046357615894039736,
+        "tn": 14705,
+        "fp": 252,
+        "fn": 36,
+        "tp": 7
+      },
+      "history": [
+        {
+          "epoch": 1,
+          "loss": 1.1283349330357142,
+          "val_auprc": 0.008371384685475193,
+          "learning_rate": 0.001,
+          "checkpoint_improved": true,
+          "stale_epochs": 0,
+          "sampled_table_seconds": 0.004552100001092185,
+          "entity_context_seconds": 0.004587999999785097,
+          "validation_query_seconds": 0.014252400000259513,
+          "epoch_seconds": 1.5089881000003516
+        },
+        {
+          "epoch": 2,
+          "loss": 1.0992088169642857,
+          "val_auprc": 0.005913074475387871,
+          "learning_rate": 0.001,
+          "checkpoint_improved": false,
+          "stale_epochs": 1,
+          "sampled_table_seconds": 0.0053817999996681465,
+          "entity_context_seconds": 0.004163100000369013,
+          "validation_query_seconds": 0.007579600000099163,
+          "epoch_seconds": 0.7310842999995657
+        }
+      ]
+    }
+  ]
+}

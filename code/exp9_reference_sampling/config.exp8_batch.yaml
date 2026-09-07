@@ -1,0 +1,6 @@
+# Isolate the batch-size change within EXP9; this is not EXP8 reproduction.
+extends: config.yaml
+experiment:
+  name: exp9_batch4096
+training:
+  batch_size: 4096

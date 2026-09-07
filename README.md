@@ -1,5 +1,10 @@
 # Klasifikasi Transaksi Penipuan Kartu Kredit dengan GraphSAGE
 
+Implementasi terbaru tersedia di **[EXP9 - Reference Sampling](code/exp9_reference_sampling/README.md)**.
+EXP9 memisahkan kode per komponen, memperbaiki konteks graf induktif dan sampling
+dari EXP8, serta menjelaskan kesesuaian proposal dan tujuh repository referensi.
+Hasil pengujian teknis dan batas klaim peningkatan performa dicatat dalam README EXP9.
+
 Repository ini berisi implementasi tugas akhir tentang **klasifikasi transaksi
 penipuan kartu kredit berskala besar menggunakan GraphSAGE dengan optimasi
 neighbor sampling**. Penelitian tidak hanya menilai apakah GraphSAGE mampu
@@ -112,8 +117,11 @@ memperbaiki aspek implementasi atau evaluasi secara bertahap:
 | EXP4 | Penggabungan GPU-bound training dengan evaluasi deterministik |
 | EXP5 | Exact GPU sampler dengan semantik sampling dan multigraph EXP1 |
 | EXP6 | Kalibrasi threshold validation, audit generalization gap, dan monitoring TQDM |
+| EXP7 | Sampling importance dengan batas memori |
+| EXP8 | Adaptive batched PPR dan cache bobot importance |
+| EXP9 | Struktur modular, frozen training history, blok per lapisan, PPR closed-form, dan audit proposal |
 
-EXP6 merupakan implementasi yang direkomendasikan untuk run berikutnya. Exact
+EXP6 merupakan tahap pengembangan sebelum EXP7, EXP8, dan EXP9. Exact
 GPU sampler tetap berasal dari EXP5 agar perubahan hasil dapat dikaitkan dengan
 kalibrasi/evaluasi, bukan pergantian algoritma sampling.
 

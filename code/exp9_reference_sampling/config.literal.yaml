@@ -1,0 +1,7 @@
+# Exact-label interpretation of Algorithm 3 on the typed graph.
+# All weights become zero without entity labels: documented uniform fallback.
+extends: config.yaml
+experiment:
+  name: exp9_literal_topology
+sampling:
+  topology_mode: literal

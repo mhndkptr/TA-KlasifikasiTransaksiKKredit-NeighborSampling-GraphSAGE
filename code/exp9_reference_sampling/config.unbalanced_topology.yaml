@@ -1,0 +1,6 @@
+# Isolate the balanced-prior adaptation within historical topology.
+extends: config.yaml
+experiment:
+  name: exp9_topology_unbalanced
+sampling:
+  topology_balance: false
