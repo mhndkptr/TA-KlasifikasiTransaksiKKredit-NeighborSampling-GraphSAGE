@@ -1,0 +1,9 @@
+# Separate label-budget protocol, NOT an apples-to-apples EXP9 improvement.
+# Same final 15% test; more recent labels/graph history available for training.
+extends: config.gpu16gb.yaml
+experiment:
+  name: exp10_recent_refit
+data:
+  split: [0.80, 0.05, 0.15]
+evaluation:
+  calibration_tail_fraction: 1.0

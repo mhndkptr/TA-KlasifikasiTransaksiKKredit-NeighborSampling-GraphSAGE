@@ -1,0 +1,14 @@
+extends: config.yaml
+experiment:
+  name: exp10_smoke
+  seeds: [42]
+  max_rows: 100000
+training:
+  epochs: 3
+  batch_size: 256
+evaluation:
+  batch_size: 1024
+  calibration_tail_fraction: 1.0
+paths:
+  model_dir: ../../model/exp10_smoke
+  result_dir: ../../result/exp10_smoke

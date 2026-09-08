@@ -1,0 +1,7 @@
+# Step 1: change preprocessing only relative to legacy_control.
+extends: config.legacy_control.yaml
+experiment:
+  name: exp10_features_only
+features:
+  encoder: robust
+  storage_dtype: float16

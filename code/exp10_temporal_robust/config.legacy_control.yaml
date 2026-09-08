@@ -1,0 +1,15 @@
+# EXP9 scientific settings, with EXP10 diagnostics and separate output identity.
+extends: config.gpu16gb.yaml
+experiment:
+  name: exp10_legacy_control
+features:
+  encoder: legacy
+  storage_dtype: float32
+training:
+  root_sampling: uniform
+  positive_class_weight_power: 1.0
+  weight_decay: 0.0
+  selection_metric: ap
+evaluation:
+  primary_threshold: fixed
+  calibration_tail_fraction: 1.0

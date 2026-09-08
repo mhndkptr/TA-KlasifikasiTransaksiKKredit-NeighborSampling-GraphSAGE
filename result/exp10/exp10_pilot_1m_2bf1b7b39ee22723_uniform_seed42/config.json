@@ -1,0 +1,94 @@
+{
+  "experiment": {
+    "on_existing": "auto",
+    "name": "exp10_pilot_1m",
+    "seeds": [
+      42
+    ],
+    "strategies": [
+      "uniform"
+    ],
+    "device": "cuda",
+    "max_rows": 1000000,
+    "cache_graph": true,
+    "overwrite": false
+  },
+  "runtime": {
+    "training_backend": "factorized",
+    "cache_sampler_on_device": true,
+    "progress_update_batches": 100,
+    "feature_device": "cpu",
+    "cpu_threads": 8,
+    "progress_bar": false
+  },
+  "training": {
+    "fused_adam": true,
+    "root_sampling": "balanced",
+    "negatives_per_positive": 20,
+    "selection_metric": "temporal_geometric_ap_lift",
+    "validation_bins": 3,
+    "weight_decay": 0.0001,
+    "batch_size": 4096,
+    "epochs": 30,
+    "learning_rate": 0.001,
+    "lr_factor": 0.5,
+    "lr_patience": 5,
+    "min_learning_rate": 1e-05,
+    "early_stopping_patience": 15,
+    "early_stopping_min_delta": 0.0001,
+    "gradient_clip_norm": 5.0,
+    "positive_class_weight_power": 0.0,
+    "max_positive_class_weight": null
+  },
+  "features": {
+    "encoder": "robust",
+    "storage_dtype": "float16"
+  },
+  "model": {
+    "normalization": "batch",
+    "use_graph_context": true,
+    "hidden_channels": 256,
+    "num_layers": 2,
+    "dropout": 0.2
+  },
+  "evaluation": {
+    "primary_threshold": "validation",
+    "calibration_tail_fraction": 0.5,
+    "threshold": 0.5,
+    "calibrate_threshold": true,
+    "threshold_beta": 1.0,
+    "sampling_passes": 1,
+    "seed": 10000,
+    "batch_size": 8192,
+    "camouflage_normal_ratio": 0.7,
+    "latency_nodes": 1000,
+    "latency_repeats": 5
+  },
+  "data": {
+    "transactions": "D:\\Projects\\Klasifikasi Transasi Kartu Kredit - GraphSAGE\\tugas-akhir-klasifikasi-transaksi-kartu-kredit\\dataset\\credit_card_transactions-ibm_v2.csv",
+    "split": [
+      0.7,
+      0.15,
+      0.15
+    ]
+  },
+  "sampling": {
+    "fanouts": [
+      25,
+      10
+    ],
+    "topology_alpha": 0.5,
+    "topology_mode": "historical",
+    "topology_smoothing": 20.0,
+    "topology_balance": true,
+    "importance_gamma": 0.3,
+    "ppr_beta": 0.15,
+    "ppr_steps": 3,
+    "edge_chunk_size": 500000,
+    "refresh_epochs": 1
+  },
+  "paths": {
+    "model_dir": "D:\\Projects\\Klasifikasi Transasi Kartu Kredit - GraphSAGE\\tugas-akhir-klasifikasi-transaksi-kartu-kredit\\model\\exp10",
+    "result_dir": "D:\\Projects\\Klasifikasi Transasi Kartu Kredit - GraphSAGE\\tugas-akhir-klasifikasi-transaksi-kartu-kredit\\result\\exp10"
+  }
+}

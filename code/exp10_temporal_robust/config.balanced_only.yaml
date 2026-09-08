@@ -1,0 +1,7 @@
+# Step 2: isolate root balancing after robust features; original validation rule.
+extends: config.features_only.yaml
+experiment:
+  name: exp10_balanced_only
+training:
+  root_sampling: balanced
+  positive_class_weight_power: 0.0

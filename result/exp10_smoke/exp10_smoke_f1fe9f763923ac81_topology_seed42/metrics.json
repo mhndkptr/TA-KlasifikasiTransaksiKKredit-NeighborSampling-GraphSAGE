@@ -1,0 +1,759 @@
+{
+  "comparison_id": "f1fe9f763923ac81",
+  "source_manifest": {
+    "__init__.py": "95ab5846d6734e91ddba45f6a178ce59ba9d536bfb94a65843df0d2ace7f621e",
+    "artifacts.py": "73c547ed1546499db7a16ebd5983fea3b0ca327967391c6ff6e14e5bbb8e8374",
+    "cli.py": "949cd509183fbc8349e6a6f005e29add26c95be8292a45fe2ccbc4d1a5004fbc",
+    "config.py": "7134bf72c25120daa98474e741e49f0336a0913231deb2bb37f2a55207622796",
+    "data.py": "1ec1cf1f62fc78ad4ad03a52743db2ee331837f066a40f533fbcf26a289daab6",
+    "evaluation.py": "50a75b28e659e0c0feceefb2d910fc914fb962e609dd4f9e53890a9694ab2f2b",
+    "factorized.py": "561fd0a95542f5f50ae31263764ad8e717e08a7edea22c8ea88be884f1689966",
+    "features.py": "773b3d31889e9e8273a021c3942886d64445905652b11ede8fe5fcaa71c2890e",
+    "graph.py": "10bc3f89c5ce398d6436ebf217aba02b0e6181f5a7d908d2ad33ae577f3117d7",
+    "metrics.py": "74444109f8c1e645a89444e31f4c0edf4ab0bd836d6ae48b22e5e779f4274a90",
+    "minibatch.py": "5b201fd31f469d48b38bd1dde7f1381bab08a5af892dbe0331722964f540279c",
+    "model.py": "dcf5b3ec6fbdcea3abe696bc7ba7101236c291cc6e353a281db453c005af157c",
+    "runs.py": "4f405cf6887497c7aa97dc7052f1c028c09ef8e79853d5a457f69b2116e09f2e",
+    "runtime.py": "48f99156e745838151c19da311e221d890fd990b16c401f0c899db238863203c",
+    "sampling/__init__.py": "a2e0e7fcbad285ae681b19704b273171408412248bac24e343aca274abe2efc7",
+    "sampling/tables.py": "16cc35a99dcf07405caa72fda2958090674243e071bffd6303fb06cf43d7ee60",
+    "sampling/weights.py": "f2c5f1fb59587cdc97352ab0b48f2d49265b55e47a03531fcc689ab58a2179b2",
+    "trainer.py": "d0995b685adfecfa161a2c3eefd975d6d286d09eb5588e3d2f12d5eda87e8b60"
+  },
+  "config": {
+    "experiment": {
+      "on_existing": "auto",
+      "name": "exp10_smoke",
+      "seeds": [
+        42
+      ],
+      "strategies": [
+        "uniform",
+        "topology",
+        "importance"
+      ],
+      "device": "cuda",
+      "max_rows": 100000,
+      "cache_graph": true,
+      "overwrite": false
+    },
+    "runtime": {
+      "training_backend": "factorized",
+      "cache_sampler_on_device": true,
+      "progress_update_batches": 100,
+      "feature_device": "cpu",
+      "cpu_threads": 4,
+      "progress_bar": false
+    },
+    "training": {
+      "fused_adam": true,
+      "root_sampling": "balanced",
+      "negatives_per_positive": 20,
+      "selection_metric": "temporal_geometric_ap_lift",
+      "validation_bins": 3,
+      "weight_decay": 0.0001,
+      "batch_size": 256,
+      "epochs": 3,
+      "learning_rate": 0.001,
+      "lr_factor": 0.5,
+      "lr_patience": 5,
+      "min_learning_rate": 1e-05,
+      "early_stopping_patience": 15,
+      "early_stopping_min_delta": 0.0001,
+      "gradient_clip_norm": 5.0,
+      "positive_class_weight_power": 0.0,
+      "max_positive_class_weight": null
+    },
+    "features": {
+      "encoder": "robust",
+      "storage_dtype": "float16"
+    },
+    "model": {
+      "normalization": "batch",
+      "use_graph_context": true,
+      "hidden_channels": 256,
+      "num_layers": 2,
+      "dropout": 0.2
+    },
+    "evaluation": {
+      "primary_threshold": "validation",
+      "calibration_tail_fraction": 1.0,
+      "threshold": 0.5,
+      "calibrate_threshold": true,
+      "threshold_beta": 1.0,
+      "sampling_passes": 1,
+      "seed": 10000,
+      "batch_size": 1024,
+      "camouflage_normal_ratio": 0.7,
+      "latency_nodes": 1000,
+      "latency_repeats": 5
+    },
+    "data": {
+      "transactions": "D:\\Projects\\Klasifikasi Transasi Kartu Kredit - GraphSAGE\\tugas-akhir-klasifikasi-transaksi-kartu-kredit\\dataset\\credit_card_transactions-ibm_v2.csv",
+      "split": [
+        0.7,
+        0.15,
+        0.15
+      ]
+    },
+    "sampling": {
+      "fanouts": [
+        25,
+        10
+      ],
+      "topology_alpha": 0.5,
+      "topology_mode": "historical",
+      "topology_smoothing": 20.0,
+      "topology_balance": true,
+      "importance_gamma": 0.3,
+      "ppr_beta": 0.15,
+      "ppr_steps": 3,
+      "edge_chunk_size": 250000,
+      "refresh_epochs": 1
+    },
+    "paths": {
+      "model_dir": "D:\\Projects\\Klasifikasi Transasi Kartu Kredit - GraphSAGE\\tugas-akhir-klasifikasi-transaksi-kartu-kredit\\model\\exp10_smoke",
+      "result_dir": "D:\\Projects\\Klasifikasi Transasi Kartu Kredit - GraphSAGE\\tugas-akhir-klasifikasi-transaksi-kartu-kredit\\result\\exp10_smoke"
+    }
+  },
+  "metrics": {
+    "auprc": 0.0036789624197697134,
+    "roc_auc": 0.5131050095545214,
+    "accuracy": 0.9958,
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "f1_macro": 0.4989477903597555,
+    "gmean": 0.0,
+    "specificity": 0.9986628334559069,
+    "false_positive_rate": 0.0013371665440931046,
+    "alert_rate": 0.0013333333333333333,
+    "prevalence": 0.0028666666666666667,
+    "ap_lift": 1.2833589836405976,
+    "tn": 14937,
+    "fp": 20,
+    "fn": 43,
+    "tp": 0,
+    "strategy": "topology",
+    "seed": 42,
+    "best_epoch": 3,
+    "epochs": 3,
+    "best_val_auprc": 0.0924757174847335,
+    "checkpoint_val_auprc": 0.0924757174847335,
+    "max_observed_val_auprc": 0.0924757174847335,
+    "selection_score": 31.74204467556628,
+    "selection_metric": "temporal_geometric_ap_lift",
+    "val_test_auprc_gap": 0.08879675506496379,
+    "decision_threshold": 0.3635234832763672,
+    "threshold_policy": "validation",
+    "long_tail_count": 43,
+    "long_tail_recall": 0.0,
+    "long_tail_unknown_history_fraud": 0,
+    "inference_seconds": 0.021238499990431592,
+    "inference_ms_per_1000": 1.4158999993621062,
+    "inference_with_preparation_ms_per_1000": 5.372933334244105,
+    "peak_vram_gb": 0.07082033157348633,
+    "duration_seconds": 0.4638345000130357
+  },
+  "environment": {
+    "python": "3.13.7",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "torch": "2.13.0+cu130",
+    "torch_geometric": "2.8.0.post1",
+    "numpy": "2.5.2",
+    "device": "cuda",
+    "cpu_threads": 4,
+    "pandas": "2.3.3",
+    "scikit_learn": "1.9.0",
+    "pyyaml": "6.0.3",
+    "float32_matmul_precision": "highest",
+    "cuda": "13.0",
+    "gpu": "NVIDIA GeForce RTX 3050 Laptop GPU",
+    "gpu_memory_gb": 3.99951171875,
+    "determinism": "fixed_seeds_and_evaluation_tables; CUDA scatter reductions may not be bitwise deterministic"
+  },
+  "split_stats": {
+    "train": {
+      "total": 70000,
+      "fraud": 51,
+      "fraud_rate": 0.0007285714285714286,
+      "start": "1999-11-26 15:03:00",
+      "end": "2015-05-17 22:12:00"
+    },
+    "val": {
+      "total": 15000,
+      "fraud": 32,
+      "fraud_rate": 0.0021333333333333334,
+      "start": "2015-05-17 23:58:00",
+      "end": "2017-10-01 10:48:00"
+    },
+    "test": {
+      "total": 15000,
+      "fraud": 43,
+      "fraud_rate": 0.0028666666666666667,
+      "start": "2017-10-01 12:21:00",
+      "end": "2020-02-28 23:49:00"
+    }
+  },
+  "data_fingerprint": "b67ba1276fed9b405b32bed59739303b834cb56e3e62907f638b64d6689c9219",
+  "drift": {
+    "train": {
+      "amount_clip_rate": 0.0,
+      "location_oov_rate": 0.0,
+      "category_oov_rate": {
+        "Use Chip": 0.0,
+        "MCC": 0.0,
+        "Errors?": 0.0
+      }
+    },
+    "val": {
+      "amount_clip_rate": 0.0,
+      "location_oov_rate": 0.06726666666666667,
+      "category_oov_rate": {
+        "Use Chip": 0.0,
+        "MCC": 0.0,
+        "Errors?": 0.0
+      },
+      "unseen_user_rate": 0.0,
+      "unseen_merchant_rate": 0.031933333333333334
+    },
+    "test": {
+      "amount_clip_rate": 0.0,
+      "location_oov_rate": 0.0718,
+      "category_oov_rate": {
+        "Use Chip": 0.0,
+        "MCC": 6.666666666666667e-05,
+        "Errors?": 0.00013333333333333334
+      },
+      "unseen_user_rate": 0.0,
+      "unseen_merchant_rate": 0.028333333333333332
+    }
+  },
+  "context_policy": "frozen_train_history",
+  "test_metrics_at_fixed_threshold_0_5": {
+    "auprc": 0.0036789624197697134,
+    "roc_auc": 0.5131050095545214,
+    "accuracy": 0.9971333333333333,
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "f1_macro": 0.49928230463664586,
+    "gmean": 0.0,
+    "specificity": 1.0,
+    "false_positive_rate": 0.0,
+    "alert_rate": 0.0,
+    "prevalence": 0.0028666666666666667,
+    "ap_lift": 1.2833589836405976,
+    "tn": 14957,
+    "fp": 0,
+    "fn": 43,
+    "tp": 0
+  },
+  "test_metrics_at_validation_threshold": {
+    "auprc": 0.0036789624197697134,
+    "roc_auc": 0.5131050095545214,
+    "accuracy": 0.9958,
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "f1_macro": 0.4989477903597555,
+    "gmean": 0.0,
+    "specificity": 0.9986628334559069,
+    "false_positive_rate": 0.0013371665440931046,
+    "alert_rate": 0.0013333333333333333,
+    "prevalence": 0.0028666666666666667,
+    "ap_lift": 1.2833589836405976,
+    "tn": 14937,
+    "fp": 20,
+    "fn": 43,
+    "tp": 0
+  },
+  "calibrated_threshold": 0.3635234832763672,
+  "threshold_validation": {
+    "f_beta": 0.20512820512820512,
+    "precision": 0.17391304347826086,
+    "recall": 0.25,
+    "scope": "chronological validation tail",
+    "start_offset": 0,
+    "count": 15000,
+    "fraud": 32,
+    "tail_fraction": 1.0
+  },
+  "validation_temporal_bins": [
+    {
+      "count": 3000,
+      "fraud": 8,
+      "start_ns": 1431907080000000000,
+      "end_ns": 1446593640000000000,
+      "auprc": 0.041997676721483745,
+      "roc_auc": 0.95391878342246,
+      "accuracy": 0.996,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "f1_macro": 0.49899799599198397,
+      "gmean": 0.0,
+      "specificity": 0.9986631016042781,
+      "false_positive_rate": 0.0013368983957219305,
+      "alert_rate": 0.0013333333333333333,
+      "prevalence": 0.0026666666666666666,
+      "ap_lift": 15.749128770556405,
+      "tn": 2988,
+      "fp": 4,
+      "fn": 8,
+      "tp": 0
+    },
+    {
+      "count": 3000,
+      "fraud": 19,
+      "start_ns": 1446611760000000000,
+      "end_ns": 1461499320000000000,
+      "auprc": 0.3069198740007834,
+      "roc_auc": 0.9693673970232526,
+      "accuracy": 0.9926666666666667,
+      "precision": 0.42105263157894735,
+      "recall": 0.42105263157894735,
+      "f1": 0.42105263157894735,
+      "f1_macro": 0.7086812973392892,
+      "gmean": 0.6476873719869978,
+      "specificity": 0.996309963099631,
+      "false_positive_rate": 0.0036900369003689537,
+      "alert_rate": 0.006333333333333333,
+      "prevalence": 0.006333333333333333,
+      "ap_lift": 48.461032736965805,
+      "tn": 2970,
+      "fp": 11,
+      "fn": 11,
+      "tp": 8
+    },
+    {
+      "count": 3000,
+      "fraud": 5,
+      "start_ns": 1461503460000000000,
+      "end_ns": 1476621240000000000,
+      "auprc": 0.03986588508968552,
+      "roc_auc": 0.9543906510851419,
+      "accuracy": 0.9976666666666667,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "f1_macro": 0.49941598531620224,
+      "gmean": 0.0,
+      "specificity": 0.9993322203672788,
+      "false_positive_rate": 0.0006677796327212437,
+      "alert_rate": 0.0006666666666666666,
+      "prevalence": 0.0016666666666666668,
+      "ap_lift": 23.919531053811312,
+      "tn": 2993,
+      "fp": 2,
+      "fn": 5,
+      "tp": 0
+    },
+    {
+      "count": 3000,
+      "fraud": 0,
+      "start_ns": 1476629760000000000,
+      "end_ns": 1491916440000000000,
+      "auprc": null,
+      "roc_auc": null,
+      "accuracy": 0.9943333333333333,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "f1_macro": 0.4985793080394451,
+      "gmean": 0.0,
+      "specificity": 0.9943333333333333,
+      "false_positive_rate": 0.005666666666666709,
+      "alert_rate": 0.005666666666666667,
+      "prevalence": 0.0,
+      "ap_lift": null,
+      "tn": 2983,
+      "fp": 17,
+      "fn": 0,
+      "tp": 0
+    },
+    {
+      "count": 3000,
+      "fraud": 0,
+      "start_ns": 1491916620000000000,
+      "end_ns": 1506854880000000000,
+      "auprc": null,
+      "roc_auc": null,
+      "accuracy": 0.9986666666666667,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "f1_macro": 0.49966644429619744,
+      "gmean": 0.0,
+      "specificity": 0.9986666666666667,
+      "false_positive_rate": 0.0013333333333332975,
+      "alert_rate": 0.0013333333333333333,
+      "prevalence": 0.0,
+      "ap_lift": null,
+      "tn": 2996,
+      "fp": 4,
+      "fn": 0,
+      "tp": 0
+    }
+  ],
+  "probability_diagnostics": {
+    "val": {
+      "all": {
+        "count": 15000,
+        "mean": 0.2351148681074381,
+        "quantiles": [
+          0.17098508775234222,
+          0.20349994599819182,
+          0.23064052313566208,
+          0.2697980761528015,
+          0.33360711574554447,
+          0.43815165758132935
+        ],
+        "saturated_high_fraction": 0.0
+      },
+      "normal": {
+        "count": 14968,
+        "mean": 0.23492702905572493,
+        "quantiles": [
+          0.17098508775234222,
+          0.20347406715154648,
+          0.23058607429265976,
+          0.2694524317979813,
+          0.3322304120659828,
+          0.43815165758132935
+        ],
+        "saturated_high_fraction": 0.0
+      },
+      "fraud": {
+        "count": 32,
+        "mean": 0.322976584546268,
+        "quantiles": [
+          0.250637412071228,
+          0.26592940986156466,
+          0.3183804303407669,
+          0.37989160120487214,
+          0.42909675240516665,
+          0.42916253209114075
+        ],
+        "saturated_high_fraction": 0.0
+      }
+    },
+    "test": {
+      "all": {
+        "count": 15000,
+        "mean": 0.23916167012651762,
+        "quantiles": [
+          0.1681443303823471,
+          0.20675941407680512,
+          0.23572497069835663,
+          0.27370244562625884,
+          0.3348934355378151,
+          0.41201674938201904
+        ],
+        "saturated_high_fraction": 0.0
+      },
+      "normal": {
+        "count": 14957,
+        "mean": 0.2391547951945696,
+        "quantiles": [
+          0.1681443303823471,
+          0.206784987449646,
+          0.2357240468263626,
+          0.27365378737449647,
+          0.3348972928524017,
+          0.41201674938201904
+        ],
+        "saturated_high_fraction": 0.0
+      },
+      "fraud": {
+        "count": 43,
+        "mean": 0.24155302726945213,
+        "quantiles": [
+          0.19166265428066254,
+          0.20458730757236482,
+          0.238952174782753,
+          0.28642317056655886,
+          0.3095783925056457,
+          0.31985750794410706
+        ],
+        "saturated_high_fraction": 0.0
+      }
+    }
+  },
+  "test_temporal_bins": [
+    {
+      "count": 3000,
+      "fraud": 25,
+      "start_ns": 1506860460000000000,
+      "end_ns": 1521734940000000000,
+      "auprc": 0.010648385565231124,
+      "roc_auc": 0.5107630252100841,
+      "accuracy": 0.9893333333333333,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "f1_macro": 0.4973190348525469,
+      "gmean": 0.0,
+      "specificity": 0.9976470588235294,
+      "false_positive_rate": 0.0023529411764705577,
+      "alert_rate": 0.0023333333333333335,
+      "prevalence": 0.008333333333333333,
+      "ap_lift": 1.2778062678277349,
+      "tn": 2968,
+      "fp": 7,
+      "fn": 25,
+      "tp": 0
+    },
+    {
+      "count": 3000,
+      "fraud": 8,
+      "start_ns": 1521736680000000000,
+      "end_ns": 1536702120000000000,
+      "auprc": 0.0031926487894902746,
+      "roc_auc": 0.3900401069518717,
+      "accuracy": 0.9963333333333333,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "f1_macro": 0.49908164969110036,
+      "gmean": 0.0,
+      "specificity": 0.9989973262032086,
+      "false_positive_rate": 0.00100267379679142,
+      "alert_rate": 0.001,
+      "prevalence": 0.0026666666666666666,
+      "ap_lift": 1.197243296058853,
+      "tn": 2989,
+      "fp": 3,
+      "fn": 8,
+      "tp": 0
+    },
+    {
+      "count": 3000,
+      "fraud": 0,
+      "start_ns": 1536708660000000000,
+      "end_ns": 1551882120000000000,
+      "auprc": null,
+      "roc_auc": null,
+      "accuracy": 0.9986666666666667,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "f1_macro": 0.49966644429619744,
+      "gmean": 0.0,
+      "specificity": 0.9986666666666667,
+      "false_positive_rate": 0.0013333333333332975,
+      "alert_rate": 0.0013333333333333333,
+      "prevalence": 0.0,
+      "ap_lift": null,
+      "tn": 2996,
+      "fp": 4,
+      "fn": 0,
+      "tp": 0
+    },
+    {
+      "count": 3000,
+      "fraud": 10,
+      "start_ns": 1551882540000000000,
+      "end_ns": 1566973440000000000,
+      "auprc": 0.007791803105611206,
+      "roc_auc": 0.5876588628762542,
+      "accuracy": 0.9963333333333333,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "f1_macro": 0.49908164969110036,
+      "gmean": 0.0,
+      "specificity": 0.9996655518394649,
+      "false_positive_rate": 0.0003344481605350724,
+      "alert_rate": 0.0003333333333333333,
+      "prevalence": 0.0033333333333333335,
+      "ap_lift": 2.3375409316833617,
+      "tn": 2989,
+      "fp": 1,
+      "fn": 10,
+      "tp": 0
+    },
+    {
+      "count": 3000,
+      "fraud": 0,
+      "start_ns": 1566973920000000000,
+      "end_ns": 1582933740000000000,
+      "auprc": null,
+      "roc_auc": null,
+      "accuracy": 0.9983333333333333,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "f1_macro": 0.49958298582151794,
+      "gmean": 0.0,
+      "specificity": 0.9983333333333333,
+      "false_positive_rate": 0.0016666666666667052,
+      "alert_rate": 0.0016666666666666668,
+      "prevalence": 0.0,
+      "ap_lift": null,
+      "tn": 2995,
+      "fp": 5,
+      "fn": 0,
+      "tp": 0
+    }
+  ],
+  "timing": {
+    "weight_preparation_seconds": 0.03858750000654254,
+    "evaluation_tables_seconds": 0.0028892000118503347,
+    "evaluation_feature_means_seconds": 0.016571300002397038,
+    "final_entity_embeddings_seconds": 0.0013075000024400651,
+    "test_query_seconds": 0.021238499990431592,
+    "latency_benchmark": {
+      "nodes": 1000,
+      "repeats": 5,
+      "seconds": [
+        0.0020757000020239502,
+        0.0018700999935390428,
+        0.0016931999998632818,
+        0.0014639000000897795,
+        0.0022496999881695956
+      ],
+      "median_ms_per_1000": 1.8700999935390428,
+      "scope": "warm query: feature transfer + two mean-SAGE layers using cached entity h1 + probability transfer; context preparation reported separately"
+    }
+  },
+  "sampling": {
+    "fanouts": [
+      25,
+      10
+    ],
+    "topology_alpha": 0.5,
+    "topology_mode": "historical",
+    "topology_smoothing": 20.0,
+    "topology_balance": true,
+    "importance_gamma": 0.3,
+    "ppr_beta": 0.15,
+    "ppr_steps": 3,
+    "edge_chunk_size": 250000,
+    "refresh_epochs": 1,
+    "max_temporary_edges": 140000,
+    "history_transactions": 70000,
+    "history_nodes": 71715,
+    "weight_memory_bytes": 1120000,
+    "table_memory_bytes": 435600,
+    "sampler_device_cache_bytes": 2240000,
+    "context_scope": "one table per epoch; validation/test share fixed tables; no held-out history",
+    "topology_literal_uniform_fallback": false
+  },
+  "training": {
+    "positive_class_weight": 1.0,
+    "imbalance_ratio": 1371.549019607843,
+    "precision": "float32",
+    "root_sampling": "balanced",
+    "roots_per_epoch": 1071,
+    "effective_positive_cost_relative_to_population": 68.57745098039216,
+    "feature_storage_dtype": "torch.float16",
+    "backend": "factorized",
+    "fused_adam": true
+  },
+  "history": [
+    {
+      "epoch": 1,
+      "loss": 0.6097257099454365,
+      "val_auprc": 0.04488793459739458,
+      "selection_score": 13.797692716169765,
+      "validation_blocks": [
+        {
+          "count": 5000,
+          "fraud": 23,
+          "ap_lift": 25.795878681870924
+        },
+        {
+          "count": 5000,
+          "fraud": 9,
+          "ap_lift": 7.3801062036951945
+        },
+        {
+          "count": 5000,
+          "fraud": 0,
+          "ap_lift": null
+        }
+      ],
+      "training_roots": 1071,
+      "learning_rate": 0.001,
+      "checkpoint_improved": true,
+      "stale_epochs": 0,
+      "sampled_table_seconds": 0.00376920000417158,
+      "entity_context_seconds": 0.0015796000079717487,
+      "neighbor_feature_mean_seconds": 0.013391999993473291,
+      "training_seconds": 0.04635520000010729,
+      "training_nodes_per_second": 23104.204059038064,
+      "validation_query_seconds": 0.026665700002922677,
+      "epoch_seconds": 0.11162749999493826
+    },
+    {
+      "epoch": 2,
+      "loss": 0.4067424984316643,
+      "val_auprc": 0.052875636074472696,
+      "selection_score": 18.412945944878718,
+      "validation_blocks": [
+        {
+          "count": 5000,
+          "fraud": 23,
+          "ap_lift": 32.75353441188455
+        },
+        {
+          "count": 5000,
+          "fraud": 9,
+          "ap_lift": 10.351144829304495
+        },
+        {
+          "count": 5000,
+          "fraud": 0,
+          "ap_lift": null
+        }
+      ],
+      "training_roots": 1071,
+      "learning_rate": 0.001,
+      "checkpoint_improved": true,
+      "stale_epochs": 0,
+      "sampled_table_seconds": 0.0032810999982757494,
+      "entity_context_seconds": 0.001084400006220676,
+      "neighbor_feature_mean_seconds": 0.013366200000746176,
+      "training_seconds": 0.03434430000197608,
+      "training_nodes_per_second": 31184.213972577036,
+      "validation_query_seconds": 0.03369280000333674,
+      "epoch_seconds": 0.10296429999289103
+    },
+    {
+      "epoch": 3,
+      "loss": 0.28466714241034957,
+      "val_auprc": 0.0924757174847335,
+      "selection_score": 31.74204467556628,
+      "validation_blocks": [
+        {
+          "count": 5000,
+          "fraud": 23,
+          "ap_lift": 54.16983573523248
+        },
+        {
+          "count": 5000,
+          "fraud": 9,
+          "ap_lift": 18.59997148801252
+        },
+        {
+          "count": 5000,
+          "fraud": 0,
+          "ap_lift": null
+        }
+      ],
+      "training_roots": 1071,
+      "learning_rate": 0.001,
+      "checkpoint_improved": true,
+      "stale_epochs": 0,
+      "sampled_table_seconds": 0.005819500001962297,
+      "entity_context_seconds": 0.0012205000093672425,
+      "neighbor_feature_mean_seconds": 0.01341530001081992,
+      "training_seconds": 0.036296299993409775,
+      "training_nodes_per_second": 29507.139851567754,
+      "validation_query_seconds": 0.019478700007312,
+      "epoch_seconds": 0.09460470000340138
+    }
+  ],
+  "checkpoint": "D:\\Projects\\Klasifikasi Transasi Kartu Kredit - GraphSAGE\\tugas-akhir-klasifikasi-transaksi-kartu-kredit\\model\\exp10_smoke\\exp10_smoke_f1fe9f763923ac81_topology_seed42\\best.pt"
+}

@@ -1,0 +1,8 @@
+# Diagnostic pair with config.layernorm.yaml: zero both neighbor contributions.
+# Not part of the three-strategy GraphSAGE comparison; timing still builds graph.
+extends: config.layernorm.yaml
+experiment:
+  name: exp10_self_only
+  strategies: [uniform]
+model:
+  use_graph_context: false
