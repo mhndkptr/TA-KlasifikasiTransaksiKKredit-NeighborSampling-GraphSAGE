@@ -1,0 +1,37 @@
+2026-09-09 03:38:25,183 | Runtime: {'python': '3.13.7', 'platform': 'Windows-11-10.0.26200-SP0', 'torch': '2.13.0+cu130', 'torch_geometric': '2.8.0.post1', 'numpy': '2.5.2', 'device': 'cuda', 'cpu_threads': 8, 'pandas': '2.3.3', 'scikit_learn': '1.9.0', 'pyyaml': '6.0.3', 'float32_matmul_precision': 'highest', 'cuda': '13.0', 'gpu': 'NVIDIA GeForce RTX 3050 Laptop GPU', 'gpu_memory_gb': 3.99951171875, 'determinism': 'fixed_seeds_and_evaluation_tables; CUDA scatter reductions may not be bitwise deterministic'}
+2026-09-09 03:38:38,302 | Graph ready in 13.12s; transactions=1000000; train_history=700000; entities=10528
+2026-09-09 03:38:38,303 | Split: {'train': {'total': 700000, 'fraud': 608, 'fraud_rate': 0.0008685714285714286, 'start': '1996-04-01 09:07:00', 'end': '2015-11-07 16:45:00'}, 'val': {'total': 150000, 'fraud': 193, 'fraud_rate': 0.0012866666666666666, 'start': '2015-11-07 16:45:00', 'end': '2018-01-16 06:31:00'}, 'test': {'total': 150000, 'fraud': 191, 'fraud_rate': 0.0012733333333333333, 'start': '2018-01-16 06:35:00', 'end': '2020-02-28 23:49:00'}}
+2026-09-09 03:38:38,863 | Training backend=factorized; features/indices=cpu; fused Adam=True; sampler GPU cache=10.7 MiB; batch=4096; precision=float32
+2026-09-09 03:38:38,863 | Root sampler=balanced; roots/epoch=12768; pos_weight=1.000; checkpoint metric=temporal_geometric_ap_lift
+2026-09-09 03:38:38,863 | Selection val[0:150000]: 193 fraud; calibration val[75000:150000]: 26 fraud; minimum epochs=1; patience=15
+2026-09-09 03:38:39,803 | uniform seed=42 epoch=1 loss=0.72558 val_AP=0.01225 best=0.01225@1 stale=0 train=0.6s (20763 txn/s) sample=0.0s means=0.1s val=0.1s
+2026-09-09 03:38:40,268 | uniform seed=42 epoch=2 loss=0.51142 val_AP=0.03454 best=0.03454@2 stale=0 train=0.1s (155609 txn/s) sample=0.0s means=0.1s val=0.1s
+2026-09-09 03:38:40,652 | uniform seed=42 epoch=3 loss=0.36729 val_AP=0.03246 best=0.03246@3 stale=0 train=0.1s (203856 txn/s) sample=0.0s means=0.1s val=0.1s
+2026-09-09 03:38:41,030 | uniform seed=42 epoch=4 loss=0.27221 val_AP=0.05632 best=0.05632@4 stale=0 train=0.1s (192947 txn/s) sample=0.0s means=0.1s val=0.1s
+2026-09-09 03:38:41,407 | uniform seed=42 epoch=5 loss=0.20916 val_AP=0.06659 best=0.06659@5 stale=0 train=0.1s (246003 txn/s) sample=0.0s means=0.1s val=0.1s
+2026-09-09 03:38:41,793 | uniform seed=42 epoch=6 loss=0.16926 val_AP=0.06486 best=0.06486@6 stale=0 train=0.1s (231950 txn/s) sample=0.0s means=0.1s val=0.1s
+2026-09-09 03:38:42,171 | uniform seed=42 epoch=7 loss=0.14213 val_AP=0.07178 best=0.07178@7 stale=0 train=0.1s (206641 txn/s) sample=0.0s means=0.1s val=0.1s
+2026-09-09 03:38:42,538 | uniform seed=42 epoch=8 loss=0.12516 val_AP=0.08719 best=0.08719@8 stale=0 train=0.1s (190158 txn/s) sample=0.0s means=0.1s val=0.1s
+2026-09-09 03:38:42,883 | uniform seed=42 epoch=9 loss=0.11016 val_AP=0.10012 best=0.10012@9 stale=0 train=0.1s (221411 txn/s) sample=0.0s means=0.1s val=0.1s
+2026-09-09 03:38:43,218 | uniform seed=42 epoch=10 loss=0.10118 val_AP=0.10032 best=0.10032@10 stale=0 train=0.1s (249982 txn/s) sample=0.0s means=0.1s val=0.1s
+2026-09-09 03:38:43,578 | uniform seed=42 epoch=11 loss=0.09322 val_AP=0.10080 best=0.10080@11 stale=0 train=0.1s (195150 txn/s) sample=0.0s means=0.1s val=0.1s
+2026-09-09 03:38:43,929 | uniform seed=42 epoch=12 loss=0.08557 val_AP=0.10061 best=0.10061@12 stale=0 train=0.1s (198314 txn/s) sample=0.0s means=0.1s val=0.1s
+2026-09-09 03:38:44,268 | uniform seed=42 epoch=13 loss=0.07984 val_AP=0.11753 best=0.11753@13 stale=0 train=0.1s (244565 txn/s) sample=0.0s means=0.1s val=0.1s
+2026-09-09 03:38:44,619 | uniform seed=42 epoch=14 loss=0.07674 val_AP=0.14320 best=0.14320@14 stale=0 train=0.1s (225095 txn/s) sample=0.0s means=0.1s val=0.1s
+2026-09-09 03:38:44,958 | uniform seed=42 epoch=15 loss=0.07234 val_AP=0.13442 best=0.14320@14 stale=1 train=0.1s (237819 txn/s) sample=0.0s means=0.1s val=0.1s
+2026-09-09 03:38:45,296 | uniform seed=42 epoch=16 loss=0.07319 val_AP=0.14336 best=0.14336@16 stale=0 train=0.1s (231177 txn/s) sample=0.0s means=0.1s val=0.1s
+2026-09-09 03:38:45,628 | uniform seed=42 epoch=17 loss=0.06858 val_AP=0.17818 best=0.17818@17 stale=0 train=0.1s (246670 txn/s) sample=0.0s means=0.1s val=0.1s
+2026-09-09 03:38:45,964 | uniform seed=42 epoch=18 loss=0.06285 val_AP=0.16591 best=0.16591@18 stale=0 train=0.1s (228714 txn/s) sample=0.0s means=0.1s val=0.1s
+2026-09-09 03:38:46,298 | uniform seed=42 epoch=19 loss=0.06230 val_AP=0.14243 best=0.16591@18 stale=1 train=0.1s (219717 txn/s) sample=0.0s means=0.1s val=0.1s
+2026-09-09 03:38:46,624 | uniform seed=42 epoch=20 loss=0.06279 val_AP=0.15493 best=0.16591@18 stale=2 train=0.0s (256706 txn/s) sample=0.0s means=0.1s val=0.1s
+2026-09-09 03:38:46,951 | uniform seed=42 epoch=21 loss=0.05918 val_AP=0.15727 best=0.16591@18 stale=3 train=0.1s (246811 txn/s) sample=0.0s means=0.1s val=0.1s
+2026-09-09 03:38:47,317 | uniform seed=42 epoch=22 loss=0.05816 val_AP=0.15262 best=0.16591@18 stale=4 train=0.1s (190631 txn/s) sample=0.0s means=0.1s val=0.1s
+2026-09-09 03:38:47,677 | uniform seed=42 epoch=23 loss=0.05703 val_AP=0.17049 best=0.17049@23 stale=0 train=0.1s (196884 txn/s) sample=0.0s means=0.1s val=0.1s
+2026-09-09 03:38:48,024 | uniform seed=42 epoch=24 loss=0.05603 val_AP=0.17065 best=0.17065@24 stale=0 train=0.1s (237194 txn/s) sample=0.0s means=0.1s val=0.1s
+2026-09-09 03:38:48,352 | uniform seed=42 epoch=25 loss=0.05294 val_AP=0.19378 best=0.19378@25 stale=0 train=0.0s (266145 txn/s) sample=0.0s means=0.1s val=0.1s
+2026-09-09 03:38:48,729 | uniform seed=42 epoch=26 loss=0.05319 val_AP=0.27860 best=0.27860@26 stale=0 train=0.1s (187496 txn/s) sample=0.0s means=0.1s val=0.1s
+2026-09-09 03:38:49,055 | uniform seed=42 epoch=27 loss=0.05098 val_AP=0.25674 best=0.27860@26 stale=1 train=0.0s (258038 txn/s) sample=0.0s means=0.1s val=0.1s
+2026-09-09 03:38:49,389 | uniform seed=42 epoch=28 loss=0.04965 val_AP=0.23545 best=0.27860@26 stale=2 train=0.1s (193866 txn/s) sample=0.0s means=0.1s val=0.1s
+2026-09-09 03:38:49,722 | uniform seed=42 epoch=29 loss=0.05055 val_AP=0.23743 best=0.27860@26 stale=3 train=0.1s (225378 txn/s) sample=0.0s means=0.1s val=0.1s
+2026-09-09 03:38:50,044 | uniform seed=42 epoch=30 loss=0.04863 val_AP=0.23424 best=0.27860@26 stale=4 train=0.1s (220880 txn/s) sample=0.0s means=0.1s val=0.1s
+2026-09-09 03:38:51,206 | Selesai exp11_pilot_1000000_control_86b93d7499aa1296_uniform_seed42: test_AP=0.00489 F1=0.00173 recall=0.01047

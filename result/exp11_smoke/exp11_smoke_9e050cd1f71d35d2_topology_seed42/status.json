@@ -1,0 +1,9 @@
+{
+  "status": "complete",
+  "run": "exp11_smoke_9e050cd1f71d35d2_topology_seed42",
+  "stop_reason": "max_epochs",
+  "last_epoch": 3,
+  "best_epoch": 2,
+  "stale_epochs": 1,
+  "patience": 20
+}

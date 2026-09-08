@@ -1,0 +1,5 @@
+{
+  "status": "failed",
+  "run": "exp11_smoke_dc5a7c6af84d1c1b_uniform_seed42",
+  "error": "ValueError: Calibration window memerlukan dua kelas; perbesar subset/window tanpa melihat test"
+}

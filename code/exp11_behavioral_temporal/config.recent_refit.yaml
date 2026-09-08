@@ -1,0 +1,6 @@
+# Separate protocol: more recent labeled training data; final test 15% unchanged.
+extends: config.gpu16gb.yaml
+experiment:
+  name: exp11_recent_refit
+data:
+  split: [0.80, 0.05, 0.15]

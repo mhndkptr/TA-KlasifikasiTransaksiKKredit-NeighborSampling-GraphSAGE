@@ -1,0 +1,20 @@
+# Same scientific settings as EXP10 16-GB primary; independent EXP11 outputs.
+extends: config.gpu16gb.yaml
+experiment:
+  name: exp11_exp10_control
+features:
+  encoder: robust
+model:
+  normalization: batch
+training:
+  batch_size: 4096
+  negatives_per_positive: 20
+  channel_weight_power: 0.0
+  selection_metric: temporal_geometric_ap_lift
+  selection_fraction: 1.0
+  selection_tail_fraction: 1.0
+  early_stopping_patience: 15
+  min_epochs: 1
+evaluation:
+  threshold_beta: 1.0
+  calibration_tail_fraction: 0.5

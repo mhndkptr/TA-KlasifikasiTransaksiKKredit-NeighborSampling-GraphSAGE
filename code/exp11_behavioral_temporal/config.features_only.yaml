@@ -1,0 +1,6 @@
+# Isolate behavioral features against EXP10 control: same optimizer/root budget.
+extends: config.exp10_control.yaml
+experiment:
+  name: exp11_features_only
+features:
+  encoder: behavioral

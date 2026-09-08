@@ -1,0 +1,24 @@
+2026-09-09 03:37:31,647 | Runtime: {'python': '3.13.7', 'platform': 'Windows-11-10.0.26200-SP0', 'torch': '2.13.0+cu130', 'torch_geometric': '2.8.0.post1', 'numpy': '2.5.2', 'device': 'cuda', 'cpu_threads': 4, 'pandas': '2.3.3', 'scikit_learn': '1.9.0', 'pyyaml': '6.0.3', 'float32_matmul_precision': 'highest', 'cuda': '13.0', 'gpu': 'NVIDIA GeForce RTX 3050 Laptop GPU', 'gpu_memory_gb': 3.99951171875, 'determinism': 'fixed_seeds_and_evaluation_tables; CUDA scatter reductions may not be bitwise deterministic'}
+2026-09-09 03:37:49,168 | Graph ready in 17.52s; transactions=1000000; train_history=700000; entities=10528
+2026-09-09 03:37:49,168 | Split: {'train': {'total': 700000, 'fraud': 608, 'fraud_rate': 0.0008685714285714286, 'start': '1996-04-01 09:07:00', 'end': '2015-11-07 16:45:00'}, 'val': {'total': 150000, 'fraud': 193, 'fraud_rate': 0.0012866666666666666, 'start': '2015-11-07 16:45:00', 'end': '2018-01-16 06:31:00'}, 'test': {'total': 150000, 'fraud': 191, 'fraud_rate': 0.0012733333333333333, 'start': '2018-01-16 06:35:00', 'end': '2020-02-28 23:49:00'}}
+2026-09-09 03:37:49,729 | Training backend=factorized; features/indices=cpu; fused Adam=True; sampler GPU cache=10.7 MiB; batch=256; precision=float32
+2026-09-09 03:37:49,729 | Root sampler=balanced; roots/epoch=31008; pos_weight=1.000; checkpoint metric=recent_ap
+2026-09-09 03:37:49,729 | Selection val[60685:112500]: 25 fraud; calibration val[112500:150000]: 26 fraud; minimum epochs=1; patience=20
+2026-09-09 03:37:51,653 | uniform seed=42 epoch=1 loss=0.07393 val_AP=0.35723 best=0.35723@1 stale=0 train=1.5s (20566 txn/s) sample=0.0s means=0.1s val=0.2s
+2026-09-09 03:37:53,033 | uniform seed=42 epoch=2 loss=0.03248 val_AP=0.64182 best=0.64182@2 stale=0 train=1.0s (32456 txn/s) sample=0.0s means=0.1s val=0.3s
+2026-09-09 03:37:54,347 | uniform seed=42 epoch=3 loss=0.02808 val_AP=0.66863 best=0.64182@2 stale=1 train=0.9s (34119 txn/s) sample=0.0s means=0.1s val=0.3s
+2026-09-09 03:37:55,761 | Selesai exp11_smoke_9e050cd1f71d35d2_uniform_seed42: test_AP=0.08399 F1=0.12365 recall=0.20942
+2026-09-09 03:37:56,484 | Training backend=factorized; features/indices=cpu; fused Adam=True; sampler GPU cache=21.4 MiB; batch=256; precision=float32
+2026-09-09 03:37:56,484 | Root sampler=balanced; roots/epoch=31008; pos_weight=1.000; checkpoint metric=recent_ap
+2026-09-09 03:37:56,484 | Selection val[60685:112500]: 25 fraud; calibration val[112500:150000]: 26 fraud; minimum epochs=1; patience=20
+2026-09-09 03:37:57,900 | topology seed=42 epoch=1 loss=0.07378 val_AP=0.33827 best=0.33827@1 stale=0 train=1.0s (31451 txn/s) sample=0.0s means=0.1s val=0.3s
+2026-09-09 03:37:59,342 | topology seed=42 epoch=2 loss=0.03253 val_AP=0.63873 best=0.63873@2 stale=0 train=0.9s (32845 txn/s) sample=0.0s means=0.1s val=0.3s
+2026-09-09 03:38:00,808 | topology seed=42 epoch=3 loss=0.02833 val_AP=0.65060 best=0.63873@2 stale=1 train=1.0s (31824 txn/s) sample=0.0s means=0.1s val=0.3s
+2026-09-09 03:38:02,553 | Selesai exp11_smoke_9e050cd1f71d35d2_topology_seed42: test_AP=0.05798 F1=0.10188 recall=0.19895
+2026-09-09 03:38:03,249 | Training backend=factorized; features/indices=cpu; fused Adam=True; sampler GPU cache=21.4 MiB; batch=256; precision=float32
+2026-09-09 03:38:03,250 | Root sampler=balanced; roots/epoch=31008; pos_weight=1.000; checkpoint metric=recent_ap
+2026-09-09 03:38:03,250 | Selection val[60685:112500]: 25 fraud; calibration val[112500:150000]: 26 fraud; minimum epochs=1; patience=20
+2026-09-09 03:38:05,649 | importance seed=42 epoch=1 loss=0.07396 val_AP=0.34036 best=0.34036@1 stale=0 train=1.7s (18705 txn/s) sample=0.1s means=0.1s val=0.5s
+2026-09-09 03:38:08,016 | importance seed=42 epoch=2 loss=0.03264 val_AP=0.63868 best=0.63868@2 stale=0 train=1.7s (18587 txn/s) sample=0.0s means=0.1s val=0.5s
+2026-09-09 03:38:10,150 | importance seed=42 epoch=3 loss=0.02788 val_AP=0.67096 best=0.63868@2 stale=1 train=1.6s (19021 txn/s) sample=0.0s means=0.1s val=0.3s
+2026-09-09 03:38:12,409 | Selesai exp11_smoke_9e050cd1f71d35d2_importance_seed42: test_AP=0.06199 F1=0.10881 recall=0.21990

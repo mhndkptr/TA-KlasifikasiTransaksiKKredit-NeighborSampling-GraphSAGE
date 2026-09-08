@@ -1,0 +1,5 @@
+extends: config.gpu16gb.yaml
+experiment:
+  name: exp11_no_behavior
+features:
+  encoder: robust

@@ -1,0 +1,933 @@
+{
+  "comparison_id": "9e050cd1f71d35d2",
+  "source_manifest": {
+    "__init__.py": "37389a3f4202e14078d00095274a887272ee3fc33a4e9b7dbdcc36e425e1ceb0",
+    "artifacts.py": "bcd7f2f1911ef4b176c20fb92abf79d0385698dbf0143f373b001169bbacf76f",
+    "behavior.py": "c0d9cde19970ad6edf688b9b413e400ceee0ef4db2fb4f4943f224b9c1b51beb",
+    "cli.py": "712b991c59ca713c36b85a95ef68c7203ab2e2f1cc68295473f182db3668dcd9",
+    "config.py": "b393112ca76154975246a413d62913ffd15d959698c011855901cb6bb7b54996",
+    "data.py": "8a1f904a1a8dfcad49ae8f35a71a98f0449d27d017bea06efe2d98b2bfcbb9ff",
+    "evaluation.py": "50a75b28e659e0c0feceefb2d910fc914fb962e609dd4f9e53890a9694ab2f2b",
+    "factorized.py": "561fd0a95542f5f50ae31263764ad8e717e08a7edea22c8ea88be884f1689966",
+    "features.py": "773b3d31889e9e8273a021c3942886d64445905652b11ede8fe5fcaa71c2890e",
+    "graph.py": "68229d9c370f7132b100903622b4393f56bed3b3a5ce28fc6811da630630d6d4",
+    "metrics.py": "8261f4fac8086216c787c4132f3f465212178f0bfef207174084334f402dc400",
+    "minibatch.py": "5b201fd31f469d48b38bd1dde7f1381bab08a5af892dbe0331722964f540279c",
+    "model.py": "dcf5b3ec6fbdcea3abe696bc7ba7101236c291cc6e353a281db453c005af157c",
+    "protocol.py": "37a421e79904b1343ad36fb902426d89e185cfe5d1451e8c438ac194cb407352",
+    "runs.py": "0b2eb137cdfedcf968e7d978b9079693c451b406294c43ad9f03b447d63c269c",
+    "runtime.py": "15e9b29cc31a800fe2978e12a65b41f61ec127182a4952eadf9aff9e6b1f55e1",
+    "sampling/__init__.py": "a2e0e7fcbad285ae681b19704b273171408412248bac24e343aca274abe2efc7",
+    "sampling/tables.py": "16cc35a99dcf07405caa72fda2958090674243e071bffd6303fb06cf43d7ee60",
+    "sampling/weights.py": "f2c5f1fb59587cdc97352ab0b48f2d49265b55e47a03531fcc689ab58a2179b2",
+    "trainer.py": "be75f9039ce27390ee2b29fc78bdac849b05dc3d075afa020777c210a621499f"
+  },
+  "config": {
+    "experiment": {
+      "on_existing": "auto",
+      "name": "exp11_smoke",
+      "seeds": [
+        42
+      ],
+      "strategies": [
+        "uniform",
+        "topology",
+        "importance"
+      ],
+      "device": "cuda",
+      "max_rows": 1000000,
+      "cache_graph": true,
+      "overwrite": false
+    },
+    "runtime": {
+      "training_backend": "factorized",
+      "cache_sampler_on_device": true,
+      "progress_update_batches": 100,
+      "feature_device": "cpu",
+      "cpu_threads": 4,
+      "progress_bar": false
+    },
+    "training": {
+      "fused_adam": true,
+      "root_sampling": "balanced",
+      "negatives_per_positive": 50,
+      "selection_metric": "recent_ap",
+      "validation_bins": 3,
+      "weight_decay": 0.0001,
+      "selection_fraction": 0.75,
+      "selection_tail_fraction": 0.3333333333333333,
+      "selection_min_fraud": 25,
+      "min_epochs": 1,
+      "channel_weight_power": 0.5,
+      "max_channel_weight": 4.0,
+      "batch_size": 256,
+      "epochs": 3,
+      "learning_rate": 0.001,
+      "lr_factor": 0.5,
+      "lr_patience": 5,
+      "min_learning_rate": 1e-05,
+      "early_stopping_patience": 20,
+      "early_stopping_min_delta": 0.0001,
+      "gradient_clip_norm": 5.0,
+      "positive_class_weight_power": 0.0,
+      "max_positive_class_weight": null
+    },
+    "features": {
+      "encoder": "behavioral",
+      "storage_dtype": "float16"
+    },
+    "model": {
+      "normalization": "layer",
+      "use_graph_context": true,
+      "hidden_channels": 256,
+      "num_layers": 2,
+      "dropout": 0.2
+    },
+    "evaluation": {
+      "primary_threshold": "validation",
+      "calibration_tail_fraction": 0.25,
+      "threshold": 0.5,
+      "calibrate_threshold": true,
+      "threshold_beta": 2.0,
+      "sampling_passes": 1,
+      "seed": 10000,
+      "batch_size": 1024,
+      "camouflage_normal_ratio": 0.7,
+      "latency_nodes": 1000,
+      "latency_repeats": 5
+    },
+    "data": {
+      "transactions": "D:\\Projects\\Klasifikasi Transasi Kartu Kredit - GraphSAGE\\tugas-akhir-klasifikasi-transaksi-kartu-kredit\\dataset\\credit_card_transactions-ibm_v2.csv",
+      "split": [
+        0.7,
+        0.15,
+        0.15
+      ]
+    },
+    "sampling": {
+      "fanouts": [
+        25,
+        10
+      ],
+      "topology_alpha": 0.5,
+      "topology_mode": "historical",
+      "topology_smoothing": 20.0,
+      "topology_balance": true,
+      "importance_gamma": 0.3,
+      "ppr_beta": 0.15,
+      "ppr_steps": 3,
+      "edge_chunk_size": 250000,
+      "refresh_epochs": 1
+    },
+    "paths": {
+      "model_dir": "D:\\Projects\\Klasifikasi Transasi Kartu Kredit - GraphSAGE\\tugas-akhir-klasifikasi-transaksi-kartu-kredit\\model\\exp11_smoke",
+      "result_dir": "D:\\Projects\\Klasifikasi Transasi Kartu Kredit - GraphSAGE\\tugas-akhir-klasifikasi-transaksi-kartu-kredit\\result\\exp11_smoke"
+    }
+  },
+  "metrics": {
+    "auprc": 0.057984894654269696,
+    "roc_auc": 0.9229848659998793,
+    "accuracy": 0.9955333333333334,
+    "precision": 0.06846846846846846,
+    "recall": 0.19895287958115182,
+    "f1": 0.10187667560321716,
+    "f1_macro": 0.5498188874350304,
+    "gmean": 0.4452710197779224,
+    "specificity": 0.9965489389823041,
+    "false_positive_rate": 0.003451061017695878,
+    "alert_rate": 0.0037,
+    "prevalence": 0.0012733333333333333,
+    "ap_lift": 45.53787538293432,
+    "tn": 149292,
+    "fp": 517,
+    "fn": 153,
+    "tp": 38,
+    "strategy": "topology",
+    "seed": 42,
+    "best_epoch": 2,
+    "epochs": 3,
+    "stop_reason": "max_epochs",
+    "best_val_auprc": 0.6387319725369465,
+    "checkpoint_val_auprc": 0.6387319725369465,
+    "max_observed_val_auprc": 0.650595859245539,
+    "selection_score": 0.5851654673591913,
+    "selection_metric": "recent_ap",
+    "val_test_auprc_gap": 0.5807470778826768,
+    "decision_threshold": 0.7775400876998901,
+    "threshold_policy": "validation",
+    "long_tail_count": 191,
+    "long_tail_recall": 0.19895287958115182,
+    "long_tail_unknown_history_fraud": 0,
+    "inference_seconds": 0.2557397000200581,
+    "inference_ms_per_1000": 1.704931333467054,
+    "inference_with_preparation_ms_per_1000": 5.158630666555837,
+    "peak_vram_gb": 0.138153076171875,
+    "duration_seconds": 5.649744100024691
+  },
+  "environment": {
+    "python": "3.13.7",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "torch": "2.13.0+cu130",
+    "torch_geometric": "2.8.0.post1",
+    "numpy": "2.5.2",
+    "device": "cuda",
+    "cpu_threads": 4,
+    "pandas": "2.3.3",
+    "scikit_learn": "1.9.0",
+    "pyyaml": "6.0.3",
+    "float32_matmul_precision": "highest",
+    "cuda": "13.0",
+    "gpu": "NVIDIA GeForce RTX 3050 Laptop GPU",
+    "gpu_memory_gb": 3.99951171875,
+    "determinism": "fixed_seeds_and_evaluation_tables; CUDA scatter reductions may not be bitwise deterministic"
+  },
+  "split_stats": {
+    "train": {
+      "total": 700000,
+      "fraud": 608,
+      "fraud_rate": 0.0008685714285714286,
+      "start": "1996-04-01 09:07:00",
+      "end": "2015-11-07 16:45:00"
+    },
+    "val": {
+      "total": 150000,
+      "fraud": 193,
+      "fraud_rate": 0.0012866666666666666,
+      "start": "2015-11-07 16:45:00",
+      "end": "2018-01-16 06:31:00"
+    },
+    "test": {
+      "total": 150000,
+      "fraud": 191,
+      "fraud_rate": 0.0012733333333333333,
+      "start": "2018-01-16 06:35:00",
+      "end": "2020-02-28 23:49:00"
+    }
+  },
+  "data_fingerprint": "c91c9f59af60bd084d957d38f37548413c75a0a8b1d13627b30fc13cdfccce40",
+  "drift": {
+    "train": {
+      "amount_clip_rate": 0.0,
+      "location_oov_rate": 0.0,
+      "category_oov_rate": {
+        "Use Chip": 0.0,
+        "MCC": 0.0,
+        "Errors?": 0.0
+      }
+    },
+    "val": {
+      "amount_clip_rate": 0.0,
+      "location_oov_rate": 0.02734,
+      "category_oov_rate": {
+        "Use Chip": 0.0,
+        "MCC": 0.0,
+        "Errors?": 0.0
+      },
+      "unseen_user_rate": 0.005213333333333334,
+      "unseen_merchant_rate": 0.014553333333333333
+    },
+    "test": {
+      "amount_clip_rate": 0.0,
+      "location_oov_rate": 0.04579333333333333,
+      "category_oov_rate": {
+        "Use Chip": 0.0,
+        "MCC": 0.0,
+        "Errors?": 0.0
+      },
+      "unseen_user_rate": 0.03557333333333333,
+      "unseen_merchant_rate": 0.019373333333333333
+    }
+  },
+  "context_policy": "frozen_train_history",
+  "test_metrics_at_fixed_threshold_0_5": {
+    "auprc": 0.057984894654269696,
+    "roc_auc": 0.9229848659998793,
+    "accuracy": 0.9861266666666667,
+    "precision": 0.03217821782178218,
+    "recall": 0.3403141361256545,
+    "f1": 0.05879692446856626,
+    "f1_macro": 0.5259043774964318,
+    "gmean": 0.5795455578063152,
+    "specificity": 0.9869500497299896,
+    "false_positive_rate": 0.013049950270010435,
+    "alert_rate": 0.013466666666666667,
+    "prevalence": 0.0012733333333333333,
+    "ap_lift": 45.53787538293432,
+    "tn": 147854,
+    "fp": 1955,
+    "fn": 126,
+    "tp": 65
+  },
+  "test_metrics_at_validation_threshold": {
+    "auprc": 0.057984894654269696,
+    "roc_auc": 0.9229848659998793,
+    "accuracy": 0.9955333333333334,
+    "precision": 0.06846846846846846,
+    "recall": 0.19895287958115182,
+    "f1": 0.10187667560321716,
+    "f1_macro": 0.5498188874350304,
+    "gmean": 0.4452710197779224,
+    "specificity": 0.9965489389823041,
+    "false_positive_rate": 0.003451061017695878,
+    "alert_rate": 0.0037,
+    "prevalence": 0.0012733333333333333,
+    "ap_lift": 45.53787538293432,
+    "tn": 149292,
+    "fp": 517,
+    "fn": 153,
+    "tp": 38
+  },
+  "calibrated_threshold": 0.7775400876998901,
+  "threshold_validation": {
+    "f_beta": 0.11111111111111112,
+    "precision": 0.04132231404958678,
+    "recall": 0.19230769230769232,
+    "scope": "chronological validation tail",
+    "start_offset": 112500,
+    "count": 37500,
+    "fraud": 26,
+    "tail_fraction": 0.25
+  },
+  "validation_temporal_bins": [
+    {
+      "count": 30000,
+      "fraud": 99,
+      "start_ns": 1446914700000000000,
+      "end_ns": 1460960400000000000,
+      "auprc": 0.8218922373625347,
+      "roc_auc": 0.9951665411683471,
+      "accuracy": 0.9980333333333333,
+      "precision": 0.6724137931034483,
+      "recall": 0.7878787878787878,
+      "f1": 0.7255813953488373,
+      "f1_macro": 0.8622972628663563,
+      "gmean": 0.8870611612755298,
+      "specificity": 0.9987291394936624,
+      "false_positive_rate": 0.0012708605063376233,
+      "alert_rate": 0.0038666666666666667,
+      "prevalence": 0.0033,
+      "ap_lift": 249.05825374622265,
+      "tn": 29863,
+      "fp": 38,
+      "fn": 21,
+      "tp": 78
+    },
+    {
+      "count": 30000,
+      "fraud": 43,
+      "start_ns": 1460961300000000000,
+      "end_ns": 1474877340000000000,
+      "auprc": 0.7913189870844551,
+      "roc_auc": 0.9965120548755542,
+      "accuracy": 0.9972666666666666,
+      "precision": 0.3211009174311927,
+      "recall": 0.813953488372093,
+      "f1": 0.4605263157894737,
+      "f1_macro": 0.7295780890536728,
+      "gmean": 0.9010787171638198,
+      "specificity": 0.9975297927028741,
+      "false_positive_rate": 0.0024702072971258815,
+      "alert_rate": 0.0036333333333333335,
+      "prevalence": 0.0014333333333333333,
+      "ap_lift": 552.0830142449687,
+      "tn": 29883,
+      "fp": 74,
+      "fn": 8,
+      "tp": 35
+    },
+    {
+      "count": 30000,
+      "fraud": 25,
+      "start_ns": 1474877460000000000,
+      "end_ns": 1488671160000000000,
+      "auprc": 0.6992546564582818,
+      "roc_auc": 0.9906802335279399,
+      "accuracy": 0.9978,
+      "precision": 0.23376623376623376,
+      "recall": 0.72,
+      "f1": 0.35294117647058826,
+      "f1_macro": 0.6759196516430874,
+      "gmean": 0.8476926441911871,
+      "specificity": 0.9980316930775647,
+      "false_positive_rate": 0.0019683069224353256,
+      "alert_rate": 0.0025666666666666667,
+      "prevalence": 0.0008333333333333334,
+      "ap_lift": 839.1055877499381,
+      "tn": 29916,
+      "fp": 59,
+      "fn": 7,
+      "tp": 18
+    },
+    {
+      "count": 30000,
+      "fraud": 0,
+      "start_ns": 1488673860000000000,
+      "end_ns": 1502379480000000000,
+      "auprc": null,
+      "roc_auc": null,
+      "accuracy": 0.9969333333333333,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "f1_macro": 0.49923215597249115,
+      "gmean": 0.0,
+      "specificity": 0.9969333333333333,
+      "false_positive_rate": 0.003066666666666662,
+      "alert_rate": 0.0030666666666666668,
+      "prevalence": 0.0,
+      "ap_lift": null,
+      "tn": 29908,
+      "fp": 92,
+      "fn": 0,
+      "tp": 0
+    },
+    {
+      "count": 30000,
+      "fraud": 26,
+      "start_ns": 1502379660000000000,
+      "end_ns": 1516084260000000000,
+      "auprc": 0.02612873331262883,
+      "roc_auc": 0.9342455769359086,
+      "accuracy": 0.9962333333333333,
+      "precision": 0.05154639175257732,
+      "recall": 0.19230769230769232,
+      "f1": 0.08130081300813008,
+      "f1_macro": 0.5397068054552483,
+      "gmean": 0.43785549803958207,
+      "specificity": 0.9969306732501502,
+      "false_positive_rate": 0.0030693267498498322,
+      "alert_rate": 0.0032333333333333333,
+      "prevalence": 0.0008666666666666666,
+      "ap_lift": 30.14853843764865,
+      "tn": 29882,
+      "fp": 92,
+      "fn": 21,
+      "tp": 5
+    }
+  ],
+  "probability_diagnostics": {
+    "val": {
+      "all": {
+        "count": 150000,
+        "mean": 0.021194817840524485,
+        "quantiles": [
+          0.0005511585623025894,
+          0.0006498501752503216,
+          0.0013269972405396402,
+          0.020587300509214413,
+          0.534463930726052,
+          0.9813250303268433
+        ],
+        "saturated_high_fraction": 0.0
+      },
+      "normal": {
+        "count": 149807,
+        "mean": 0.020237409189094675,
+        "quantiles": [
+          0.0005511585623025894,
+          0.0006497683469206094,
+          0.001324523938819766,
+          0.020105408504605293,
+          0.506473617553711,
+          0.96478670835495
+        ],
+        "saturated_high_fraction": 0.0
+      },
+      "fraud": {
+        "count": 193,
+        "mean": 0.7643373973469776,
+        "quantiles": [
+          0.003882163669914007,
+          0.14759959876537326,
+          0.9432684779167175,
+          0.9766873836517334,
+          0.9805801320075989,
+          0.9813250303268433
+        ],
+        "saturated_high_fraction": 0.0
+      }
+    },
+    "test": {
+      "all": {
+        "count": 150000,
+        "mean": 0.024105237638152515,
+        "quantiles": [
+          0.0005479819956235588,
+          0.0006488467450253665,
+          0.0013370431261137128,
+          0.025560205802321437,
+          0.586888290643693,
+          0.963935911655426
+        ],
+        "saturated_high_fraction": 0.0
+      },
+      "normal": {
+        "count": 149809,
+        "mean": 0.023692864748481608,
+        "quantiles": [
+          0.0005479819956235588,
+          0.0006487613427452743,
+          0.0013348674401640892,
+          0.025098382309079216,
+          0.5745906686782841,
+          0.963935911655426
+        ],
+        "saturated_high_fraction": 0.0
+      },
+      "fraud": {
+        "count": 191,
+        "mean": 0.3475459194638527,
+        "quantiles": [
+          0.0010855254950001836,
+          0.005115651059895754,
+          0.17974255979061127,
+          0.8897143006324768,
+          0.9575957715511322,
+          0.9602649807929993
+        ],
+        "saturated_high_fraction": 0.0
+      }
+    }
+  },
+  "payment_channel_metrics": {
+    "val": {
+      "Chip Transaction": {
+        "count": 100809,
+        "fraud": 26,
+        "auprc": 0.051403590981845985,
+        "roc_auc": 0.9700861485339027,
+        "accuracy": 0.9972423097144104,
+        "precision": 0.029850746268656716,
+        "recall": 0.3076923076923077,
+        "f1": 0.05442176870748299,
+        "f1_macro": 0.5265204549960891,
+        "gmean": 0.5539842263334246,
+        "specificity": 0.9974201998352897,
+        "false_positive_rate": 0.0025798001647102664,
+        "alert_rate": 0.0026584927933021854,
+        "prevalence": 0.00025791347994722695,
+        "ap_lift": 199.30556166495813,
+        "tn": 100523,
+        "fp": 260,
+        "fn": 18,
+        "tp": 8
+      },
+      "Online Transaction": {
+        "count": 23658,
+        "fraud": 146,
+        "auprc": 0.8524638900450279,
+        "roc_auc": 0.9923178254648166,
+        "accuracy": 0.9961535210076929,
+        "precision": 0.643979057591623,
+        "recall": 0.8424657534246576,
+        "f1": 0.7299703264094956,
+        "f1_macro": 0.8640166453563474,
+        "gmean": 0.9165310820510981,
+        "specificity": 0.997107859816264,
+        "false_positive_rate": 0.0028921401837359584,
+        "alert_rate": 0.008073378983853243,
+        "prevalence": 0.006171273987657452,
+        "ap_lift": 138.1341829498991,
+        "tn": 23444,
+        "fp": 68,
+        "fn": 23,
+        "tp": 123
+      },
+      "Swipe Transaction": {
+        "count": 25533,
+        "fraud": 21,
+        "auprc": 0.1288825014162857,
+        "roc_auc": 0.9540365691588646,
+        "accuracy": 0.9983159049073748,
+        "precision": 0.15625,
+        "recall": 0.23809523809523808,
+        "f1": 0.18867924528301888,
+        "f1_macro": 0.5939181614453437,
+        "gmean": 0.4876917631401921,
+        "specificity": 0.9989416745061148,
+        "false_positive_rate": 0.0010583254938851816,
+        "alert_rate": 0.0012532800689304038,
+        "prevalence": 0.0008224650452355775,
+        "ap_lift": 156.7027099362868,
+        "tn": 25485,
+        "fp": 27,
+        "fn": 16,
+        "tp": 5
+      }
+    },
+    "test": {
+      "Chip Transaction": {
+        "count": 102422,
+        "fraud": 146,
+        "auprc": 0.10748235344919982,
+        "roc_auc": 0.9400112681934514,
+        "accuracy": 0.9958797914510554,
+        "precision": 0.09171597633136094,
+        "recall": 0.21232876712328766,
+        "f1": 0.128099173553719,
+        "f1_macro": 0.5630170950955128,
+        "gmean": 0.460099362902778,
+        "specificity": 0.9969983182760374,
+        "false_positive_rate": 0.003001681723962646,
+        "alert_rate": 0.003300072250102517,
+        "prevalence": 0.0014254749956064128,
+        "ap_lift": 75.4010794861229,
+        "tn": 101969,
+        "fp": 307,
+        "fn": 115,
+        "tp": 31
+      },
+      "Online Transaction": {
+        "count": 23123,
+        "fraud": 0,
+        "auprc": null,
+        "roc_auc": null,
+        "accuracy": 0.9924750248670156,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "f1_macro": 0.4981116513283556,
+        "gmean": 0.0,
+        "specificity": 0.9924750248670156,
+        "false_positive_rate": 0.007524975132984446,
+        "alert_rate": 0.007524975132984475,
+        "prevalence": 0.0,
+        "ap_lift": null,
+        "tn": 22949,
+        "fp": 174,
+        "fn": 0,
+        "tp": 0
+      },
+      "Swipe Transaction": {
+        "count": 24455,
+        "fraud": 45,
+        "auprc": 0.078919176253509,
+        "roc_auc": 0.8981209886658473,
+        "accuracy": 0.9969740339398896,
+        "precision": 0.16279069767441862,
+        "recall": 0.15555555555555556,
+        "f1": 0.1590909090909091,
+        "f1_macro": 0.5787875994801152,
+        "gmean": 0.3941143760141679,
+        "specificity": 0.9985251945923802,
+        "false_positive_rate": 0.0014748054076197947,
+        "alert_rate": 0.0017583316295236148,
+        "prevalence": 0.0018401144960130853,
+        "ap_lift": 42.88818789510139,
+        "tn": 24374,
+        "fp": 36,
+        "fn": 38,
+        "tp": 7
+      }
+    }
+  },
+  "test_temporal_bins": [
+    {
+      "count": 30000,
+      "fraud": 46,
+      "start_ns": 1516084500000000000,
+      "end_ns": 1529653500000000000,
+      "auprc": 0.050334408060469085,
+      "roc_auc": 0.929541238594831,
+      "accuracy": 0.9956333333333334,
+      "precision": 0.07920792079207921,
+      "recall": 0.17391304347826086,
+      "f1": 0.10884353741496598,
+      "f1_macro": 0.5533274208886602,
+      "gmean": 0.41638093749271166,
+      "specificity": 0.9968952393670294,
+      "false_positive_rate": 0.0031047606329706046,
+      "alert_rate": 0.0033666666666666667,
+      "prevalence": 0.0015333333333333334,
+      "ap_lift": 32.826787865523315,
+      "tn": 29861,
+      "fp": 93,
+      "fn": 38,
+      "tp": 8
+    },
+    {
+      "count": 30000,
+      "fraud": 48,
+      "start_ns": 1529653560000000000,
+      "end_ns": 1543085100000000000,
+      "auprc": 0.1559231113592157,
+      "roc_auc": 0.9321657707888176,
+      "accuracy": 0.9948666666666667,
+      "precision": 0.11029411764705882,
+      "recall": 0.3125,
+      "f1": 0.16304347826086957,
+      "f1_macro": 0.5802344581353833,
+      "gmean": 0.5578866940829733,
+      "specificity": 0.9959602029914529,
+      "false_positive_rate": 0.004039797008547064,
+      "alert_rate": 0.004533333333333334,
+      "prevalence": 0.0016,
+      "ap_lift": 97.4519445995098,
+      "tn": 29831,
+      "fp": 121,
+      "fn": 33,
+      "tp": 15
+    },
+    {
+      "count": 30000,
+      "fraud": 44,
+      "start_ns": 1543085340000000000,
+      "end_ns": 1556690640000000000,
+      "auprc": 0.033852541002327326,
+      "roc_auc": 0.9142067456511975,
+      "accuracy": 0.9969,
+      "precision": 0.07017543859649122,
+      "recall": 0.09090909090909091,
+      "f1": 0.07920792079207921,
+      "f1_macro": 0.5388276536129547,
+      "gmean": 0.30124450027666955,
+      "specificity": 0.998230738416344,
+      "false_positive_rate": 0.0017692615836559789,
+      "alert_rate": 0.0019,
+      "prevalence": 0.0014666666666666667,
+      "ap_lift": 23.08127795613227,
+      "tn": 29903,
+      "fp": 53,
+      "fn": 40,
+      "tp": 4
+    },
+    {
+      "count": 30000,
+      "fraud": 52,
+      "start_ns": 1556691360000000000,
+      "end_ns": 1570270800000000000,
+      "auprc": 0.0728028043156789,
+      "roc_auc": 0.9299462016212718,
+      "accuracy": 0.9956333333333334,
+      "precision": 0.10891089108910891,
+      "recall": 0.21153846153846154,
+      "f1": 0.1437908496732026,
+      "f1_macro": 0.5708009673032245,
+      "gmean": 0.45924148793839265,
+      "specificity": 0.9969947909710164,
+      "false_positive_rate": 0.003005209028983602,
+      "alert_rate": 0.0033666666666666667,
+      "prevalence": 0.0017333333333333333,
+      "ap_lift": 42.00161787443014,
+      "tn": 29858,
+      "fp": 90,
+      "fn": 41,
+      "tp": 11
+    },
+    {
+      "count": 30000,
+      "fraud": 1,
+      "start_ns": 1570271580000000000,
+      "end_ns": 1582933740000000000,
+      "auprc": 0.004329004329004329,
+      "roc_auc": 0.9923330777692589,
+      "accuracy": 0.9946333333333334,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "f1_macro": 0.49865472350808,
+      "gmean": 0.0,
+      "specificity": 0.9946664888829627,
+      "false_positive_rate": 0.005333511117037282,
+      "alert_rate": 0.005333333333333333,
+      "prevalence": 3.3333333333333335e-05,
+      "ap_lift": 129.87012987012986,
+      "tn": 29839,
+      "fp": 160,
+      "fn": 1,
+      "tp": 0
+    }
+  ],
+  "timing": {
+    "weight_preparation_seconds": 0.38834720000158995,
+    "evaluation_tables_seconds": 0.035674999991897494,
+    "evaluation_feature_means_seconds": 0.09084309998434037,
+    "final_entity_embeddings_seconds": 0.0031895999854896218,
+    "test_query_seconds": 0.2557397000200581,
+    "latency_benchmark": {
+      "nodes": 1000,
+      "repeats": 5,
+      "seconds": [
+        0.0035623000003397465,
+        0.0029372000135481358,
+        0.0031253000197466463,
+        0.0018096999847330153,
+        0.001510599977336824
+      ],
+      "median_ms_per_1000": 2.9372000135481358,
+      "scope": "warm query: feature transfer + two mean-SAGE layers using cached entity h1 + probability transfer; context preparation reported separately"
+    }
+  },
+  "sampling": {
+    "fanouts": [
+      25,
+      10
+    ],
+    "topology_alpha": 0.5,
+    "topology_mode": "historical",
+    "topology_smoothing": 20.0,
+    "topology_balance": true,
+    "importance_gamma": 0.3,
+    "ppr_beta": 0.15,
+    "ppr_steps": 3,
+    "edge_chunk_size": 250000,
+    "refresh_epochs": 1,
+    "max_temporary_edges": 246118,
+    "history_transactions": 700000,
+    "history_nodes": 708430,
+    "weight_memory_bytes": 11200000,
+    "table_memory_bytes": 2105600,
+    "sampler_device_cache_bytes": 22400000,
+    "context_scope": "one table per epoch; validation/test share fixed tables; no held-out history",
+    "topology_literal_uniform_fallback": false
+  },
+  "training": {
+    "positive_class_weight": 1.0,
+    "imbalance_ratio": 1150.3157894736842,
+    "precision": "float32",
+    "positive_channel_weights": {
+      "0": {
+        "train_fraud": 228,
+        "positive_loss_weight": 1.1170637607574463
+      },
+      "1": {
+        "train_fraud": 372,
+        "positive_loss_weight": 0.8745283484458923
+      },
+      "2": {
+        "train_fraud": 8,
+        "positive_loss_weight": 3.4981133937835693
+      }
+    },
+    "selection_window": {
+      "start_offset": 60685,
+      "end_offset": 112500,
+      "fraud": 25,
+      "count": 51815
+    },
+    "behavior": {
+      "policy": "strictly_earlier_unlabeled_observations",
+      "equal_timestamp_policy": "exclude_all_peers",
+      "card_available": true,
+      "cold_start_rate": {
+        "user": 7.5e-05,
+        "card": 0.000218
+      },
+      "features": 24,
+      "scaling": "fixed log divisors; no fitted future statistics",
+      "heldout_observations_update_counters": true,
+      "labels_used": false
+    },
+    "root_sampling": "balanced",
+    "roots_per_epoch": 31008,
+    "effective_positive_cost_relative_to_population": 23.006315789473682,
+    "feature_storage_dtype": "torch.float16",
+    "backend": "factorized",
+    "fused_adam": true
+  },
+  "history": [
+    {
+      "epoch": 1,
+      "loss": 0.07378182740895495,
+      "val_auprc": 0.33827071230990613,
+      "selection_score": 0.31081819923193926,
+      "validation_blocks": [
+        {
+          "count": 17272,
+          "fraud": 25,
+          "ap_lift": 301.11759038654895
+        },
+        {
+          "count": 17272,
+          "fraud": 0,
+          "ap_lift": null
+        },
+        {
+          "count": 17271,
+          "fraud": 0,
+          "ap_lift": null
+        }
+      ],
+      "training_roots": 31008,
+      "learning_rate": 0.001,
+      "checkpoint_improved": true,
+      "stale_epochs": 0,
+      "sampled_table_seconds": 0.03347260001464747,
+      "entity_context_seconds": 0.005218500009505078,
+      "neighbor_feature_mean_seconds": 0.07974720001220703,
+      "training_seconds": 0.9859186999965459,
+      "training_nodes_per_second": 31450.869123497338,
+      "validation_query_seconds": 0.24644400001852773,
+      "epoch_seconds": 1.4124798999982886
+    },
+    {
+      "epoch": 2,
+      "loss": 0.03253356295842504,
+      "val_auprc": 0.6387319725369465,
+      "selection_score": 0.5851654673591913,
+      "validation_blocks": [
+        {
+          "count": 17272,
+          "fraud": 25,
+          "ap_lift": 491.46057741321454
+        },
+        {
+          "count": 17272,
+          "fraud": 0,
+          "ap_lift": null
+        },
+        {
+          "count": 17271,
+          "fraud": 0,
+          "ap_lift": null
+        }
+      ],
+      "training_roots": 31008,
+      "learning_rate": 0.001,
+      "checkpoint_improved": true,
+      "stale_epochs": 0,
+      "sampled_table_seconds": 0.03092849999666214,
+      "entity_context_seconds": 0.0064184000075329095,
+      "neighbor_feature_mean_seconds": 0.07215870000072755,
+      "training_seconds": 0.9440688999893609,
+      "training_nodes_per_second": 32845.06035560481,
+      "validation_query_seconds": 0.3196180000086315,
+      "epoch_seconds": 1.4406743999861646
+    },
+    {
+      "epoch": 3,
+      "loss": 0.028325747164164288,
+      "val_auprc": 0.650595859245539,
+      "selection_score": 0.4514929407865757,
+      "validation_blocks": [
+        {
+          "count": 17272,
+          "fraud": 25,
+          "ap_lift": 461.3808627911331
+        },
+        {
+          "count": 17272,
+          "fraud": 0,
+          "ap_lift": null
+        },
+        {
+          "count": 17271,
+          "fraud": 0,
+          "ap_lift": null
+        }
+      ],
+      "training_roots": 31008,
+      "learning_rate": 0.001,
+      "checkpoint_improved": false,
+      "stale_epochs": 1,
+      "sampled_table_seconds": 0.03251059999456629,
+      "entity_context_seconds": 0.003912299987860024,
+      "neighbor_feature_mean_seconds": 0.10504029999719933,
+      "training_seconds": 0.974361400003545,
+      "training_nodes_per_second": 31823.920775070917,
+      "validation_query_seconds": 0.27618069999152794,
+      "epoch_seconds": 1.4630131000012625
+    }
+  ],
+  "checkpoint": "D:\\Projects\\Klasifikasi Transasi Kartu Kredit - GraphSAGE\\tugas-akhir-klasifikasi-transaksi-kartu-kredit\\model\\exp11_smoke\\exp11_smoke_9e050cd1f71d35d2_topology_seed42\\best.pt"
+}

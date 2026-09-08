@@ -1,0 +1,1076 @@
+{
+  "runs": [
+    {
+      "source": "D:\\Projects\\Klasifikasi Transasi Kartu Kredit - GraphSAGE\\tugas-akhir-klasifikasi-transaksi-kartu-kredit\\result\\exp10\\exp10_temporal_robust_81de71eac888b22b_importance_seed42\\metrics.json",
+      "comparison_id": "81de71eac888b22b",
+      "status": "complete",
+      "inferred_stop_reason": "early_stopping",
+      "last_stale_epochs": 15,
+      "patience": 15,
+      "metrics": {
+        "auprc": 0.029189591269967324,
+        "roc_auc": 0.8068173905224116,
+        "accuracy": 0.9954207655202861,
+        "precision": 0.021182150922825327,
+        "recall": 0.061068702290076333,
+        "f1": 0.03145417750795027,
+        "f1_macro": 0.5145795674233409,
+        "gmean": 0.24669538821274037,
+        "specificity": 0.9965598135089929,
+        "false_positive_rate": 0.00344018649100708,
+        "alert_rate": 0.0035103546029493977,
+        "prevalence": 0.0012175935987490552,
+        "ap_lift": 23.97318062443532,
+        "tn": 3641012,
+        "fp": 12569,
+        "fn": 4182,
+        "tp": 272,
+        "strategy": "importance",
+        "seed": 42,
+        "best_epoch": 5,
+        "epochs": 20,
+        "best_val_auprc": 0.7013411174291333,
+        "checkpoint_val_auprc": 0.7013411174291333,
+        "max_observed_val_auprc": 0.7132708388020076,
+        "selection_score": 136.09761542043793,
+        "selection_metric": "temporal_geometric_ap_lift",
+        "val_test_auprc_gap": 0.672151526159166,
+        "decision_threshold": 0.7142279744148254,
+        "threshold_policy": "validation",
+        "long_tail_count": 4451,
+        "long_tail_recall": 0.061109862952145586,
+        "long_tail_unknown_history_fraud": 1,
+        "inference_seconds": 1.0254911000083666,
+        "inference_ms_per_1000": 0.28033933519180837,
+        "inference_with_preparation_ms_per_1000": 2.173978789174529,
+        "peak_vram_gb": 1.348923683166504,
+        "duration_seconds": 120.19984939999995
+      },
+      "split_stats": {
+        "train": {
+          "total": 17070830,
+          "fraud": 20886,
+          "fraud_rate": 0.0012234905977038023,
+          "start": "1991-01-02 07:10:00",
+          "end": "2015-12-10 12:08:00"
+        },
+        "val": {
+          "total": 3658035,
+          "fraud": 4417,
+          "fraud_rate": 0.0012074788786876013,
+          "start": "2015-12-10 12:08:00",
+          "end": "2018-01-27 08:07:00"
+        },
+        "test": {
+          "total": 3658035,
+          "fraud": 4454,
+          "fraud_rate": 0.0012175935987490552,
+          "start": "2018-01-27 08:07:00",
+          "end": "2020-02-28 23:58:00"
+        }
+      },
+      "checkpoint_blocks": [
+        {
+          "count": 1219345,
+          "fraud": 2928,
+          "ap_lift": 334.6037819703644
+        },
+        {
+          "count": 1219345,
+          "fraud": 1110,
+          "ap_lift": 847.4472350900159
+        },
+        {
+          "count": 1219345,
+          "fraud": 379,
+          "ap_lift": 8.890128437698042
+        }
+      ],
+      "threshold_validation": {
+        "f_beta": 0.012774229380727576,
+        "precision": 0.007138423339540658,
+        "recall": 0.06068601583113457,
+        "scope": "chronological validation tail",
+        "start_offset": 1829017,
+        "count": 1829018,
+        "fraud": 379,
+        "tail_fraction": 0.5
+      },
+      "payment_channel_metrics": {
+        "val": {
+          "Chip Transaction": {
+            "count": 2580139,
+            "fraud": 673,
+            "auprc": 0.026506283202849652,
+            "roc_auc": 0.9218070872494037,
+            "accuracy": 0.9985392259874372,
+            "precision": 0.03345388788426763,
+            "recall": 0.1649331352154532,
+            "f1": 0.0556251566023553,
+            "f1_macro": 0.5274471021358672,
+            "gmean": 0.40586706820146756,
+            "specificity": 0.9987567194140182,
+            "false_positive_rate": 0.0012432805859817764,
+            "alert_rate": 0.0012859772283586271,
+            "prevalence": 0.00026083866024272334,
+            "ap_lift": 101.61945770686077,
+            "tn": 2576259,
+            "fp": 3207,
+            "fn": 562,
+            "tp": 111
+          },
+          "Online Transaction": {
+            "count": 455927,
+            "fraud": 3450,
+            "auprc": 0.886333884299615,
+            "roc_auc": 0.9929603394365821,
+            "accuracy": 0.9967472862980258,
+            "precision": 0.7561865069028393,
+            "recall": 0.8414492753623188,
+            "f1": 0.79654273562903,
+            "f1_macro": 0.8974516367835774,
+            "gmean": 0.9163561764339879,
+            "specificity": 0.9979313865677151,
+            "false_positive_rate": 0.002068613432284927,
+            "alert_rate": 0.008420207620956863,
+            "prevalence": 0.00756700085759343,
+            "ap_lift": 117.13146343973061,
+            "tn": 451541,
+            "fp": 936,
+            "fn": 547,
+            "tp": 2903
+          },
+          "Swipe Transaction": {
+            "count": 621969,
+            "fraud": 294,
+            "auprc": 0.09086090257797794,
+            "roc_auc": 0.9555907249697644,
+            "accuracy": 0.9981912281801826,
+            "precision": 0.0764525993883792,
+            "recall": 0.25510204081632654,
+            "f1": 0.11764705882352941,
+            "f1_macro": 0.5583708724967362,
+            "gmean": 0.5047081008479891,
+            "specificity": 0.9985426468814091,
+            "false_positive_rate": 0.001457353118590854,
+            "alert_rate": 0.001577249026880761,
+            "prevalence": 0.00047269236891227695,
+            "ap_lift": 192.21994801198082,
+            "tn": 620769,
+            "fp": 906,
+            "fn": 219,
+            "tp": 75
+          }
+        },
+        "test": {
+          "Chip Transaction": {
+            "count": 2581400,
+            "fraud": 3907,
+            "auprc": 0.00722217354492286,
+            "roc_auc": 0.8239392104463169,
+            "accuracy": 0.9947966219880685,
+            "precision": 0.014773306164034642,
+            "recall": 0.037112874328129,
+            "f1": 0.021133945488995772,
+            "f1_macro": 0.5092626615649042,
+            "gmean": 0.19228530280955874,
+            "specificity": 0.9962482924298921,
+            "false_positive_rate": 0.0037517075701078983,
+            "alert_rate": 0.0038022003563957544,
+            "prevalence": 0.001513519795459828,
+            "ap_lift": 4.771773429450696,
+            "tn": 2567823,
+            "fp": 9670,
+            "fn": 3762,
+            "tp": 145
+          },
+          "Online Transaction": {
+            "count": 454489,
+            "fraud": 128,
+            "auprc": 0.7409514523822918,
+            "roc_auc": 0.9850599076230134,
+            "accuracy": 0.9978921382035649,
+            "precision": 0.09864603481624758,
+            "recall": 0.796875,
+            "f1": 0.17555938037865748,
+            "f1_macro": 0.5872520502270456,
+            "gmean": 0.8917625380050095,
+            "specificity": 0.9979487676098961,
+            "false_positive_rate": 0.002051232390103852,
+            "alert_rate": 0.0022750825652546047,
+            "prevalence": 0.0002816349790643998,
+            "ap_lift": 2630.89284876387,
+            "tn": 453429,
+            "fp": 932,
+            "fn": 26,
+            "tp": 102
+          },
+          "Swipe Transaction": {
+            "count": 622146,
+            "fraud": 419,
+            "auprc": 0.006521587067931505,
+            "roc_auc": 0.8460144408822461,
+            "accuracy": 0.9962050708354631,
+            "precision": 0.012550200803212851,
+            "recall": 0.059665871121718374,
+            "f1": 0.02073828287017835,
+            "f1_macro": 0.5094185672657444,
+            "gmean": 0.24387927781333948,
+            "specificity": 0.9968362319796309,
+            "false_positive_rate": 0.0031637680203691065,
+            "alert_rate": 0.0032018207944758945,
+            "prevalence": 0.0006734753578741967,
+            "ap_lift": 9.683482835239413,
+            "tn": 619760,
+            "fp": 1967,
+            "fn": 394,
+            "tp": 25
+          }
+        }
+      },
+      "probability_diagnostics": {
+        "val": {
+          "all": {
+            "count": 3658035,
+            "mean": 0.015411576053563513,
+            "quantiles": [
+              4.353096301201731e-06,
+              0.00044910324504598975,
+              0.001955776708200574,
+              0.017341746389865884,
+              0.3730932891368888,
+              0.9997832179069519
+            ],
+            "saturated_high_fraction": 4.291921755806054e-05
+          },
+          "normal": {
+            "count": 3653618,
+            "mean": 0.014510045902762876,
+            "quantiles": [
+              4.353096301201731e-06,
+              0.0004487294936552644,
+              0.001952372316736728,
+              0.017079261317849186,
+              0.347893512845041,
+              0.9956033229827881
+            ],
+            "saturated_high_fraction": 0.0
+          },
+          "fraud": {
+            "count": 4417,
+            "mean": 0.7611319261798766,
+            "quantiles": [
+              0.0002842541434802115,
+              0.08084348291158676,
+              0.9908922910690308,
+              0.9983579993247986,
+              0.9993978643417358,
+              0.9997832179069519
+            ],
+            "saturated_high_fraction": 0.03554448720851257
+          }
+        },
+        "test": {
+          "all": {
+            "count": 3658035,
+            "mean": 0.025546929718664093,
+            "quantiles": [
+              5.181863798497943e-06,
+              0.0004600710817612708,
+              0.0020409864373505116,
+              0.028145534545183183,
+              0.5837302315235144,
+              0.999428927898407
+            ],
+            "saturated_high_fraction": 1.0934832498868927e-06
+          },
+          "normal": {
+            "count": 3653581,
+            "mean": 0.025402977549101518,
+            "quantiles": [
+              5.181863798497943e-06,
+              0.000459713046438992,
+              0.002038047881796956,
+              0.02791309542953968,
+              0.5818082332611085,
+              0.9965000152587891
+            ],
+            "saturated_high_fraction": 0.0
+          },
+          "fraud": {
+            "count": 4454,
+            "mean": 0.1436297567556172,
+            "quantiles": [
+              0.0001905282842926681,
+              0.002127367164939642,
+              0.017083099111914635,
+              0.5700224041938788,
+              0.99630939245224,
+              0.999428927898407
+            ],
+            "saturated_high_fraction": 0.000898069151324652
+          }
+        }
+      },
+      "drift": {
+        "train": {
+          "amount_clip_rate": 0.0,
+          "location_oov_rate": 0.0,
+          "category_oov_rate": {
+            "Use Chip": 0.0,
+            "MCC": 0.0,
+            "Errors?": 0.0
+          }
+        },
+        "val": {
+          "amount_clip_rate": 0.0,
+          "location_oov_rate": 0.0007266196195498403,
+          "category_oov_rate": {
+            "Use Chip": 0.0,
+            "MCC": 0.0,
+            "Errors?": 0.0
+          },
+          "unseen_user_rate": 0.008025073570919906,
+          "unseen_merchant_rate": 0.0037383458605508148
+        },
+        "test": {
+          "amount_clip_rate": 0.0,
+          "location_oov_rate": 0.0007528632175471257,
+          "category_oov_rate": {
+            "Use Chip": 0.0,
+            "MCC": 0.0,
+            "Errors?": 0.0
+          },
+          "unseen_user_rate": 0.038238289136107224,
+          "unseen_merchant_rate": 0.005396066467379344
+        }
+      },
+      "training": {
+        "positive_class_weight": 1.0,
+        "imbalance_ratio": 816.3336206071052,
+        "precision": "float32",
+        "root_sampling": "balanced",
+        "roots_per_epoch": 438606,
+        "effective_positive_cost_relative_to_population": 40.81668103035526,
+        "feature_storage_dtype": "torch.float16",
+        "backend": "factorized",
+        "fused_adam": true
+      }
+    },
+    {
+      "source": "D:\\Projects\\Klasifikasi Transasi Kartu Kredit - GraphSAGE\\tugas-akhir-klasifikasi-transaksi-kartu-kredit\\result\\exp10\\exp10_temporal_robust_81de71eac888b22b_topology_seed42\\metrics.json",
+      "comparison_id": "81de71eac888b22b",
+      "status": "complete",
+      "inferred_stop_reason": "early_stopping",
+      "last_stale_epochs": 15,
+      "patience": 15,
+      "metrics": {
+        "auprc": 0.02850536415435983,
+        "roc_auc": 0.8030396486821438,
+        "accuracy": 0.9959532918629811,
+        "precision": 0.021189969464236142,
+        "recall": 0.051414458913336326,
+        "f1": 0.030011139505930148,
+        "f1_macro": 0.513991777993723,
+        "gmean": 0.22641908406499137,
+        "specificity": 0.9971047583179352,
+        "false_positive_rate": 0.0028952416820647864,
+        "alert_rate": 0.0029543183703819127,
+        "prevalence": 0.0012175935987490552,
+        "ap_lift": 23.411230301839616,
+        "tn": 3643003,
+        "fp": 10578,
+        "fn": 4225,
+        "tp": 229,
+        "strategy": "topology",
+        "seed": 42,
+        "best_epoch": 5,
+        "epochs": 20,
+        "best_val_auprc": 0.6981901186845207,
+        "checkpoint_val_auprc": 0.6981901186845207,
+        "max_observed_val_auprc": 0.7189017034198774,
+        "selection_score": 129.37579837135416,
+        "selection_metric": "temporal_geometric_ap_lift",
+        "val_test_auprc_gap": 0.669684754530161,
+        "decision_threshold": 0.8107842206954956,
+        "threshold_policy": "validation",
+        "long_tail_count": 4451,
+        "long_tail_recall": 0.05144911255897551,
+        "long_tail_unknown_history_fraud": 1,
+        "inference_seconds": 1.182129900000291,
+        "inference_ms_per_1000": 0.32315981121019643,
+        "inference_with_preparation_ms_per_1000": 4.23856414714473,
+        "peak_vram_gb": 1.348923683166504,
+        "duration_seconds": 129.90877919999184
+      },
+      "split_stats": {
+        "train": {
+          "total": 17070830,
+          "fraud": 20886,
+          "fraud_rate": 0.0012234905977038023,
+          "start": "1991-01-02 07:10:00",
+          "end": "2015-12-10 12:08:00"
+        },
+        "val": {
+          "total": 3658035,
+          "fraud": 4417,
+          "fraud_rate": 0.0012074788786876013,
+          "start": "2015-12-10 12:08:00",
+          "end": "2018-01-27 08:07:00"
+        },
+        "test": {
+          "total": 3658035,
+          "fraud": 4454,
+          "fraud_rate": 0.0012175935987490552,
+          "start": "2018-01-27 08:07:00",
+          "end": "2020-02-28 23:58:00"
+        }
+      },
+      "checkpoint_blocks": [
+        {
+          "count": 1219345,
+          "fraud": 2928,
+          "ap_lift": 333.43025030152756
+        },
+        {
+          "count": 1219345,
+          "fraud": 1110,
+          "ap_lift": 850.3360136813271
+        },
+        {
+          "count": 1219345,
+          "fraud": 379,
+          "ap_lift": 7.637716907477111
+        }
+      ],
+      "threshold_validation": {
+        "f_beta": 0.010200612036722205,
+        "precision": 0.00585480093676815,
+        "recall": 0.0395778364116095,
+        "scope": "chronological validation tail",
+        "start_offset": 1829017,
+        "count": 1829018,
+        "fraud": 379,
+        "tail_fraction": 0.5
+      },
+      "payment_channel_metrics": {
+        "val": {
+          "Chip Transaction": {
+            "count": 2580139,
+            "fraud": 673,
+            "auprc": 0.01915273571419721,
+            "roc_auc": 0.9233924096726291,
+            "accuracy": 0.9988054907119345,
+            "precision": 0.029308323563892145,
+            "recall": 0.11144130757800892,
+            "f1": 0.04641089108910891,
+            "f1_macro": 0.522906631068205,
+            "gmean": 0.3336674852478745,
+            "specificity": 0.9990370099857877,
+            "false_positive_rate": 0.0009629900142122949,
+            "alert_rate": 0.0009918070305514547,
+            "prevalence": 0.00026083866024272334,
+            "ap_lift": 73.42751912762715,
+            "tn": 2576982,
+            "fp": 2484,
+            "fn": 598,
+            "tp": 75
+          },
+          "Online Transaction": {
+            "count": 455927,
+            "fraud": 3450,
+            "auprc": 0.8856941127405219,
+            "roc_auc": 0.9927154955398004,
+            "accuracy": 0.9968240529733927,
+            "precision": 0.763421052631579,
+            "recall": 0.8408695652173913,
+            "f1": 0.8002758620689655,
+            "f1_macro": 0.8993375808259938,
+            "gmean": 0.9160779938522665,
+            "specificity": 0.9980131586798887,
+            "false_positive_rate": 0.0019868413201112878,
+            "alert_rate": 0.00833466761126233,
+            "prevalence": 0.00756700085759343,
+            "ap_lift": 117.04691586650665,
+            "tn": 451578,
+            "fp": 899,
+            "fn": 549,
+            "tp": 2901
+          },
+          "Swipe Transaction": {
+            "count": 621969,
+            "fraud": 294,
+            "auprc": 0.0684392038693451,
+            "roc_auc": 0.9554088403367138,
+            "accuracy": 0.9986012164593412,
+            "precision": 0.0838150289017341,
+            "recall": 0.19727891156462585,
+            "f1": 0.11764705882352941,
+            "f1_macro": 0.5584735561223698,
+            "gmean": 0.443934366213769,
+            "specificity": 0.9989801745284915,
+            "false_positive_rate": 0.0010198254715084731,
+            "alert_rate": 0.001112595643834339,
+            "prevalence": 0.00047269236891227695,
+            "ap_lift": 144.7859292224922,
+            "tn": 621041,
+            "fp": 634,
+            "fn": 236,
+            "tp": 58
+          }
+        },
+        "test": {
+          "Chip Transaction": {
+            "count": 2581400,
+            "fraud": 3907,
+            "auprc": 0.006731588307159532,
+            "roc_auc": 0.8258857911674863,
+            "accuracy": 0.9954238010381963,
+            "precision": 0.013177339901477833,
+            "recall": 0.027386741745584847,
+            "f1": 0.017793298411906543,
+            "f1_macro": 0.5077499281215646,
+            "gmean": 0.16523196085835987,
+            "specificity": 0.9968911651748423,
+            "false_positive_rate": 0.003108834825157669,
+            "alert_rate": 0.003145579917874022,
+            "prevalence": 0.001513519795459828,
+            "ap_lift": 4.447638099846843,
+            "tn": 2569480,
+            "fp": 8013,
+            "fn": 3800,
+            "tp": 107
+          },
+          "Online Transaction": {
+            "count": 454489,
+            "fraud": 128,
+            "auprc": 0.7583356967897158,
+            "roc_auc": 0.9885755248854985,
+            "accuracy": 0.9979911505008923,
+            "precision": 0.10313447927199192,
+            "recall": 0.796875,
+            "f1": 0.18263205013428827,
+            "f1_macro": 0.5908131947880595,
+            "gmean": 0.8918067878419339,
+            "specificity": 0.9980478078004054,
+            "false_positive_rate": 0.0019521921995946379,
+            "alert_rate": 0.0021760702679272767,
+            "prevalence": 0.0002816349790643998,
+            "ap_lift": 2692.619003892665,
+            "tn": 453474,
+            "fp": 887,
+            "fn": 26,
+            "tp": 102
+          },
+          "Swipe Transaction": {
+            "count": 622146,
+            "fraud": 419,
+            "auprc": 0.004940067443565366,
+            "roc_auc": 0.8347092579479886,
+            "accuracy": 0.9966615553262418,
+            "precision": 0.011778563015312132,
+            "recall": 0.0477326968973747,
+            "f1": 0.01889466225791214,
+            "f1_macro": 0.508611297558807,
+            "gmean": 0.2181831100463088,
+            "specificity": 0.9973010662235997,
+            "false_positive_rate": 0.002698933776400292,
+            "alert_rate": 0.002729262906134573,
+            "prevalence": 0.0006734753578741967,
+            "ap_lift": 7.335186634234889,
+            "tn": 620049,
+            "fp": 1678,
+            "fn": 399,
+            "tp": 20
+          }
+        }
+      },
+      "probability_diagnostics": {
+        "val": {
+          "all": {
+            "count": 3658035,
+            "mean": 0.019588835962847457,
+            "quantiles": [
+              1.884540552055114e-06,
+              0.0005623523145914078,
+              0.0026336773298680782,
+              0.02592180073261261,
+              0.4504091393947611,
+              0.9997904896736145
+            ],
+            "saturated_high_fraction": 7.162315286759148e-05
+          },
+          "normal": {
+            "count": 3653618,
+            "mean": 0.01866950548317238,
+            "quantiles": [
+              1.884540552055114e-06,
+              0.0005618517345283181,
+              0.002628863789141178,
+              0.02552888039499534,
+              0.42126024365425296,
+              0.9961004257202148
+            ],
+            "saturated_high_fraction": 0.0
+          },
+          "fraud": {
+            "count": 4417,
+            "mean": 0.780033116807196,
+            "quantiles": [
+              0.00018194592848885804,
+              0.10913240760564805,
+              0.9936873316764832,
+              0.9987053394317627,
+              0.9995163440704345,
+              0.9997904896736145
+            ],
+            "saturated_high_fraction": 0.05931627801675345
+          }
+        },
+        "test": {
+          "all": {
+            "count": 3658035,
+            "mean": 0.03146256338036571,
+            "quantiles": [
+              1.6844717265485087e-06,
+              0.0005779802799224853,
+              0.0027573483530431986,
+              0.04139572158455851,
+              0.6822272026538851,
+              0.9995594620704651
+            ],
+            "saturated_high_fraction": 3.0070789371889554e-06
+          },
+          "normal": {
+            "count": 3653581,
+            "mean": 0.03130311520812581,
+            "quantiles": [
+              1.6844717265485087e-06,
+              0.0005774570745415986,
+              0.0027529974468052387,
+              0.04106957092881203,
+              0.680583775043488,
+              0.9971447587013245
+            ],
+            "saturated_high_fraction": 0.0
+          },
+          "fraud": {
+            "count": 4454,
+            "mean": 0.16225663894848605,
+            "quantiles": [
+              0.00013577636855188757,
+              0.002806145651265979,
+              0.023769041523337364,
+              0.6394358932971955,
+              0.9975159746408463,
+              0.9995594620704651
+            ],
+            "saturated_high_fraction": 0.002469690166142793
+          }
+        }
+      },
+      "drift": {
+        "train": {
+          "amount_clip_rate": 0.0,
+          "location_oov_rate": 0.0,
+          "category_oov_rate": {
+            "Use Chip": 0.0,
+            "MCC": 0.0,
+            "Errors?": 0.0
+          }
+        },
+        "val": {
+          "amount_clip_rate": 0.0,
+          "location_oov_rate": 0.0007266196195498403,
+          "category_oov_rate": {
+            "Use Chip": 0.0,
+            "MCC": 0.0,
+            "Errors?": 0.0
+          },
+          "unseen_user_rate": 0.008025073570919906,
+          "unseen_merchant_rate": 0.0037383458605508148
+        },
+        "test": {
+          "amount_clip_rate": 0.0,
+          "location_oov_rate": 0.0007528632175471257,
+          "category_oov_rate": {
+            "Use Chip": 0.0,
+            "MCC": 0.0,
+            "Errors?": 0.0
+          },
+          "unseen_user_rate": 0.038238289136107224,
+          "unseen_merchant_rate": 0.005396066467379344
+        }
+      },
+      "training": {
+        "positive_class_weight": 1.0,
+        "imbalance_ratio": 816.3336206071052,
+        "precision": "float32",
+        "root_sampling": "balanced",
+        "roots_per_epoch": 438606,
+        "effective_positive_cost_relative_to_population": 40.81668103035526,
+        "feature_storage_dtype": "torch.float16",
+        "backend": "factorized",
+        "fused_adam": true
+      }
+    },
+    {
+      "source": "D:\\Projects\\Klasifikasi Transasi Kartu Kredit - GraphSAGE\\tugas-akhir-klasifikasi-transaksi-kartu-kredit\\result\\exp10\\exp10_temporal_robust_81de71eac888b22b_uniform_seed42\\metrics.json",
+      "comparison_id": "81de71eac888b22b",
+      "status": "complete",
+      "inferred_stop_reason": "early_stopping",
+      "last_stale_epochs": 15,
+      "patience": 15,
+      "metrics": {
+        "auprc": 0.035268268544877725,
+        "roc_auc": 0.8058014306544332,
+        "accuracy": 0.9968349127332023,
+        "precision": 0.037762782247599276,
+        "recall": 0.06533453075886843,
+        "f1": 0.04786184210526316,
+        "f1_macro": 0.5231383318777924,
+        "gmean": 0.2553466923673657,
+        "specificity": 0.9979704843001975,
+        "false_positive_rate": 0.0020295156998024755,
+        "alert_rate": 0.002106595480907099,
+        "prevalence": 0.0012175935987490552,
+        "ap_lift": 28.96555023048087,
+        "tn": 3646166,
+        "fp": 7415,
+        "fn": 4163,
+        "tp": 291,
+        "strategy": "uniform",
+        "seed": 42,
+        "best_epoch": 15,
+        "epochs": 30,
+        "best_val_auprc": 0.7227922855387842,
+        "checkpoint_val_auprc": 0.7227922855387842,
+        "max_observed_val_auprc": 0.7292728923585591,
+        "selection_score": 150.75103798771013,
+        "selection_metric": "temporal_geometric_ap_lift",
+        "val_test_auprc_gap": 0.6875240169939064,
+        "decision_threshold": 0.7548426985740662,
+        "threshold_policy": "validation",
+        "long_tail_count": 4451,
+        "long_tail_recall": 0.06537856661424399,
+        "long_tail_unknown_history_fraud": 1,
+        "inference_seconds": 0.9848349999811035,
+        "inference_ms_per_1000": 0.26922514409542375,
+        "inference_with_preparation_ms_per_1000": 0.63291928589366,
+        "peak_vram_gb": 1.094548225402832,
+        "duration_seconds": 177.20976529998006
+      },
+      "split_stats": {
+        "train": {
+          "total": 17070830,
+          "fraud": 20886,
+          "fraud_rate": 0.0012234905977038023,
+          "start": "1991-01-02 07:10:00",
+          "end": "2015-12-10 12:08:00"
+        },
+        "val": {
+          "total": 3658035,
+          "fraud": 4417,
+          "fraud_rate": 0.0012074788786876013,
+          "start": "2015-12-10 12:08:00",
+          "end": "2018-01-27 08:07:00"
+        },
+        "test": {
+          "total": 3658035,
+          "fraud": 4454,
+          "fraud_rate": 0.0012175935987490552,
+          "start": "2018-01-27 08:07:00",
+          "end": "2020-02-28 23:58:00"
+        }
+      },
+      "checkpoint_blocks": [
+        {
+          "count": 1219345,
+          "fraud": 2928,
+          "ap_lift": 345.53445551852155
+        },
+        {
+          "count": 1219345,
+          "fraud": 1110,
+          "ap_lift": 875.3330155674913
+        },
+        {
+          "count": 1219345,
+          "fraud": 379,
+          "ap_lift": 11.327035556186283
+        }
+      ],
+      "threshold_validation": {
+        "f_beta": 0.02117863720073665,
+        "precision": 0.012827663134411601,
+        "recall": 0.06068601583113457,
+        "scope": "chronological validation tail",
+        "start_offset": 1829017,
+        "count": 1829018,
+        "fraud": 379,
+        "tail_fraction": 0.5
+      },
+      "payment_channel_metrics": {
+        "val": {
+          "Chip Transaction": {
+            "count": 2580139,
+            "fraud": 673,
+            "auprc": 0.03097836646797376,
+            "roc_auc": 0.9233918679039077,
+            "accuracy": 0.9990717554364319,
+            "precision": 0.05664263645726056,
+            "recall": 0.16344725111441308,
+            "f1": 0.0841300191204589,
+            "f1_macro": 0.5418328307614207,
+            "gmean": 0.4041425081194171,
+            "specificity": 0.9992897754806614,
+            "false_positive_rate": 0.0007102245193385537,
+            "alert_rate": 0.0007526726273274424,
+            "prevalence": 0.00026083866024272334,
+            "ap_lift": 118.76447471071523,
+            "tn": 2577634,
+            "fp": 1832,
+            "fn": 563,
+            "tp": 110
+          },
+          "Online Transaction": {
+            "count": 455927,
+            "fraud": 3450,
+            "auprc": 0.8999636662760935,
+            "roc_auc": 0.9939222494870665,
+            "accuracy": 0.9975105663845308,
+            "precision": 0.8265162200282088,
+            "recall": 0.8492753623188406,
+            "f1": 0.8377412437455325,
+            "f1_macro": 0.9182434523358549,
+            "gmean": 0.9209348727754839,
+            "specificity": 0.9986408148922487,
+            "false_positive_rate": 0.0013591851077513484,
+            "alert_rate": 0.0077753675478749885,
+            "prevalence": 0.00756700085759343,
+            "ap_lift": 118.93267665920594,
+            "tn": 451862,
+            "fp": 615,
+            "fn": 520,
+            "tp": 2930
+          },
+          "Swipe Transaction": {
+            "count": 621969,
+            "fraud": 294,
+            "auprc": 0.09715209799508934,
+            "roc_auc": 0.9676931616334956,
+            "accuracy": 0.9992588055031681,
+            "precision": 0.18250950570342206,
+            "recall": 0.16326530612244897,
+            "f1": 0.17235188509874327,
+            "f1_macro": 0.5859905609165496,
+            "gmean": 0.40399114157431043,
+            "specificity": 0.9996541601319017,
+            "false_positive_rate": 0.0003458398680983299,
+            "alert_rate": 0.00042285065654397566,
+            "prevalence": 0.00047269236891227695,
+            "ap_lift": 205.52922870036642,
+            "tn": 621460,
+            "fp": 215,
+            "fn": 246,
+            "tp": 48
+          }
+        },
+        "test": {
+          "Chip Transaction": {
+            "count": 2581400,
+            "fraud": 3907,
+            "auprc": 0.009768023717814848,
+            "roc_auc": 0.8278955200769569,
+            "accuracy": 0.9961881149763694,
+            "precision": 0.025132063390427405,
+            "recall": 0.04018428461735347,
+            "f1": 0.030923773882213904,
+            "f1_macro": 0.514507037723831,
+            "gmean": 0.20022322231919748,
+            "specificity": 0.9976372389760128,
+            "false_positive_rate": 0.0023627610239872476,
+            "alert_rate": 0.002420004648640273,
+            "prevalence": 0.001513519795459828,
+            "ap_lift": 6.453846026405746,
+            "tn": 2571403,
+            "fp": 6090,
+            "fn": 3750,
+            "tp": 157
+          },
+          "Online Transaction": {
+            "count": 454489,
+            "fraud": 128,
+            "auprc": 0.7732671892912144,
+            "roc_auc": 0.985967002284527,
+            "accuracy": 0.9982705852066827,
+            "precision": 0.11832946635730858,
+            "recall": 0.796875,
+            "f1": 0.20606060606060606,
+            "f1_macro": 0.6025974779268876,
+            "gmean": 0.8919316588745625,
+            "specificity": 0.9983273212269539,
+            "false_positive_rate": 0.0016726787730461101,
+            "alert_rate": 0.0018966355621368174,
+            "prevalence": 0.0002816349790643998,
+            "ap_lift": 2745.636184326365,
+            "tn": 453601,
+            "fp": 760,
+            "fn": 26,
+            "tp": 102
+          },
+          "Swipe Transaction": {
+            "count": 622146,
+            "fraud": 419,
+            "auprc": 0.016725462776325205,
+            "roc_auc": 0.8781016023758565,
+            "accuracy": 0.9984698125520376,
+            "precision": 0.05360134003350084,
+            "recall": 0.07637231503579953,
+            "f1": 0.06299212598425197,
+            "f1_macro": 0.5311132035144235,
+            "gmean": 0.2762298155666661,
+            "specificity": 0.9990912410109261,
+            "false_positive_rate": 0.0009087589890739434,
+            "alert_rate": 0.0009595818344890106,
+            "prevalence": 0.0006734753578741967,
+            "ap_lift": 24.83455791035709,
+            "tn": 621162,
+            "fp": 565,
+            "fn": 387,
+            "tp": 32
+          }
+        }
+      },
+      "probability_diagnostics": {
+        "val": {
+          "all": {
+            "count": 3658035,
+            "mean": 0.012292003534025925,
+            "quantiles": [
+              1.0498697378125144e-07,
+              4.7162348346319055e-05,
+              0.0005164029425941408,
+              0.012643313407897951,
+              0.31318223714828686,
+              0.9999842643737793
+            ],
+            "saturated_high_fraction": 0.00031738351327967063
+          },
+          "normal": {
+            "count": 3653618,
+            "mean": 0.01137095349202764,
+            "quantiles": [
+              1.0498697378125144e-07,
+              4.710005341621581e-05,
+              0.0005149472563061863,
+              0.012402092944830693,
+              0.286924247443676,
+              0.9968476891517639
+            ],
+            "saturated_high_fraction": 0.0
+          },
+          "fraud": {
+            "count": 4417,
+            "mean": 0.7741586579025319,
+            "quantiles": [
+              3.272638423368335e-05,
+              0.10505978763103485,
+              0.9962334036827087,
+              0.999592387676239,
+              0.99990797996521,
+              0.9999842643737793
+            ],
+            "saturated_high_fraction": 0.262848086936835
+          }
+        },
+        "test": {
+          "all": {
+            "count": 3658035,
+            "mean": 0.02119464735464858,
+            "quantiles": [
+              8.983010957308579e-08,
+              4.771029198309408e-05,
+              0.0005501966807059944,
+              0.022013474628329283,
+              0.5423837757110612,
+              0.9999436140060425
+            ],
+            "saturated_high_fraction": 1.0661461686397206e-05
+          },
+          "normal": {
+            "count": 3653581,
+            "mean": 0.0210314180961754,
+            "quantiles": [
+              8.983010957308579e-08,
+              4.763978722621687e-05,
+              0.0005489076138474047,
+              0.02181857079267502,
+              0.5392546057701119,
+              0.9944145679473877
+            ],
+            "saturated_high_fraction": 0.0
+          },
+          "fraud": {
+            "count": 4454,
+            "mean": 0.15509031807797669,
+            "quantiles": [
+              1.997434264922049e-05,
+              0.0005507473426405341,
+              0.01221153000369668,
+              0.633599090576172,
+              0.9987386125326156,
+              0.9999436140060425
+            ],
+            "saturated_high_fraction": 0.008756174225415357
+          }
+        }
+      },
+      "drift": {
+        "train": {
+          "amount_clip_rate": 0.0,
+          "location_oov_rate": 0.0,
+          "category_oov_rate": {
+            "Use Chip": 0.0,
+            "MCC": 0.0,
+            "Errors?": 0.0
+          }
+        },
+        "val": {
+          "amount_clip_rate": 0.0,
+          "location_oov_rate": 0.0007266196195498403,
+          "category_oov_rate": {
+            "Use Chip": 0.0,
+            "MCC": 0.0,
+            "Errors?": 0.0
+          },
+          "unseen_user_rate": 0.008025073570919906,
+          "unseen_merchant_rate": 0.0037383458605508148
+        },
+        "test": {
+          "amount_clip_rate": 0.0,
+          "location_oov_rate": 0.0007528632175471257,
+          "category_oov_rate": {
+            "Use Chip": 0.0,
+            "MCC": 0.0,
+            "Errors?": 0.0
+          },
+          "unseen_user_rate": 0.038238289136107224,
+          "unseen_merchant_rate": 0.005396066467379344
+        }
+      },
+      "training": {
+        "positive_class_weight": 1.0,
+        "imbalance_ratio": 816.3336206071052,
+        "precision": "float32",
+        "root_sampling": "balanced",
+        "roots_per_epoch": 438606,
+        "effective_positive_cost_relative_to_population": 40.81668103035526,
+        "feature_storage_dtype": "torch.float16",
+        "backend": "factorized",
+        "fused_adam": true
+      }
+    }
+  ],
+  "scope": "provided full-data artifacts only; no inference about unseen console errors"
+}

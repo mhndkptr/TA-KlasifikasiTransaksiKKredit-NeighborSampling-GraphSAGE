@@ -1,6 +1,12 @@
 # Klasifikasi Transaksi Penipuan Kartu Kredit dengan GraphSAGE
 
-Implementasi terbaru tersedia di **[EXP10 - Temporal Robustness](code/exp10_temporal_robust/README.md)**.
+Implementasi terbaru tersedia di **[EXP11 - Fitur Perilaku dan Validation Terbaru](code/exp11_behavioral_temporal/README.md)**.
+EXP11 menambahkan histori transaksi user/kartu tanpa label, memisahkan pemilihan
+checkpoint dari kalibrasi threshold, dan memperjelas alasan early stopping.
+[Analisis full-data EXP10](code/exp11_behavioral_temporal/ANALISIS_EXP10.md) dan
+[validasi EXP11](code/exp11_behavioral_temporal/VALIDATION.md) mencatat bukti serta batas klaim.
+
+Versi sebelumnya: **[EXP10 - Temporal Robustness](code/exp10_temporal_robust/README.md)**.
 EXP10 memperbaiki fitur nominal, penanganan imbalance pada root training, pemilihan
 checkpoint temporal, dan pelaporan metrik. [Analisis EXP9](code/exp10_temporal_robust/ANALISIS_EXP9.md)
 menjelaskan gap validation–test serta perbedaan protokol dengan tujuh referensi.

@@ -1,0 +1,77 @@
+test_calibration_labels_do_not_select_model_and_early_stop_is_complete (tests.test_behavior.BehavioralTests.test_calibration_labels_do_not_select_model_and_early_stop_is_complete) ... D:\Projects\Klasifikasi Transasi Kartu Kredit - GraphSAGE\tugas-akhir-klasifikasi-transaksi-kartu-kredit\code\exp6_gpu_tqdm\.venv\Lib\site-packages\torch_geometric\inspector.py:433: DeprecationWarning: Failing to pass a value to the 'type_params' parameter of 'typing._eval_type' is deprecated, as it leads to incorrect behaviour when calling typing._eval_type on a stringified annotation that references a PEP 695 type parameter. It will be disallowed in Python 3.15.
+  return typing._eval_type(value, _globals, None)  # type: ignore
+Artefak sebelumnya dipertahankan. Mulai epoch 1 pada C:\Users\muham\AppData\Local\Temp\tmpbjspziva\result\exp11_behavioral_temporal_0f9f26e5bd31bf04_uniform_seed42_attempt0001 (bukan resume optimizer).
+D:\Projects\Klasifikasi Transasi Kartu Kredit - GraphSAGE\tugas-akhir-klasifikasi-transaksi-kartu-kredit\code\exp6_gpu_tqdm\.venv\Lib\site-packages\torch_geometric\inspector.py:433: DeprecationWarning: Failing to pass a value to the 'type_params' parameter of 'typing._eval_type' is deprecated, as it leads to incorrect behaviour when calling typing._eval_type on a stringified annotation that references a PEP 695 type parameter. It will be disallowed in Python 3.15.
+  return typing._eval_type(value, _globals, None)  # type: ignore
+ok
+test_channel_weights_are_train_only_bounded_and_positive_mean_one (tests.test_behavior.BehavioralTests.test_channel_weights_are_train_only_bounded_and_positive_mean_one) ... ok
+test_future_values_and_all_labels_cannot_change_earlier_features (tests.test_behavior.BehavioralTests.test_future_values_and_all_labels_cannot_change_earlier_features) ... ok
+test_graph_preprocessing_train_features_do_not_read_heldout_values (tests.test_behavior.BehavioralTests.test_graph_preprocessing_train_features_do_not_read_heldout_values) ... ok
+test_keyboard_interrupt_is_a_different_status (tests.test_behavior.BehavioralTests.test_keyboard_interrupt_is_a_different_status) ... ok
+test_matches_independent_slow_history_and_excludes_ties (tests.test_behavior.BehavioralTests.test_matches_independent_slow_history_and_excludes_ties) ... D:\Projects\Klasifikasi Transasi Kartu Kredit - GraphSAGE\tugas-akhir-klasifikasi-transaksi-kartu-kredit\code\exp11_behavioral_temporal\tests\test_behavior.py:46: DeprecationWarning: The 'generic' unit for NumPy timedelta is deprecated, and will raise an error in the future. This includes implicit conversion of bare integers (e.g. `+ 1`).Please use a specific unit instead.
+  count = (previous._datetime >= row._datetime-pd.Timedelta(seconds=seconds)).sum()
+ok
+test_missing_amount_card_and_cold_start_remain_finite (tests.test_behavior.BehavioralTests.test_missing_amount_card_and_cold_start_remain_finite) ... Card kosong/tidak tersedia: histori card memakai histori user
+ok
+test_selection_and_calibration_are_disjoint_and_stop_has_warmup (tests.test_behavior.BehavioralTests.test_selection_and_calibration_are_disjoint_and_stop_has_warmup) ... ok
+test_cache_roundtrip_and_config_invalidation (tests.test_core.DataTests.test_cache_roundtrip_and_config_invalidation) ... Card kosong/tidak tersedia: histori card memakai histori user
+Card kosong/tidak tersedia: histori card memakai histori user
+ok
+test_encoder_fits_train_only_and_serializes_oov (tests.test_core.DataTests.test_encoder_fits_train_only_and_serializes_oov) ... ok
+test_history_contains_only_train_and_heldout_labels_do_not_change_scores (tests.test_core.DataTests.test_history_contains_only_train_and_heldout_labels_do_not_change_scores) ... ok
+test_minutes_are_sorted_and_bad_labels_rejected (tests.test_core.DataTests.test_minutes_are_sorted_and_bad_labels_rejected) ... ok
+test_calibration_and_longtail_deduplicate_history (tests.test_core.ModelEvaluationTests.test_calibration_and_longtail_deduplicate_history) ... ok
+test_directed_blocks_and_cached_inference_are_equivalent (tests.test_core.ModelEvaluationTests.test_directed_blocks_and_cached_inference_are_equivalent) ... D:\Projects\Klasifikasi Transasi Kartu Kredit - GraphSAGE\tugas-akhir-klasifikasi-transaksi-kartu-kredit\code\exp6_gpu_tqdm\.venv\Lib\site-packages\torch_geometric\inspector.py:433: DeprecationWarning: Failing to pass a value to the 'type_params' parameter of 'typing._eval_type' is deprecated, as it leads to incorrect behaviour when calling typing._eval_type on a stringified annotation that references a PEP 695 type parameter. It will be disallowed in Python 3.15.
+  return typing._eval_type(value, _globals, None)  # type: ignore
+ok
+test_end_to_end_all_strategies_and_artifact_guards (tests.test_core.ModelEvaluationTests.test_end_to_end_all_strategies_and_artifact_guards) ... Card kosong/tidak tersedia: histori card memakai histori user
+D:\Projects\Klasifikasi Transasi Kartu Kredit - GraphSAGE\tugas-akhir-klasifikasi-transaksi-kartu-kredit\code\exp6_gpu_tqdm\.venv\Lib\site-packages\torch_geometric\inspector.py:433: DeprecationWarning: Failing to pass a value to the 'type_params' parameter of 'typing._eval_type' is deprecated, as it leads to incorrect behaviour when calling typing._eval_type on a stringified annotation that references a PEP 695 type parameter. It will be disallowed in Python 3.15.
+  return typing._eval_type(value, _globals, None)  # type: ignore
+D:\Projects\Klasifikasi Transasi Kartu Kredit - GraphSAGE\tugas-akhir-klasifikasi-transaksi-kartu-kredit\code\exp6_gpu_tqdm\.venv\Lib\site-packages\torch_geometric\inspector.py:433: DeprecationWarning: Failing to pass a value to the 'type_params' parameter of 'typing._eval_type' is deprecated, as it leads to incorrect behaviour when calling typing._eval_type on a stringified annotation that references a PEP 695 type parameter. It will be disallowed in Python 3.15.
+  return typing._eval_type(value, _globals, None)  # type: ignore
+D:\Projects\Klasifikasi Transasi Kartu Kredit - GraphSAGE\tugas-akhir-klasifikasi-transaksi-kartu-kredit\code\exp6_gpu_tqdm\.venv\Lib\site-packages\torch_geometric\inspector.py:433: DeprecationWarning: Failing to pass a value to the 'type_params' parameter of 'typing._eval_type' is deprecated, as it leads to incorrect behaviour when calling typing._eval_type on a stringified annotation that references a PEP 695 type parameter. It will be disallowed in Python 3.15.
+  return typing._eval_type(value, _globals, None)  # type: ignore
+ok
+test_singleton_batches_keep_every_training_transaction (tests.test_core.ModelEvaluationTests.test_singleton_batches_keep_every_training_transaction) ... ok
+test_closed_form_matches_independent_dense_ppr (tests.test_core.SamplingTests.test_closed_form_matches_independent_dense_ppr) ... ok
+test_literal_topology_exposes_uniform_fallback (tests.test_core.SamplingTests.test_literal_topology_exposes_uniform_fallback) ... ok
+test_streaming_hubs_small_and_isolated_rows (tests.test_core.SamplingTests.test_streaming_hubs_small_and_isolated_rows) ... ok
+test_weighted_without_replacement_distribution (tests.test_core.SamplingTests.test_weighted_without_replacement_distribution) ... ok
+test_cuda_training_with_cpu_feature_store (tests.test_performance.FactorizationTests.test_cuda_training_with_cpu_feature_store) ... D:\Projects\Klasifikasi Transasi Kartu Kredit - GraphSAGE\tugas-akhir-klasifikasi-transaksi-kartu-kredit\code\exp6_gpu_tqdm\.venv\Lib\site-packages\torch_geometric\inspector.py:433: DeprecationWarning: Failing to pass a value to the 'type_params' parameter of 'typing._eval_type' is deprecated, as it leads to incorrect behaviour when calling typing._eval_type on a stringified annotation that references a PEP 695 type parameter. It will be disallowed in Python 3.15.
+  return typing._eval_type(value, _globals, None)  # type: ignore
+ok
+test_forward_gradients_dropout_batchnorm_cpu (tests.test_performance.FactorizationTests.test_forward_gradients_dropout_batchnorm_cpu) ... D:\Projects\Klasifikasi Transasi Kartu Kredit - GraphSAGE\tugas-akhir-klasifikasi-transaksi-kartu-kredit\code\exp6_gpu_tqdm\.venv\Lib\site-packages\torch_geometric\inspector.py:433: DeprecationWarning: Failing to pass a value to the 'type_params' parameter of 'typing._eval_type' is deprecated, as it leads to incorrect behaviour when calling typing._eval_type on a stringified annotation that references a PEP 695 type parameter. It will be disallowed in Python 3.15.
+  return typing._eval_type(value, _globals, None)  # type: ignore
+ok
+test_forward_gradients_dropout_batchnorm_cuda (tests.test_performance.FactorizationTests.test_forward_gradients_dropout_batchnorm_cuda) ... D:\Projects\Klasifikasi Transasi Kartu Kredit - GraphSAGE\tugas-akhir-klasifikasi-transaksi-kartu-kredit\code\exp6_gpu_tqdm\.venv\Lib\site-packages\torch_geometric\inspector.py:433: DeprecationWarning: Failing to pass a value to the 'type_params' parameter of 'typing._eval_type' is deprecated, as it leads to incorrect behaviour when calling typing._eval_type on a stringified annotation that references a PEP 695 type parameter. It will be disallowed in Python 3.15.
+  return typing._eval_type(value, _globals, None)  # type: ignore
+ok
+test_gpu_preset_preserves_scientific_settings (tests.test_performance.FactorizationTests.test_gpu_preset_preserves_scientific_settings) ... ok
+test_sampler_cache_keeps_table_and_weights_unchanged (tests.test_performance.FactorizationTests.test_sampler_cache_keeps_table_and_weights_unchanged) ... ok
+test_topology_full_data_fraud_total_with_int8_labels (tests.test_performance.FactorizationTests.test_topology_full_data_fraud_total_with_int8_labels) ... ok
+test_complete_skip_new_attempt_and_unique_seed_summary (tests.test_performance.RunPolicyTests.test_complete_skip_new_attempt_and_unique_seed_summary) ... Artefak sebelumnya dipertahankan. Mulai epoch 1 pada C:\Users\muham\AppData\Local\Temp\tmpfyvbmmcy\result\exp11_behavioral_temporal_test_topology_seed42_attempt0001 (bukan resume optimizer).
+ok
+test_interrupted_restart_preserves_old_artifacts (tests.test_performance.RunPolicyTests.test_interrupted_restart_preserves_old_artifacts) ... Artefak sebelumnya dipertahankan. Mulai epoch 1 pada C:\Users\muham\AppData\Local\Temp\tmpisyfxh0w\result\exp11_behavioral_temporal_test_topology_seed42_attempt0001 (bukan resume optimizer).
+ok
+test_lock_prevents_explicit_overwrite_and_failure_is_recorded (tests.test_performance.RunPolicyTests.test_lock_prevents_explicit_overwrite_and_failure_is_recorded) ... ok
+test_balanced_roots_unique_all_positives_reproducible_and_rotate (tests.test_robust.RobustTests.test_balanced_roots_unique_all_positives_reproducible_and_rotate) ... ok
+test_balancing_guard_and_all_presets (tests.test_robust.RobustTests.test_balancing_guard_and_all_presets) ... ok
+test_layernorm_factorized_cached_and_self_only_context_invariance (tests.test_robust.RobustTests.test_layernorm_factorized_cached_and_self_only_context_invariance) ... D:\Projects\Klasifikasi Transasi Kartu Kredit - GraphSAGE\tugas-akhir-klasifikasi-transaksi-kartu-kredit\code\exp6_gpu_tqdm\.venv\Lib\site-packages\torch_geometric\inspector.py:433: DeprecationWarning: Failing to pass a value to the 'type_params' parameter of 'typing._eval_type' is deprecated, as it leads to incorrect behaviour when calling typing._eval_type on a stringified annotation that references a PEP 695 type parameter. It will be disallowed in Python 3.15.
+  return typing._eval_type(value, _globals, None)  # type: ignore
+ok
+test_metrics_match_independent_sklearn_and_all_normal_baseline (tests.test_robust.RobustTests.test_metrics_match_independent_sklearn_and_all_normal_baseline) ... ok
+test_missing_error_distinct_from_actual_error_and_oov (tests.test_robust.RobustTests.test_missing_error_distinct_from_actual_error_and_oov) ... ok
+test_primary_threshold_summary_checkpoint_and_heldout_label_isolation (tests.test_robust.RobustTests.test_primary_threshold_summary_checkpoint_and_heldout_label_isolation) ... Card kosong/tidak tersedia: histori card memakai histori user
+D:\Projects\Klasifikasi Transasi Kartu Kredit - GraphSAGE\tugas-akhir-klasifikasi-transaksi-kartu-kredit\code\exp6_gpu_tqdm\.venv\Lib\site-packages\torch_geometric\inspector.py:433: DeprecationWarning: Failing to pass a value to the 'type_params' parameter of 'typing._eval_type' is deprecated, as it leads to incorrect behaviour when calling typing._eval_type on a stringified annotation that references a PEP 695 type parameter. It will be disallowed in Python 3.15.
+  return typing._eval_type(value, _globals, None)  # type: ignore
+Artefak sebelumnya dipertahankan. Mulai epoch 1 pada C:\Users\muham\AppData\Local\Temp\tmphpl2vsc9\result\exp11_behavioral_temporal_cfa5ce505b6b7cd6_uniform_seed42_attempt0001 (bukan resume optimizer).
+D:\Projects\Klasifikasi Transasi Kartu Kredit - GraphSAGE\tugas-akhir-klasifikasi-transaksi-kartu-kredit\code\exp6_gpu_tqdm\.venv\Lib\site-packages\torch_geometric\inspector.py:433: DeprecationWarning: Failing to pass a value to the 'type_params' parameter of 'typing._eval_type' is deprecated, as it leads to incorrect behaviour when calling typing._eval_type on a stringified annotation that references a PEP 695 type parameter. It will be disallowed in Python 3.15.
+  return typing._eval_type(value, _globals, None)  # type: ignore
+Card kosong/tidak tersedia: histori card memakai histori user
+ok
+test_temporal_selection_penalizes_one_easy_window (tests.test_robust.RobustTests.test_temporal_selection_penalizes_one_easy_window) ... ok
+
+----------------------------------------------------------------------
+Ran 36 tests in 5.993s
+
+OK

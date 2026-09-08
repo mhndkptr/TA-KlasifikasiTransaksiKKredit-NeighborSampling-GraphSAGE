@@ -1,0 +1,93 @@
+{
+  "created_utc": "2026-09-08T20:37:24.035691+00:00",
+  "commands": [
+    [
+      "smoke",
+      [
+        "D:\\Projects\\Klasifikasi Transasi Kartu Kredit - GraphSAGE\\tugas-akhir-klasifikasi-transaksi-kartu-kredit\\code\\exp11_behavioral_temporal\\run.py",
+        "--config",
+        "D:\\Projects\\Klasifikasi Transasi Kartu Kredit - GraphSAGE\\tugas-akhir-klasifikasi-transaksi-kartu-kredit\\code\\exp11_behavioral_temporal\\config.smoke.yaml",
+        "--no-progress"
+      ]
+    ],
+    [
+      "control",
+      [
+        "D:\\Projects\\Klasifikasi Transasi Kartu Kredit - GraphSAGE\\tugas-akhir-klasifikasi-transaksi-kartu-kredit\\code\\exp11_behavioral_temporal\\run.py",
+        "--config",
+        "D:\\Projects\\Klasifikasi Transasi Kartu Kredit - GraphSAGE\\tugas-akhir-klasifikasi-transaksi-kartu-kredit\\code\\exp11_behavioral_temporal\\config.exp10_control.yaml",
+        "--max-rows",
+        "1000000",
+        "--epochs",
+        "30",
+        "--strategy",
+        "uniform",
+        "--seed",
+        "42",
+        "--name",
+        "exp11_pilot_1000000_control",
+        "--no-progress"
+      ]
+    ],
+    [
+      "features_only",
+      [
+        "D:\\Projects\\Klasifikasi Transasi Kartu Kredit - GraphSAGE\\tugas-akhir-klasifikasi-transaksi-kartu-kredit\\code\\exp11_behavioral_temporal\\run.py",
+        "--config",
+        "D:\\Projects\\Klasifikasi Transasi Kartu Kredit - GraphSAGE\\tugas-akhir-klasifikasi-transaksi-kartu-kredit\\code\\exp11_behavioral_temporal\\config.features_only.yaml",
+        "--max-rows",
+        "1000000",
+        "--epochs",
+        "30",
+        "--strategy",
+        "uniform",
+        "--seed",
+        "42",
+        "--name",
+        "exp11_pilot_1000000_features_only",
+        "--no-progress"
+      ]
+    ],
+    [
+      "main",
+      [
+        "D:\\Projects\\Klasifikasi Transasi Kartu Kredit - GraphSAGE\\tugas-akhir-klasifikasi-transaksi-kartu-kredit\\code\\exp11_behavioral_temporal\\run.py",
+        "--config",
+        "D:\\Projects\\Klasifikasi Transasi Kartu Kredit - GraphSAGE\\tugas-akhir-klasifikasi-transaksi-kartu-kredit\\code\\exp11_behavioral_temporal\\config.gpu16gb.yaml",
+        "--max-rows",
+        "1000000",
+        "--epochs",
+        "30",
+        "--strategy",
+        "uniform",
+        "--seed",
+        "42",
+        "--name",
+        "exp11_pilot_1000000_main",
+        "--no-progress"
+      ]
+    ]
+  ],
+  "source": {
+    "exp11\\__init__.py": "37389a3f4202e14078d00095274a887272ee3fc33a4e9b7dbdcc36e425e1ceb0",
+    "exp11\\artifacts.py": "bcd7f2f1911ef4b176c20fb92abf79d0385698dbf0143f373b001169bbacf76f",
+    "exp11\\behavior.py": "c0d9cde19970ad6edf688b9b413e400ceee0ef4db2fb4f4943f224b9c1b51beb",
+    "exp11\\cli.py": "712b991c59ca713c36b85a95ef68c7203ab2e2f1cc68295473f182db3668dcd9",
+    "exp11\\config.py": "b393112ca76154975246a413d62913ffd15d959698c011855901cb6bb7b54996",
+    "exp11\\data.py": "8a1f904a1a8dfcad49ae8f35a71a98f0449d27d017bea06efe2d98b2bfcbb9ff",
+    "exp11\\evaluation.py": "50a75b28e659e0c0feceefb2d910fc914fb962e609dd4f9e53890a9694ab2f2b",
+    "exp11\\factorized.py": "561fd0a95542f5f50ae31263764ad8e717e08a7edea22c8ea88be884f1689966",
+    "exp11\\features.py": "773b3d31889e9e8273a021c3942886d64445905652b11ede8fe5fcaa71c2890e",
+    "exp11\\graph.py": "68229d9c370f7132b100903622b4393f56bed3b3a5ce28fc6811da630630d6d4",
+    "exp11\\metrics.py": "8261f4fac8086216c787c4132f3f465212178f0bfef207174084334f402dc400",
+    "exp11\\minibatch.py": "5b201fd31f469d48b38bd1dde7f1381bab08a5af892dbe0331722964f540279c",
+    "exp11\\model.py": "dcf5b3ec6fbdcea3abe696bc7ba7101236c291cc6e353a281db453c005af157c",
+    "exp11\\protocol.py": "37a421e79904b1343ad36fb902426d89e185cfe5d1451e8c438ac194cb407352",
+    "exp11\\runs.py": "0b2eb137cdfedcf968e7d978b9079693c451b406294c43ad9f03b447d63c269c",
+    "exp11\\runtime.py": "15e9b29cc31a800fe2978e12a65b41f61ec127182a4952eadf9aff9e6b1f55e1",
+    "exp11\\sampling\\__init__.py": "a2e0e7fcbad285ae681b19704b273171408412248bac24e343aca274abe2efc7",
+    "exp11\\sampling\\tables.py": "16cc35a99dcf07405caa72fda2958090674243e071bffd6303fb06cf43d7ee60",
+    "exp11\\sampling\\weights.py": "f2c5f1fb59587cdc97352ab0b48f2d49265b55e47a03531fcc689ab58a2179b2",
+    "exp11\\trainer.py": "be75f9039ce27390ee2b29fc78bdac849b05dc3d075afa020777c210a621499f"
+  }
+}
