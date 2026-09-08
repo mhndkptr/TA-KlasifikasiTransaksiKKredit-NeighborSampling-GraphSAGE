@@ -19,4 +19,5 @@ evaluation:
   batch_size: 8192
 
 training:
+  batch_size: 4096
   fused_adam: true

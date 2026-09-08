@@ -1,0 +1,81 @@
+{
+  "experiment": {
+    "on_existing": "auto",
+    "name": "exp9_reference_sampling",
+    "seeds": [
+      42
+    ],
+    "strategies": [
+      "importance"
+    ],
+    "device": "cuda",
+    "max_rows": null,
+    "cache_graph": true,
+    "overwrite": false
+  },
+  "runtime": {
+    "training_backend": "factorized",
+    "cache_sampler_on_device": true,
+    "progress_update_batches": 100,
+    "feature_device": "cuda",
+    "cpu_threads": 8,
+    "progress_bar": true
+  },
+  "training": {
+    "fused_adam": true,
+    "batch_size": 4096,
+    "epochs": 100,
+    "learning_rate": 0.001,
+    "lr_factor": 0.5,
+    "lr_patience": 5,
+    "min_learning_rate": 1e-05,
+    "early_stopping_patience": 15,
+    "early_stopping_min_delta": 0.0001,
+    "gradient_clip_norm": 5.0,
+    "positive_class_weight_power": 1.0,
+    "max_positive_class_weight": null
+  },
+  "data": {
+    "transactions": "D:\\RemoteAccess-Hendika\\TA-KlasifikasiTransaksiKKredit-NeighborSampling-GraphSAGE\\dataset\\credit_card_transactions-ibm_v2.csv",
+    "split": [
+      0.7,
+      0.15,
+      0.15
+    ]
+  },
+  "model": {
+    "hidden_channels": 256,
+    "num_layers": 2,
+    "dropout": 0.2
+  },
+  "sampling": {
+    "fanouts": [
+      25,
+      10
+    ],
+    "topology_alpha": 0.5,
+    "topology_mode": "historical",
+    "topology_smoothing": 20.0,
+    "topology_balance": true,
+    "importance_gamma": 0.3,
+    "ppr_beta": 0.15,
+    "ppr_steps": 3,
+    "edge_chunk_size": 500000,
+    "refresh_epochs": 1
+  },
+  "evaluation": {
+    "threshold": 0.5,
+    "calibrate_threshold": true,
+    "threshold_beta": 1.0,
+    "sampling_passes": 1,
+    "seed": 10000,
+    "batch_size": 8192,
+    "camouflage_normal_ratio": 0.7,
+    "latency_nodes": 1000,
+    "latency_repeats": 5
+  },
+  "paths": {
+    "model_dir": "D:\\RemoteAccess-Hendika\\TA-KlasifikasiTransaksiKKredit-NeighborSampling-GraphSAGE\\model\\exp9",
+    "result_dir": "D:\\RemoteAccess-Hendika\\TA-KlasifikasiTransaksiKKredit-NeighborSampling-GraphSAGE\\result\\exp9"
+  }
+}

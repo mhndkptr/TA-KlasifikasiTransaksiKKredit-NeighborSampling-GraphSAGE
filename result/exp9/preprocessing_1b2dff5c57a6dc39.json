@@ -1,0 +1,97 @@
+{
+  "feature_names": [
+    "amount",
+    "hour",
+    "dow",
+    "Month",
+    "weekend",
+    "Use Chip",
+    "MCC",
+    "Errors?",
+    "merchant_location_frequency"
+  ],
+  "split_stats": {
+    "train": {
+      "total": 17070830,
+      "fraud": 20886,
+      "fraud_rate": 0.0012234905977038023,
+      "start": "1991-01-02 07:10:00",
+      "end": "2015-12-10 12:08:00"
+    },
+    "val": {
+      "total": 3658035,
+      "fraud": 4417,
+      "fraud_rate": 0.0012074788786876013,
+      "start": "2015-12-10 12:08:00",
+      "end": "2018-01-27 08:07:00"
+    },
+    "test": {
+      "total": 3658035,
+      "fraud": 4454,
+      "fraud_rate": 0.0012175935987490552,
+      "start": "2018-01-27 08:07:00",
+      "end": "2020-02-28 23:58:00"
+    }
+  },
+  "drift": {
+    "train": {
+      "numeric_outside_train_range": {
+        "_amount": 0.0,
+        "_hour": 0.0,
+        "_dow": 0.0,
+        "Month": 0.0,
+        "_weekend": 0.0
+      },
+      "category_oov_rate": {
+        "Use Chip": 0.0,
+        "MCC": 0.0,
+        "Errors?": 0.0
+      },
+      "location_oov_rate": 0.0
+    },
+    "val": {
+      "numeric_outside_train_range": {
+        "_amount": 0.0,
+        "_hour": 0.0,
+        "_dow": 0.0,
+        "Month": 0.0,
+        "_weekend": 0.0
+      },
+      "category_oov_rate": {
+        "Use Chip": 0.0,
+        "MCC": 0.0,
+        "Errors?": 0.0
+      },
+      "location_oov_rate": 0.0007266196195498403,
+      "unseen_user_rate": 0.008025073570919906,
+      "unseen_merchant_rate": 0.0037383458605508148
+    },
+    "test": {
+      "numeric_outside_train_range": {
+        "_amount": 0.0,
+        "_hour": 0.0,
+        "_dow": 0.0,
+        "Month": 0.0,
+        "_weekend": 0.0
+      },
+      "category_oov_rate": {
+        "Use Chip": 0.0,
+        "MCC": 0.0,
+        "Errors?": 0.0
+      },
+      "location_oov_rate": 0.0007528632175471257,
+      "unseen_user_rate": 0.038238289136107224,
+      "unseen_merchant_rate": 0.005396066467379344
+    }
+  },
+  "context_policy": "frozen_train_history",
+  "history_nodes": 17158908,
+  "history_directed_edges": 68283320,
+  "tie_at_split_boundary": {
+    "train_val": true,
+    "val_test": true
+  },
+  "data_fingerprint": "1b2dff5c57a6dc397261475be92fc1573901c5b21fe51a48858cecddbeff9b19",
+  "cache_path": "D:\\RemoteAccess-Hendika\\TA-KlasifikasiTransaksiKKredit-NeighborSampling-GraphSAGE\\model\\exp9\\cache\\graph_1b2dff5c57a6dc39.pt",
+  "preprocessing_seconds": 0.3011889000044903
+}
