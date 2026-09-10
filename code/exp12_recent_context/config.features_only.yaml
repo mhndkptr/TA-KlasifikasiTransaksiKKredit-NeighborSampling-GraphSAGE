@@ -1,0 +1,6 @@
+# New features only, retaining EXP11 checkpoint/threshold partitioning.
+extends: config.gpu16gb.yaml
+experiment:
+  name: exp12_features_only
+training:
+  validation_partition: chronological

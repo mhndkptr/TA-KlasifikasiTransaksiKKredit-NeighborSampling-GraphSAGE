@@ -1,0 +1,9 @@
+{
+  "status": "complete",
+  "run": "exp12_smoke_7aed137661e751a4_uniform_seed42",
+  "stop_reason": "max_epochs",
+  "last_epoch": 3,
+  "best_epoch": 3,
+  "stale_epochs": 0,
+  "patience": 20
+}

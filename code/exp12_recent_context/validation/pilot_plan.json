@@ -1,0 +1,145 @@
+{
+  "created_utc": "2026-09-10T07:21:53.406872+00:00",
+  "commands": [
+    [
+      "smoke",
+      [
+        "D:\\Projects\\Klasifikasi Transasi Kartu Kredit - GraphSAGE\\tugas-akhir-klasifikasi-transaksi-kartu-kredit\\code\\exp12_recent_context\\run.py",
+        "--config",
+        "D:\\Projects\\Klasifikasi Transasi Kartu Kredit - GraphSAGE\\tugas-akhir-klasifikasi-transaksi-kartu-kredit\\code\\exp12_recent_context\\config.smoke.yaml",
+        "--no-progress"
+      ]
+    ],
+    [
+      "control",
+      [
+        "D:\\Projects\\Klasifikasi Transasi Kartu Kredit - GraphSAGE\\tugas-akhir-klasifikasi-transaksi-kartu-kredit\\code\\exp12_recent_context\\run.py",
+        "--config",
+        "D:\\Projects\\Klasifikasi Transasi Kartu Kredit - GraphSAGE\\tugas-akhir-klasifikasi-transaksi-kartu-kredit\\code\\exp12_recent_context\\config.control_gpu.yaml",
+        "--max-rows",
+        "1000000",
+        "--epochs",
+        "30",
+        "--strategy",
+        "uniform",
+        "--seed",
+        "42",
+        "--name",
+        "exp12_pilot_1000000_control",
+        "--no-progress"
+      ]
+    ],
+    [
+      "features_only",
+      [
+        "D:\\Projects\\Klasifikasi Transasi Kartu Kredit - GraphSAGE\\tugas-akhir-klasifikasi-transaksi-kartu-kredit\\code\\exp12_recent_context\\run.py",
+        "--config",
+        "D:\\Projects\\Klasifikasi Transasi Kartu Kredit - GraphSAGE\\tugas-akhir-klasifikasi-transaksi-kartu-kredit\\code\\exp12_recent_context\\config.features_only.yaml",
+        "--max-rows",
+        "1000000",
+        "--epochs",
+        "30",
+        "--strategy",
+        "uniform",
+        "--seed",
+        "42",
+        "--name",
+        "exp12_pilot_1000000_features_only",
+        "--no-progress"
+      ]
+    ],
+    [
+      "logic_only",
+      [
+        "D:\\Projects\\Klasifikasi Transasi Kartu Kredit - GraphSAGE\\tugas-akhir-klasifikasi-transaksi-kartu-kredit\\code\\exp12_recent_context\\run.py",
+        "--config",
+        "D:\\Projects\\Klasifikasi Transasi Kartu Kredit - GraphSAGE\\tugas-akhir-klasifikasi-transaksi-kartu-kredit\\code\\exp12_recent_context\\config.logic_only.yaml",
+        "--max-rows",
+        "1000000",
+        "--epochs",
+        "30",
+        "--strategy",
+        "uniform",
+        "--seed",
+        "42",
+        "--name",
+        "exp12_pilot_1000000_logic_only",
+        "--no-progress",
+        "--selection-min-fraud",
+        "1",
+        "--calibration-min-fraud",
+        "1"
+      ]
+    ],
+    [
+      "main",
+      [
+        "D:\\Projects\\Klasifikasi Transasi Kartu Kredit - GraphSAGE\\tugas-akhir-klasifikasi-transaksi-kartu-kredit\\code\\exp12_recent_context\\run.py",
+        "--config",
+        "D:\\Projects\\Klasifikasi Transasi Kartu Kredit - GraphSAGE\\tugas-akhir-klasifikasi-transaksi-kartu-kredit\\code\\exp12_recent_context\\config.gpu16gb.yaml",
+        "--max-rows",
+        "1000000",
+        "--epochs",
+        "30",
+        "--strategy",
+        "uniform",
+        "--seed",
+        "42",
+        "--name",
+        "exp12_pilot_1000000_main",
+        "--no-progress",
+        "--selection-min-fraud",
+        "1",
+        "--calibration-min-fraud",
+        "1"
+      ]
+    ],
+    [
+      "self_only",
+      [
+        "D:\\Projects\\Klasifikasi Transasi Kartu Kredit - GraphSAGE\\tugas-akhir-klasifikasi-transaksi-kartu-kredit\\code\\exp12_recent_context\\run.py",
+        "--config",
+        "D:\\Projects\\Klasifikasi Transasi Kartu Kredit - GraphSAGE\\tugas-akhir-klasifikasi-transaksi-kartu-kredit\\code\\exp12_recent_context\\config.self_only.yaml",
+        "--max-rows",
+        "1000000",
+        "--epochs",
+        "30",
+        "--strategy",
+        "uniform",
+        "--seed",
+        "42",
+        "--name",
+        "exp12_pilot_1000000_self_only",
+        "--no-progress",
+        "--selection-min-fraud",
+        "1",
+        "--calibration-min-fraud",
+        "1"
+      ]
+    ]
+  ],
+  "source": {
+    "__init__.py": "37389a3f4202e14078d00095274a887272ee3fc33a4e9b7dbdcc36e425e1ceb0",
+    "artifacts.py": "cc87f2c4b61d177afdaf58df68e18bb0203ade5b9d01b43d47a37b7144dabacc",
+    "behavior.py": "933145f11eb19d6a1d5a0ffe68ac089df4d4a20fc8ab98dcb814d2286b88c069",
+    "behavior_v2.py": "e660ea5b36998d0246fc54d8cbf8421be11f29fd454a8a3e55a9d06a74619196",
+    "cli.py": "a2876d4d987426e2610e17ca0e3b8becd82f96f22e61a2e57f95b598e6fbfe4c",
+    "config.py": "8fbe83792726c20688618572642d306810a8c3d6c6ae7b67cdebc138ea82f340",
+    "data.py": "8a1f904a1a8dfcad49ae8f35a71a98f0449d27d017bea06efe2d98b2bfcbb9ff",
+    "evaluation.py": "50a75b28e659e0c0feceefb2d910fc914fb962e609dd4f9e53890a9694ab2f2b",
+    "factorized.py": "561fd0a95542f5f50ae31263764ad8e717e08a7edea22c8ea88be884f1689966",
+    "features.py": "773b3d31889e9e8273a021c3942886d64445905652b11ede8fe5fcaa71c2890e",
+    "graph.py": "7e1b969154b5063709e3f82a19c84d7991a0150b725dbadfb5d9b44d4d301d67",
+    "metrics.py": "8261f4fac8086216c787c4132f3f465212178f0bfef207174084334f402dc400",
+    "minibatch.py": "5b201fd31f469d48b38bd1dde7f1381bab08a5af892dbe0331722964f540279c",
+    "model.py": "dcf5b3ec6fbdcea3abe696bc7ba7101236c291cc6e353a281db453c005af157c",
+    "protocol.py": "ed6375b07bb72e4196c32755f63ef2a351429c4649a5a263919d824cc5f5cfd6",
+    "runs.py": "bd9e5b88b9bebe7d311ee1dd36f9d0eb121065119382678a5809b202f1e538c5",
+    "runtime.py": "2af34596ac6ade21d0deb61de9be0d340f5cfbfcc5cb5b8ffdcdebb375c94add",
+    "sampling/__init__.py": "a2e0e7fcbad285ae681b19704b273171408412248bac24e343aca274abe2efc7",
+    "sampling/tables.py": "16cc35a99dcf07405caa72fda2958090674243e071bffd6303fb06cf43d7ee60",
+    "sampling/weights.py": "f2c5f1fb59587cdc97352ab0b48f2d49265b55e47a03531fcc689ab58a2179b2",
+    "trainer.py": "372f2ce29982add86aeea5e3b6f29cf52f0243d195ac4d4cfd8c005f15bdcc0d"
+  },
+  "selection": "No preset chosen from test; report all outcomes"
+}

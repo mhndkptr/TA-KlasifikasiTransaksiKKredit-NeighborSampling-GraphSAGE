@@ -1,0 +1,5 @@
+extends: config.gpu16gb.yaml
+experiment:
+  name: exp12_self_only
+model:
+  use_graph_context: false

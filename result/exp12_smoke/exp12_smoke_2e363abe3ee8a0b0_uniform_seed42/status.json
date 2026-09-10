@@ -1,0 +1,5 @@
+{
+  "status": "failed",
+  "run": "exp12_smoke_2e363abe3ee8a0b0_uniform_seed42",
+  "error": "ValueError: selection recent partition kurang dari 25 fraud; gunakan subset lebih besar atau protokol validation yang ditetapkan sebelumnya; tidak memperluas otomatis ke periode lama/test"
+}

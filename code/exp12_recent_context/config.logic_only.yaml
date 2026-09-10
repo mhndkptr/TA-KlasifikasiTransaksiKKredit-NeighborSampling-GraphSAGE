@@ -1,0 +1,5 @@
+extends: config.gpu16gb.yaml
+experiment:
+  name: exp12_logic_only
+features:
+  encoder: behavioral

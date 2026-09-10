@@ -1,0 +1,738 @@
+[
+  {
+    "run": "exp12_pilot_1000000_control_b371f2b41e990d27_uniform_seed42",
+    "source": "D:\\Projects\\Klasifikasi Transasi Kartu Kredit - GraphSAGE\\tugas-akhir-klasifikasi-transaksi-kartu-kredit\\result\\exp12\\exp12_pilot_1000000_control_b371f2b41e990d27_uniform_seed42\\metrics.json",
+    "metrics": {
+      "auprc": 0.06256604057916249,
+      "roc_auc": 0.9040294379730085,
+      "accuracy": 0.9982466666666666,
+      "precision": 0.17272727272727273,
+      "recall": 0.09947643979057591,
+      "f1": 0.12624584717607973,
+      "f1_macro": 0.5626841500185585,
+      "gmean": 0.3153030507432786,
+      "specificity": 0.9993925598595546,
+      "false_positive_rate": 0.0006074401404454477,
+      "alert_rate": 0.0007333333333333333,
+      "prevalence": 0.0012733333333333333,
+      "ap_lift": 49.13563396269305,
+      "tn": 149718,
+      "fp": 91,
+      "fn": 172,
+      "tp": 19,
+      "strategy": "uniform",
+      "seed": 42,
+      "best_epoch": 26,
+      "epochs": 30,
+      "stop_reason": "max_epochs",
+      "best_val_auprc": 0.7298007080610222,
+      "checkpoint_val_auprc": 0.7298007080610222,
+      "max_observed_val_auprc": 0.7344756433430291,
+      "selection_score": 0.7173978733879872,
+      "selection_metric": "recent_ap",
+      "val_test_auprc_gap": 0.6672346674818597,
+      "decision_threshold": 0.7813540101051331,
+      "threshold_policy": "validation",
+      "long_tail_count": 191,
+      "long_tail_recall": 0.09947643979057591,
+      "long_tail_unknown_history_fraud": 0,
+      "inference_seconds": 0.16517010000097798,
+      "inference_ms_per_1000": 1.10113400000652,
+      "inference_with_preparation_ms_per_1000": 10.351999333336911,
+      "peak_vram_gb": 0.35559558868408203,
+      "duration_seconds": 21.489553199999136
+    },
+    "validation_partitions": {
+      "policy": "chronological",
+      "selection": {
+        "start_offset": 60685,
+        "end_offset": 112500,
+        "count": 51815,
+        "fraud": 25,
+        "start_ns": 1475159160000000000,
+        "end_ns": 1498924620000000000,
+        "channels": {
+          "Swipe Transaction": {
+            "count": 8784,
+            "fraud": 1
+          },
+          "Online Transaction": {
+            "count": 8024,
+            "fraud": 22
+          },
+          "Chip Transaction": {
+            "count": 35007,
+            "fraud": 2
+          }
+        }
+      },
+      "calibration": {
+        "start_offset": 112500,
+        "end_offset": 150000,
+        "count": 37500,
+        "fraud": 26,
+        "start_ns": 1498924800000000000,
+        "end_ns": 1516084260000000000,
+        "channels": {
+          "Swipe Transaction": {
+            "count": 6319,
+            "fraud": 15
+          },
+          "Online Transaction": {
+            "count": 5809,
+            "fraud": 0
+          },
+          "Chip Transaction": {
+            "count": 25372,
+            "fraud": 11
+          }
+        }
+      },
+      "overlap_count": 0
+    }
+  },
+  {
+    "run": "exp12_pilot_1000000_features_only_f6e004d36df5aec3_uniform_seed42",
+    "source": "D:\\Projects\\Klasifikasi Transasi Kartu Kredit - GraphSAGE\\tugas-akhir-klasifikasi-transaksi-kartu-kredit\\result\\exp12\\exp12_pilot_1000000_features_only_f6e004d36df5aec3_uniform_seed42\\metrics.json",
+    "metrics": {
+      "auprc": 0.16657409195699804,
+      "roc_auc": 0.9476737377181744,
+      "accuracy": 0.9984,
+      "precision": 0.27927927927927926,
+      "recall": 0.16230366492146597,
+      "f1": 0.2052980132450331,
+      "f1_macro": 0.6022486035500904,
+      "gmean": 0.40276170697335467,
+      "specificity": 0.9994659866897182,
+      "false_positive_rate": 0.0005340133102818001,
+      "alert_rate": 0.00074,
+      "prevalence": 0.0012733333333333333,
+      "ap_lift": 130.81734970444873,
+      "tn": 149729,
+      "fp": 80,
+      "fn": 160,
+      "tp": 31,
+      "strategy": "uniform",
+      "seed": 42,
+      "best_epoch": 19,
+      "epochs": 30,
+      "stop_reason": "max_epochs",
+      "best_val_auprc": 0.8069230719722174,
+      "checkpoint_val_auprc": 0.8069230719722174,
+      "max_observed_val_auprc": 0.8122505117550493,
+      "selection_score": 0.7844129320431593,
+      "selection_metric": "recent_ap",
+      "val_test_auprc_gap": 0.6403489800152193,
+      "decision_threshold": 0.3090829849243164,
+      "threshold_policy": "validation",
+      "long_tail_count": 191,
+      "long_tail_recall": 0.16230366492146597,
+      "long_tail_unknown_history_fraud": 0,
+      "inference_seconds": 0.142247400000997,
+      "inference_ms_per_1000": 0.9483160000066467,
+      "inference_with_preparation_ms_per_1000": 4.6106460000009974,
+      "peak_vram_gb": 0.4276442527770996,
+      "duration_seconds": 16.316729099999066
+    },
+    "validation_partitions": {
+      "policy": "chronological",
+      "selection": {
+        "start_offset": 60685,
+        "end_offset": 112500,
+        "count": 51815,
+        "fraud": 25,
+        "start_ns": 1475159160000000000,
+        "end_ns": 1498924620000000000,
+        "channels": {
+          "Swipe Transaction": {
+            "count": 8784,
+            "fraud": 1
+          },
+          "Online Transaction": {
+            "count": 8024,
+            "fraud": 22
+          },
+          "Chip Transaction": {
+            "count": 35007,
+            "fraud": 2
+          }
+        }
+      },
+      "calibration": {
+        "start_offset": 112500,
+        "end_offset": 150000,
+        "count": 37500,
+        "fraud": 26,
+        "start_ns": 1498924800000000000,
+        "end_ns": 1516084260000000000,
+        "channels": {
+          "Swipe Transaction": {
+            "count": 6319,
+            "fraud": 15
+          },
+          "Online Transaction": {
+            "count": 5809,
+            "fraud": 0
+          },
+          "Chip Transaction": {
+            "count": 25372,
+            "fraud": 11
+          }
+        }
+      },
+      "overlap_count": 0
+    }
+  },
+  {
+    "run": "exp12_pilot_1000000_logic_only_9c66709b8deb2129_uniform_seed42",
+    "source": "D:\\Projects\\Klasifikasi Transasi Kartu Kredit - GraphSAGE\\tugas-akhir-klasifikasi-transaksi-kartu-kredit\\result\\exp12\\exp12_pilot_1000000_logic_only_9c66709b8deb2129_uniform_seed42\\metrics.json",
+    "metrics": {
+      "auprc": 0.046643298471884344,
+      "roc_auc": 0.8657157828088184,
+      "accuracy": 0.9975466666666667,
+      "precision": 0.07246376811594203,
+      "recall": 0.07853403141361257,
+      "f1": 0.07537688442211055,
+      "f1_macro": 0.5370742941079051,
+      "gmean": 0.28005960024646304,
+      "specificity": 0.9987183680553238,
+      "false_positive_rate": 0.0012816319446762314,
+      "alert_rate": 0.00138,
+      "prevalence": 0.0012733333333333333,
+      "ap_lift": 36.63086267425472,
+      "tn": 149617,
+      "fp": 192,
+      "fn": 176,
+      "tp": 15,
+      "strategy": "uniform",
+      "seed": 42,
+      "best_epoch": 30,
+      "epochs": 30,
+      "stop_reason": "max_epochs",
+      "best_val_auprc": 0.733669394282905,
+      "checkpoint_val_auprc": 0.733669394282905,
+      "max_observed_val_auprc": 0.733669394282905,
+      "selection_score": 0.08758783899573468,
+      "selection_metric": "recent_ap",
+      "val_test_auprc_gap": 0.6870260958110207,
+      "decision_threshold": 0.19262807071208954,
+      "threshold_policy": "validation",
+      "long_tail_count": 191,
+      "long_tail_recall": 0.07853403141361257,
+      "long_tail_unknown_history_fraud": 0,
+      "inference_seconds": 0.08197440000003553,
+      "inference_ms_per_1000": 0.5464960000002369,
+      "inference_with_preparation_ms_per_1000": 2.0252486666625678,
+      "peak_vram_gb": 0.35559558868408203,
+      "duration_seconds": 12.340049700000236
+    },
+    "validation_partitions": {
+      "policy": "recent_interleaved",
+      "recent_start_offset": 112500,
+      "recent_fraction": 0.25,
+      "block_days": 7,
+      "assignment": "Unix-epoch time block parity: even=selection, odd=calibration",
+      "selection": {
+        "count": 18917,
+        "fraud": 11,
+        "start_ns": 1498924800000000000,
+        "end_ns": 1516084260000000000,
+        "channels": {
+          "Swipe Transaction": {
+            "count": 3215,
+            "fraud": 4
+          },
+          "Online Transaction": {
+            "count": 2932,
+            "fraud": 0
+          },
+          "Chip Transaction": {
+            "count": 12770,
+            "fraud": 7
+          }
+        }
+      },
+      "calibration": {
+        "count": 18583,
+        "fraud": 15,
+        "start_ns": 1499301120000000000,
+        "end_ns": 1515624720000000000,
+        "channels": {
+          "Swipe Transaction": {
+            "count": 3104,
+            "fraud": 11
+          },
+          "Online Transaction": {
+            "count": 2877,
+            "fraud": 0
+          },
+          "Chip Transaction": {
+            "count": 12602,
+            "fraud": 4
+          }
+        }
+      },
+      "overlap_count": 0
+    }
+  },
+  {
+    "run": "exp12_pilot_1000000_main_c0889f007b2b418d_uniform_seed42",
+    "source": "D:\\Projects\\Klasifikasi Transasi Kartu Kredit - GraphSAGE\\tugas-akhir-klasifikasi-transaksi-kartu-kredit\\result\\exp12\\exp12_pilot_1000000_main_c0889f007b2b418d_uniform_seed42\\metrics.json",
+    "metrics": {
+      "auprc": 0.16657409195699804,
+      "roc_auc": 0.9476737377181744,
+      "accuracy": 0.9985066666666667,
+      "precision": 0.31868131868131866,
+      "recall": 0.1518324607329843,
+      "f1": 0.20567375886524822,
+      "f1_macro": 0.6024631948357697,
+      "gmean": 0.38957620987797364,
+      "specificity": 0.9995861396845316,
+      "false_positive_rate": 0.0004138603154684173,
+      "alert_rate": 0.0006066666666666667,
+      "prevalence": 0.0012733333333333333,
+      "ap_lift": 130.81734970444873,
+      "tn": 149747,
+      "fp": 62,
+      "fn": 162,
+      "tp": 29,
+      "strategy": "uniform",
+      "seed": 42,
+      "best_epoch": 19,
+      "epochs": 30,
+      "stop_reason": "max_epochs",
+      "best_val_auprc": 0.8069230719722174,
+      "checkpoint_val_auprc": 0.8069230719722174,
+      "max_observed_val_auprc": 0.8122505117550493,
+      "selection_score": 0.20971334626911772,
+      "selection_metric": "recent_ap",
+      "val_test_auprc_gap": 0.6403489800152193,
+      "decision_threshold": 0.3606634736061096,
+      "threshold_policy": "validation",
+      "long_tail_count": 191,
+      "long_tail_recall": 0.1518324607329843,
+      "long_tail_unknown_history_fraud": 0,
+      "inference_seconds": 0.1404485000002751,
+      "inference_ms_per_1000": 0.9363233333351673,
+      "inference_with_preparation_ms_per_1000": 2.4465959999967404,
+      "peak_vram_gb": 0.4276442527770996,
+      "duration_seconds": 13.98199620000014
+    },
+    "validation_partitions": {
+      "policy": "recent_interleaved",
+      "recent_start_offset": 112500,
+      "recent_fraction": 0.25,
+      "block_days": 7,
+      "assignment": "Unix-epoch time block parity: even=selection, odd=calibration",
+      "selection": {
+        "count": 18917,
+        "fraud": 11,
+        "start_ns": 1498924800000000000,
+        "end_ns": 1516084260000000000,
+        "channels": {
+          "Swipe Transaction": {
+            "count": 3215,
+            "fraud": 4
+          },
+          "Online Transaction": {
+            "count": 2932,
+            "fraud": 0
+          },
+          "Chip Transaction": {
+            "count": 12770,
+            "fraud": 7
+          }
+        }
+      },
+      "calibration": {
+        "count": 18583,
+        "fraud": 15,
+        "start_ns": 1499301120000000000,
+        "end_ns": 1515624720000000000,
+        "channels": {
+          "Swipe Transaction": {
+            "count": 3104,
+            "fraud": 11
+          },
+          "Online Transaction": {
+            "count": 2877,
+            "fraud": 0
+          },
+          "Chip Transaction": {
+            "count": 12602,
+            "fraud": 4
+          }
+        }
+      },
+      "overlap_count": 0
+    }
+  },
+  {
+    "run": "exp12_pilot_1000000_self_only_7b64eff9fc076c23_uniform_seed42",
+    "source": "D:\\Projects\\Klasifikasi Transasi Kartu Kredit - GraphSAGE\\tugas-akhir-klasifikasi-transaksi-kartu-kredit\\result\\exp12\\exp12_pilot_1000000_self_only_7b64eff9fc076c23_uniform_seed42\\metrics.json",
+    "metrics": {
+      "auprc": 0.11976169490519388,
+      "roc_auc": 0.9439815494207475,
+      "accuracy": 0.9981666666666666,
+      "precision": 0.1956521739130435,
+      "recall": 0.14136125654450263,
+      "f1": 0.1641337386018237,
+      "f1_macro": 0.5816080327768571,
+      "gmean": 0.37584107791037885,
+      "specificity": 0.9992590565319841,
+      "false_positive_rate": 0.0007409434680158977,
+      "alert_rate": 0.00092,
+      "prevalence": 0.0012733333333333333,
+      "ap_lift": 94.0536870983198,
+      "tn": 149698,
+      "fp": 111,
+      "fn": 164,
+      "tp": 27,
+      "strategy": "uniform",
+      "seed": 42,
+      "best_epoch": 16,
+      "epochs": 30,
+      "stop_reason": "max_epochs",
+      "best_val_auprc": 0.6967676627245819,
+      "checkpoint_val_auprc": 0.6967676627245819,
+      "max_observed_val_auprc": 0.7672287001570235,
+      "selection_score": 0.16037104826742543,
+      "selection_metric": "recent_ap",
+      "val_test_auprc_gap": 0.5770059678193881,
+      "decision_threshold": 0.39177677035331726,
+      "threshold_policy": "validation",
+      "long_tail_count": 191,
+      "long_tail_recall": 0.14136125654450263,
+      "long_tail_unknown_history_fraud": 0,
+      "inference_seconds": 0.2036814000002778,
+      "inference_ms_per_1000": 1.357876000001852,
+      "inference_with_preparation_ms_per_1000": 4.153327999993053,
+      "peak_vram_gb": 0.4276442527770996,
+      "duration_seconds": 22.152226899999732
+    },
+    "validation_partitions": {
+      "policy": "recent_interleaved",
+      "recent_start_offset": 112500,
+      "recent_fraction": 0.25,
+      "block_days": 7,
+      "assignment": "Unix-epoch time block parity: even=selection, odd=calibration",
+      "selection": {
+        "count": 18917,
+        "fraud": 11,
+        "start_ns": 1498924800000000000,
+        "end_ns": 1516084260000000000,
+        "channels": {
+          "Swipe Transaction": {
+            "count": 3215,
+            "fraud": 4
+          },
+          "Online Transaction": {
+            "count": 2932,
+            "fraud": 0
+          },
+          "Chip Transaction": {
+            "count": 12770,
+            "fraud": 7
+          }
+        }
+      },
+      "calibration": {
+        "count": 18583,
+        "fraud": 15,
+        "start_ns": 1499301120000000000,
+        "end_ns": 1515624720000000000,
+        "channels": {
+          "Swipe Transaction": {
+            "count": 3104,
+            "fraud": 11
+          },
+          "Online Transaction": {
+            "count": 2877,
+            "fraud": 0
+          },
+          "Chip Transaction": {
+            "count": 12602,
+            "fraud": 4
+          }
+        }
+      },
+      "overlap_count": 0
+    }
+  },
+  {
+    "run": "exp12_smoke_7aed137661e751a4_importance_seed42",
+    "source": "D:\\Projects\\Klasifikasi Transasi Kartu Kredit - GraphSAGE\\tugas-akhir-klasifikasi-transaksi-kartu-kredit\\result\\exp12_smoke\\exp12_smoke_7aed137661e751a4_importance_seed42\\metrics.json",
+    "metrics": {
+      "auprc": 0.13534682305688267,
+      "roc_auc": 0.9556263247453067,
+      "accuracy": 0.9983466666666667,
+      "precision": 0.24324324324324326,
+      "recall": 0.14136125654450263,
+      "f1": 0.17880794701986755,
+      "f1_macro": 0.5889902236684267,
+      "gmean": 0.37587497031901723,
+      "specificity": 0.9994392860242042,
+      "false_positive_rate": 0.0005607139757958235,
+      "alert_rate": 0.00074,
+      "prevalence": 0.0012733333333333333,
+      "ap_lift": 106.29331653681885,
+      "tn": 149725,
+      "fp": 84,
+      "fn": 164,
+      "tp": 27,
+      "strategy": "importance",
+      "seed": 42,
+      "best_epoch": 3,
+      "epochs": 3,
+      "stop_reason": "max_epochs",
+      "best_val_auprc": 0.7259335510591096,
+      "checkpoint_val_auprc": 0.7259335510591096,
+      "max_observed_val_auprc": 0.7259335510591096,
+      "selection_score": 0.07906734052859932,
+      "selection_metric": "recent_ap",
+      "val_test_auprc_gap": 0.590586728002227,
+      "decision_threshold": 0.7478000521659851,
+      "threshold_policy": "validation",
+      "long_tail_count": 191,
+      "long_tail_recall": 0.14136125654450263,
+      "long_tail_unknown_history_fraud": 0,
+      "inference_seconds": 0.18428920000042126,
+      "inference_ms_per_1000": 1.2285946666694751,
+      "inference_with_preparation_ms_per_1000": 3.0876713333297325,
+      "peak_vram_gb": 0.15888452529907227,
+      "duration_seconds": 4.281800799999473
+    },
+    "validation_partitions": {
+      "policy": "recent_interleaved",
+      "recent_start_offset": 112500,
+      "recent_fraction": 0.25,
+      "block_days": 7,
+      "assignment": "Unix-epoch time block parity: even=selection, odd=calibration",
+      "selection": {
+        "count": 18917,
+        "fraud": 11,
+        "start_ns": 1498924800000000000,
+        "end_ns": 1516084260000000000,
+        "channels": {
+          "Swipe Transaction": {
+            "count": 3215,
+            "fraud": 4
+          },
+          "Online Transaction": {
+            "count": 2932,
+            "fraud": 0
+          },
+          "Chip Transaction": {
+            "count": 12770,
+            "fraud": 7
+          }
+        }
+      },
+      "calibration": {
+        "count": 18583,
+        "fraud": 15,
+        "start_ns": 1499301120000000000,
+        "end_ns": 1515624720000000000,
+        "channels": {
+          "Swipe Transaction": {
+            "count": 3104,
+            "fraud": 11
+          },
+          "Online Transaction": {
+            "count": 2877,
+            "fraud": 0
+          },
+          "Chip Transaction": {
+            "count": 12602,
+            "fraud": 4
+          }
+        }
+      },
+      "overlap_count": 0
+    }
+  },
+  {
+    "run": "exp12_smoke_7aed137661e751a4_topology_seed42",
+    "source": "D:\\Projects\\Klasifikasi Transasi Kartu Kredit - GraphSAGE\\tugas-akhir-klasifikasi-transaksi-kartu-kredit\\result\\exp12_smoke\\exp12_smoke_7aed137661e751a4_topology_seed42\\metrics.json",
+    "metrics": {
+      "auprc": 0.14209945127466864,
+      "roc_auc": 0.9559824326396205,
+      "accuracy": 0.9984,
+      "precision": 0.27522935779816515,
+      "recall": 0.15706806282722513,
+      "f1": 0.2,
+      "f1_macro": 0.5995995995995996,
+      "gmean": 0.3962136227422113,
+      "specificity": 0.9994726618560967,
+      "false_positive_rate": 0.0005273381439032665,
+      "alert_rate": 0.0007266666666666667,
+      "prevalence": 0.0012733333333333333,
+      "ap_lift": 111.59642770261935,
+      "tn": 149730,
+      "fp": 79,
+      "fn": 161,
+      "tp": 30,
+      "strategy": "topology",
+      "seed": 42,
+      "best_epoch": 3,
+      "epochs": 3,
+      "stop_reason": "max_epochs",
+      "best_val_auprc": 0.7222176205149939,
+      "checkpoint_val_auprc": 0.7222176205149939,
+      "max_observed_val_auprc": 0.7222176205149939,
+      "selection_score": 0.09752195849090997,
+      "selection_metric": "recent_ap",
+      "val_test_auprc_gap": 0.5801181692403253,
+      "decision_threshold": 0.7467316389083862,
+      "threshold_policy": "validation",
+      "long_tail_count": 191,
+      "long_tail_recall": 0.15706806282722513,
+      "long_tail_unknown_history_fraud": 0,
+      "inference_seconds": 0.2728045999992901,
+      "inference_ms_per_1000": 1.8186973333286005,
+      "inference_with_preparation_ms_per_1000": 5.559772000002947,
+      "peak_vram_gb": 0.15888452529907227,
+      "duration_seconds": 5.3178961999983585
+    },
+    "validation_partitions": {
+      "policy": "recent_interleaved",
+      "recent_start_offset": 112500,
+      "recent_fraction": 0.25,
+      "block_days": 7,
+      "assignment": "Unix-epoch time block parity: even=selection, odd=calibration",
+      "selection": {
+        "count": 18917,
+        "fraud": 11,
+        "start_ns": 1498924800000000000,
+        "end_ns": 1516084260000000000,
+        "channels": {
+          "Swipe Transaction": {
+            "count": 3215,
+            "fraud": 4
+          },
+          "Online Transaction": {
+            "count": 2932,
+            "fraud": 0
+          },
+          "Chip Transaction": {
+            "count": 12770,
+            "fraud": 7
+          }
+        }
+      },
+      "calibration": {
+        "count": 18583,
+        "fraud": 15,
+        "start_ns": 1499301120000000000,
+        "end_ns": 1515624720000000000,
+        "channels": {
+          "Swipe Transaction": {
+            "count": 3104,
+            "fraud": 11
+          },
+          "Online Transaction": {
+            "count": 2877,
+            "fraud": 0
+          },
+          "Chip Transaction": {
+            "count": 12602,
+            "fraud": 4
+          }
+        }
+      },
+      "overlap_count": 0
+    }
+  },
+  {
+    "run": "exp12_smoke_7aed137661e751a4_uniform_seed42",
+    "source": "D:\\Projects\\Klasifikasi Transasi Kartu Kredit - GraphSAGE\\tugas-akhir-klasifikasi-transaksi-kartu-kredit\\result\\exp12_smoke\\exp12_smoke_7aed137661e751a4_uniform_seed42\\metrics.json",
+    "metrics": {
+      "auprc": 0.15115575714240323,
+      "roc_auc": 0.9584889226662404,
+      "accuracy": 0.9984266666666667,
+      "precision": 0.2857142857142857,
+      "recall": 0.15706806282722513,
+      "f1": 0.20270270270270271,
+      "f1_macro": 0.6009576295458365,
+      "gmean": 0.39621891508144313,
+      "specificity": 0.9994993625216109,
+      "false_positive_rate": 0.0005006374783891321,
+      "alert_rate": 0.0007,
+      "prevalence": 0.0012733333333333333,
+      "ap_lift": 118.70870979769887,
+      "tn": 149734,
+      "fp": 75,
+      "fn": 161,
+      "tp": 30,
+      "strategy": "uniform",
+      "seed": 42,
+      "best_epoch": 3,
+      "epochs": 3,
+      "stop_reason": "max_epochs",
+      "best_val_auprc": 0.7263325169370599,
+      "checkpoint_val_auprc": 0.7263325169370599,
+      "max_observed_val_auprc": 0.7263325169370599,
+      "selection_score": 0.08772779018389906,
+      "selection_metric": "recent_ap",
+      "val_test_auprc_gap": 0.5751767597946567,
+      "decision_threshold": 0.7666454911231995,
+      "threshold_policy": "validation",
+      "long_tail_count": 191,
+      "long_tail_recall": 0.15706806282722513,
+      "long_tail_unknown_history_fraud": 0,
+      "inference_seconds": 0.3486149000000296,
+      "inference_ms_per_1000": 2.3240993333335305,
+      "inference_with_preparation_ms_per_1000": 6.090894666679863,
+      "peak_vram_gb": 0.14809322357177734,
+      "duration_seconds": 6.389971200000218
+    },
+    "validation_partitions": {
+      "policy": "recent_interleaved",
+      "recent_start_offset": 112500,
+      "recent_fraction": 0.25,
+      "block_days": 7,
+      "assignment": "Unix-epoch time block parity: even=selection, odd=calibration",
+      "selection": {
+        "count": 18917,
+        "fraud": 11,
+        "start_ns": 1498924800000000000,
+        "end_ns": 1516084260000000000,
+        "channels": {
+          "Swipe Transaction": {
+            "count": 3215,
+            "fraud": 4
+          },
+          "Online Transaction": {
+            "count": 2932,
+            "fraud": 0
+          },
+          "Chip Transaction": {
+            "count": 12770,
+            "fraud": 7
+          }
+        }
+      },
+      "calibration": {
+        "count": 18583,
+        "fraud": 15,
+        "start_ns": 1499301120000000000,
+        "end_ns": 1515624720000000000,
+        "channels": {
+          "Swipe Transaction": {
+            "count": 3104,
+            "fraud": 11
+          },
+          "Online Transaction": {
+            "count": 2877,
+            "fraud": 0
+          },
+          "Chip Transaction": {
+            "count": 12602,
+            "fraud": 4
+          }
+        }
+      },
+      "overlap_count": 0
+    }
+  }
+]

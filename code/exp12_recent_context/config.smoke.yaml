@@ -1,0 +1,18 @@
+extends: config.yaml
+experiment:
+  name: exp12_smoke
+  seeds: [42]
+  max_rows: 1000000
+training:
+  min_epochs: 1
+  epochs: 3
+  batch_size: 256
+  # Prefix smoke is not a population estimate; require only pipeline viability.
+  selection_min_fraud: 1
+evaluation:
+  batch_size: 1024
+  calibration_tail_fraction: 0.25
+  calibration_min_fraud: 1
+paths:
+  model_dir: ../../model/exp12_smoke
+  result_dir: ../../result/exp12_smoke

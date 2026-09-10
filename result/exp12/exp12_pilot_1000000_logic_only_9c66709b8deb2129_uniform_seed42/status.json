@@ -1,0 +1,9 @@
+{
+  "status": "complete",
+  "run": "exp12_pilot_1000000_logic_only_9c66709b8deb2129_uniform_seed42",
+  "stop_reason": "max_epochs",
+  "last_epoch": 30,
+  "best_epoch": 30,
+  "stale_epochs": 0,
+  "patience": 20
+}

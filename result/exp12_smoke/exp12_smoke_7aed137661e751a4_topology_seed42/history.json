@@ -1,0 +1,104 @@
+[
+  {
+    "epoch": 1,
+    "loss": 0.07257842230230908,
+    "val_auprc": 0.432993416017742,
+    "selection_score": 0.02449706750651682,
+    "validation_blocks": [
+      {
+        "count": 6306,
+        "fraud": 0,
+        "ap_lift": null
+      },
+      {
+        "count": 6306,
+        "fraud": 0,
+        "ap_lift": null
+      },
+      {
+        "count": 6305,
+        "fraud": 11,
+        "ap_lift": 33.706933292562994
+      }
+    ],
+    "training_roots": 31008,
+    "learning_rate": 0.001,
+    "checkpoint_improved": true,
+    "stale_epochs": 0,
+    "sampled_table_seconds": 0.022855699999126955,
+    "entity_context_seconds": 0.003978400000050897,
+    "neighbor_feature_mean_seconds": 0.09264849999999569,
+    "training_seconds": 0.85374419999971,
+    "training_nodes_per_second": 36320.012481502694,
+    "validation_query_seconds": 0.1964856000013242,
+    "epoch_seconds": 1.226789699998335
+  },
+  {
+    "epoch": 2,
+    "loss": 0.030316822300016328,
+    "val_auprc": 0.5868424464348825,
+    "selection_score": 0.042251204707012116,
+    "validation_blocks": [
+      {
+        "count": 6306,
+        "fraud": 0,
+        "ap_lift": null
+      },
+      {
+        "count": 6306,
+        "fraud": 0,
+        "ap_lift": null
+      },
+      {
+        "count": 6305,
+        "fraud": 11,
+        "ap_lift": 81.89672734688071
+      }
+    ],
+    "training_roots": 31008,
+    "learning_rate": 0.001,
+    "checkpoint_improved": true,
+    "stale_epochs": 0,
+    "sampled_table_seconds": 0.025756799999726354,
+    "entity_context_seconds": 0.00279939999927592,
+    "neighbor_feature_mean_seconds": 0.0954474999998638,
+    "training_seconds": 0.9836724999986473,
+    "training_nodes_per_second": 31522.686666591413,
+    "validation_query_seconds": 0.22002229999998235,
+    "epoch_seconds": 1.3865963999996893
+  },
+  {
+    "epoch": 3,
+    "loss": 0.0269946953583551,
+    "val_auprc": 0.7222176205149939,
+    "selection_score": 0.09752195849090997,
+    "validation_blocks": [
+      {
+        "count": 6306,
+        "fraud": 0,
+        "ap_lift": null
+      },
+      {
+        "count": 6306,
+        "fraud": 0,
+        "ap_lift": null
+      },
+      {
+        "count": 6305,
+        "fraud": 11,
+        "ap_lift": 102.51881054029734
+      }
+    ],
+    "training_roots": 31008,
+    "learning_rate": 0.001,
+    "checkpoint_improved": true,
+    "stale_epochs": 0,
+    "sampled_table_seconds": 0.026545400000031805,
+    "entity_context_seconds": 0.0027021999994758517,
+    "neighbor_feature_mean_seconds": 0.10486560000026657,
+    "training_seconds": 0.9388137999994797,
+    "training_nodes_per_second": 33028.91372071564,
+    "validation_query_seconds": 0.243589300000167,
+    "epoch_seconds": 1.3743039000000863
+  }
+]

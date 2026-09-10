@@ -4,11 +4,12 @@
 membaca hasil di `result/` dan menghasilkan grafik metrik akhir, riwayat training,
 serta laporan HTML interaktif yang dapat dibuka offline.
 
-Implementasi terbaru tersedia di **[EXP11 - Fitur Perilaku dan Validation Terbaru](code/exp11_behavioral_temporal/README.md)**.
-EXP11 menambahkan histori transaksi user/kartu tanpa label, memisahkan pemilihan
-checkpoint dari kalibrasi threshold, dan memperjelas alasan early stopping.
-[Analisis full-data EXP10](code/exp11_behavioral_temporal/ANALISIS_EXP10.md) dan
-[validasi EXP11](code/exp11_behavioral_temporal/VALIDATION.md) mencatat bukti serta batas klaim.
+Implementasi terbaru tersedia di **[EXP12 - Recent Context dan Validation Selaras Drift](code/exp12_recent_context/README.md)**.
+EXP12 menambahkan baseline perilaku jangka pendek/bersyarat dan memilih
+checkpoint dari fraud terbaru yang didominasi chip. [Evaluasi EXP11](code/exp12_recent_context/ANALISIS_EXP11.md)
+dan [validasi EXP12](code/exp12_recent_context/VALIDATION.md) mencatat bukti serta batas klaim.
+
+Versi sebelumnya: **[EXP11 - Fitur Perilaku dan Validation Terbaru](code/exp11_behavioral_temporal/README.md)**.
 
 Versi sebelumnya: **[EXP10 - Temporal Robustness](code/exp10_temporal_robust/README.md)**.
 EXP10 memperbaiki fitur nominal, penanganan imbalance pada root training, pemilihan
@@ -133,6 +134,8 @@ memperbaiki aspek implementasi atau evaluasi secara bertahap:
 | EXP8 | Adaptive batched PPR dan cache bobot importance |
 | EXP9 | Struktur modular, frozen training history, blok per lapisan, PPR closed-form, dan audit proposal |
 | EXP10 | Audit perubahan pola fraud, fitur nominal, balanced roots, checkpoint temporal, dan metrik referensi |
+| EXP11 | Histori perilaku strictly-past, LayerNorm, subtype weighting, dan validation/calibration terpisah |
+| EXP12 | Context perilaku recent/conditional dan validation terbaru berbasis blok waktu tanpa overlap |
 
 EXP6 merupakan tahap pengembangan sebelum EXP7, EXP8, dan EXP9. Exact
 GPU sampler tetap berasal dari EXP5 agar perubahan hasil dapat dikaitkan dengan

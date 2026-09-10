@@ -1,0 +1,107 @@
+experiment:
+  name: exp12_recent_context
+  seeds: [42, 43, 44, 45, 46]
+  strategies: [uniform, topology, importance]
+  device: cuda
+  max_rows: null
+  cache_graph: true
+  # Skip complete runs; incomplete runs restart in a separate attempt folder.
+  on_existing: auto
+  overwrite: false
+
+data:
+  transactions: ../../dataset/credit_card_transactions-ibm_v2.csv
+  split: [0.70, 0.15, 0.15]
+
+features:
+  encoder: contextual
+  # Compact storage; sampled tensors, means, model and optimizer remain FP32.
+  storage_dtype: float16
+
+model:
+  hidden_channels: 256
+  num_layers: 2
+  dropout: 0.2
+  normalization: layer
+  use_graph_context: true
+
+sampling:
+  # Forward layer order: layer 1 aggregates 25; layer 2 aggregates 10.
+  # A transaction has only two direct neighbors, so both are always used.
+  fanouts: [25, 10]
+  topology_alpha: 0.5
+  topology_mode: historical
+  topology_smoothing: 20.0
+  # An explicit sampling extension; never uses validation/test labels.
+  topology_balance: true
+  importance_gamma: 0.3
+  ppr_beta: 0.15
+  ppr_steps: 3
+  edge_chunk_size: 250000
+  # Resample each entity's neighborhood once per epoch, shared by its roots.
+  refresh_epochs: 1
+
+training:
+  batch_size: 1024
+  epochs: 100
+  learning_rate: 0.001
+  lr_factor: 0.5
+  lr_patience: 5
+  min_learning_rate: 0.00001
+  early_stopping_patience: 20
+  min_epochs: 20
+  early_stopping_min_delta: 0.0001
+  gradient_clip_norm: 5.0
+  # Root balancing is identical for every neighbor strategy. Every train fraud
+  # once/epoch + up to 50 negatives/fraud, without replacement; full graph kept.
+  root_sampling: balanced
+  negatives_per_positive: 50
+  # Train-only positive subtype emphasis, normalized to mean 1 among frauds.
+  channel_weight_power: 0.5
+  max_channel_weight: 4.0
+  # Do not apply inverse-frequency BCE again after balancing roots.
+  positive_class_weight_power: 0.0
+  max_positive_class_weight: null
+  weight_decay: 0.0001
+  # Within latest 25% validation: even time blocks select checkpoint, odd
+  # blocks calibrate threshold. Assignment is label-independent; ties stay together.
+  validation_partition: recent_interleaved
+  recent_validation_fraction: 0.25
+  validation_block_days: 7
+  selection_metric: recent_ap
+  selection_fraction: 0.75
+  selection_tail_fraction: 0.3333333333333333
+  # Fail clearly if recent partitions lack fraud; never pull in older fraud.
+  selection_min_fraud: 25
+  validation_bins: 3
+  # CUDA fusion reduces optimizer launch overhead, retaining FP32 Adam.
+  fused_adam: true
+
+evaluation:
+  threshold: 0.5
+  calibrate_threshold: true
+  threshold_beta: 2.0
+  primary_threshold: validation
+  # calibration_tail_fraction applies to the chronological control only.
+  calibration_tail_fraction: 0.25
+  calibration_min_fraud: 25
+  sampling_passes: 1
+  seed: 10000
+  batch_size: 4096
+  camouflage_normal_ratio: 0.70
+  latency_nodes: 1000
+  latency_repeats: 5
+
+runtime:
+  # Exact mean-SAGE factorization for the two-layer User-Transaction-Merchant graph.
+  training_backend: factorized
+  cache_sampler_on_device: true
+  progress_update_batches: 100
+  # Keep transaction features in RAM; only sampled features enter CUDA.
+  feature_device: cpu
+  cpu_threads: 4
+  progress_bar: true
+
+paths:
+  model_dir: ../../model/exp12
+  result_dir: ../../result/exp12
