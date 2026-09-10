@@ -5,3 +5,8 @@ model/*
 !model/.gitkeep
 
 /code/*/.venv/
+
+/notebooks/.venv/
+/notebooks/__pycache__/
+/notebooks/.ipynb_checkpoints/
+/notebooks/output/

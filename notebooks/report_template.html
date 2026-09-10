@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Perbandingan eksperimen GraphSAGE</title>
+<style>
+:root{color-scheme:light;--ink:#172438;--muted:#54657b;--line:#dce4ef}
+*{box-sizing:border-box}body{margin:0;background:#f3f6fb;color:var(--ink);font:14px/1.55 system-ui,-apple-system,Segoe UI,sans-serif}
+header{padding:32px 4vw 25px;background:#15283f;color:#fff}header p{color:#c6d5e6;max-width:1000px;margin:7px 0}
+h1{font-size:29px;letter-spacing:-.6px;margin:0}h2{font-size:19px;margin:0 0 10px}.eyebrow{text-transform:uppercase;font-size:11px;letter-spacing:2px;color:#80c8ff}
+main{max-width:1700px;margin:auto;padding:22px 4vw}section,.controls{background:white;border:1px solid var(--line);border-radius:12px;padding:20px;margin-bottom:18px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px}.stat{padding:16px 20px;background:white;border:1px solid var(--line);border-radius:10px}.stat b{font-size:26px;display:block}.stat span{color:var(--muted)}
+.controls{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.field label{display:block;font-size:12px;font-weight:650;margin-bottom:5px;color:var(--muted)}select{width:100%;padding:9px;border:1px solid #bdcadd;border-radius:7px;background:white;font:inherit;color:var(--ink)}
+.metric-field{grid-column:span 2}.note{font-size:13px;color:var(--muted);margin:5px 0 12px}.pills{display:flex;gap:18px;flex-wrap:wrap}.pills label{display:flex;align-items:center;gap:5px}.chart{width:100%;min-height:510px}#message{color:#9a3412}
+.table-wrap{overflow:auto;max-height:420px}table{border-collapse:collapse;width:100%;font-size:12px}th,td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}th{position:sticky;top:0;background:#eaf0f8}td.num{text-align:right;font-variant-numeric:tabular-nums}.empty{padding:40px;text-align:center;color:var(--muted)}
+button{padding:7px 12px;background:#eaf1fb;border:1px solid #c6d4e9;color:#1d4e8a;border-radius:6px;cursor:pointer}.row{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}summary{cursor:pointer;font-weight:650}.footer{font-size:12px;color:var(--muted)}
+@media(max-width:850px){.controls{grid-template-columns:1fr 1fr}.metric-field{grid-column:span 2}.stats{grid-template-columns:1fr 1fr}main{padding:16px}h1{font-size:23px}}@media print{header{background:white;color:#172438}.controls,button{display:none}.table-wrap{max-height:none}.chart{break-inside:avoid}}
+</style>
+<script>/*__PLOTLY__*/</script>
+</head>
+<body>
+<header><div class="eyebrow">GraphSAGE · Neighbor sampling</div><h1>Perbandingan eksperimen & setiap run</h1><p>Metrik akhir, diagnostik, dan kurva training dari JSON asli. Pilih eksperimen, metode, konfigurasi, serta metrik untuk melihat semua hasil yang tersedia.</p></header>
+<main>
+<div class="stats"><div class="stat"><b id="nexp"></b><span>Eksperimen</span></div><div class="stat"><b id="nrun"></b><span>Run sesuai filter</span></div><div class="stat"><b id="nmetric"></b><span>Metrik numerik tersedia</span></div><div class="stat"><b id="ngroup"></b><span>Kelompok konfigurasi</span></div></div>
+<div class="controls">
+ <div class="field"><label for="view">Tampilan</label><select id="view"><option value="compare">Antar eksperimen & metode (mean ± SD)</option><option value="runs">Setiap run per eksperimen / metode</option><option value="history">Riwayat training setiap run</option></select></div>
+ <div class="field"><label for="experiment">Eksperimen</label><select id="experiment"></select></div>
+ <div class="field"><label for="method">Metode</label><select id="method"></select></div>
+ <div class="field"><label for="group">Konfigurasi / comparison_id</label><select id="group"></select></div>
+ <div class="field"><label for="section">Kelompok metrik</label><select id="section"><option value="primary">Metrik utama (metrics)</option><option value="diagnostic">Metrik tambahan / diagnostik</option></select></div>
+ <div class="field"><label>Jenis run</label><div class="pills"><label><input id="main" type="checkbox" checked>Main</label><label><input id="pilot" type="checkbox">Pilot</label><label><input id="smoke" type="checkbox">Smoke</label></div></div>
+ <div class="field metric-field"><label for="metric">Metrik — nama mengikuti JSON; [i] adalah indeks array mulai 0</label><select id="metric"></select></div>
+ <div class="field"><label>Navigasi semua metrik</label><button id="previous">← Sebelumnya</button> <button id="next">Berikutnya →</button></div>
+</div>
+<section><div class="row"><h2 id="chart-title">Grafik perbandingan</h2><button id="save-svg">Unduh SVG</button></div><p class="note" id="chart-note"></p><p id="message"></p><div id="chart" class="chart"></div></section>
+<section><h2>Nilai yang ditampilkan</h2><p class="note">N/A berarti tidak dicatat atau null, bukan nol. Pada grafik agregat, n adalah jumlah seed dengan nilai valid. SD hanya dihitung jika n ≥ 2.</p><div id="values-table" class="table-wrap"></div></section>
+<section><details><summary>Inventaris run & protokol</summary><p class="note">Rata-rata hanya menggabungkan comparison_id dan metode yang sama. Attempt terbaru per seed dipilih berdasarkan waktu modifikasi metrics.json, sama seperti pipeline ringkasan. Semua attempt tetap tersedia pada tampilan setiap run dan history.</p><div id="runs-table" class="table-wrap"></div></details></section>
+<section><details><summary>Catatan interpretasi & data yang dilewati</summary>
+<p>Perbandingan antar eksperimen bersifat deskriptif: ukuran data, pembagian temporal, fitur, pemilihan checkpoint, threshold, dan cakupan pengukuran latency dapat berbeda. Label menampilkan jumlah data test. Untuk perbandingan metode dalam protokol yang sama, pilih satu comparison_id.</p>
+<p>EXP lama tanpa comparison_id diberi ID <code>legacy-...</code> dari metadata yang tersedia. Identitas konfigurasi lengkap pada format tersebut tidak bisa diverifikasi. Metrik yang belum dicatat pada versi lama tetap N/A; tidak dihitung ulang atau disamakan dengan metrik lain.</p>
+<p>Nilai <code>selection_score</code> mengikuti <code>selection_metric</code> masing-masing run dan dapat berbeda skala. Metrik fixed-threshold, validation-threshold, channel, dan temporal bin mempertahankan path masing-masing. Indeks bin yang sama antar eksperimen belum tentu memiliki rentang waktu yang sama; rentang asli tersedia dalam JSON sumber.</p>
+<p>Kurva tidak diperpanjang setelah early stopping. Bintang menunjukkan <code>best_epoch</code> yang dicatat, bukan epoch dengan nilai tertinggi pada setiap metrik. File summary.csv sumber tidak dimuat kembali agar run tidak dihitung dua kali.</p>
+<div id="issues-table" class="table-wrap"></div></details></section>
+<p class="footer">Laporan mandiri: bisa dibuka secara offline, tanpa Python dan tanpa akses jaringan. Toolbar grafik mendukung zoom, PNG, dan penyembunyian seri melalui klik legenda. Jalankan ulang notebook atau compare_results.py setelah ada hasil baru.</p>
+</main>
+<script>
+const DATA = /*__DATA__*/;
+const el = id => document.getElementById(id);
+const colors = DATA.colors;
+const unique = values => [...new Set(values)];
+const natural = (a,b) => String(a).localeCompare(String(b), undefined, {numeric:true});
+const esc = v => String(v ?? '').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fmt = v => v == null ? 'N/A' : Number(v).toLocaleString('en-US',{maximumSignificantDigits:7});
+const finite = v => typeof v === 'number' && Number.isFinite(v);
+function options(id, values, all=true) {
+ const node=el(id),old=node.value;node.replaceChildren();
+ if(all)node.add(new Option('Semua','all'));
+ values.forEach(v=>node.add(new Option(typeof v==='string'?v:v.label,typeof v==='string'?v:v.value)));
+ if([...node.options].some(o=>o.value===old))node.value=old;
+}
+function runsFiltered(ignoreGroup=false) {
+ return DATA.runs.filter(r=>el(r.kind).checked && (el('experiment').value==='all'||r.experiment===el('experiment').value)
+  && (el('method').value==='all'||r.strategy===el('method').value)
+  && (ignoreGroup||el('group').value==='all'||r.group===el('group').value));
+}
+function refreshGroups(){const rs=runsFiltered(true);options('group',unique(rs.map(r=>r.group)).map(g=>({value:g,label:g})));}
+function refreshMetrics(){
+ const old=el('metric').value,rs=runsFiltered(),isHistory=el('view').value==='history';
+ el('section').disabled=isHistory;
+ const allowed=new Set(DATA.catalog.filter(m=>m.section===el('section').value).map(m=>m.metric));
+ const names=unique(rs.flatMap(r=>Object.keys((isHistory?DATA.history:DATA.values)[r.run_uid]||{})))
+  .filter(m=>isHistory||allowed.has(m)).sort(natural);
+ options('metric',names,false);
+ if(names.includes(old))el('metric').value=old;
+ else if(names.includes(isHistory?'loss':'auprc'))el('metric').value=isHistory?'loss':'auprc';
+}
+function table(target, headings, rows){
+ el(target).innerHTML=rows.length?'<table><thead><tr>'+headings.map(h=>'<th>'+esc(h)+'</th>').join('')+'</tr></thead><tbody>'
+  +rows.map(row=>'<tr>'+row.map(v=>'<td>'+esc(v)+'</td>').join('')+'</tr>').join('')+'</tbody></table>':'<div class="empty">Tidak ada data untuk filter ini.</div>';
+}
+function render(){
+ const runs=runsFiltered(),metric=el('metric').value,view=el('view').value,traces=[],valueRows=[];
+ const groups=unique(runs.map(r=>r.group)),methods=unique(runs.map(r=>r.strategy)).sort((a,b)=>['uniform','topology','importance'].indexOf(a)-['uniform','topology','importance'].indexOf(b));
+ el('nexp').textContent=unique(runs.map(r=>r.experiment)).length;el('nrun').textContent=runs.length;el('ngroup').textContent=groups.length;
+ el('nmetric').textContent=el('metric').options.length;
+ const title=metric||'Tidak ada metrik';el('chart-title').textContent=title;
+ let xaxis={automargin:true},yaxis={title:{text:title},automargin:true,zeroline:true},headings=[],valid=0;
+ const val = r => DATA.values[r.run_uid]?.[metric];
+ const custom = r => [esc(r.run),esc(r.comparison_id)];
+ if(view==='compare'){
+  const width=.72/Math.max(methods.length,1);
+  methods.forEach((method,index)=>{
+   const xs=[],ys=[],sds=[],counts=[],labels=[],pointX=[],pointY=[],pointText=[];
+   groups.forEach((group,gi)=>{
+    const selected=runs.filter(r=>r.group===group&&r.strategy===method&&r.included_in_summary);
+    if(!selected.length)return;
+    const available=selected.filter(r=>finite(val(r))),values=available.map(val),n=values.length;
+    const mean=n?values.reduce((a,b)=>a+b,0)/n:null;
+    const sd=n>1?Math.sqrt(values.reduce((a,b)=>a+(b-mean)**2,0)/(n-1)):null;
+    const x=gi+(index-(methods.length-1)/2)*width;
+    valueRows.push([selected[0].experiment,selected[0].kind,selected[0].comparison_id,method,n,fmt(mean),fmt(sd)]);
+    if(!n)return;valid+=n;xs.push(x);ys.push(mean);sds.push(sd);counts.push(n);labels.push(selected[0].group_label);
+    available.forEach((r,ri)=>{pointX.push(x+(ri-(n-1)/2)*Math.min(width/10,.025));pointY.push(val(r));pointText.push(esc(r.run));});
+   });
+   traces.push({type:'bar',name:method,x:xs,y:ys,width:width*.85,marker:{color:colors[method]||'#7c3aed'},
+    error_y:{type:'data',array:sds,visible:true},customdata:counts.map((n,i)=>[labels[i],n]),
+    hovertemplate:'%{customdata[0]}<br>mean=%{y:.6g}<br>n seed=%{customdata[1]}<extra>%{fullData.name}</extra>'});
+   traces.push({type:'scatter',mode:'markers',x:pointX,y:pointY,text:pointText,showlegend:false,
+    marker:{color:'#172438',size:7,symbol:'circle-open'},hovertemplate:'%{text}<br>%{y:.6g}<extra></extra>'});
+  });
+  xaxis={...xaxis,tickmode:'array',tickvals:groups.map((_,i)=>i),ticktext:groups.map(g=>runs.find(r=>r.group===g).group_label),tickangle:-30};
+  el('chart-note').textContent='Batang = rata-rata; error bar = standar deviasi sampel; titik = seed. Setiap konfigurasi dihitung terpisah. Attempt terbaru per seed digunakan pada agregasi.';
+  headings=['Experiment','Jenis','comparison_id','Metode','n seed','Mean','SD'];
+ }else if(view==='runs'){
+  methods.forEach(method=>{
+   const part=runs.filter(r=>r.strategy===method);valid+=part.filter(r=>finite(val(r))).length;
+   traces.push({type:'bar',name:method,x:part.map(r=>r.run_uid),y:part.map(r=>finite(val(r))?val(r):null),
+    marker:{color:colors[method]||'#7c3aed'},text:part.map(r=>finite(val(r))?Number(val(r)).toPrecision(4):'N/A'),textposition:'outside',cliponaxis:false,
+    customdata:part.map(custom),hovertemplate:'%{customdata[0]}<br>config=%{customdata[1]}<br>%{y:.6g}<extra></extra>'});
+  });
+  runs.forEach(r=>valueRows.push([r.experiment,r.kind,r.comparison_id,r.strategy,r.seed,r.attempt,r.run,fmt(val(r)),r.included_in_summary?'Ya':'Tidak']));
+  xaxis={...xaxis,type:'category',categoryorder:'array',categoryarray:runs.map(r=>r.run_uid),tickmode:'array',tickvals:runs.map(r=>r.run_uid),
+   ticktext:runs.map(r=>esc(r.experiment+' · '+r.kind+' · '+r.comparison_id.slice(0,8))+'<br>'+esc(r.run_label)),tickangle:-35};
+  el('chart-note').textContent='Setiap batang adalah satu run. Pilih satu metode untuk membandingkan semua seed dan attempt metode tersebut. Run tanpa metrik tetap tercatat sebagai N/A dalam tabel.';
+  headings=['Experiment','Jenis','comparison_id','Metode','Seed','Attempt','Run','Nilai','Masuk agregasi'];
+ }else{
+  runs.forEach((r,i)=>{
+   const series=DATA.history[r.run_uid]?.[metric]||[];valid+=series.filter(p=>finite(p[1])).length;
+   if(!series.length)return;const name=esc(r.experiment+' / '+r.comparison_id.slice(0,8)+' / '+r.run_label),color=colors[r.strategy]||'#7c3aed';
+   traces.push({type:'scatter',mode:'lines+markers',name,x:series.map(p=>p[0]),y:series.map(p=>p[1]),
+    line:{color,dash:['solid','dash','dot','dashdot'][i%4]},marker:{size:3},connectgaps:false,
+    customdata:series.map(()=>esc(r.run)),hovertemplate:'%{customdata}<br>epoch=%{x}<br>nilai=%{y:.6g}<extra></extra>'});
+   const best=series.find(p=>p[0]===r.best_epoch&&finite(p[1]));
+   if(best)traces.push({type:'scatter',mode:'markers',x:[best[0]],y:[best[1]],showlegend:false,
+    marker:{color,size:13,symbol:'star'},hovertemplate:'Checkpoint terpilih<br>epoch=%{x}<br>%{y:.6g}<extra></extra>'});
+   series.forEach(p=>valueRows.push([r.experiment,r.strategy,r.seed,r.attempt,r.run,p[0],fmt(p[1]),p[0]===r.best_epoch?'Ya':'']));
+  });
+  xaxis={...xaxis,title:{text:'Epoch'}};
+  el('chart-note').textContent='Satu kurva untuk setiap run; warna menunjukkan metode. Bintang = best_epoch tercatat. Kurva berhenti pada epoch terakhir dan nilai null tetap menjadi celah.';
+  headings=['Experiment','Metode','Seed','Attempt','Run','Epoch','Nilai','Checkpoint terpilih'];
+ }
+ el('message').textContent=valid?'':'Tidak ada nilai numerik yang tersedia untuk pilihan ini. Coba metrik atau filter lain.';
+ const layout={template:'plotly_white',height:view==='history'?610:570,margin:{l:80,r:30,t:35,b:view==='history'?90:165},
+  paper_bgcolor:'#fff',plot_bgcolor:'#fff',font:{family:'Arial, sans-serif',size:12,color:'#172438'},xaxis,yaxis,
+  legend:{orientation:'h',y:1.12,x:0},hovermode:'closest',barmode:'overlay',showlegend:true};
+ Plotly.react(el('chart'),traces,layout,{responsive:true,displaylogo:false,toImageButtonOptions:{format:'png',filename:'comparison_'+title.replace(/[^a-z0-9]/gi,'_'),scale:2}});
+ table('values-table',headings,valueRows);
+ table('runs-table',['Experiment','Jenis','comparison_id','Metode','Seed','Attempt','n test','Threshold','Selection metric','Context','Status','Run sumber'],
+  runs.map(r=>[r.experiment,r.kind,r.comparison_id,r.strategy,r.seed,r.attempt,fmt(r.test_count),r.threshold_policy,r.selection_metric,r.context_policy,r.status,r.source]));
+ window.currentReport={runs,metric,view,traces,valueRows};
+}
+options('experiment',unique(DATA.runs.map(r=>r.experiment)).sort(natural));
+options('method',unique(DATA.runs.map(r=>r.strategy)).sort(natural));
+if(!DATA.runs.some(r=>r.kind==='main'))unique(DATA.runs.map(r=>r.kind)).forEach(k=>el(k).checked=true);
+refreshGroups();refreshMetrics();render();
+['experiment','method','main','pilot','smoke'].forEach(id=>el(id).addEventListener('change',()=>{refreshGroups();refreshMetrics();render();}));
+['group','section','view'].forEach(id=>el(id).addEventListener('change',()=>{refreshMetrics();render();}));
+el('metric').addEventListener('change',render);
+['previous','next'].forEach(id=>el(id).addEventListener('click',()=>{const node=el('metric');if(!node.options.length)return;node.selectedIndex=(node.selectedIndex+(id==='next'?1:-1)+node.options.length)%node.options.length;render();}));
+el('save-svg').addEventListener('click',()=>Plotly.downloadImage(el('chart'),{format:'svg',filename:'comparison_'+el('metric').value.replace(/[^a-z0-9]/gi,'_'),width:1500,height:700}));
+table('issues-table',['Sumber','Alasan'],DATA.issues.map(r=>[r.source,r.reason]));
+</script></body></html>

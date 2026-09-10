@@ -1,5 +1,9 @@
 # Klasifikasi Transaksi Penipuan Kartu Kredit dengan GraphSAGE
 
+**[Notebook grafik perbandingan seluruh eksperimen dan run](notebooks/README.md)**
+membaca hasil di `result/` dan menghasilkan grafik metrik akhir, riwayat training,
+serta laporan HTML interaktif yang dapat dibuka offline.
+
 Implementasi terbaru tersedia di **[EXP11 - Fitur Perilaku dan Validation Terbaru](code/exp11_behavioral_temporal/README.md)**.
 EXP11 menambahkan histori transaksi user/kartu tanpa label, memisahkan pemilihan
 checkpoint dari kalibrasi threshold, dan memperjelas alasan early stopping.
