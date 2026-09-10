@@ -1,0 +1,9 @@
+{
+  "status": "complete",
+  "run": "exp11_behavioral_temporal_533260b8f51244e6_uniform_seed42",
+  "stop_reason": "early_stopping",
+  "last_epoch": 50,
+  "best_epoch": 30,
+  "stale_epochs": 20,
+  "patience": 20
+}
