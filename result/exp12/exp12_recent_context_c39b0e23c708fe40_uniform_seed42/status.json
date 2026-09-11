@@ -1,0 +1,9 @@
+{
+  "status": "complete",
+  "run": "exp12_recent_context_c39b0e23c708fe40_uniform_seed42",
+  "stop_reason": "early_stopping",
+  "last_epoch": 25,
+  "best_epoch": 5,
+  "stale_epochs": 20,
+  "patience": 20
+}

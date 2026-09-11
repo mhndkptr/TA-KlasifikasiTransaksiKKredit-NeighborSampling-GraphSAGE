@@ -1,0 +1,9 @@
+{
+  "status": "complete",
+  "run": "exp12_recent_context_6d2d5b1e7aef6380_topology_seed42",
+  "stop_reason": "early_stopping",
+  "last_epoch": 35,
+  "best_epoch": 15,
+  "stale_epochs": 20,
+  "patience": 20
+}
