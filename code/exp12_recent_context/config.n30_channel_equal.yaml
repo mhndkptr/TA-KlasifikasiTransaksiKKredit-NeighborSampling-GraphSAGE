@@ -1,0 +1,9 @@
+# Controlled ablation: remove subtype-specific positive weighting.
+extends: config.n30_multiseed.yaml
+
+experiment:
+  name: exp12_channel_equal_n30
+  strategies: [uniform]
+
+training:
+  channel_weight_power: 0.0

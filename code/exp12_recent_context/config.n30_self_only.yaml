@@ -1,0 +1,9 @@
+# Full-data diagnostic of graph-context contribution at the same root ratio.
+extends: config.n30_multiseed.yaml
+
+experiment:
+  name: exp12_self_only_n30
+  strategies: [uniform]
+
+model:
+  use_graph_context: false

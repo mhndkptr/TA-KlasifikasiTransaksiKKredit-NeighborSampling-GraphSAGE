@@ -1,0 +1,11 @@
+# Controlled ablation: increase the capped rare-channel positive cost.
+# Select this variant only on validation, never on observed test AP.
+extends: config.n30_multiseed.yaml
+
+experiment:
+  name: exp12_chip_weight_n30
+  strategies: [uniform]
+
+training:
+  channel_weight_power: 1.0
+  max_channel_weight: 8.0

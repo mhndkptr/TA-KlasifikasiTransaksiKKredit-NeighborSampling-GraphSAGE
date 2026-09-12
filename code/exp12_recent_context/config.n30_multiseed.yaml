@@ -1,0 +1,16 @@
+# EXP12 local GPU follow-up. Only configuration changes relative to EXP12.
+# N:P=30 is frozen from recent-validation selection in the EXP12 sweep;
+# the higher test AP at N:P=25 is exploratory, not a selection criterion.
+extends: config.gpu16gb.yaml
+
+experiment:
+  name: exp12_recent_context
+  seeds: [42, 43, 44, 45, 46]
+  strategies: [uniform, topology, importance]
+  device: cuda
+  max_rows: null
+  on_existing: auto
+  overwrite: false
+
+training:
+  negatives_per_positive: 30

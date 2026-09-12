@@ -1,5 +1,9 @@
 # EXP12 — Recent behavioral context and drift-aligned validation
 
+Evaluasi run full-data terbaru serta preset uji lanjutan yang hanya mengubah
+konfigurasi tersedia di [EXP12_FOLLOWUP.md](EXP12_FOLLOWUP.md). Seluruh preset
+tersebut tetap memakai engine, model, dan direktori hasil EXP12 lokal.
+
 EXP12 menindaklanjuti full-data EXP11. AP test sudah naik dari **0,0285–0,0353**
 di EXP10 menjadi **0,1539–0,1878**, tetapi checkpoint EXP11 ternyata dipilih
 dari window yang hanya berisi 25 fraud: 20 online, 3 swipe, dan 2 chip. Pola
