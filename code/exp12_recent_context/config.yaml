@@ -35,6 +35,10 @@ sampling:
   # An explicit sampling extension; never uses validation/test labels.
   topology_balance: true
   importance_gamma: 0.3
+  # In the literal heterogeneous graph every transaction has degree two, so
+  # literal transaction centrality is constant. Projected mode counts unique
+  # training transactions sharing either endpoint and is the useful variant.
+  importance_degree_mode: literal_transaction
   ppr_beta: 0.15
   ppr_steps: 3
   edge_chunk_size: 250000

@@ -9,7 +9,9 @@ import yaml
 
 RUNTIME_DEFAULTS = {
     "experiment": {"on_existing": "auto"},
-    "runtime": {"training_backend": "factorized", "cache_sampler_on_device": True, "progress_update_batches": 100},
+    "runtime": {"training_backend": "factorized", "cache_sampler_on_device": True,
+                "progress_update_batches": 100, "preprocess_backend": "pandas",
+                "preprocess_chunk_rows": 250000, "duckdb_memory_limit": "8GB"},
     "training": {"fused_adam": True, 'root_sampling': 'uniform', 'negatives_per_positive': 20,
                  'selection_metric': 'ap', 'validation_bins': 3, 'weight_decay': 0.0,
                  'selection_fraction': 1.0, 'selection_tail_fraction': 1.0,
@@ -51,8 +53,8 @@ def load_config(path, seen=None):
 
 
 def validate_config(cfg):
-    if cfg['features']['encoder'] not in {'contextual', 'behavioral', 'robust', 'legacy'} or cfg['features']['storage_dtype'] not in {'float16', 'float32'}:
-        raise ValueError('features.encoder contextual/behavioral/robust/legacy; storage_dtype float16/float32')
+    if cfg['features']['encoder'] not in {'contextual', 'behavioral', 'robust', 'legacy', 'proposal'} or cfg['features']['storage_dtype'] not in {'float16', 'float32'}:
+        raise ValueError('features.encoder contextual/behavioral/robust/legacy/proposal; storage_dtype float16/float32')
     if cfg['model']['normalization'] not in {'batch', 'layer'}:
         raise ValueError('normalization harus batch/layer')
     if not cfg['model']['use_graph_context'] and cfg['model']['normalization'] != 'layer':
@@ -74,7 +76,9 @@ def validate_config(cfg):
         raise ValueError('selection_metric tidak dikenal')
     if not 0 < tc['selection_fraction'] <= 1 or not 0 < tc['selection_tail_fraction'] <= 1:
         raise ValueError('selection fractions harus dalam (0,1]')
-    if tc['selection_metric'] == 'recent_ap' and tc['selection_fraction'] + cfg['evaluation']['calibration_tail_fraction'] > 1+1e-9:
+    if (tc['validation_partition'] == 'chronological'
+            and cfg['evaluation']['calibrate_threshold']
+            and tc['selection_fraction'] + cfg['evaluation']['calibration_tail_fraction'] > 1+1e-9):
         raise ValueError('Selection dan calibration EXP12 tidak boleh overlap')
     if not 0 <= tc['channel_weight_power'] <= 1 or tc['max_channel_weight'] < 1:
         raise ValueError('Channel weight power [0,1]; cap >= 1')
@@ -90,6 +94,10 @@ def validate_config(cfg):
         raise ValueError("experiment.on_existing harus auto/new/error")
     if cfg["runtime"].get("training_backend", "factorized") not in {"factorized", "blocks"}:
         raise ValueError("runtime.training_backend harus factorized/blocks")
+    if cfg["runtime"].get("preprocess_backend", "pandas") not in {"pandas", "duckdb"}:
+        raise ValueError("runtime.preprocess_backend harus pandas/duckdb")
+    if cfg["runtime"].get("preprocess_backend") == "duckdb" and cfg["features"]["encoder"] != "proposal":
+        raise ValueError("preprocess_backend=duckdb memerlukan features.encoder=proposal")
     if not isinstance(cfg["runtime"].get("progress_update_batches", 100), int) or cfg["runtime"].get("progress_update_batches", 100) < 1:
         raise ValueError("runtime.progress_update_batches harus integer positif")
     ratios = cfg["data"]["split"]
@@ -110,6 +118,8 @@ def validate_config(cfg):
         raise ValueError("Closed-form PPR EXP12 memerlukan ppr_steps=3")
     if sc["topology_mode"] not in {"literal", "historical"}:
         raise ValueError("topology_mode harus literal atau historical")
+    if sc.get("importance_degree_mode", "literal_transaction") not in {"literal_transaction", "projected_transaction"}:
+        raise ValueError("importance_degree_mode harus literal_transaction/projected_transaction")
     for name in ("topology_alpha", "importance_gamma", "ppr_beta"):
         if not 0 <= sc[name] <= 1:
             raise ValueError(f"sampling.{name} harus dalam [0,1]")
@@ -125,6 +135,8 @@ def validate_config(cfg):
         for name in names:
             if not isinstance(cfg[section][name], int) or cfg[section][name] < 1:
                 raise ValueError(f"{section}.{name} harus integer positif")
+    if not isinstance(cfg["runtime"].get("preprocess_chunk_rows"), int) or cfg["runtime"]["preprocess_chunk_rows"] < 1:
+        raise ValueError("runtime.preprocess_chunk_rows harus integer positif")
     if cfg["training"]["batch_size"] < 2:
         raise ValueError("BatchNorm memerlukan batch training >= 2")
     if not 0 <= mc["dropout"] < 1:

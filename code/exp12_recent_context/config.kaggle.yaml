@@ -1,0 +1,93 @@
+extends: config.yaml
+
+experiment:
+  name: exp12_kaggle
+  # One run per Kaggle kernel version is the safe default. build_kaggle_kernel.py
+  # writes the chosen strategy/seed as CLI overrides.
+  seeds: [42]
+  strategies: [uniform]
+  cache_graph: false
+
+features:
+  # Compact proposal-aligned features produced chunk-by-chunk after a DuckDB
+  # external sort. Fitted statistics use train only.
+  encoder: proposal
+  storage_dtype: float16
+
+model:
+  hidden_channels: 256
+  num_layers: 2
+  dropout: 0.2
+  normalization: batch
+  use_graph_context: true
+
+sampling:
+  fanouts: [25, 10]
+  topology_alpha: 0.5
+  topology_mode: historical
+  topology_smoothing: 20.0
+  topology_balance: true
+  importance_gamma: 0.3
+  importance_degree_mode: projected_transaction
+  ppr_beta: 0.15
+  ppr_steps: 3
+  edge_chunk_size: 250000
+  refresh_epochs: 1
+
+training:
+  batch_size: 1024
+  epochs: 100
+  learning_rate: 0.001
+  lr_factor: 0.5
+  lr_patience: 5
+  min_learning_rate: 0.00001
+  early_stopping_patience: 15
+  min_epochs: 10
+  early_stopping_min_delta: 0.0001
+  gradient_clip_norm: 5.0
+  # Full-distribution roots and inverse-frequency BCE must be paired. Do not
+  # combine pos_weight~833 with balanced roots (double compensation).
+  root_sampling: uniform
+  negatives_per_positive: 50
+  channel_weight_power: 0.0
+  max_channel_weight: 4.0
+  positive_class_weight_power: 1.0
+  max_positive_class_weight: null
+  weight_decay: 0.0001
+  validation_partition: chronological
+  selection_metric: ap
+  selection_fraction: 0.75
+  selection_tail_fraction: 1.0
+  selection_min_fraud: 25
+  validation_bins: 3
+  fused_adam: true
+
+evaluation:
+  threshold: 0.5
+  calibrate_threshold: true
+  threshold_beta: 2.0
+  primary_threshold: validation
+  calibration_tail_fraction: 0.25
+  calibration_min_fraud: 25
+  sampling_passes: 1
+  seed: 10000
+  batch_size: 4096
+  camouflage_normal_ratio: 0.70
+  latency_nodes: 1000
+  latency_repeats: 5
+
+runtime:
+  preprocess_backend: duckdb
+  preprocess_chunk_rows: 250000
+  duckdb_memory_limit: 8GB
+  training_backend: factorized
+  cache_sampler_on_device: true
+  feature_device: cpu
+  cpu_threads: 4
+  progress_update_batches: 100
+  progress_bar: true
+
+paths:
+  # Kaggle wrapper overrides both paths to /kaggle/working.
+  model_dir: ../../model/exp12_kaggle
+  result_dir: ../../result/exp12_kaggle

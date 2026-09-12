@@ -1,0 +1,17 @@
+{
+  "id": "muhammadhendikaputra/graphsage-fraud-exp13-uniform-s42",
+  "title": "GraphSAGE Fraud EXP13 Uniform S42",
+  "code_file": "kernel.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_internet": true,
+  "machine_shape": "NvidiaTeslaT4",
+  "dataset_sources": [
+    "ealtman2019/credit-card-transactions"
+  ],
+  "competition_sources": [],
+  "kernel_sources": [],
+  "model_sources": []
+}

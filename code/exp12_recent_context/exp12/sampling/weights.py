@@ -61,7 +61,14 @@ def build_weights(graph, strategy, cfg):
         d_root, d_other = degree[root].astype(np.float64), degree[other].astype(np.float64)
         if strategy == "importance":
             ppr = entity_ppr_three_steps(d_root, d_other, pairs[transaction], cfg["ppr_beta"])
-            centrality = 2.0 / max(graph.metadata["history_nodes"] - 1, 1)
+            if cfg.get("importance_degree_mode", "literal_transaction") == "projected_transaction":
+                # Unique degree in the train-only transaction projection.  A
+                # literal transaction node has degree two in this heterograph,
+                # which would make the centrality term constant and uninformative.
+                projected_degree = d_root + d_other - pairs[transaction] - 1.0
+                centrality = projected_degree / max(graph.train_end - 1, 1)
+            else:
+                centrality = 2.0 / max(graph.metadata["history_nodes"] - 1, 1)
             value = cfg["importance_gamma"] * centrality + (1-cfg["importance_gamma"]) * ppr
         else:
             value = historical_topology(d_root, d_other, pairs[transaction], fraud[root], fraud[other],

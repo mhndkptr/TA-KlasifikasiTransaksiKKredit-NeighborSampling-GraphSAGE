@@ -128,6 +128,26 @@ class SamplingTests(unittest.TestCase):
             expected = cfg["importance_gamma"]*2/(graph.metadata["history_nodes"]-1) + (1-cfg["importance_gamma"])*vector[graph.col[lo:hi].numpy()]
             np.testing.assert_allclose(weights[lo:hi], expected, rtol=1e-12, atol=1e-14)
 
+    def test_projected_transaction_centrality_is_train_only_and_nonconstant(self):
+        graph = fixture_graph()
+        literal = load_config(ROOT / "config.exp11_control.yaml")["sampling"]
+        projected = copy.deepcopy(literal)
+        projected["importance_degree_mode"] = "projected_transaction"
+        literal_weights = build_weights(graph, "importance", literal)
+        projected_weights = build_weights(graph, "importance", projected)
+        rowptr, transactions = graph.rowptr.numpy(), graph.col.numpy()
+        roots = np.searchsorted(rowptr[1:], np.arange(len(transactions)), side="right")
+        endpoints = graph.entities[transactions].numpy()
+        other = np.where(endpoints[:, 0] == roots, endpoints[:, 1], endpoints[:, 0])
+        degree = graph.degree.numpy()
+        centrality = (
+            degree[roots] + degree[other] - graph.pair_count.numpy()[transactions] - 1
+        ) / (graph.train_end - 1)
+        literal_centrality = 2 / (graph.metadata["history_nodes"] - 1)
+        expected_delta = projected["importance_gamma"] * (centrality - literal_centrality)
+        np.testing.assert_allclose(projected_weights - literal_weights, expected_delta)
+        self.assertGreater(np.unique(centrality).size, 1)
+
     def test_weighted_without_replacement_distribution(self):
         graph = SimpleNamespace(num_entities=1, rowptr=torch.tensor([0, 3]), col=torch.arange(3))
         sampler = NeighborTableSampler(graph, np.array([1., 2., 4.]), 2, 2, "cpu")

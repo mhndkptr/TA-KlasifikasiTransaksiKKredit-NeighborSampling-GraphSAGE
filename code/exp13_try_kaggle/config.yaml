@@ -1,0 +1,54 @@
+# EXP13 is a deployment/reproducibility continuation of the validated EXP12
+# engine. Paths declared here resolve relative to this file.
+extends: ../exp12_recent_context/config.kaggle.yaml
+
+experiment:
+  name: exp13_kaggle_t4
+  device: cuda
+  seeds: [42]
+  strategies: [uniform]
+  cache_graph: false
+  on_existing: error
+  overwrite: false
+
+model:
+  hidden_channels: 256
+  num_layers: 2
+  dropout: 0.2
+  normalization: batch
+  use_graph_context: true
+
+sampling:
+  fanouts: [25, 10]
+  topology_mode: historical
+  topology_alpha: 0.5
+  topology_smoothing: 20.0
+  topology_balance: true
+  importance_degree_mode: projected_transaction
+  importance_gamma: 0.3
+  ppr_beta: 0.15
+  ppr_steps: 3
+
+training:
+  batch_size: 1024
+  epochs: 100
+  learning_rate: 0.001
+  early_stopping_patience: 15
+  min_epochs: 10
+  root_sampling: uniform
+  positive_class_weight_power: 1.0
+  max_positive_class_weight: null
+  selection_metric: ap
+
+runtime:
+  preprocess_backend: duckdb
+  preprocess_chunk_rows: 250000
+  duckdb_memory_limit: 8GB
+  training_backend: factorized
+  cache_sampler_on_device: true
+  feature_device: cpu
+  cpu_threads: 4
+
+paths:
+  model_dir: ../../model/exp13_kaggle
+  result_dir: ../../result/exp13_kaggle

@@ -58,16 +58,31 @@ def graph_identity(cfg):
     source = Path(cfg["data"]["transactions"])
     stat = source.stat()
     code = Path(__file__).parent
-    return {"version": CACHE_VERSION, "path": str(source.resolve()), "size": stat.st_size,
+    identity = {"version": CACHE_VERSION, "path": str(source.resolve()), "size": stat.st_size,
         "mtime_ns": stat.st_mtime_ns, "max_rows": cfg["experiment"]["max_rows"],
         "split": cfg["data"]["split"], "features": cfg['features'],
-        "source": {name: hashlib.sha256((code / name).read_bytes()).hexdigest() for name in ["data.py", "graph.py", "behavior.py", "behavior_v2.py"]}}
+        "source": {name: hashlib.sha256((code / name).read_bytes()).hexdigest() for name in
+            ["data.py", "graph.py", "behavior.py", "behavior_v2.py"]}}
+    if cfg["runtime"].get("preprocess_backend", "pandas") == "duckdb":
+        identity["preprocessing"] = {key: cfg["runtime"].get(key) for key in
+            ["preprocess_backend", "preprocess_chunk_rows", "duckdb_memory_limit", "cpu_threads"]}
+        identity["source"]["streaming.py"] = hashlib.sha256((code / "streaming.py").read_bytes()).hexdigest()
+    return identity
 
 
 def load_or_prepare(cfg, rebuild=False):
     identity = graph_identity(cfg)
     fingerprint = digest(identity)
     path = Path(cfg["paths"]["model_dir"]) / "cache" / f"graph_{fingerprint[:16]}.pt"
+    if cfg["runtime"].get("preprocess_backend", "pandas") == "duckdb":
+        from .streaming import prepare_graph_out_of_core
+        graph, path = prepare_graph_out_of_core(
+            cfg["data"]["transactions"], cfg["experiment"]["max_rows"],
+            cfg["data"]["split"], cfg["features"], cfg["runtime"],
+            Path(cfg["paths"]["model_dir"]) / "cache", fingerprint, rebuild,
+        )
+        graph.metadata["data_fingerprint"] = fingerprint
+        return graph, path
     if cfg["experiment"]["cache_graph"] and path.exists() and not rebuild:
         payload = torch.load(path, map_location="cpu", weights_only=True, mmap=True)
         if payload["identity"] != identity:

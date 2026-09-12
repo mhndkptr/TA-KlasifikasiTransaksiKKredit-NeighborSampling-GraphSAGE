@@ -5,8 +5,13 @@ model/*
 !model/.gitkeep
 
 /code/*/.venv/
+/code/exp13_try_kaggle/kaggle.json
 
 /notebooks/.venv/
 /notebooks/__pycache__/
 /notebooks/.ipynb_checkpoints/
 /notebooks/output/
+
+**/__pycache__/
+*.py[cod]
+/tmp/

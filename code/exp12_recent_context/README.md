@@ -30,6 +30,9 @@ Arsitektur utama tetap dua layer mean GraphSAGE, hidden 256, LayerNorm,
 dropout 0,2, fanout 25/10, tiga strategi sampling, dan split temporal 70/15/15.
 Root balancing serta bobot subtype tetap dipelajari dari train saja.
 
+Catatan metodologis untuk definisi Jaccard, homophily, degree centrality,
+anti-leakage, dan anggaran RAM tersedia di [ARCHITECTURE_REVIEW.md](ARCHITECTURE_REVIEW.md).
+
 ## Menjalankan
 
 Dari root repository:
@@ -88,3 +91,91 @@ Fitur disimpan pada CPU dan dikonversi FP32 per batch.
 Output utama: `result/exp12/`; cache/checkpoint: `model/exp12/`. Audit dan log
 validasi tersimpan di `code/exp12_recent_context/validation/`. Checkpoint memuat
 skema fitur, kebijakan validation, threshold, dan identitas source/data.
+
+## Full data di Kaggle (backend out-of-core)
+
+Preset `config.kaggle.yaml` mengikuti konfigurasi inti proposal: GraphSAGE dua
+layer, mean aggregator, hidden 256, BatchNorm, fanout 25/10, batch 1.024, Adam
+0,001, inverse-frequency BCE, dan early stopping AUPRC dengan patience 15.
+Model mengeluarkan **logit** selama training agar `binary_cross_entropy_with_logits`
+stabil secara numerik; Sigmoid hanya diterapkan saat prediksi probabilitas.
+
+Backend ini tidak memuat CSV penuh sebagai satu DataFrame. DuckDB melakukan
+external chronological sort dengan batas memori 8 GB dan spill ke disk. Fitur,
+label, endpoint, timestamp, CSR train, serta tabel metadata ditulis sebagai
+memmap. Statistik normalisasi, degree, fraud history, Jaccard, homophily, dan
+PPR seluruhnya dibatasi pada train. Validation/test hanya menjadi query roots;
+edge dan label keduanya tidak pernah masuk ke history sampler.
+
+Jalankan lokal dari root repository:
+
+```powershell
+& .\code\exp6_gpu_tqdm\.venv\Scripts\python.exe .\code\exp12_recent_context\run.py `
+  --config .\code\exp12_recent_context\config.kaggle.yaml `
+  --data .\dataset\credit_card_transactions-ibm_v2.csv `
+  --strategy uniform --seed 42
+```
+
+Untuk `kaggle kernels push`, source modular dikompilasi menjadi satu
+`kaggle/kernel.py`, karena metadata kernel menunjuk satu `code_file`:
+
+```powershell
+# Bangun satu run per kernel version agar sesuai batas waktu Kaggle.
+& .\code\exp6_gpu_tqdm\.venv\Scripts\python.exe `
+  .\code\exp12_recent_context\build_kaggle_kernel.py --strategy uniform --seed 42
+
+# Ganti YOUR_KAGGLE_USERNAME satu kali di kaggle/kernel-metadata.json.
+kaggle kernels push -p .\code\exp12_recent_context\kaggle
+kaggle kernels status YOUR_KAGGLE_USERNAME/graphsage-fraud-exp12
+kaggle kernels output YOUR_KAGGLE_USERNAME/graphsage-fraud-exp12 `
+  -p .\result\kaggle\uniform_seed42
+```
+
+Ulangi build/push untuk `topology` dan `importance`, kemudian untuk seed
+42-46. Unduh output setiap version sebelum mendorong run berikutnya. Internet
+kernel diaktifkan hanya untuk memasang DuckDB/PyG bila image Kaggle belum
+memilikinya; dataset dipasang melalui `dataset_sources` resmi.
+
+Struktur deployment:
+
+```text
+exp12_recent_context/
+|-- exp12/                    # source modular dan unit-testable
+|-- tests/                    # correctness, leakage, CPU/CUDA
+|-- config.kaggle.yaml        # preset full-data Kaggle
+|-- build_kaggle_kernel.py    # deterministic single-file bundler
+`-- kaggle/
+    |-- kernel.py             # generated; jangan diedit manual
+    `-- kernel-metadata.json  # username/slug dan dataset source
+```
+
+## Catatan metodologis sampler
+
+Pada heterograf asli, setiap node Transaction mempunyai degree tepat dua dan
+neighborhood User versus Transaction berbeda tipe. Akibatnya, definisi literal
+proposal membuat degree centrality Transaction konstan dan Jaccard lintas tipe
+nol. Implementasi menyediakan dua definisi eksplisit:
+
+- `topology_mode: literal` menjadi uniform fallback yang jujur secara matematis.
+- `topology_mode: historical` memakai Jaccard antara himpunan transaksi train
+  pada kedua endpoint kandidat serta local fraud-history agreement yang
+  leave-one-out. Ini adalah adaptasi operasional dan harus ditulis demikian di
+  laporan, bukan diklaim sebagai Jaccard node lintas tipe literal.
+- `importance_degree_mode: literal_transaction` mempertahankan degree dua.
+  Preset Kaggle memakai `projected_transaction`, yaitu jumlah unik transaksi
+  train lain yang berbagi User atau Merchant. Local PPR tetap dihitung tiga
+  langkah pada graf train yang beku.
+
+Untuk mencegah leakage, jangan pernah menghitung bobot pada graf yang sudah
+ditambah edge validation/test, jangan menggunakan label target root, dan jangan
+melakukan fit encoder atau pemilihan threshold pada test. Jika label historis
+di produksi memiliki delay, cutoff label juga harus dimundurkan sesuai delay
+tersebut; asumsi saat ini adalah seluruh label train sudah tersedia pada akhir
+periode train.
+
+Inverse-frequency `pos_weight` dihitung dari train dan biasanya mendekati 833,
+bukan di-hard-code. Preset ini memakai root train berdistribusi asli. Jangan
+menggabungkannya dengan balanced root sampling karena efek pembobotannya akan
+terhitung dua kali. Validation dibagi tanpa overlap: 75% awal untuk checkpoint
+AUPRC dan 25% akhir untuk kalibrasi threshold F2; test hanya disentuh setelah
+checkpoint dan threshold terkunci.

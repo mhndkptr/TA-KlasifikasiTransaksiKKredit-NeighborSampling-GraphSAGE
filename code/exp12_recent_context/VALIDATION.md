@@ -10,7 +10,7 @@ Status 10 September 2026.
   fraud dari artefak EXP11.
 - Audit membuktikan selection EXP11 hanya memuat 2 fraud chip; partisi selection
   dan calibration EXP12 memuat 196 dan 153 fraud chip tanpa overlap.
-- 45 unit/integration tests lulus pada Python 3.13.7, PyTorch 2.13.0+cu130,
+- 48 unit/integration tests lulus pada Python 3.13.7, PyTorch 2.13.0+cu130,
   PyG 2.8.0.post1, dan NVIDIA RTX 3050 Laptop 4 GB.
 - Test mencakup strictly-past/equal-timestamp, isolasi future/label,
   partial-missing card, formula nominal conditional, validation partition,
@@ -54,6 +54,23 @@ bahwa logic validation buruk pada populasi penuh, yang memiliki 210/169 fraud.
 Smoke tiga epoch selesai untuk uniform/topology/importance dengan AP test
 masing-masing 0,151156 / 0,142099 / 0,135347. Angka smoke tidak dipakai memilih
 strategi karena budget training dan subset terlalu kecil.
+
+## Validasi backend Kaggle out-of-core (12 September 2026)
+
+- 48 unit/integration tests lulus, termasuk external chronological sort,
+  split tie-safe, memmap, CSR train-only, ekspor `HeteroData`, dan invariansi
+  bobot topology terhadap perubahan seluruh label validation/test.
+- Smoke preprocessing pada 1.000.000 baris CSV asli berhasil selesai. Graf
+  berisi 700.001 train, 150.000 validation, dan 149.999 test; seluruh boundary
+  timestamp tidak overlap.
+- Cache memmap dimuat ulang dalam 0,06 detik. Satu epoch uniform pada RTX 3050
+  4 GB memproses 700.001 training roots dalam 6,1 detik (114.387 transaksi/detik)
+  dengan sampler cache 10,7 MiB.
+- `pos_weight` dihitung dari train, bukan dikunci ke 833. Pada prefix ini nilainya
+  1.150,317 karena fraud rate train 0,0869%; full data akan mengikuti rasio train
+  aktual.
+- Smoke satu epoch hanya memvalidasi wiring dan tidak digunakan sebagai hasil
+  ilmiah atau pembanding strategi.
 
 ## Yang belum divalidasi
 

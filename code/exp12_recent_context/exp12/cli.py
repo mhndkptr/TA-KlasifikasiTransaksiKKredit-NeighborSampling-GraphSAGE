@@ -15,6 +15,9 @@ from .trainer import run_one
 def main(argv=None):
     parser = argparse.ArgumentParser(description="EXP12: modular GraphSAGE with frozen training context")
     parser.add_argument("--config", type=Path, default=Path(__file__).resolve().parents[1] / "config.yaml")
+    parser.add_argument("--data", type=Path, help="Override lokasi CSV transaksi")
+    parser.add_argument("--model-dir", type=Path, help="Override direktori cache/checkpoint")
+    parser.add_argument("--result-dir", type=Path, help="Override direktori hasil")
     parser.add_argument("--strategy", choices=["uniform", "topology", "importance"])
     parser.add_argument("--seed", type=int)
     parser.add_argument("--device")
@@ -34,6 +37,12 @@ def main(argv=None):
                         help="auto: skip complete/start new attempt for incomplete; new: always create a new attempt")
     args = parser.parse_args(argv)
     cfg = load_config(args.config)
+    if args.data is not None:
+        cfg["data"]["transactions"] = str(args.data.resolve())
+    if args.model_dir is not None:
+        cfg["paths"]["model_dir"] = str(args.model_dir.resolve())
+    if args.result_dir is not None:
+        cfg["paths"]["result_dir"] = str(args.result_dir.resolve())
     for argument, section, key in (("device", "experiment", "device"), ("max_rows", "experiment", "max_rows"),
                                   ("epochs", "training", "epochs"), ("name", "experiment", "name"),
                                   ("selection_min_fraud", "training", "selection_min_fraud"),
