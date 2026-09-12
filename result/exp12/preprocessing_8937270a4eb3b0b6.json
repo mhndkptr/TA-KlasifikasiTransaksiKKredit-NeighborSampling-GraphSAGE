@@ -319,5 +319,5 @@
   },
   "data_fingerprint": "8937270a4eb3b0b6600580449e6aa1bdbd2467d83b1c2863386712fef98f1689",
   "cache_path": "D:\\RemoteAccess-Hendika\\TA-KlasifikasiTransaksiKKredit-NeighborSampling-GraphSAGE\\model\\exp12\\cache\\graph_8937270a4eb3b0b6.pt",
-  "preprocessing_seconds": 0.287674799998058
+  "preprocessing_seconds": 0.2779597000044305
 }
