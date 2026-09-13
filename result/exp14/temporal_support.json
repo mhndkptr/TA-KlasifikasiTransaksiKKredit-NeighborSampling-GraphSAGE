@@ -1,0 +1,5785 @@
+{
+  "scope": "development_before_old_test",
+  "test_start_tx_id": 20728867,
+  "monthly": [
+    {
+      "month": "1991-01",
+      "channel": "Swipe Transaction",
+      "rows": 55,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1991-02",
+      "channel": "Swipe Transaction",
+      "rows": 48,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1991-03",
+      "channel": "Swipe Transaction",
+      "rows": 45,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1991-04",
+      "channel": "Swipe Transaction",
+      "rows": 48,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1991-05",
+      "channel": "Swipe Transaction",
+      "rows": 45,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1991-06",
+      "channel": "Swipe Transaction",
+      "rows": 52,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1991-07",
+      "channel": "Swipe Transaction",
+      "rows": 178,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1991-08",
+      "channel": "Swipe Transaction",
+      "rows": 164,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1991-09",
+      "channel": "Swipe Transaction",
+      "rows": 190,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1991-10",
+      "channel": "Swipe Transaction",
+      "rows": 155,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1991-11",
+      "channel": "Swipe Transaction",
+      "rows": 179,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1991-12",
+      "channel": "Swipe Transaction",
+      "rows": 426,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1992-01",
+      "channel": "Swipe Transaction",
+      "rows": 418,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1992-02",
+      "channel": "Swipe Transaction",
+      "rows": 367,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1992-03",
+      "channel": "Swipe Transaction",
+      "rows": 426,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1992-04",
+      "channel": "Swipe Transaction",
+      "rows": 427,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1992-05",
+      "channel": "Swipe Transaction",
+      "rows": 441,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1992-06",
+      "channel": "Swipe Transaction",
+      "rows": 366,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1992-07",
+      "channel": "Swipe Transaction",
+      "rows": 406,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1992-08",
+      "channel": "Swipe Transaction",
+      "rows": 415,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1992-09",
+      "channel": "Swipe Transaction",
+      "rows": 376,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1992-10",
+      "channel": "Swipe Transaction",
+      "rows": 375,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1992-11",
+      "channel": "Swipe Transaction",
+      "rows": 519,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1992-12",
+      "channel": "Swipe Transaction",
+      "rows": 598,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1993-01",
+      "channel": "Swipe Transaction",
+      "rows": 627,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1993-02",
+      "channel": "Swipe Transaction",
+      "rows": 553,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1993-03",
+      "channel": "Swipe Transaction",
+      "rows": 607,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1993-04",
+      "channel": "Swipe Transaction",
+      "rows": 590,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1993-05",
+      "channel": "Swipe Transaction",
+      "rows": 690,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1993-06",
+      "channel": "Swipe Transaction",
+      "rows": 694,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1993-07",
+      "channel": "Swipe Transaction",
+      "rows": 727,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1993-08",
+      "channel": "Swipe Transaction",
+      "rows": 767,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1993-09",
+      "channel": "Swipe Transaction",
+      "rows": 755,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1993-10",
+      "channel": "Swipe Transaction",
+      "rows": 753,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1993-11",
+      "channel": "Swipe Transaction",
+      "rows": 782,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1993-12",
+      "channel": "Swipe Transaction",
+      "rows": 833,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1994-01",
+      "channel": "Swipe Transaction",
+      "rows": 863,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1994-02",
+      "channel": "Swipe Transaction",
+      "rows": 736,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1994-03",
+      "channel": "Swipe Transaction",
+      "rows": 865,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1994-04",
+      "channel": "Swipe Transaction",
+      "rows": 1180,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1994-05",
+      "channel": "Swipe Transaction",
+      "rows": 1200,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1994-06",
+      "channel": "Swipe Transaction",
+      "rows": 1187,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1994-07",
+      "channel": "Swipe Transaction",
+      "rows": 1182,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1994-08",
+      "channel": "Swipe Transaction",
+      "rows": 1367,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1994-09",
+      "channel": "Swipe Transaction",
+      "rows": 1396,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1994-10",
+      "channel": "Swipe Transaction",
+      "rows": 1358,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1994-11",
+      "channel": "Swipe Transaction",
+      "rows": 1429,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1994-12",
+      "channel": "Swipe Transaction",
+      "rows": 1553,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1995-01",
+      "channel": "Online Transaction",
+      "rows": 13,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1995-01",
+      "channel": "Swipe Transaction",
+      "rows": 1611,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1995-02",
+      "channel": "Online Transaction",
+      "rows": 18,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1995-02",
+      "channel": "Swipe Transaction",
+      "rows": 1603,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1995-03",
+      "channel": "Online Transaction",
+      "rows": 13,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1995-03",
+      "channel": "Swipe Transaction",
+      "rows": 1687,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1995-04",
+      "channel": "Online Transaction",
+      "rows": 20,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1995-04",
+      "channel": "Swipe Transaction",
+      "rows": 1674,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1995-05",
+      "channel": "Online Transaction",
+      "rows": 14,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1995-05",
+      "channel": "Swipe Transaction",
+      "rows": 1676,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1995-06",
+      "channel": "Online Transaction",
+      "rows": 16,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1995-06",
+      "channel": "Swipe Transaction",
+      "rows": 1606,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1995-07",
+      "channel": "Online Transaction",
+      "rows": 10,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1995-07",
+      "channel": "Swipe Transaction",
+      "rows": 1706,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1995-08",
+      "channel": "Online Transaction",
+      "rows": 19,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1995-08",
+      "channel": "Swipe Transaction",
+      "rows": 1812,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1995-09",
+      "channel": "Online Transaction",
+      "rows": 8,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1995-09",
+      "channel": "Swipe Transaction",
+      "rows": 1749,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1995-10",
+      "channel": "Online Transaction",
+      "rows": 17,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1995-10",
+      "channel": "Swipe Transaction",
+      "rows": 1756,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1995-11",
+      "channel": "Online Transaction",
+      "rows": 25,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1995-11",
+      "channel": "Swipe Transaction",
+      "rows": 1893,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1995-12",
+      "channel": "Online Transaction",
+      "rows": 19,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1995-12",
+      "channel": "Swipe Transaction",
+      "rows": 1963,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1996-01",
+      "channel": "Online Transaction",
+      "rows": 29,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1996-01",
+      "channel": "Swipe Transaction",
+      "rows": 1868,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1996-02",
+      "channel": "Online Transaction",
+      "rows": 30,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1996-02",
+      "channel": "Swipe Transaction",
+      "rows": 1911,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1996-03",
+      "channel": "Online Transaction",
+      "rows": 45,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1996-03",
+      "channel": "Swipe Transaction",
+      "rows": 2161,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1996-04",
+      "channel": "Online Transaction",
+      "rows": 42,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1996-04",
+      "channel": "Swipe Transaction",
+      "rows": 2041,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1996-05",
+      "channel": "Online Transaction",
+      "rows": 52,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1996-05",
+      "channel": "Swipe Transaction",
+      "rows": 2375,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1996-06",
+      "channel": "Online Transaction",
+      "rows": 57,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1996-06",
+      "channel": "Swipe Transaction",
+      "rows": 2417,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1996-07",
+      "channel": "Online Transaction",
+      "rows": 56,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1996-07",
+      "channel": "Swipe Transaction",
+      "rows": 2531,
+      "fraud": 10,
+      "fraud_users": 2,
+      "fraud_cards": 2,
+      "fraud_episodes": 3
+    },
+    {
+      "month": "1996-08",
+      "channel": "Online Transaction",
+      "rows": 67,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1996-08",
+      "channel": "Swipe Transaction",
+      "rows": 2653,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1996-09",
+      "channel": "Online Transaction",
+      "rows": 46,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1996-09",
+      "channel": "Swipe Transaction",
+      "rows": 2578,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1996-10",
+      "channel": "Online Transaction",
+      "rows": 53,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1996-10",
+      "channel": "Swipe Transaction",
+      "rows": 2924,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1996-11",
+      "channel": "Online Transaction",
+      "rows": 56,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1996-11",
+      "channel": "Swipe Transaction",
+      "rows": 2766,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1996-12",
+      "channel": "Online Transaction",
+      "rows": 74,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1996-12",
+      "channel": "Swipe Transaction",
+      "rows": 3113,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1997-01",
+      "channel": "Online Transaction",
+      "rows": 99,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1997-01",
+      "channel": "Swipe Transaction",
+      "rows": 3281,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1997-02",
+      "channel": "Online Transaction",
+      "rows": 99,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1997-02",
+      "channel": "Swipe Transaction",
+      "rows": 2971,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1997-03",
+      "channel": "Online Transaction",
+      "rows": 123,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1997-03",
+      "channel": "Swipe Transaction",
+      "rows": 3775,
+      "fraud": 8,
+      "fraud_users": 2,
+      "fraud_cards": 2,
+      "fraud_episodes": 2
+    },
+    {
+      "month": "1997-04",
+      "channel": "Online Transaction",
+      "rows": 106,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1997-04",
+      "channel": "Swipe Transaction",
+      "rows": 3587,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1997-05",
+      "channel": "Online Transaction",
+      "rows": 125,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1997-05",
+      "channel": "Swipe Transaction",
+      "rows": 4164,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1997-06",
+      "channel": "Online Transaction",
+      "rows": 97,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1997-06",
+      "channel": "Swipe Transaction",
+      "rows": 4011,
+      "fraud": 7,
+      "fraud_users": 2,
+      "fraud_cards": 2,
+      "fraud_episodes": 2
+    },
+    {
+      "month": "1997-07",
+      "channel": "Online Transaction",
+      "rows": 131,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1997-07",
+      "channel": "Swipe Transaction",
+      "rows": 4248,
+      "fraud": 9,
+      "fraud_users": 2,
+      "fraud_cards": 2,
+      "fraud_episodes": 2
+    },
+    {
+      "month": "1997-08",
+      "channel": "Online Transaction",
+      "rows": 140,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1997-08",
+      "channel": "Swipe Transaction",
+      "rows": 4322,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1997-09",
+      "channel": "Online Transaction",
+      "rows": 127,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1997-09",
+      "channel": "Swipe Transaction",
+      "rows": 4009,
+      "fraud": 4,
+      "fraud_users": 1,
+      "fraud_cards": 1,
+      "fraud_episodes": 1
+    },
+    {
+      "month": "1997-10",
+      "channel": "Online Transaction",
+      "rows": 122,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1997-10",
+      "channel": "Swipe Transaction",
+      "rows": 4571,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1997-11",
+      "channel": "Online Transaction",
+      "rows": 126,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1997-11",
+      "channel": "Swipe Transaction",
+      "rows": 4505,
+      "fraud": 4,
+      "fraud_users": 1,
+      "fraud_cards": 1,
+      "fraud_episodes": 1
+    },
+    {
+      "month": "1997-12",
+      "channel": "Online Transaction",
+      "rows": 129,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1997-12",
+      "channel": "Swipe Transaction",
+      "rows": 4885,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1998-01",
+      "channel": "Online Transaction",
+      "rows": 208,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1998-01",
+      "channel": "Swipe Transaction",
+      "rows": 5079,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1998-02",
+      "channel": "Online Transaction",
+      "rows": 198,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1998-02",
+      "channel": "Swipe Transaction",
+      "rows": 4886,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1998-03",
+      "channel": "Online Transaction",
+      "rows": 204,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1998-03",
+      "channel": "Swipe Transaction",
+      "rows": 5340,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1998-04",
+      "channel": "Online Transaction",
+      "rows": 224,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1998-04",
+      "channel": "Swipe Transaction",
+      "rows": 5399,
+      "fraud": 4,
+      "fraud_users": 1,
+      "fraud_cards": 1,
+      "fraud_episodes": 2
+    },
+    {
+      "month": "1998-05",
+      "channel": "Online Transaction",
+      "rows": 252,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1998-05",
+      "channel": "Swipe Transaction",
+      "rows": 6058,
+      "fraud": 5,
+      "fraud_users": 1,
+      "fraud_cards": 1,
+      "fraud_episodes": 1
+    },
+    {
+      "month": "1998-06",
+      "channel": "Online Transaction",
+      "rows": 299,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1998-06",
+      "channel": "Swipe Transaction",
+      "rows": 6065,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1998-07",
+      "channel": "Online Transaction",
+      "rows": 317,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1998-07",
+      "channel": "Swipe Transaction",
+      "rows": 6761,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1998-08",
+      "channel": "Online Transaction",
+      "rows": 298,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1998-08",
+      "channel": "Swipe Transaction",
+      "rows": 6674,
+      "fraud": 8,
+      "fraud_users": 3,
+      "fraud_cards": 3,
+      "fraud_episodes": 3
+    },
+    {
+      "month": "1998-09",
+      "channel": "Online Transaction",
+      "rows": 286,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1998-09",
+      "channel": "Swipe Transaction",
+      "rows": 6833,
+      "fraud": 7,
+      "fraud_users": 1,
+      "fraud_cards": 1,
+      "fraud_episodes": 2
+    },
+    {
+      "month": "1998-10",
+      "channel": "Online Transaction",
+      "rows": 306,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1998-10",
+      "channel": "Swipe Transaction",
+      "rows": 7410,
+      "fraud": 1,
+      "fraud_users": 1,
+      "fraud_cards": 1,
+      "fraud_episodes": 1
+    },
+    {
+      "month": "1998-11",
+      "channel": "Online Transaction",
+      "rows": 294,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1998-11",
+      "channel": "Swipe Transaction",
+      "rows": 7133,
+      "fraud": 6,
+      "fraud_users": 1,
+      "fraud_cards": 1,
+      "fraud_episodes": 2
+    },
+    {
+      "month": "1998-12",
+      "channel": "Online Transaction",
+      "rows": 308,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1998-12",
+      "channel": "Swipe Transaction",
+      "rows": 7513,
+      "fraud": 1,
+      "fraud_users": 1,
+      "fraud_cards": 1,
+      "fraud_episodes": 1
+    },
+    {
+      "month": "1999-01",
+      "channel": "Online Transaction",
+      "rows": 409,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1999-01",
+      "channel": "Swipe Transaction",
+      "rows": 7783,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1999-02",
+      "channel": "Online Transaction",
+      "rows": 405,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1999-02",
+      "channel": "Swipe Transaction",
+      "rows": 7509,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1999-03",
+      "channel": "Online Transaction",
+      "rows": 449,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1999-03",
+      "channel": "Swipe Transaction",
+      "rows": 8502,
+      "fraud": 6,
+      "fraud_users": 1,
+      "fraud_cards": 1,
+      "fraud_episodes": 1
+    },
+    {
+      "month": "1999-04",
+      "channel": "Online Transaction",
+      "rows": 419,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1999-04",
+      "channel": "Swipe Transaction",
+      "rows": 8472,
+      "fraud": 7,
+      "fraud_users": 1,
+      "fraud_cards": 1,
+      "fraud_episodes": 1
+    },
+    {
+      "month": "1999-05",
+      "channel": "Online Transaction",
+      "rows": 537,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1999-05",
+      "channel": "Swipe Transaction",
+      "rows": 8995,
+      "fraud": 9,
+      "fraud_users": 2,
+      "fraud_cards": 2,
+      "fraud_episodes": 2
+    },
+    {
+      "month": "1999-06",
+      "channel": "Online Transaction",
+      "rows": 495,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1999-06",
+      "channel": "Swipe Transaction",
+      "rows": 9025,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1999-07",
+      "channel": "Online Transaction",
+      "rows": 564,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1999-07",
+      "channel": "Swipe Transaction",
+      "rows": 9442,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1999-08",
+      "channel": "Online Transaction",
+      "rows": 560,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1999-08",
+      "channel": "Swipe Transaction",
+      "rows": 9657,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1999-09",
+      "channel": "Online Transaction",
+      "rows": 530,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1999-09",
+      "channel": "Swipe Transaction",
+      "rows": 9792,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1999-10",
+      "channel": "Online Transaction",
+      "rows": 599,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1999-10",
+      "channel": "Swipe Transaction",
+      "rows": 10653,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1999-11",
+      "channel": "Online Transaction",
+      "rows": 576,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1999-11",
+      "channel": "Swipe Transaction",
+      "rows": 10618,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1999-12",
+      "channel": "Online Transaction",
+      "rows": 690,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "1999-12",
+      "channel": "Swipe Transaction",
+      "rows": 11569,
+      "fraud": 2,
+      "fraud_users": 1,
+      "fraud_cards": 1,
+      "fraud_episodes": 1
+    },
+    {
+      "month": "2000-01",
+      "channel": "Online Transaction",
+      "rows": 822,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2000-01",
+      "channel": "Swipe Transaction",
+      "rows": 11725,
+      "fraud": 14,
+      "fraud_users": 4,
+      "fraud_cards": 4,
+      "fraud_episodes": 4
+    },
+    {
+      "month": "2000-02",
+      "channel": "Online Transaction",
+      "rows": 779,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2000-02",
+      "channel": "Swipe Transaction",
+      "rows": 11233,
+      "fraud": 9,
+      "fraud_users": 3,
+      "fraud_cards": 3,
+      "fraud_episodes": 2
+    },
+    {
+      "month": "2000-03",
+      "channel": "Online Transaction",
+      "rows": 911,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2000-03",
+      "channel": "Swipe Transaction",
+      "rows": 13072,
+      "fraud": 7,
+      "fraud_users": 2,
+      "fraud_cards": 2,
+      "fraud_episodes": 2
+    },
+    {
+      "month": "2000-04",
+      "channel": "Online Transaction",
+      "rows": 885,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2000-04",
+      "channel": "Swipe Transaction",
+      "rows": 12850,
+      "fraud": 13,
+      "fraud_users": 3,
+      "fraud_cards": 3,
+      "fraud_episodes": 3
+    },
+    {
+      "month": "2000-05",
+      "channel": "Online Transaction",
+      "rows": 980,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2000-05",
+      "channel": "Swipe Transaction",
+      "rows": 13574,
+      "fraud": 22,
+      "fraud_users": 5,
+      "fraud_cards": 5,
+      "fraud_episodes": 5
+    },
+    {
+      "month": "2000-06",
+      "channel": "Online Transaction",
+      "rows": 964,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2000-06",
+      "channel": "Swipe Transaction",
+      "rows": 13943,
+      "fraud": 25,
+      "fraud_users": 5,
+      "fraud_cards": 5,
+      "fraud_episodes": 5
+    },
+    {
+      "month": "2000-07",
+      "channel": "Online Transaction",
+      "rows": 1034,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2000-07",
+      "channel": "Swipe Transaction",
+      "rows": 14695,
+      "fraud": 19,
+      "fraud_users": 4,
+      "fraud_cards": 4,
+      "fraud_episodes": 3
+    },
+    {
+      "month": "2000-08",
+      "channel": "Online Transaction",
+      "rows": 1022,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2000-08",
+      "channel": "Swipe Transaction",
+      "rows": 14682,
+      "fraud": 2,
+      "fraud_users": 1,
+      "fraud_cards": 1,
+      "fraud_episodes": 1
+    },
+    {
+      "month": "2000-09",
+      "channel": "Online Transaction",
+      "rows": 1093,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2000-09",
+      "channel": "Swipe Transaction",
+      "rows": 14544,
+      "fraud": 11,
+      "fraud_users": 4,
+      "fraud_cards": 4,
+      "fraud_episodes": 4
+    },
+    {
+      "month": "2000-10",
+      "channel": "Online Transaction",
+      "rows": 1057,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2000-10",
+      "channel": "Swipe Transaction",
+      "rows": 15130,
+      "fraud": 16,
+      "fraud_users": 3,
+      "fraud_cards": 3,
+      "fraud_episodes": 1
+    },
+    {
+      "month": "2000-11",
+      "channel": "Online Transaction",
+      "rows": 1010,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2000-11",
+      "channel": "Swipe Transaction",
+      "rows": 14928,
+      "fraud": 19,
+      "fraud_users": 5,
+      "fraud_cards": 5,
+      "fraud_episodes": 4
+    },
+    {
+      "month": "2000-12",
+      "channel": "Online Transaction",
+      "rows": 1015,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2000-12",
+      "channel": "Swipe Transaction",
+      "rows": 15781,
+      "fraud": 14,
+      "fraud_users": 4,
+      "fraud_cards": 4,
+      "fraud_episodes": 3
+    },
+    {
+      "month": "2001-01",
+      "channel": "Online Transaction",
+      "rows": 1307,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2001-01",
+      "channel": "Swipe Transaction",
+      "rows": 16534,
+      "fraud": 16,
+      "fraud_users": 4,
+      "fraud_cards": 4,
+      "fraud_episodes": 3
+    },
+    {
+      "month": "2001-02",
+      "channel": "Online Transaction",
+      "rows": 1219,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2001-02",
+      "channel": "Swipe Transaction",
+      "rows": 15421,
+      "fraud": 18,
+      "fraud_users": 7,
+      "fraud_cards": 7,
+      "fraud_episodes": 6
+    },
+    {
+      "month": "2001-03",
+      "channel": "Online Transaction",
+      "rows": 1378,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2001-03",
+      "channel": "Swipe Transaction",
+      "rows": 18158,
+      "fraud": 40,
+      "fraud_users": 15,
+      "fraud_cards": 15,
+      "fraud_episodes": 14
+    },
+    {
+      "month": "2001-04",
+      "channel": "Online Transaction",
+      "rows": 1353,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2001-04",
+      "channel": "Swipe Transaction",
+      "rows": 18324,
+      "fraud": 22,
+      "fraud_users": 13,
+      "fraud_cards": 13,
+      "fraud_episodes": 13
+    },
+    {
+      "month": "2001-05",
+      "channel": "Online Transaction",
+      "rows": 1467,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2001-05",
+      "channel": "Swipe Transaction",
+      "rows": 19648,
+      "fraud": 34,
+      "fraud_users": 15,
+      "fraud_cards": 15,
+      "fraud_episodes": 13
+    },
+    {
+      "month": "2001-06",
+      "channel": "Online Transaction",
+      "rows": 1468,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2001-06",
+      "channel": "Swipe Transaction",
+      "rows": 20100,
+      "fraud": 42,
+      "fraud_users": 15,
+      "fraud_cards": 15,
+      "fraud_episodes": 14
+    },
+    {
+      "month": "2001-07",
+      "channel": "Online Transaction",
+      "rows": 1568,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2001-07",
+      "channel": "Swipe Transaction",
+      "rows": 21041,
+      "fraud": 52,
+      "fraud_users": 15,
+      "fraud_cards": 15,
+      "fraud_episodes": 15
+    },
+    {
+      "month": "2001-08",
+      "channel": "Online Transaction",
+      "rows": 1631,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2001-08",
+      "channel": "Swipe Transaction",
+      "rows": 21910,
+      "fraud": 29,
+      "fraud_users": 13,
+      "fraud_cards": 13,
+      "fraud_episodes": 13
+    },
+    {
+      "month": "2001-09",
+      "channel": "Online Transaction",
+      "rows": 1594,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2001-09",
+      "channel": "Swipe Transaction",
+      "rows": 21044,
+      "fraud": 20,
+      "fraud_users": 10,
+      "fraud_cards": 10,
+      "fraud_episodes": 9
+    },
+    {
+      "month": "2001-10",
+      "channel": "Online Transaction",
+      "rows": 1638,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2001-10",
+      "channel": "Swipe Transaction",
+      "rows": 22558,
+      "fraud": 32,
+      "fraud_users": 14,
+      "fraud_cards": 14,
+      "fraud_episodes": 14
+    },
+    {
+      "month": "2001-11",
+      "channel": "Online Transaction",
+      "rows": 1747,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2001-11",
+      "channel": "Swipe Transaction",
+      "rows": 21974,
+      "fraud": 20,
+      "fraud_users": 12,
+      "fraud_cards": 13,
+      "fraud_episodes": 12
+    },
+    {
+      "month": "2001-12",
+      "channel": "Online Transaction",
+      "rows": 1622,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2001-12",
+      "channel": "Swipe Transaction",
+      "rows": 23294,
+      "fraud": 29,
+      "fraud_users": 18,
+      "fraud_cards": 18,
+      "fraud_episodes": 17
+    },
+    {
+      "month": "2002-01",
+      "channel": "Online Transaction",
+      "rows": 1973,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2002-01",
+      "channel": "Swipe Transaction",
+      "rows": 23461,
+      "fraud": 19,
+      "fraud_users": 13,
+      "fraud_cards": 13,
+      "fraud_episodes": 13
+    },
+    {
+      "month": "2002-02",
+      "channel": "Online Transaction",
+      "rows": 1770,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2002-02",
+      "channel": "Swipe Transaction",
+      "rows": 21859,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2002-03",
+      "channel": "Online Transaction",
+      "rows": 1968,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2002-03",
+      "channel": "Swipe Transaction",
+      "rows": 24820,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2002-04",
+      "channel": "Online Transaction",
+      "rows": 2002,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2002-04",
+      "channel": "Swipe Transaction",
+      "rows": 24763,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2002-05",
+      "channel": "Online Transaction",
+      "rows": 2196,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2002-05",
+      "channel": "Swipe Transaction",
+      "rows": 26460,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2002-06",
+      "channel": "Online Transaction",
+      "rows": 2246,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2002-06",
+      "channel": "Swipe Transaction",
+      "rows": 26580,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2002-07",
+      "channel": "Online Transaction",
+      "rows": 2363,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2002-07",
+      "channel": "Swipe Transaction",
+      "rows": 27748,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2002-08",
+      "channel": "Online Transaction",
+      "rows": 2513,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2002-08",
+      "channel": "Swipe Transaction",
+      "rows": 28597,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2002-09",
+      "channel": "Online Transaction",
+      "rows": 2400,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2002-09",
+      "channel": "Swipe Transaction",
+      "rows": 28168,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2002-10",
+      "channel": "Online Transaction",
+      "rows": 2413,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2002-10",
+      "channel": "Swipe Transaction",
+      "rows": 30197,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2002-11",
+      "channel": "Online Transaction",
+      "rows": 2659,
+      "fraud": 43,
+      "fraud_users": 6,
+      "fraud_cards": 6,
+      "fraud_episodes": 5
+    },
+    {
+      "month": "2002-11",
+      "channel": "Swipe Transaction",
+      "rows": 29322,
+      "fraud": 10,
+      "fraud_users": 5,
+      "fraud_cards": 5,
+      "fraud_episodes": 1
+    },
+    {
+      "month": "2002-12",
+      "channel": "Online Transaction",
+      "rows": 2668,
+      "fraud": 59,
+      "fraud_users": 7,
+      "fraud_cards": 7,
+      "fraud_episodes": 6
+    },
+    {
+      "month": "2002-12",
+      "channel": "Swipe Transaction",
+      "rows": 31586,
+      "fraud": 8,
+      "fraud_users": 5,
+      "fraud_cards": 5,
+      "fraud_episodes": 1
+    },
+    {
+      "month": "2003-01",
+      "channel": "Online Transaction",
+      "rows": 2949,
+      "fraud": 18,
+      "fraud_users": 3,
+      "fraud_cards": 3,
+      "fraud_episodes": 2
+    },
+    {
+      "month": "2003-01",
+      "channel": "Swipe Transaction",
+      "rows": 31645,
+      "fraud": 3,
+      "fraud_users": 2,
+      "fraud_cards": 2,
+      "fraud_episodes": 1
+    },
+    {
+      "month": "2003-02",
+      "channel": "Online Transaction",
+      "rows": 2816,
+      "fraud": 45,
+      "fraud_users": 6,
+      "fraud_cards": 6,
+      "fraud_episodes": 5
+    },
+    {
+      "month": "2003-02",
+      "channel": "Swipe Transaction",
+      "rows": 30029,
+      "fraud": 3,
+      "fraud_users": 2,
+      "fraud_cards": 2,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2003-03",
+      "channel": "Online Transaction",
+      "rows": 3004,
+      "fraud": 30,
+      "fraud_users": 4,
+      "fraud_cards": 4,
+      "fraud_episodes": 4
+    },
+    {
+      "month": "2003-03",
+      "channel": "Swipe Transaction",
+      "rows": 33912,
+      "fraud": 4,
+      "fraud_users": 3,
+      "fraud_cards": 3,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2003-04",
+      "channel": "Online Transaction",
+      "rows": 3052,
+      "fraud": 18,
+      "fraud_users": 3,
+      "fraud_cards": 3,
+      "fraud_episodes": 3
+    },
+    {
+      "month": "2003-04",
+      "channel": "Swipe Transaction",
+      "rows": 33237,
+      "fraud": 8,
+      "fraud_users": 3,
+      "fraud_cards": 3,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2003-05",
+      "channel": "Online Transaction",
+      "rows": 3167,
+      "fraud": 82,
+      "fraud_users": 9,
+      "fraud_cards": 9,
+      "fraud_episodes": 9
+    },
+    {
+      "month": "2003-05",
+      "channel": "Swipe Transaction",
+      "rows": 34973,
+      "fraud": 7,
+      "fraud_users": 5,
+      "fraud_cards": 5,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2003-06",
+      "channel": "Online Transaction",
+      "rows": 3192,
+      "fraud": 43,
+      "fraud_users": 7,
+      "fraud_cards": 7,
+      "fraud_episodes": 6
+    },
+    {
+      "month": "2003-06",
+      "channel": "Swipe Transaction",
+      "rows": 34578,
+      "fraud": 2,
+      "fraud_users": 1,
+      "fraud_cards": 1,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2003-07",
+      "channel": "Online Transaction",
+      "rows": 3282,
+      "fraud": 8,
+      "fraud_users": 1,
+      "fraud_cards": 1,
+      "fraud_episodes": 1
+    },
+    {
+      "month": "2003-07",
+      "channel": "Swipe Transaction",
+      "rows": 36740,
+      "fraud": 4,
+      "fraud_users": 1,
+      "fraud_cards": 1,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2003-08",
+      "channel": "Online Transaction",
+      "rows": 3374,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2003-08",
+      "channel": "Swipe Transaction",
+      "rows": 37482,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2003-09",
+      "channel": "Online Transaction",
+      "rows": 3362,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2003-09",
+      "channel": "Swipe Transaction",
+      "rows": 36916,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2003-10",
+      "channel": "Online Transaction",
+      "rows": 3413,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2003-10",
+      "channel": "Swipe Transaction",
+      "rows": 39290,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2003-11",
+      "channel": "Online Transaction",
+      "rows": 3300,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2003-11",
+      "channel": "Swipe Transaction",
+      "rows": 38584,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2003-12",
+      "channel": "Online Transaction",
+      "rows": 3550,
+      "fraud": 20,
+      "fraud_users": 3,
+      "fraud_cards": 3,
+      "fraud_episodes": 3
+    },
+    {
+      "month": "2003-12",
+      "channel": "Swipe Transaction",
+      "rows": 40561,
+      "fraud": 16,
+      "fraud_users": 4,
+      "fraud_cards": 4,
+      "fraud_episodes": 1
+    },
+    {
+      "month": "2004-01",
+      "channel": "Online Transaction",
+      "rows": 3850,
+      "fraud": 19,
+      "fraud_users": 4,
+      "fraud_cards": 4,
+      "fraud_episodes": 4
+    },
+    {
+      "month": "2004-01",
+      "channel": "Swipe Transaction",
+      "rows": 41623,
+      "fraud": 23,
+      "fraud_users": 4,
+      "fraud_cards": 4,
+      "fraud_episodes": 1
+    },
+    {
+      "month": "2004-02",
+      "channel": "Online Transaction",
+      "rows": 3458,
+      "fraud": 25,
+      "fraud_users": 6,
+      "fraud_cards": 6,
+      "fraud_episodes": 3
+    },
+    {
+      "month": "2004-02",
+      "channel": "Swipe Transaction",
+      "rows": 37942,
+      "fraud": 18,
+      "fraud_users": 6,
+      "fraud_cards": 6,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2004-03",
+      "channel": "Online Transaction",
+      "rows": 3901,
+      "fraud": 47,
+      "fraud_users": 8,
+      "fraud_cards": 8,
+      "fraud_episodes": 6
+    },
+    {
+      "month": "2004-03",
+      "channel": "Swipe Transaction",
+      "rows": 43039,
+      "fraud": 21,
+      "fraud_users": 7,
+      "fraud_cards": 7,
+      "fraud_episodes": 1
+    },
+    {
+      "month": "2004-04",
+      "channel": "Online Transaction",
+      "rows": 3806,
+      "fraud": 33,
+      "fraud_users": 4,
+      "fraud_cards": 4,
+      "fraud_episodes": 3
+    },
+    {
+      "month": "2004-04",
+      "channel": "Swipe Transaction",
+      "rows": 42124,
+      "fraud": 14,
+      "fraud_users": 3,
+      "fraud_cards": 3,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2004-05",
+      "channel": "Online Transaction",
+      "rows": 4093,
+      "fraud": 16,
+      "fraud_users": 3,
+      "fraud_cards": 3,
+      "fraud_episodes": 2
+    },
+    {
+      "month": "2004-05",
+      "channel": "Swipe Transaction",
+      "rows": 44497,
+      "fraud": 6,
+      "fraud_users": 3,
+      "fraud_cards": 3,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2004-06",
+      "channel": "Online Transaction",
+      "rows": 4156,
+      "fraud": 48,
+      "fraud_users": 9,
+      "fraud_cards": 9,
+      "fraud_episodes": 7
+    },
+    {
+      "month": "2004-06",
+      "channel": "Swipe Transaction",
+      "rows": 44501,
+      "fraud": 30,
+      "fraud_users": 8,
+      "fraud_cards": 8,
+      "fraud_episodes": 1
+    },
+    {
+      "month": "2004-07",
+      "channel": "Online Transaction",
+      "rows": 4323,
+      "fraud": 22,
+      "fraud_users": 7,
+      "fraud_cards": 7,
+      "fraud_episodes": 3
+    },
+    {
+      "month": "2004-07",
+      "channel": "Swipe Transaction",
+      "rows": 46761,
+      "fraud": 22,
+      "fraud_users": 4,
+      "fraud_cards": 4,
+      "fraud_episodes": 1
+    },
+    {
+      "month": "2004-08",
+      "channel": "Online Transaction",
+      "rows": 4445,
+      "fraud": 47,
+      "fraud_users": 7,
+      "fraud_cards": 7,
+      "fraud_episodes": 6
+    },
+    {
+      "month": "2004-08",
+      "channel": "Swipe Transaction",
+      "rows": 47984,
+      "fraud": 29,
+      "fraud_users": 7,
+      "fraud_cards": 7,
+      "fraud_episodes": 1
+    },
+    {
+      "month": "2004-09",
+      "channel": "Online Transaction",
+      "rows": 4445,
+      "fraud": 14,
+      "fraud_users": 4,
+      "fraud_cards": 4,
+      "fraud_episodes": 4
+    },
+    {
+      "month": "2004-09",
+      "channel": "Swipe Transaction",
+      "rows": 47311,
+      "fraud": 5,
+      "fraud_users": 3,
+      "fraud_cards": 3,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2004-10",
+      "channel": "Online Transaction",
+      "rows": 4723,
+      "fraud": 50,
+      "fraud_users": 7,
+      "fraud_cards": 7,
+      "fraud_episodes": 5
+    },
+    {
+      "month": "2004-10",
+      "channel": "Swipe Transaction",
+      "rows": 50148,
+      "fraud": 28,
+      "fraud_users": 7,
+      "fraud_cards": 7,
+      "fraud_episodes": 1
+    },
+    {
+      "month": "2004-11",
+      "channel": "Online Transaction",
+      "rows": 4581,
+      "fraud": 35,
+      "fraud_users": 7,
+      "fraud_cards": 7,
+      "fraud_episodes": 4
+    },
+    {
+      "month": "2004-11",
+      "channel": "Swipe Transaction",
+      "rows": 49309,
+      "fraud": 36,
+      "fraud_users": 8,
+      "fraud_cards": 8,
+      "fraud_episodes": 3
+    },
+    {
+      "month": "2004-12",
+      "channel": "Online Transaction",
+      "rows": 4836,
+      "fraud": 21,
+      "fraud_users": 5,
+      "fraud_cards": 5,
+      "fraud_episodes": 2
+    },
+    {
+      "month": "2004-12",
+      "channel": "Swipe Transaction",
+      "rows": 51147,
+      "fraud": 11,
+      "fraud_users": 6,
+      "fraud_cards": 6,
+      "fraud_episodes": 2
+    },
+    {
+      "month": "2005-01",
+      "channel": "Online Transaction",
+      "rows": 5551,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2005-01",
+      "channel": "Swipe Transaction",
+      "rows": 52139,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2005-02",
+      "channel": "Online Transaction",
+      "rows": 4726,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2005-02",
+      "channel": "Swipe Transaction",
+      "rows": 48174,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2005-03",
+      "channel": "Online Transaction",
+      "rows": 5315,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2005-03",
+      "channel": "Swipe Transaction",
+      "rows": 54419,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2005-04",
+      "channel": "Online Transaction",
+      "rows": 5218,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2005-04",
+      "channel": "Swipe Transaction",
+      "rows": 53411,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2005-05",
+      "channel": "Online Transaction",
+      "rows": 5627,
+      "fraud": 13,
+      "fraud_users": 7,
+      "fraud_cards": 7,
+      "fraud_episodes": 5
+    },
+    {
+      "month": "2005-05",
+      "channel": "Swipe Transaction",
+      "rows": 56483,
+      "fraud": 9,
+      "fraud_users": 6,
+      "fraud_cards": 6,
+      "fraud_episodes": 3
+    },
+    {
+      "month": "2005-06",
+      "channel": "Online Transaction",
+      "rows": 5522,
+      "fraud": 3,
+      "fraud_users": 2,
+      "fraud_cards": 2,
+      "fraud_episodes": 1
+    },
+    {
+      "month": "2005-06",
+      "channel": "Swipe Transaction",
+      "rows": 55485,
+      "fraud": 2,
+      "fraud_users": 2,
+      "fraud_cards": 2,
+      "fraud_episodes": 1
+    },
+    {
+      "month": "2005-07",
+      "channel": "Online Transaction",
+      "rows": 6029,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2005-07",
+      "channel": "Swipe Transaction",
+      "rows": 58074,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2005-08",
+      "channel": "Online Transaction",
+      "rows": 6008,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2005-08",
+      "channel": "Swipe Transaction",
+      "rows": 59602,
+      "fraud": 8,
+      "fraud_users": 1,
+      "fraud_cards": 1,
+      "fraud_episodes": 1
+    },
+    {
+      "month": "2005-09",
+      "channel": "Online Transaction",
+      "rows": 5891,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2005-09",
+      "channel": "Swipe Transaction",
+      "rows": 57934,
+      "fraud": 19,
+      "fraud_users": 5,
+      "fraud_cards": 5,
+      "fraud_episodes": 4
+    },
+    {
+      "month": "2005-10",
+      "channel": "Online Transaction",
+      "rows": 6144,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2005-10",
+      "channel": "Swipe Transaction",
+      "rows": 60499,
+      "fraud": 29,
+      "fraud_users": 5,
+      "fraud_cards": 5,
+      "fraud_episodes": 5
+    },
+    {
+      "month": "2005-11",
+      "channel": "Online Transaction",
+      "rows": 6067,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2005-11",
+      "channel": "Swipe Transaction",
+      "rows": 59338,
+      "fraud": 62,
+      "fraud_users": 11,
+      "fraud_cards": 11,
+      "fraud_episodes": 9
+    },
+    {
+      "month": "2005-12",
+      "channel": "Online Transaction",
+      "rows": 6359,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2005-12",
+      "channel": "Swipe Transaction",
+      "rows": 62638,
+      "fraud": 84,
+      "fraud_users": 20,
+      "fraud_cards": 20,
+      "fraud_episodes": 19
+    },
+    {
+      "month": "2006-01",
+      "channel": "Online Transaction",
+      "rows": 6962,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2006-01",
+      "channel": "Swipe Transaction",
+      "rows": 63951,
+      "fraud": 124,
+      "fraud_users": 41,
+      "fraud_cards": 41,
+      "fraud_episodes": 35
+    },
+    {
+      "month": "2006-02",
+      "channel": "Online Transaction",
+      "rows": 6361,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2006-02",
+      "channel": "Swipe Transaction",
+      "rows": 59319,
+      "fraud": 183,
+      "fraud_users": 45,
+      "fraud_cards": 46,
+      "fraud_episodes": 39
+    },
+    {
+      "month": "2006-03",
+      "channel": "Online Transaction",
+      "rows": 7184,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2006-03",
+      "channel": "Swipe Transaction",
+      "rows": 66733,
+      "fraud": 158,
+      "fraud_users": 46,
+      "fraud_cards": 47,
+      "fraud_episodes": 40
+    },
+    {
+      "month": "2006-04",
+      "channel": "Online Transaction",
+      "rows": 6969,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2006-04",
+      "channel": "Swipe Transaction",
+      "rows": 64644,
+      "fraud": 122,
+      "fraud_users": 33,
+      "fraud_cards": 34,
+      "fraud_episodes": 26
+    },
+    {
+      "month": "2006-05",
+      "channel": "Online Transaction",
+      "rows": 7289,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2006-05",
+      "channel": "Swipe Transaction",
+      "rows": 67946,
+      "fraud": 120,
+      "fraud_users": 30,
+      "fraud_cards": 30,
+      "fraud_episodes": 26
+    },
+    {
+      "month": "2006-06",
+      "channel": "Online Transaction",
+      "rows": 7167,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2006-06",
+      "channel": "Swipe Transaction",
+      "rows": 67292,
+      "fraud": 149,
+      "fraud_users": 26,
+      "fraud_cards": 26,
+      "fraud_episodes": 26
+    },
+    {
+      "month": "2006-07",
+      "channel": "Online Transaction",
+      "rows": 7473,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2006-07",
+      "channel": "Swipe Transaction",
+      "rows": 69993,
+      "fraud": 141,
+      "fraud_users": 31,
+      "fraud_cards": 31,
+      "fraud_episodes": 35
+    },
+    {
+      "month": "2006-08",
+      "channel": "Online Transaction",
+      "rows": 7688,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2006-08",
+      "channel": "Swipe Transaction",
+      "rows": 71454,
+      "fraud": 83,
+      "fraud_users": 20,
+      "fraud_cards": 20,
+      "fraud_episodes": 18
+    },
+    {
+      "month": "2006-09",
+      "channel": "Online Transaction",
+      "rows": 7269,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2006-09",
+      "channel": "Swipe Transaction",
+      "rows": 70790,
+      "fraud": 38,
+      "fraud_users": 6,
+      "fraud_cards": 6,
+      "fraud_episodes": 5
+    },
+    {
+      "month": "2006-10",
+      "channel": "Online Transaction",
+      "rows": 7587,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2006-10",
+      "channel": "Swipe Transaction",
+      "rows": 73149,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2006-11",
+      "channel": "Online Transaction",
+      "rows": 7680,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2006-11",
+      "channel": "Swipe Transaction",
+      "rows": 71507,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2006-12",
+      "channel": "Online Transaction",
+      "rows": 7838,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2006-12",
+      "channel": "Swipe Transaction",
+      "rows": 74548,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2007-01",
+      "channel": "Online Transaction",
+      "rows": 8525,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2007-01",
+      "channel": "Swipe Transaction",
+      "rows": 74684,
+      "fraud": 3,
+      "fraud_users": 1,
+      "fraud_cards": 1,
+      "fraud_episodes": 1
+    },
+    {
+      "month": "2007-02",
+      "channel": "Online Transaction",
+      "rows": 7741,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2007-02",
+      "channel": "Swipe Transaction",
+      "rows": 69049,
+      "fraud": 74,
+      "fraud_users": 8,
+      "fraud_cards": 8,
+      "fraud_episodes": 7
+    },
+    {
+      "month": "2007-03",
+      "channel": "Online Transaction",
+      "rows": 8558,
+      "fraud": 48,
+      "fraud_users": 8,
+      "fraud_cards": 8,
+      "fraud_episodes": 7
+    },
+    {
+      "month": "2007-03",
+      "channel": "Swipe Transaction",
+      "rows": 77878,
+      "fraud": 49,
+      "fraud_users": 14,
+      "fraud_cards": 14,
+      "fraud_episodes": 8
+    },
+    {
+      "month": "2007-04",
+      "channel": "Online Transaction",
+      "rows": 8650,
+      "fraud": 78,
+      "fraud_users": 13,
+      "fraud_cards": 13,
+      "fraud_episodes": 12
+    },
+    {
+      "month": "2007-04",
+      "channel": "Swipe Transaction",
+      "rows": 76142,
+      "fraud": 69,
+      "fraud_users": 17,
+      "fraud_cards": 17,
+      "fraud_episodes": 9
+    },
+    {
+      "month": "2007-05",
+      "channel": "Online Transaction",
+      "rows": 8797,
+      "fraud": 40,
+      "fraud_users": 9,
+      "fraud_cards": 9,
+      "fraud_episodes": 6
+    },
+    {
+      "month": "2007-05",
+      "channel": "Swipe Transaction",
+      "rows": 80046,
+      "fraud": 52,
+      "fraud_users": 16,
+      "fraud_cards": 16,
+      "fraud_episodes": 13
+    },
+    {
+      "month": "2007-06",
+      "channel": "Online Transaction",
+      "rows": 8875,
+      "fraud": 39,
+      "fraud_users": 8,
+      "fraud_cards": 8,
+      "fraud_episodes": 7
+    },
+    {
+      "month": "2007-06",
+      "channel": "Swipe Transaction",
+      "rows": 78845,
+      "fraud": 95,
+      "fraud_users": 20,
+      "fraud_cards": 20,
+      "fraud_episodes": 9
+    },
+    {
+      "month": "2007-07",
+      "channel": "Online Transaction",
+      "rows": 9290,
+      "fraud": 69,
+      "fraud_users": 13,
+      "fraud_cards": 13,
+      "fraud_episodes": 11
+    },
+    {
+      "month": "2007-07",
+      "channel": "Swipe Transaction",
+      "rows": 82211,
+      "fraud": 34,
+      "fraud_users": 12,
+      "fraud_cards": 12,
+      "fraud_episodes": 2
+    },
+    {
+      "month": "2007-08",
+      "channel": "Online Transaction",
+      "rows": 9211,
+      "fraud": 99,
+      "fraud_users": 28,
+      "fraud_cards": 28,
+      "fraud_episodes": 20
+    },
+    {
+      "month": "2007-08",
+      "channel": "Swipe Transaction",
+      "rows": 83995,
+      "fraud": 25,
+      "fraud_users": 15,
+      "fraud_cards": 15,
+      "fraud_episodes": 6
+    },
+    {
+      "month": "2007-09",
+      "channel": "Online Transaction",
+      "rows": 9052,
+      "fraud": 199,
+      "fraud_users": 51,
+      "fraud_cards": 52,
+      "fraud_episodes": 42
+    },
+    {
+      "month": "2007-09",
+      "channel": "Swipe Transaction",
+      "rows": 81183,
+      "fraud": 58,
+      "fraud_users": 31,
+      "fraud_cards": 31,
+      "fraud_episodes": 11
+    },
+    {
+      "month": "2007-10",
+      "channel": "Online Transaction",
+      "rows": 9409,
+      "fraud": 208,
+      "fraud_users": 45,
+      "fraud_cards": 45,
+      "fraud_episodes": 34
+    },
+    {
+      "month": "2007-10",
+      "channel": "Swipe Transaction",
+      "rows": 83610,
+      "fraud": 43,
+      "fraud_users": 28,
+      "fraud_cards": 28,
+      "fraud_episodes": 11
+    },
+    {
+      "month": "2007-11",
+      "channel": "Online Transaction",
+      "rows": 9179,
+      "fraud": 252,
+      "fraud_users": 59,
+      "fraud_cards": 60,
+      "fraud_episodes": 46
+    },
+    {
+      "month": "2007-11",
+      "channel": "Swipe Transaction",
+      "rows": 83109,
+      "fraud": 66,
+      "fraud_users": 37,
+      "fraud_cards": 37,
+      "fraud_episodes": 15
+    },
+    {
+      "month": "2007-12",
+      "channel": "Online Transaction",
+      "rows": 9702,
+      "fraud": 219,
+      "fraud_users": 50,
+      "fraud_cards": 50,
+      "fraud_episodes": 37
+    },
+    {
+      "month": "2007-12",
+      "channel": "Swipe Transaction",
+      "rows": 86742,
+      "fraud": 62,
+      "fraud_users": 35,
+      "fraud_cards": 35,
+      "fraud_episodes": 11
+    },
+    {
+      "month": "2008-01",
+      "channel": "Online Transaction",
+      "rows": 10572,
+      "fraud": 201,
+      "fraud_users": 47,
+      "fraud_cards": 47,
+      "fraud_episodes": 37
+    },
+    {
+      "month": "2008-01",
+      "channel": "Swipe Transaction",
+      "rows": 87832,
+      "fraud": 39,
+      "fraud_users": 27,
+      "fraud_cards": 27,
+      "fraud_episodes": 10
+    },
+    {
+      "month": "2008-02",
+      "channel": "Online Transaction",
+      "rows": 9228,
+      "fraud": 147,
+      "fraud_users": 34,
+      "fraud_cards": 34,
+      "fraud_episodes": 27
+    },
+    {
+      "month": "2008-02",
+      "channel": "Swipe Transaction",
+      "rows": 79631,
+      "fraud": 42,
+      "fraud_users": 23,
+      "fraud_cards": 23,
+      "fraud_episodes": 7
+    },
+    {
+      "month": "2008-03",
+      "channel": "Online Transaction",
+      "rows": 10431,
+      "fraud": 275,
+      "fraud_users": 60,
+      "fraud_cards": 60,
+      "fraud_episodes": 54
+    },
+    {
+      "month": "2008-03",
+      "channel": "Swipe Transaction",
+      "rows": 89570,
+      "fraud": 44,
+      "fraud_users": 30,
+      "fraud_cards": 30,
+      "fraud_episodes": 8
+    },
+    {
+      "month": "2008-04",
+      "channel": "Online Transaction",
+      "rows": 10102,
+      "fraud": 191,
+      "fraud_users": 42,
+      "fraud_cards": 42,
+      "fraud_episodes": 35
+    },
+    {
+      "month": "2008-04",
+      "channel": "Swipe Transaction",
+      "rows": 86841,
+      "fraud": 41,
+      "fraud_users": 29,
+      "fraud_cards": 29,
+      "fraud_episodes": 11
+    },
+    {
+      "month": "2008-05",
+      "channel": "Online Transaction",
+      "rows": 10751,
+      "fraud": 287,
+      "fraud_users": 65,
+      "fraud_cards": 67,
+      "fraud_episodes": 53
+    },
+    {
+      "month": "2008-05",
+      "channel": "Swipe Transaction",
+      "rows": 92223,
+      "fraud": 54,
+      "fraud_users": 34,
+      "fraud_cards": 35,
+      "fraud_episodes": 9
+    },
+    {
+      "month": "2008-06",
+      "channel": "Online Transaction",
+      "rows": 10395,
+      "fraud": 224,
+      "fraud_users": 54,
+      "fraud_cards": 54,
+      "fraud_episodes": 46
+    },
+    {
+      "month": "2008-06",
+      "channel": "Swipe Transaction",
+      "rows": 89578,
+      "fraud": 48,
+      "fraud_users": 32,
+      "fraud_cards": 32,
+      "fraud_episodes": 6
+    },
+    {
+      "month": "2008-07",
+      "channel": "Online Transaction",
+      "rows": 11144,
+      "fraud": 244,
+      "fraud_users": 58,
+      "fraud_cards": 58,
+      "fraud_episodes": 43
+    },
+    {
+      "month": "2008-07",
+      "channel": "Swipe Transaction",
+      "rows": 93785,
+      "fraud": 56,
+      "fraud_users": 33,
+      "fraud_cards": 33,
+      "fraud_episodes": 14
+    },
+    {
+      "month": "2008-08",
+      "channel": "Online Transaction",
+      "rows": 10983,
+      "fraud": 224,
+      "fraud_users": 59,
+      "fraud_cards": 61,
+      "fraud_episodes": 51
+    },
+    {
+      "month": "2008-08",
+      "channel": "Swipe Transaction",
+      "rows": 95092,
+      "fraud": 122,
+      "fraud_users": 42,
+      "fraud_cards": 43,
+      "fraud_episodes": 23
+    },
+    {
+      "month": "2008-09",
+      "channel": "Online Transaction",
+      "rows": 10756,
+      "fraud": 166,
+      "fraud_users": 49,
+      "fraud_cards": 49,
+      "fraud_episodes": 41
+    },
+    {
+      "month": "2008-09",
+      "channel": "Swipe Transaction",
+      "rows": 92373,
+      "fraud": 114,
+      "fraud_users": 39,
+      "fraud_cards": 39,
+      "fraud_episodes": 21
+    },
+    {
+      "month": "2008-10",
+      "channel": "Online Transaction",
+      "rows": 10999,
+      "fraud": 227,
+      "fraud_users": 54,
+      "fraud_cards": 56,
+      "fraud_episodes": 46
+    },
+    {
+      "month": "2008-10",
+      "channel": "Swipe Transaction",
+      "rows": 96943,
+      "fraud": 225,
+      "fraud_users": 59,
+      "fraud_cards": 59,
+      "fraud_episodes": 35
+    },
+    {
+      "month": "2008-11",
+      "channel": "Online Transaction",
+      "rows": 10927,
+      "fraud": 218,
+      "fraud_users": 57,
+      "fraud_cards": 58,
+      "fraud_episodes": 41
+    },
+    {
+      "month": "2008-11",
+      "channel": "Swipe Transaction",
+      "rows": 94482,
+      "fraud": 198,
+      "fraud_users": 59,
+      "fraud_cards": 62,
+      "fraud_episodes": 38
+    },
+    {
+      "month": "2008-12",
+      "channel": "Online Transaction",
+      "rows": 11104,
+      "fraud": 161,
+      "fraud_users": 38,
+      "fraud_cards": 38,
+      "fraud_episodes": 31
+    },
+    {
+      "month": "2008-12",
+      "channel": "Swipe Transaction",
+      "rows": 97718,
+      "fraud": 162,
+      "fraud_users": 39,
+      "fraud_cards": 39,
+      "fraud_episodes": 21
+    },
+    {
+      "month": "2009-01",
+      "channel": "Online Transaction",
+      "rows": 11945,
+      "fraud": 173,
+      "fraud_users": 54,
+      "fraud_cards": 54,
+      "fraud_episodes": 43
+    },
+    {
+      "month": "2009-01",
+      "channel": "Swipe Transaction",
+      "rows": 98263,
+      "fraud": 144,
+      "fraud_users": 43,
+      "fraud_cards": 44,
+      "fraud_episodes": 27
+    },
+    {
+      "month": "2009-02",
+      "channel": "Online Transaction",
+      "rows": 10664,
+      "fraud": 126,
+      "fraud_users": 29,
+      "fraud_cards": 30,
+      "fraud_episodes": 27
+    },
+    {
+      "month": "2009-02",
+      "channel": "Swipe Transaction",
+      "rows": 90077,
+      "fraud": 136,
+      "fraud_users": 34,
+      "fraud_cards": 35,
+      "fraud_episodes": 17
+    },
+    {
+      "month": "2009-03",
+      "channel": "Online Transaction",
+      "rows": 11615,
+      "fraud": 19,
+      "fraud_users": 7,
+      "fraud_cards": 7,
+      "fraud_episodes": 4
+    },
+    {
+      "month": "2009-03",
+      "channel": "Swipe Transaction",
+      "rows": 100583,
+      "fraud": 112,
+      "fraud_users": 22,
+      "fraud_cards": 22,
+      "fraud_episodes": 13
+    },
+    {
+      "month": "2009-04",
+      "channel": "Online Transaction",
+      "rows": 11599,
+      "fraud": 32,
+      "fraud_users": 5,
+      "fraud_cards": 5,
+      "fraud_episodes": 4
+    },
+    {
+      "month": "2009-04",
+      "channel": "Swipe Transaction",
+      "rows": 97544,
+      "fraud": 3,
+      "fraud_users": 3,
+      "fraud_cards": 3,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2009-05",
+      "channel": "Online Transaction",
+      "rows": 11722,
+      "fraud": 63,
+      "fraud_users": 9,
+      "fraud_cards": 9,
+      "fraud_episodes": 7
+    },
+    {
+      "month": "2009-05",
+      "channel": "Swipe Transaction",
+      "rows": 101564,
+      "fraud": 13,
+      "fraud_users": 7,
+      "fraud_cards": 7,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2009-06",
+      "channel": "Online Transaction",
+      "rows": 11636,
+      "fraud": 65,
+      "fraud_users": 10,
+      "fraud_cards": 10,
+      "fraud_episodes": 5
+    },
+    {
+      "month": "2009-06",
+      "channel": "Swipe Transaction",
+      "rows": 99103,
+      "fraud": 7,
+      "fraud_users": 7,
+      "fraud_cards": 7,
+      "fraud_episodes": 2
+    },
+    {
+      "month": "2009-07",
+      "channel": "Online Transaction",
+      "rows": 12169,
+      "fraud": 36,
+      "fraud_users": 6,
+      "fraud_cards": 6,
+      "fraud_episodes": 3
+    },
+    {
+      "month": "2009-07",
+      "channel": "Swipe Transaction",
+      "rows": 103264,
+      "fraud": 7,
+      "fraud_users": 3,
+      "fraud_cards": 3,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2009-08",
+      "channel": "Online Transaction",
+      "rows": 12219,
+      "fraud": 56,
+      "fraud_users": 7,
+      "fraud_cards": 7,
+      "fraud_episodes": 8
+    },
+    {
+      "month": "2009-08",
+      "channel": "Swipe Transaction",
+      "rows": 104735,
+      "fraud": 13,
+      "fraud_users": 6,
+      "fraud_cards": 6,
+      "fraud_episodes": 1
+    },
+    {
+      "month": "2009-09",
+      "channel": "Online Transaction",
+      "rows": 11693,
+      "fraud": 12,
+      "fraud_users": 5,
+      "fraud_cards": 5,
+      "fraud_episodes": 4
+    },
+    {
+      "month": "2009-09",
+      "channel": "Swipe Transaction",
+      "rows": 101860,
+      "fraud": 2,
+      "fraud_users": 1,
+      "fraud_cards": 1,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2009-10",
+      "channel": "Online Transaction",
+      "rows": 12607,
+      "fraud": 53,
+      "fraud_users": 6,
+      "fraud_cards": 6,
+      "fraud_episodes": 8
+    },
+    {
+      "month": "2009-10",
+      "channel": "Swipe Transaction",
+      "rows": 105851,
+      "fraud": 1,
+      "fraud_users": 1,
+      "fraud_cards": 1,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2009-11",
+      "channel": "Online Transaction",
+      "rows": 12050,
+      "fraud": 22,
+      "fraud_users": 6,
+      "fraud_cards": 6,
+      "fraud_episodes": 3
+    },
+    {
+      "month": "2009-11",
+      "channel": "Swipe Transaction",
+      "rows": 103021,
+      "fraud": 5,
+      "fraud_users": 4,
+      "fraud_cards": 4,
+      "fraud_episodes": 2
+    },
+    {
+      "month": "2009-12",
+      "channel": "Online Transaction",
+      "rows": 12547,
+      "fraud": 37,
+      "fraud_users": 7,
+      "fraud_cards": 7,
+      "fraud_episodes": 4
+    },
+    {
+      "month": "2009-12",
+      "channel": "Swipe Transaction",
+      "rows": 107103,
+      "fraud": 3,
+      "fraud_users": 2,
+      "fraud_cards": 2,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2010-01",
+      "channel": "Online Transaction",
+      "rows": 13394,
+      "fraud": 139,
+      "fraud_users": 23,
+      "fraud_cards": 23,
+      "fraud_episodes": 22
+    },
+    {
+      "month": "2010-01",
+      "channel": "Swipe Transaction",
+      "rows": 107477,
+      "fraud": 14,
+      "fraud_users": 10,
+      "fraud_cards": 10,
+      "fraud_episodes": 2
+    },
+    {
+      "month": "2010-02",
+      "channel": "Online Transaction",
+      "rows": 12365,
+      "fraud": 362,
+      "fraud_users": 41,
+      "fraud_cards": 41,
+      "fraud_episodes": 35
+    },
+    {
+      "month": "2010-02",
+      "channel": "Swipe Transaction",
+      "rows": 99206,
+      "fraud": 29,
+      "fraud_users": 20,
+      "fraud_cards": 20,
+      "fraud_episodes": 1
+    },
+    {
+      "month": "2010-03",
+      "channel": "Online Transaction",
+      "rows": 13430,
+      "fraud": 349,
+      "fraud_users": 36,
+      "fraud_cards": 36,
+      "fraud_episodes": 28
+    },
+    {
+      "month": "2010-03",
+      "channel": "Swipe Transaction",
+      "rows": 110505,
+      "fraud": 37,
+      "fraud_users": 22,
+      "fraud_cards": 22,
+      "fraud_episodes": 4
+    },
+    {
+      "month": "2010-04",
+      "channel": "Online Transaction",
+      "rows": 13008,
+      "fraud": 310,
+      "fraud_users": 35,
+      "fraud_cards": 35,
+      "fraud_episodes": 32
+    },
+    {
+      "month": "2010-04",
+      "channel": "Swipe Transaction",
+      "rows": 106983,
+      "fraud": 33,
+      "fraud_users": 17,
+      "fraud_cards": 17,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2010-05",
+      "channel": "Online Transaction",
+      "rows": 14038,
+      "fraud": 371,
+      "fraud_users": 37,
+      "fraud_cards": 37,
+      "fraud_episodes": 31
+    },
+    {
+      "month": "2010-05",
+      "channel": "Swipe Transaction",
+      "rows": 111708,
+      "fraud": 37,
+      "fraud_users": 23,
+      "fraud_cards": 23,
+      "fraud_episodes": 3
+    },
+    {
+      "month": "2010-06",
+      "channel": "Online Transaction",
+      "rows": 13358,
+      "fraud": 263,
+      "fraud_users": 31,
+      "fraud_cards": 31,
+      "fraud_episodes": 24
+    },
+    {
+      "month": "2010-06",
+      "channel": "Swipe Transaction",
+      "rows": 109637,
+      "fraud": 22,
+      "fraud_users": 14,
+      "fraud_cards": 14,
+      "fraud_episodes": 3
+    },
+    {
+      "month": "2010-07",
+      "channel": "Online Transaction",
+      "rows": 13968,
+      "fraud": 305,
+      "fraud_users": 31,
+      "fraud_cards": 31,
+      "fraud_episodes": 24
+    },
+    {
+      "month": "2010-07",
+      "channel": "Swipe Transaction",
+      "rows": 113216,
+      "fraud": 32,
+      "fraud_users": 18,
+      "fraud_cards": 18,
+      "fraud_episodes": 4
+    },
+    {
+      "month": "2010-08",
+      "channel": "Online Transaction",
+      "rows": 14224,
+      "fraud": 312,
+      "fraud_users": 37,
+      "fraud_cards": 38,
+      "fraud_episodes": 29
+    },
+    {
+      "month": "2010-08",
+      "channel": "Swipe Transaction",
+      "rows": 114997,
+      "fraud": 33,
+      "fraud_users": 24,
+      "fraud_cards": 24,
+      "fraud_episodes": 4
+    },
+    {
+      "month": "2010-09",
+      "channel": "Online Transaction",
+      "rows": 13545,
+      "fraud": 256,
+      "fraud_users": 30,
+      "fraud_cards": 30,
+      "fraud_episodes": 22
+    },
+    {
+      "month": "2010-09",
+      "channel": "Swipe Transaction",
+      "rows": 111497,
+      "fraud": 45,
+      "fraud_users": 18,
+      "fraud_cards": 18,
+      "fraud_episodes": 5
+    },
+    {
+      "month": "2010-10",
+      "channel": "Online Transaction",
+      "rows": 13713,
+      "fraud": 284,
+      "fraud_users": 30,
+      "fraud_cards": 30,
+      "fraud_episodes": 30
+    },
+    {
+      "month": "2010-10",
+      "channel": "Swipe Transaction",
+      "rows": 114496,
+      "fraud": 32,
+      "fraud_users": 18,
+      "fraud_cards": 18,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2010-11",
+      "channel": "Online Transaction",
+      "rows": 13654,
+      "fraud": 309,
+      "fraud_users": 35,
+      "fraud_cards": 36,
+      "fraud_episodes": 31
+    },
+    {
+      "month": "2010-11",
+      "channel": "Swipe Transaction",
+      "rows": 111920,
+      "fraud": 32,
+      "fraud_users": 20,
+      "fraud_cards": 21,
+      "fraud_episodes": 3
+    },
+    {
+      "month": "2010-12",
+      "channel": "Online Transaction",
+      "rows": 13941,
+      "fraud": 198,
+      "fraud_users": 28,
+      "fraud_cards": 28,
+      "fraud_episodes": 21
+    },
+    {
+      "month": "2010-12",
+      "channel": "Swipe Transaction",
+      "rows": 116945,
+      "fraud": 31,
+      "fraud_users": 16,
+      "fraud_cards": 16,
+      "fraud_episodes": 5
+    },
+    {
+      "month": "2011-01",
+      "channel": "Online Transaction",
+      "rows": 14600,
+      "fraud": 52,
+      "fraud_users": 8,
+      "fraud_cards": 8,
+      "fraud_episodes": 5
+    },
+    {
+      "month": "2011-01",
+      "channel": "Swipe Transaction",
+      "rows": 116221,
+      "fraud": 3,
+      "fraud_users": 1,
+      "fraud_cards": 1,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2011-02",
+      "channel": "Online Transaction",
+      "rows": 13014,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2011-02",
+      "channel": "Swipe Transaction",
+      "rows": 105304,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2011-03",
+      "channel": "Online Transaction",
+      "rows": 14311,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2011-03",
+      "channel": "Swipe Transaction",
+      "rows": 117743,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2011-04",
+      "channel": "Online Transaction",
+      "rows": 14204,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2011-04",
+      "channel": "Swipe Transaction",
+      "rows": 114496,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2011-05",
+      "channel": "Online Transaction",
+      "rows": 14445,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2011-05",
+      "channel": "Swipe Transaction",
+      "rows": 117628,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2011-06",
+      "channel": "Online Transaction",
+      "rows": 14246,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2011-06",
+      "channel": "Swipe Transaction",
+      "rows": 115406,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2011-07",
+      "channel": "Online Transaction",
+      "rows": 14771,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2011-07",
+      "channel": "Swipe Transaction",
+      "rows": 118724,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2011-08",
+      "channel": "Online Transaction",
+      "rows": 14953,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2011-08",
+      "channel": "Swipe Transaction",
+      "rows": 120304,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2011-09",
+      "channel": "Online Transaction",
+      "rows": 14275,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2011-09",
+      "channel": "Swipe Transaction",
+      "rows": 115814,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2011-10",
+      "channel": "Online Transaction",
+      "rows": 14785,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2011-10",
+      "channel": "Swipe Transaction",
+      "rows": 119581,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2011-11",
+      "channel": "Online Transaction",
+      "rows": 14303,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2011-11",
+      "channel": "Swipe Transaction",
+      "rows": 116136,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2011-12",
+      "channel": "Online Transaction",
+      "rows": 14679,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2011-12",
+      "channel": "Swipe Transaction",
+      "rows": 120608,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2012-01",
+      "channel": "Online Transaction",
+      "rows": 15505,
+      "fraud": 124,
+      "fraud_users": 24,
+      "fraud_cards": 24,
+      "fraud_episodes": 17
+    },
+    {
+      "month": "2012-01",
+      "channel": "Swipe Transaction",
+      "rows": 120491,
+      "fraud": 54,
+      "fraud_users": 20,
+      "fraud_cards": 20,
+      "fraud_episodes": 7
+    },
+    {
+      "month": "2012-02",
+      "channel": "Online Transaction",
+      "rows": 14026,
+      "fraud": 124,
+      "fraud_users": 23,
+      "fraud_cards": 23,
+      "fraud_episodes": 17
+    },
+    {
+      "month": "2012-02",
+      "channel": "Swipe Transaction",
+      "rows": 108849,
+      "fraud": 40,
+      "fraud_users": 20,
+      "fraud_cards": 20,
+      "fraud_episodes": 6
+    },
+    {
+      "month": "2012-03",
+      "channel": "Online Transaction",
+      "rows": 15258,
+      "fraud": 122,
+      "fraud_users": 23,
+      "fraud_cards": 23,
+      "fraud_episodes": 14
+    },
+    {
+      "month": "2012-03",
+      "channel": "Swipe Transaction",
+      "rows": 121218,
+      "fraud": 41,
+      "fraud_users": 22,
+      "fraud_cards": 22,
+      "fraud_episodes": 10
+    },
+    {
+      "month": "2012-04",
+      "channel": "Online Transaction",
+      "rows": 14762,
+      "fraud": 131,
+      "fraud_users": 31,
+      "fraud_cards": 31,
+      "fraud_episodes": 19
+    },
+    {
+      "month": "2012-04",
+      "channel": "Swipe Transaction",
+      "rows": 116098,
+      "fraud": 46,
+      "fraud_users": 27,
+      "fraud_cards": 27,
+      "fraud_episodes": 8
+    },
+    {
+      "month": "2012-05",
+      "channel": "Online Transaction",
+      "rows": 15713,
+      "fraud": 150,
+      "fraud_users": 30,
+      "fraud_cards": 30,
+      "fraud_episodes": 19
+    },
+    {
+      "month": "2012-05",
+      "channel": "Swipe Transaction",
+      "rows": 121240,
+      "fraud": 54,
+      "fraud_users": 26,
+      "fraud_cards": 26,
+      "fraud_episodes": 9
+    },
+    {
+      "month": "2012-06",
+      "channel": "Online Transaction",
+      "rows": 15127,
+      "fraud": 113,
+      "fraud_users": 23,
+      "fraud_cards": 23,
+      "fraud_episodes": 14
+    },
+    {
+      "month": "2012-06",
+      "channel": "Swipe Transaction",
+      "rows": 118417,
+      "fraud": 35,
+      "fraud_users": 16,
+      "fraud_cards": 16,
+      "fraud_episodes": 5
+    },
+    {
+      "month": "2012-07",
+      "channel": "Online Transaction",
+      "rows": 15597,
+      "fraud": 118,
+      "fraud_users": 26,
+      "fraud_cards": 27,
+      "fraud_episodes": 20
+    },
+    {
+      "month": "2012-07",
+      "channel": "Swipe Transaction",
+      "rows": 121143,
+      "fraud": 38,
+      "fraud_users": 18,
+      "fraud_cards": 19,
+      "fraud_episodes": 5
+    },
+    {
+      "month": "2012-08",
+      "channel": "Online Transaction",
+      "rows": 15503,
+      "fraud": 111,
+      "fraud_users": 22,
+      "fraud_cards": 23,
+      "fraud_episodes": 16
+    },
+    {
+      "month": "2012-08",
+      "channel": "Swipe Transaction",
+      "rows": 121747,
+      "fraud": 32,
+      "fraud_users": 16,
+      "fraud_cards": 17,
+      "fraud_episodes": 3
+    },
+    {
+      "month": "2012-09",
+      "channel": "Online Transaction",
+      "rows": 14883,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2012-09",
+      "channel": "Swipe Transaction",
+      "rows": 118034,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2012-10",
+      "channel": "Online Transaction",
+      "rows": 15356,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2012-10",
+      "channel": "Swipe Transaction",
+      "rows": 121617,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2012-11",
+      "channel": "Online Transaction",
+      "rows": 15097,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2012-11",
+      "channel": "Swipe Transaction",
+      "rows": 117932,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2012-12",
+      "channel": "Online Transaction",
+      "rows": 15587,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2012-12",
+      "channel": "Swipe Transaction",
+      "rows": 121629,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2013-01",
+      "channel": "Online Transaction",
+      "rows": 16073,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2013-01",
+      "channel": "Swipe Transaction",
+      "rows": 121071,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2013-02",
+      "channel": "Online Transaction",
+      "rows": 14884,
+      "fraud": 17,
+      "fraud_users": 6,
+      "fraud_cards": 6,
+      "fraud_episodes": 3
+    },
+    {
+      "month": "2013-02",
+      "channel": "Swipe Transaction",
+      "rows": 110656,
+      "fraud": 24,
+      "fraud_users": 6,
+      "fraud_cards": 6,
+      "fraud_episodes": 3
+    },
+    {
+      "month": "2013-03",
+      "channel": "Online Transaction",
+      "rows": 16412,
+      "fraud": 29,
+      "fraud_users": 9,
+      "fraud_cards": 9,
+      "fraud_episodes": 5
+    },
+    {
+      "month": "2013-03",
+      "channel": "Swipe Transaction",
+      "rows": 123447,
+      "fraud": 26,
+      "fraud_users": 9,
+      "fraud_cards": 9,
+      "fraud_episodes": 3
+    },
+    {
+      "month": "2013-04",
+      "channel": "Online Transaction",
+      "rows": 15722,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2013-04",
+      "channel": "Swipe Transaction",
+      "rows": 119203,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2013-05",
+      "channel": "Online Transaction",
+      "rows": 16368,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2013-05",
+      "channel": "Swipe Transaction",
+      "rows": 123778,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2013-06",
+      "channel": "Online Transaction",
+      "rows": 16048,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2013-06",
+      "channel": "Swipe Transaction",
+      "rows": 120409,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2013-07",
+      "channel": "Online Transaction",
+      "rows": 16603,
+      "fraud": 101,
+      "fraud_users": 13,
+      "fraud_cards": 13,
+      "fraud_episodes": 13
+    },
+    {
+      "month": "2013-07",
+      "channel": "Swipe Transaction",
+      "rows": 124788,
+      "fraud": 13,
+      "fraud_users": 7,
+      "fraud_cards": 7,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2013-08",
+      "channel": "Online Transaction",
+      "rows": 16685,
+      "fraud": 304,
+      "fraud_users": 31,
+      "fraud_cards": 32,
+      "fraud_episodes": 23
+    },
+    {
+      "month": "2013-08",
+      "channel": "Swipe Transaction",
+      "rows": 124532,
+      "fraud": 47,
+      "fraud_users": 21,
+      "fraud_cards": 21,
+      "fraud_episodes": 6
+    },
+    {
+      "month": "2013-09",
+      "channel": "Online Transaction",
+      "rows": 16268,
+      "fraud": 350,
+      "fraud_users": 36,
+      "fraud_cards": 36,
+      "fraud_episodes": 30
+    },
+    {
+      "month": "2013-09",
+      "channel": "Swipe Transaction",
+      "rows": 120158,
+      "fraud": 50,
+      "fraud_users": 25,
+      "fraud_cards": 25,
+      "fraud_episodes": 4
+    },
+    {
+      "month": "2013-10",
+      "channel": "Online Transaction",
+      "rows": 16623,
+      "fraud": 380,
+      "fraud_users": 45,
+      "fraud_cards": 45,
+      "fraud_episodes": 31
+    },
+    {
+      "month": "2013-10",
+      "channel": "Swipe Transaction",
+      "rows": 123863,
+      "fraud": 53,
+      "fraud_users": 23,
+      "fraud_cards": 23,
+      "fraud_episodes": 6
+    },
+    {
+      "month": "2013-11",
+      "channel": "Online Transaction",
+      "rows": 16112,
+      "fraud": 238,
+      "fraud_users": 27,
+      "fraud_cards": 28,
+      "fraud_episodes": 26
+    },
+    {
+      "month": "2013-11",
+      "channel": "Swipe Transaction",
+      "rows": 120025,
+      "fraud": 43,
+      "fraud_users": 18,
+      "fraud_cards": 19,
+      "fraud_episodes": 2
+    },
+    {
+      "month": "2013-12",
+      "channel": "Online Transaction",
+      "rows": 16545,
+      "fraud": 287,
+      "fraud_users": 33,
+      "fraud_cards": 33,
+      "fraud_episodes": 28
+    },
+    {
+      "month": "2013-12",
+      "channel": "Swipe Transaction",
+      "rows": 124644,
+      "fraud": 56,
+      "fraud_users": 23,
+      "fraud_cards": 23,
+      "fraud_episodes": 5
+    },
+    {
+      "month": "2014-01",
+      "channel": "Online Transaction",
+      "rows": 17382,
+      "fraud": 261,
+      "fraud_users": 29,
+      "fraud_cards": 30,
+      "fraud_episodes": 27
+    },
+    {
+      "month": "2014-01",
+      "channel": "Swipe Transaction",
+      "rows": 124465,
+      "fraud": 52,
+      "fraud_users": 24,
+      "fraud_cards": 25,
+      "fraud_episodes": 6
+    },
+    {
+      "month": "2014-02",
+      "channel": "Online Transaction",
+      "rows": 15639,
+      "fraud": 232,
+      "fraud_users": 27,
+      "fraud_cards": 27,
+      "fraud_episodes": 26
+    },
+    {
+      "month": "2014-02",
+      "channel": "Swipe Transaction",
+      "rows": 112462,
+      "fraud": 42,
+      "fraud_users": 24,
+      "fraud_cards": 25,
+      "fraud_episodes": 6
+    },
+    {
+      "month": "2014-03",
+      "channel": "Online Transaction",
+      "rows": 17135,
+      "fraud": 307,
+      "fraud_users": 38,
+      "fraud_cards": 38,
+      "fraud_episodes": 25
+    },
+    {
+      "month": "2014-03",
+      "channel": "Swipe Transaction",
+      "rows": 124507,
+      "fraud": 51,
+      "fraud_users": 28,
+      "fraud_cards": 28,
+      "fraud_episodes": 12
+    },
+    {
+      "month": "2014-04",
+      "channel": "Online Transaction",
+      "rows": 16355,
+      "fraud": 93,
+      "fraud_users": 16,
+      "fraud_cards": 16,
+      "fraud_episodes": 8
+    },
+    {
+      "month": "2014-04",
+      "channel": "Swipe Transaction",
+      "rows": 120163,
+      "fraud": 14,
+      "fraud_users": 9,
+      "fraud_cards": 9,
+      "fraud_episodes": 4
+    },
+    {
+      "month": "2014-05",
+      "channel": "Online Transaction",
+      "rows": 16958,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2014-05",
+      "channel": "Swipe Transaction",
+      "rows": 124063,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2014-06",
+      "channel": "Online Transaction",
+      "rows": 16568,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2014-06",
+      "channel": "Swipe Transaction",
+      "rows": 121080,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2014-07",
+      "channel": "Online Transaction",
+      "rows": 17261,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2014-07",
+      "channel": "Swipe Transaction",
+      "rows": 124203,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2014-08",
+      "channel": "Online Transaction",
+      "rows": 17152,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2014-08",
+      "channel": "Swipe Transaction",
+      "rows": 125677,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2014-09",
+      "channel": "Online Transaction",
+      "rows": 16523,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2014-09",
+      "channel": "Swipe Transaction",
+      "rows": 121623,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2014-10",
+      "channel": "Online Transaction",
+      "rows": 16894,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2014-10",
+      "channel": "Swipe Transaction",
+      "rows": 124470,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2014-11",
+      "channel": "Online Transaction",
+      "rows": 16661,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2014-11",
+      "channel": "Swipe Transaction",
+      "rows": 121627,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2014-12",
+      "channel": "Online Transaction",
+      "rows": 17086,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2014-12",
+      "channel": "Swipe Transaction",
+      "rows": 126389,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2015-01",
+      "channel": "Chip Transaction",
+      "rows": 100632,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2015-01",
+      "channel": "Online Transaction",
+      "rows": 17737,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2015-01",
+      "channel": "Swipe Transaction",
+      "rows": 24633,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2015-02",
+      "channel": "Chip Transaction",
+      "rows": 91025,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2015-02",
+      "channel": "Online Transaction",
+      "rows": 15769,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2015-02",
+      "channel": "Swipe Transaction",
+      "rows": 22315,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2015-03",
+      "channel": "Chip Transaction",
+      "rows": 101835,
+      "fraud": 1,
+      "fraud_users": 1,
+      "fraud_cards": 1,
+      "fraud_episodes": 1
+    },
+    {
+      "month": "2015-03",
+      "channel": "Online Transaction",
+      "rows": 17661,
+      "fraud": 12,
+      "fraud_users": 3,
+      "fraud_cards": 3,
+      "fraud_episodes": 2
+    },
+    {
+      "month": "2015-03",
+      "channel": "Swipe Transaction",
+      "rows": 24801,
+      "fraud": 2,
+      "fraud_users": 2,
+      "fraud_cards": 2,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2015-04",
+      "channel": "Chip Transaction",
+      "rows": 97683,
+      "fraud": 36,
+      "fraud_users": 21,
+      "fraud_cards": 21,
+      "fraud_episodes": 5
+    },
+    {
+      "month": "2015-04",
+      "channel": "Online Transaction",
+      "rows": 17355,
+      "fraud": 279,
+      "fraud_users": 45,
+      "fraud_cards": 46,
+      "fraud_episodes": 33
+    },
+    {
+      "month": "2015-04",
+      "channel": "Swipe Transaction",
+      "rows": 23989,
+      "fraud": 34,
+      "fraud_users": 18,
+      "fraud_cards": 18,
+      "fraud_episodes": 6
+    },
+    {
+      "month": "2015-05",
+      "channel": "Chip Transaction",
+      "rows": 101291,
+      "fraud": 16,
+      "fraud_users": 12,
+      "fraud_cards": 12,
+      "fraud_episodes": 1
+    },
+    {
+      "month": "2015-05",
+      "channel": "Online Transaction",
+      "rows": 18136,
+      "fraud": 243,
+      "fraud_users": 36,
+      "fraud_cards": 36,
+      "fraud_episodes": 30
+    },
+    {
+      "month": "2015-05",
+      "channel": "Swipe Transaction",
+      "rows": 24861,
+      "fraud": 24,
+      "fraud_users": 18,
+      "fraud_cards": 18,
+      "fraud_episodes": 1
+    },
+    {
+      "month": "2015-06",
+      "channel": "Chip Transaction",
+      "rows": 99214,
+      "fraud": 22,
+      "fraud_users": 18,
+      "fraud_cards": 18,
+      "fraud_episodes": 3
+    },
+    {
+      "month": "2015-06",
+      "channel": "Online Transaction",
+      "rows": 17361,
+      "fraud": 238,
+      "fraud_users": 37,
+      "fraud_cards": 38,
+      "fraud_episodes": 33
+    },
+    {
+      "month": "2015-06",
+      "channel": "Swipe Transaction",
+      "rows": 23959,
+      "fraud": 11,
+      "fraud_users": 7,
+      "fraud_cards": 7,
+      "fraud_episodes": 1
+    },
+    {
+      "month": "2015-07",
+      "channel": "Chip Transaction",
+      "rows": 101755,
+      "fraud": 43,
+      "fraud_users": 28,
+      "fraud_cards": 29,
+      "fraud_episodes": 7
+    },
+    {
+      "month": "2015-07",
+      "channel": "Online Transaction",
+      "rows": 18319,
+      "fraud": 353,
+      "fraud_users": 55,
+      "fraud_cards": 57,
+      "fraud_episodes": 47
+    },
+    {
+      "month": "2015-07",
+      "channel": "Swipe Transaction",
+      "rows": 25115,
+      "fraud": 20,
+      "fraud_users": 14,
+      "fraud_cards": 15,
+      "fraud_episodes": 1
+    },
+    {
+      "month": "2015-08",
+      "channel": "Chip Transaction",
+      "rows": 102429,
+      "fraud": 28,
+      "fraud_users": 21,
+      "fraud_cards": 21,
+      "fraud_episodes": 2
+    },
+    {
+      "month": "2015-08",
+      "channel": "Online Transaction",
+      "rows": 18184,
+      "fraud": 311,
+      "fraud_users": 47,
+      "fraud_cards": 47,
+      "fraud_episodes": 37
+    },
+    {
+      "month": "2015-08",
+      "channel": "Swipe Transaction",
+      "rows": 24380,
+      "fraud": 19,
+      "fraud_users": 15,
+      "fraud_cards": 15,
+      "fraud_episodes": 2
+    },
+    {
+      "month": "2015-09",
+      "channel": "Chip Transaction",
+      "rows": 98355,
+      "fraud": 30,
+      "fraud_users": 23,
+      "fraud_cards": 23,
+      "fraud_episodes": 5
+    },
+    {
+      "month": "2015-09",
+      "channel": "Online Transaction",
+      "rows": 17507,
+      "fraud": 235,
+      "fraud_users": 36,
+      "fraud_cards": 36,
+      "fraud_episodes": 24
+    },
+    {
+      "month": "2015-09",
+      "channel": "Swipe Transaction",
+      "rows": 24252,
+      "fraud": 12,
+      "fraud_users": 10,
+      "fraud_cards": 10,
+      "fraud_episodes": 3
+    },
+    {
+      "month": "2015-10",
+      "channel": "Chip Transaction",
+      "rows": 101719,
+      "fraud": 28,
+      "fraud_users": 17,
+      "fraud_cards": 17,
+      "fraud_episodes": 3
+    },
+    {
+      "month": "2015-10",
+      "channel": "Online Transaction",
+      "rows": 17816,
+      "fraud": 264,
+      "fraud_users": 39,
+      "fraud_cards": 42,
+      "fraud_episodes": 34
+    },
+    {
+      "month": "2015-10",
+      "channel": "Swipe Transaction",
+      "rows": 24569,
+      "fraud": 25,
+      "fraud_users": 14,
+      "fraud_cards": 14,
+      "fraud_episodes": 2
+    },
+    {
+      "month": "2015-11",
+      "channel": "Chip Transaction",
+      "rows": 98669,
+      "fraud": 33,
+      "fraud_users": 20,
+      "fraud_cards": 20,
+      "fraud_episodes": 4
+    },
+    {
+      "month": "2015-11",
+      "channel": "Online Transaction",
+      "rows": 17621,
+      "fraud": 308,
+      "fraud_users": 44,
+      "fraud_cards": 45,
+      "fraud_episodes": 35
+    },
+    {
+      "month": "2015-11",
+      "channel": "Swipe Transaction",
+      "rows": 24097,
+      "fraud": 12,
+      "fraud_users": 8,
+      "fraud_cards": 8,
+      "fraud_episodes": 1
+    },
+    {
+      "month": "2015-12",
+      "channel": "Chip Transaction",
+      "rows": 102916,
+      "fraud": 64,
+      "fraud_users": 44,
+      "fraud_cards": 46,
+      "fraud_episodes": 17
+    },
+    {
+      "month": "2015-12",
+      "channel": "Online Transaction",
+      "rows": 18384,
+      "fraud": 534,
+      "fraud_users": 138,
+      "fraud_cards": 143,
+      "fraud_episodes": 116
+    },
+    {
+      "month": "2015-12",
+      "channel": "Swipe Transaction",
+      "rows": 25027,
+      "fraud": 44,
+      "fraud_users": 30,
+      "fraud_cards": 30,
+      "fraud_episodes": 13
+    },
+    {
+      "month": "2016-01",
+      "channel": "Chip Transaction",
+      "rows": 101783,
+      "fraud": 31,
+      "fraud_users": 23,
+      "fraud_cards": 24,
+      "fraud_episodes": 7
+    },
+    {
+      "month": "2016-01",
+      "channel": "Online Transaction",
+      "rows": 18480,
+      "fraud": 392,
+      "fraud_users": 108,
+      "fraud_cards": 114,
+      "fraud_episodes": 98
+    },
+    {
+      "month": "2016-01",
+      "channel": "Swipe Transaction",
+      "rows": 24775,
+      "fraud": 36,
+      "fraud_users": 23,
+      "fraud_cards": 24,
+      "fraud_episodes": 5
+    },
+    {
+      "month": "2016-02",
+      "channel": "Chip Transaction",
+      "rows": 92215,
+      "fraud": 19,
+      "fraud_users": 18,
+      "fraud_cards": 18,
+      "fraud_episodes": 10
+    },
+    {
+      "month": "2016-02",
+      "channel": "Online Transaction",
+      "rows": 16446,
+      "fraud": 247,
+      "fraud_users": 97,
+      "fraud_cards": 98,
+      "fraud_episodes": 87
+    },
+    {
+      "month": "2016-02",
+      "channel": "Swipe Transaction",
+      "rows": 22394,
+      "fraud": 19,
+      "fraud_users": 12,
+      "fraud_cards": 12,
+      "fraud_episodes": 5
+    },
+    {
+      "month": "2016-03",
+      "channel": "Chip Transaction",
+      "rows": 101997,
+      "fraud": 20,
+      "fraud_users": 20,
+      "fraud_cards": 20,
+      "fraud_episodes": 9
+    },
+    {
+      "month": "2016-03",
+      "channel": "Online Transaction",
+      "rows": 17935,
+      "fraud": 280,
+      "fraud_users": 110,
+      "fraud_cards": 116,
+      "fraud_episodes": 106
+    },
+    {
+      "month": "2016-03",
+      "channel": "Swipe Transaction",
+      "rows": 24753,
+      "fraud": 19,
+      "fraud_users": 17,
+      "fraud_cards": 17,
+      "fraud_episodes": 5
+    },
+    {
+      "month": "2016-04",
+      "channel": "Chip Transaction",
+      "rows": 97767,
+      "fraud": 32,
+      "fraud_users": 29,
+      "fraud_cards": 30,
+      "fraud_episodes": 16
+    },
+    {
+      "month": "2016-04",
+      "channel": "Online Transaction",
+      "rows": 17448,
+      "fraud": 260,
+      "fraud_users": 95,
+      "fraud_cards": 99,
+      "fraud_episodes": 76
+    },
+    {
+      "month": "2016-04",
+      "channel": "Swipe Transaction",
+      "rows": 23913,
+      "fraud": 20,
+      "fraud_users": 17,
+      "fraud_cards": 18,
+      "fraud_episodes": 7
+    },
+    {
+      "month": "2016-05",
+      "channel": "Chip Transaction",
+      "rows": 102661,
+      "fraud": 35,
+      "fraud_users": 26,
+      "fraud_cards": 27,
+      "fraud_episodes": 11
+    },
+    {
+      "month": "2016-05",
+      "channel": "Online Transaction",
+      "rows": 17904,
+      "fraud": 268,
+      "fraud_users": 105,
+      "fraud_cards": 111,
+      "fraud_episodes": 91
+    },
+    {
+      "month": "2016-05",
+      "channel": "Swipe Transaction",
+      "rows": 24866,
+      "fraud": 24,
+      "fraud_users": 21,
+      "fraud_cards": 21,
+      "fraud_episodes": 13
+    },
+    {
+      "month": "2016-06",
+      "channel": "Chip Transaction",
+      "rows": 99958,
+      "fraud": 21,
+      "fraud_users": 19,
+      "fraud_cards": 19,
+      "fraud_episodes": 12
+    },
+    {
+      "month": "2016-06",
+      "channel": "Online Transaction",
+      "rows": 17750,
+      "fraud": 225,
+      "fraud_users": 90,
+      "fraud_cards": 91,
+      "fraud_episodes": 73
+    },
+    {
+      "month": "2016-06",
+      "channel": "Swipe Transaction",
+      "rows": 23822,
+      "fraud": 18,
+      "fraud_users": 14,
+      "fraud_cards": 14,
+      "fraud_episodes": 7
+    },
+    {
+      "month": "2016-07",
+      "channel": "Chip Transaction",
+      "rows": 102203,
+      "fraud": 19,
+      "fraud_users": 18,
+      "fraud_cards": 18,
+      "fraud_episodes": 10
+    },
+    {
+      "month": "2016-07",
+      "channel": "Online Transaction",
+      "rows": 18194,
+      "fraud": 225,
+      "fraud_users": 80,
+      "fraud_cards": 83,
+      "fraud_episodes": 72
+    },
+    {
+      "month": "2016-07",
+      "channel": "Swipe Transaction",
+      "rows": 24783,
+      "fraud": 20,
+      "fraud_users": 15,
+      "fraud_cards": 15,
+      "fraud_episodes": 5
+    },
+    {
+      "month": "2016-08",
+      "channel": "Chip Transaction",
+      "rows": 102121,
+      "fraud": 25,
+      "fraud_users": 22,
+      "fraud_cards": 22,
+      "fraud_episodes": 11
+    },
+    {
+      "month": "2016-08",
+      "channel": "Online Transaction",
+      "rows": 18297,
+      "fraud": 277,
+      "fraud_users": 95,
+      "fraud_cards": 102,
+      "fraud_episodes": 87
+    },
+    {
+      "month": "2016-08",
+      "channel": "Swipe Transaction",
+      "rows": 24935,
+      "fraud": 14,
+      "fraud_users": 12,
+      "fraud_cards": 12,
+      "fraud_episodes": 6
+    },
+    {
+      "month": "2016-09",
+      "channel": "Chip Transaction",
+      "rows": 98595,
+      "fraud": 27,
+      "fraud_users": 24,
+      "fraud_cards": 24,
+      "fraud_episodes": 9
+    },
+    {
+      "month": "2016-09",
+      "channel": "Online Transaction",
+      "rows": 17724,
+      "fraud": 282,
+      "fraud_users": 92,
+      "fraud_cards": 98,
+      "fraud_episodes": 90
+    },
+    {
+      "month": "2016-09",
+      "channel": "Swipe Transaction",
+      "rows": 23737,
+      "fraud": 13,
+      "fraud_users": 11,
+      "fraud_cards": 11,
+      "fraud_episodes": 4
+    },
+    {
+      "month": "2016-10",
+      "channel": "Chip Transaction",
+      "rows": 102652,
+      "fraud": 16,
+      "fraud_users": 13,
+      "fraud_cards": 13,
+      "fraud_episodes": 6
+    },
+    {
+      "month": "2016-10",
+      "channel": "Online Transaction",
+      "rows": 17892,
+      "fraud": 199,
+      "fraud_users": 83,
+      "fraud_cards": 83,
+      "fraud_episodes": 74
+    },
+    {
+      "month": "2016-10",
+      "channel": "Swipe Transaction",
+      "rows": 24618,
+      "fraud": 16,
+      "fraud_users": 15,
+      "fraud_cards": 15,
+      "fraud_episodes": 8
+    },
+    {
+      "month": "2016-11",
+      "channel": "Chip Transaction",
+      "rows": 99454,
+      "fraud": 24,
+      "fraud_users": 20,
+      "fraud_cards": 20,
+      "fraud_episodes": 9
+    },
+    {
+      "month": "2016-11",
+      "channel": "Online Transaction",
+      "rows": 17619,
+      "fraud": 261,
+      "fraud_users": 95,
+      "fraud_cards": 96,
+      "fraud_episodes": 84
+    },
+    {
+      "month": "2016-11",
+      "channel": "Swipe Transaction",
+      "rows": 24291,
+      "fraud": 21,
+      "fraud_users": 17,
+      "fraud_cards": 17,
+      "fraud_episodes": 7
+    },
+    {
+      "month": "2016-12",
+      "channel": "Chip Transaction",
+      "rows": 102326,
+      "fraud": 10,
+      "fraud_users": 9,
+      "fraud_cards": 9,
+      "fraud_episodes": 2
+    },
+    {
+      "month": "2016-12",
+      "channel": "Online Transaction",
+      "rows": 17925,
+      "fraud": 157,
+      "fraud_users": 57,
+      "fraud_cards": 58,
+      "fraud_episodes": 52
+    },
+    {
+      "month": "2016-12",
+      "channel": "Swipe Transaction",
+      "rows": 24691,
+      "fraud": 7,
+      "fraud_users": 7,
+      "fraud_cards": 7,
+      "fraud_episodes": 2
+    },
+    {
+      "month": "2017-01",
+      "channel": "Chip Transaction",
+      "rows": 102609,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2017-01",
+      "channel": "Online Transaction",
+      "rows": 18116,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2017-01",
+      "channel": "Swipe Transaction",
+      "rows": 24935,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2017-02",
+      "channel": "Chip Transaction",
+      "rows": 93089,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2017-02",
+      "channel": "Online Transaction",
+      "rows": 16416,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2017-02",
+      "channel": "Swipe Transaction",
+      "rows": 22360,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2017-03",
+      "channel": "Chip Transaction",
+      "rows": 102887,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2017-03",
+      "channel": "Online Transaction",
+      "rows": 17830,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2017-03",
+      "channel": "Swipe Transaction",
+      "rows": 25037,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2017-04",
+      "channel": "Chip Transaction",
+      "rows": 100208,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2017-04",
+      "channel": "Online Transaction",
+      "rows": 17537,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2017-04",
+      "channel": "Swipe Transaction",
+      "rows": 24070,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2017-05",
+      "channel": "Chip Transaction",
+      "rows": 103487,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2017-05",
+      "channel": "Online Transaction",
+      "rows": 18380,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2017-05",
+      "channel": "Swipe Transaction",
+      "rows": 24674,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2017-06",
+      "channel": "Chip Transaction",
+      "rows": 101077,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2017-06",
+      "channel": "Online Transaction",
+      "rows": 17647,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2017-06",
+      "channel": "Swipe Transaction",
+      "rows": 23907,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2017-07",
+      "channel": "Chip Transaction",
+      "rows": 103441,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2017-07",
+      "channel": "Online Transaction",
+      "rows": 18315,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2017-07",
+      "channel": "Swipe Transaction",
+      "rows": 24903,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2017-08",
+      "channel": "Chip Transaction",
+      "rows": 103537,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2017-08",
+      "channel": "Online Transaction",
+      "rows": 18077,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2017-08",
+      "channel": "Swipe Transaction",
+      "rows": 25009,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2017-09",
+      "channel": "Chip Transaction",
+      "rows": 100406,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2017-09",
+      "channel": "Online Transaction",
+      "rows": 17553,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2017-09",
+      "channel": "Swipe Transaction",
+      "rows": 23904,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2017-10",
+      "channel": "Chip Transaction",
+      "rows": 103028,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2017-10",
+      "channel": "Online Transaction",
+      "rows": 17971,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2017-10",
+      "channel": "Swipe Transaction",
+      "rows": 24561,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2017-11",
+      "channel": "Chip Transaction",
+      "rows": 100511,
+      "fraud": 58,
+      "fraud_users": 11,
+      "fraud_cards": 11,
+      "fraud_episodes": 11
+    },
+    {
+      "month": "2017-11",
+      "channel": "Online Transaction",
+      "rows": 17672,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2017-11",
+      "channel": "Swipe Transaction",
+      "rows": 23967,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2017-12",
+      "channel": "Chip Transaction",
+      "rows": 103537,
+      "fraud": 190,
+      "fraud_users": 31,
+      "fraud_cards": 32,
+      "fraud_episodes": 29
+    },
+    {
+      "month": "2017-12",
+      "channel": "Online Transaction",
+      "rows": 18144,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2017-12",
+      "channel": "Swipe Transaction",
+      "rows": 24558,
+      "fraud": 7,
+      "fraud_users": 1,
+      "fraud_cards": 1,
+      "fraud_episodes": 1
+    },
+    {
+      "month": "2018-01",
+      "channel": "Chip Transaction",
+      "rows": 87128,
+      "fraud": 101,
+      "fraud_users": 23,
+      "fraud_cards": 23,
+      "fraud_episodes": 14
+    },
+    {
+      "month": "2018-01",
+      "channel": "Online Transaction",
+      "rows": 15780,
+      "fraud": 0,
+      "fraud_users": 0,
+      "fraud_cards": 0,
+      "fraud_episodes": 0
+    },
+    {
+      "month": "2018-01",
+      "channel": "Swipe Transaction",
+      "rows": 21112,
+      "fraud": 23,
+      "fraud_users": 2,
+      "fraud_cards": 2,
+      "fraud_episodes": 2
+    }
+  ],
+  "fraud_transactions": 25303,
+  "fraud_episodes": 4403,
+  "episode_gap_days": 7,
+  "fold_support": {
+    "origin_1": {
+      "selection": {
+        "fraud": 856,
+        "chip_fraud": 84,
+        "fraud_users": 265,
+        "fraud_cards": 284,
+        "fraud_episodes": 292
+      },
+      "calibration": {
+        "fraud": 902,
+        "chip_fraud": 71,
+        "fraud_users": 254,
+        "fraud_cards": 280,
+        "fraud_episodes": 295
+      },
+      "assessment": {
+        "fraud": 697,
+        "chip_fraud": 49,
+        "fraud_users": 218,
+        "fraud_cards": 231,
+        "fraud_episodes": 239
+      }
+    }
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "variant": "B1",
+  "seed": 42,
+  "epochs": 1,
+  "min_epochs": 1,
+  "patience": 1,
+  "batch_size": 512,
+  "eval_batch_size": 2048,
+  "learning_rate": 0.001,
+  "fanout": 25,
+  "label_delay_days": 0,
+  "min_fraud": 1,
+  "device": "cuda",
+  "threshold_policy": "fpr_0_001",
+  "roles": {
+    "name": "moving_smoke",
+    "train_end": 700001,
+    "selection": {
+      "count": 18917,
+      "sha256": "56d49910e0e957e8165a9201baffc7483c094a27f41f51c43a9decce31598ad2"
+    },
+    "calibration": {
+      "count": 18583,
+      "sha256": "08c3eee0f59515590050997d338c7fef37cd3fbd6c91d904fedd11d5bd377130"
+    },
+    "assessment": {
+      "count": 149999,
+      "sha256": "ae87ccc9eeed956e890032faf6b3c9e02e15893278015a4c1dee1bd7bf7b1c5c"
+    },
+    "assessment_exploratory": true
+  },
+  "source_manifest": {
+    "EXP12/behavior.py": "933145f11eb19d6a1d5a0ffe68ac089df4d4a20fc8ab98dcb814d2286b88c069",
+    "EXP12/behavior_v2.py": "e660ea5b36998d0246fc54d8cbf8421be11f29fd454a8a3e55a9d06a74619196",
+    "EXP12/data.py": "8a1f904a1a8dfcad49ae8f35a71a98f0449d27d017bea06efe2d98b2bfcbb9ff",
+    "EXP12/metrics.py": "8261f4fac8086216c787c4132f3f465212178f0bfef207174084334f402dc400",
+    "EXP12/model.py": "dcf5b3ec6fbdcea3abe696bc7ba7101236c291cc6e353a281db453c005af157c",
+    "audit_exp12.py": "8770ff46b69807fc70fc20e8afe098cdbf5a5614eca13b09887fd68f3a867f1f",
+    "exp14\\__init__.py": "cfa49a60ce446cabb6d9b3549aff2a5e12c8a0d5c21c8ba58353c4583e0d4762",
+    "exp14\\audit.py": "09d92676fea71dab00be7b4d2bacbdc85f4a71ee8e21f7f89ab214d8cc4196e4",
+    "exp14\\cli.py": "fcd558d37fb160ac21e6c8776afe38a5ba6be9773516ee018e3f57cd30667323",
+    "exp14\\evaluation.py": "fe4fa2d33dae6439856b4941a3e8dba68723f5ba536abdbefb2ce2a7bb1fcee3",
+    "exp14\\feature_store.py": "3452ade637871a4ae5773ff70dcafcf36d0307ba1f1f847a015a33777f4a7106",
+    "exp14\\legacy.py": "1e3caa0dd60d6a1b8ca280118f9fbc451ed554650c34237f5d2bb9d3e5ed70ae",
+    "exp14\\protocol.py": "a2a8c994bc5a7c6036b06a02db6ac9e769a9077bce94cf94454645a755599c08",
+    "exp14\\sampling\\__init__.py": "ed20f0d146c5dc04f9876c8c26855863ce96e6299c28fdefadc8910405634fdd",
+    "exp14\\sampling\\roots.py": "a0f2f7c75627d326daae3deddddc2f978e400940bc75688b2d593e8a438f3bf5",
+    "exp14\\sampling\\temporal.py": "d16c8b36a27819a0e76011bf8392974a2e038c4734ac7c6a154d43d257c7ee39",
+    "exp14\\summary.py": "a9dc3f4cf0ff5f23bf2dc925a22f0657fa9a09e467203bf6e5c7422d832b6886",
+    "exp14\\trainer.py": "f9a78ba8b7507888a39143523224fd8bdbb559a84387c8b28ada80b14853d520",
+    "run.py": "34f67924f8ac19daa5c5f9de99a93d04c7b6cb056460186fd989c12ddccc232e",
+    "tests\\test_exp14.py": "d1c355fcf31b6c70655267ff46bd8347efe3a913989e3274391a2cbefe3ef3d5"
+  },
+  "data_identity": {
+    "source": "D:\\Projects\\Klasifikasi Transasi Kartu Kredit - GraphSAGE\\tugas-akhir-klasifikasi-transaksi-kartu-kredit\\dataset\\credit_card_transactions-ibm_v2.csv",
+    "size": 2350744057,
+    "mtime_ns": 1787546585093452000,
+    "max_rows": 1000000,
+    "schema": 1
+  }
+}

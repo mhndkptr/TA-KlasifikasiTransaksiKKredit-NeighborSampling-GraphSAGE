@@ -1,0 +1,33 @@
+data:
+  transactions: ../../dataset/credit_card_transactions-ibm_v2.csv
+paths:
+  cache: ../../model/exp14/cache
+  results: ../../result/exp14
+runtime:
+  device: auto
+  cpu_threads: 4
+  duckdb_memory_limit: 4GB
+  chunk_rows: 100000
+protocol:
+  # Audit full-data: only one non-overlapping 90-day origin has labeled
+  # selection, calibration, and assessment before the 2017 fraud gap.
+  origins: 1
+  window_days: 90
+  assessment_end_date: '2017-01-01'
+  label_delay_days: 0
+  minimum_fraud: 25
+  minimum_chip_fraud: 25
+experiment:
+  # Explicitly select later ablations after the previous comparison is reviewed.
+  variants: [A0]
+  seeds: [42]
+training:
+  epochs: 100
+  min_epochs: 20
+  patience: 20
+  batch_size: 512
+  eval_batch_size: 2048
+  learning_rate: 0.001
+  fanout: 25
+evaluation:
+  primary_threshold: fpr_0_001
