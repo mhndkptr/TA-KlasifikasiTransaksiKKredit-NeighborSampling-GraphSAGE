@@ -1,6 +1,7 @@
 """Paired fold/seed summaries; static and rolling protocols remain separate."""
 import json
 import hashlib
+import csv
 from pathlib import Path
 import numpy as np
 
@@ -157,4 +158,22 @@ def summarize(result_root):
             output['paired_vs_R0_uniform'][strategy]=pairs
     root.mkdir(parents=True,exist_ok=True)
     (root/'summary.json').write_text(json.dumps(output,indent=2,allow_nan=False),encoding='utf-8')
+    # Keep the detailed JSON and provide spreadsheet-friendly EXP12-style exports.
+    with (root/'runs.csv').open('w',newline='',encoding='utf-8') as stream:
+        fields = list(rows[0]) if rows else ['variant','strategy','fold','seed']
+        writer = csv.DictWriter(stream,fieldnames=fields)
+        writer.writeheader()
+        writer.writerows(rows)
+    grouped_rows = []
+    for name,group in output['groups'].items():
+        flat = {'group':name,'protocol':group['protocol'],'strategy':group['strategy'],'n':group['n']}
+        for metric,statistics in group.items():
+            if isinstance(statistics,dict) and 'mean' in statistics:
+                flat.update({f'{metric}_{key}':value for key,value in statistics.items()})
+        grouped_rows.append(flat)
+    with (root/'summary.csv').open('w',newline='',encoding='utf-8') as stream:
+        fields = list(grouped_rows[0]) if grouped_rows else ['group','protocol','strategy','n']
+        writer = csv.DictWriter(stream,fieldnames=fields)
+        writer.writeheader()
+        writer.writerows(grouped_rows)
     return output

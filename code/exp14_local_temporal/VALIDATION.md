@@ -4,6 +4,12 @@ Kesimpulan: jalur utama `R0` kini menyediakan uniform, topology-aware, dan impor
 
 **Yang sudah diverifikasi**
 
+Pembaruan monitoring (14 September 2026): **22/22 tes CPU lulus** (`python -B -m unittest discover -s code/exp14_local_temporal/tests -q`). Empat tes regresi tambahan memeriksa bar aktif/nonaktif dengan log dan artefak tetap tersedia, early stopping dan `--no-assessment`, status `KeyboardInterrupt`, serta alur CLI preprocessing/training/assessment dengan `--no-progress` dan ringkasan CSV/JSON otomatis. Peringatan deprecation dari PyG/Python tidak dianggap sebagai progress bar.
+
+Perbandingan langsung terhadap `trainer.py` sebelum pembaruan (source Git HEAD saat pengerjaan) juga dijalankan pada data sintetis, dua epoch CPU untuk **uniform, topology, dan importance**. Seluruh skor selection/calibration/assessment, threshold keputusan, dan tensor checkpoint terbaik sama persis (`rtol=0`, `atol=0`). Tes aktif/nonaktif juga memeriksa kesamaan tersebut. Ini membuktikan perubahan monitoring tidak mengubah hasil dalam pemeriksaan ini; bukan bukti bahwa AP full-data EXP14 mengungguli EXP12.
+
+Audit fitur pendukung EXP12 menemukan loop progress, ringkasan epoch, metadata runtime, alasan early stopping, ekspor ringkasan CSV otomatis, serta penulisan checkpoint atomik/retry Windows belum dibawa ke EXP14. Fitur tersebut kini tersedia kembali; EXP14 juga menambah bar prediksi dan lintasan fitur preprocessing, log persisten `run.log`, serta status interupsi. Loss, model, root/neighbor sampling, split, checkpoint selection, dan kebijakan threshold tidak diubah dalam pembaruan ini. Evaluasi per kanal/bulan, kuota alert, threshold pembanding, prediksi mentah, serta gate replikasi yang sudah ada tetap dipertahankan. Definisi latency, varian model, dan protokol assessment tetap mengikuti EXP14 sebagaimana dijelaskan di README; keduanya tidak diklaim identik dengan seluruh preset EXP12.
+
 | Pemeriksaan | Bukti |
 | --- | --- |
 | Preprocessing CSV penuh | Cache `model/exp14/cache/contextual_acf0555ee7cd9c36/complete.json`: 24.386.900 transaksi, 220 fitur, 2.000 user, 100.343 merchant; selesai dalam 1.680,7 detik, ukuran 14 berkas sekitar 11,33 GiB. |

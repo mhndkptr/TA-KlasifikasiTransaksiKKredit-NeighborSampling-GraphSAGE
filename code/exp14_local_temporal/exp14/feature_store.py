@@ -17,6 +17,7 @@ import pandas as pd
 
 from .legacy import EXP12_DIR, CONTEXT_NAMES, FeatureEncoder, fill_context_features, amount_context
 from .protocol import split_70_15_15
+from .runtime import LOGGER, progress_rows
 
 
 def _sql(value):
@@ -58,6 +59,7 @@ def _connection(cache_dir, memory_limit, threads):
 
 
 def _sorted_parquet(conn, csv_path, target, max_rows, row_group_size):
+    LOGGER.info('Preprocess: auditing CSV %s', csv_path)
     parsed = _query(csv_path, max_rows)
     audit = conn.execute(f"select count(*), count(*) filter (where ts is null), "
                          "count(*) filter (where label is null), "
@@ -67,6 +69,7 @@ def _sorted_parquet(conn, csv_path, target, max_rows, row_group_size):
     ordered = (f'with parsed as ({parsed}) select '
                'row_number() over (order by ts,source_row)-1 as tx_id,* '
                'from parsed order by ts,source_row')
+    LOGGER.info('Preprocess: chronological sort and parquet export (%s transactions)', f'{audit[0]:,}')
     conn.execute(f'copy ({ordered}) to {_sql(target.resolve().as_posix())} '
                  f'(format parquet,compression zstd,row_group_size {int(row_group_size)})')
     return int(audit[0])
@@ -186,7 +189,7 @@ class LocalFeatureStore:
 
 
 def prepare(csv_path, cache_root, *, max_rows=None, memory_limit='4GB', threads=4,
-            chunk_rows=100_000):
+            chunk_rows=100_000, progress_bar=True):
     """Build once; an incomplete directory is never treated as a usable cache."""
     csv_path = Path(csv_path).resolve()
     stat = csv_path.stat()
@@ -201,13 +204,16 @@ def prepare(csv_path, cache_root, *, max_rows=None, memory_limit='4GB', threads=
     if complete.exists():
         result = LocalFeatureStore(cache_dir)
         if result.meta['identity'] == identity:
+            LOGGER.info('Cache hit: %s (%s transactions)', cache_dir, f'{result.n:,}')
             return result
         raise ValueError('Identitas cache tidak cocok')
     if cache_dir.exists():
         raise RuntimeError(f'Cache belum selesai: {cache_dir}. Periksa atau gunakan path cache baru.')
     cache_dir.mkdir(parents=True)
+    LOGGER.info('Cache miss: building local feature store at %s', cache_dir)
     start = time.perf_counter()
     conn = _connection(cache_dir, memory_limit, threads)
+    conn.execute(f"set enable_progress_bar={'true' if progress_bar else 'false'}")
     parquet = cache_dir/'chronological.parquet'
     n = _sorted_parquet(conn,csv_path,parquet,max_rows,chunk_rows)
     relation = f'read_parquet({_sql(parquet.resolve().as_posix())})'
@@ -218,6 +224,7 @@ def prepare(csv_path, cache_root, *, max_rows=None, memory_limit='4GB', threads=
     train_end, test_start = bounds
     if not 0 < train_end < test_start < n:
         raise ValueError('Split temporal tie-safe kosong')
+    LOGGER.info('Preprocess: fitting encoder on %s training transactions', f'{train_end:,}')
     state = _encoder_state(conn,relation,train_end)
     encoder = FeatureEncoder(state)
     width = len(encoder.feature_names)+len(CONTEXT_NAMES)
@@ -235,9 +242,11 @@ def prepare(csv_path, cache_root, *, max_rows=None, memory_limit='4GB', threads=
     select = (f'select tx_id,source_row,user_key,card_key,merchant_key,city_key,state_key,'
               f'zip_key,use_chip_key,mcc_key,errors_key,ts,amount,label from {relation} '
               f'order by user_key,ts,source_row')
+    LOGGER.info('Preprocess: sorting user histories')
     conn.execute(select)
     position = 0
-    for group in _read_chunks(conn,['user_key'],chunk_rows):
+    for group in progress_rows(_read_chunks(conn,['user_key'],chunk_rows), progress_bar,
+                               total=n, desc='Features: user history'):
         length = len(group)
         frame = _frame(group)
         context = np.empty((length,len(CONTEXT_NAMES)),dtype=np.float32)
@@ -259,9 +268,11 @@ def prepare(csv_path, cache_root, *, max_rows=None, memory_limit='4GB', threads=
     merchant_values = _memmap(cache_dir/'features_merchant_channel.npy',(n,5),np.float16)
     select = (f'select tx_id,source_row,merchant_key,use_chip_key,ts,amount from {relation} '
               f'order by merchant_key,use_chip_key,ts,source_row')
+    LOGGER.info('Preprocess: sorting merchant/channel histories')
     conn.execute(select)
     position = 0
-    for group in _read_chunks(conn,['merchant_key','use_chip_key'],chunk_rows):
+    for group in progress_rows(_read_chunks(conn,['merchant_key','use_chip_key'],chunk_rows),
+                               progress_bar, total=n, desc='Features: merchant/channel'):
         length = len(group)
         seconds = pd.to_datetime(group.ts).to_numpy(dtype='datetime64[s]').astype(np.int64)
         end = np.searchsorted(seconds,seconds,side='left')
@@ -277,6 +288,7 @@ def prepare(csv_path, cache_root, *, max_rows=None, memory_limit='4GB', threads=
         position += length
     if position != n:
         raise AssertionError(f'Merchant pass kurang baris: {position}/{n}')
+    LOGGER.info('Preprocess: flushing feature arrays and validating cache')
     for array in (user_features,user_rows,merchant_rows,labels,timestamps,users,merchants,channels,source_rows,merchant_values):
         array.flush()
     if (np.diff(timestamps) < 0).any():
@@ -302,4 +314,5 @@ def prepare(csv_path, cache_root, *, max_rows=None, memory_limit='4GB', threads=
             'monthly_audit':'monthly_audit.json'}
     complete.write_text(json.dumps(meta,ensure_ascii=False,indent=2),encoding='utf-8')
     conn.close()
+    LOGGER.info('Preprocess complete: rows=%s features=%d elapsed=%.1fs', f'{n:,}', width, meta['seconds'])
     return LocalFeatureStore(cache_dir)

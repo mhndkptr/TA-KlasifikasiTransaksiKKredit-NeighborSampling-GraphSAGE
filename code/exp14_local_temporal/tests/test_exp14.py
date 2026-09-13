@@ -4,10 +4,14 @@ from pathlib import Path
 import sys
 import tempfile
 import unittest
+from contextlib import redirect_stderr, redirect_stdout
+import io
+from unittest.mock import patch
 from types import SimpleNamespace
 
 import numpy as np
 import torch
+import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT))
@@ -21,6 +25,7 @@ from exp12.sampling.weights import build_weights
 from exp14.sampling.roots import RootSampler
 from exp14.evaluation import fpr_threshold, quota_metrics
 from exp14.trainer import run_fold
+from exp14.runtime import LOGGER, logging_session
 from exp14.summary import summarize, _research_gate
 from exp14.audit import temporal_support
 from exp14.sampling.temporal import forward_temporal
@@ -318,6 +323,112 @@ class Exp14Tests(unittest.TestCase):
         rows[-1]['family']='changed_model'
         self.assertEqual(_research_gate(rows,'importance',.22225)['status'],
                          'incomparable_controls')
+
+    def test_monitoring_preserves_predictions_and_logs_without_progress(self):
+        roles = {'name':'monitoring','train_end':110,
+                 'selection':np.arange(110,130,dtype=np.int32),
+                 'calibration':np.arange(130,150,dtype=np.int32),
+                 'assessment':np.arange(150,170,dtype=np.int32)}
+        runs = []
+        old_handlers = list(LOGGER.handlers)
+        for enabled in (False,True):
+            output = self.dir/f'monitoring_{enabled}'
+            stdout,stderr = io.StringIO(),io.StringIO()
+            with redirect_stdout(stdout),redirect_stderr(stderr),logging_session(output/'run.log'):
+                result = run_fold(self.store,roles,'R0',42,output,epochs=2,min_epochs=1,
+                    patience=1,batch_size=16,eval_batch_size=7,fanout=3,min_fraud=1,
+                    device='cpu',progress_bar=enabled,progress_update_batches=1)
+            folder = output/'R0_uniform_monitoring_seed42'
+            runs.append((result,folder))
+            log = (output/'run.log').read_text(encoding='utf-8')
+            for expected in ('Runtime:','Epoch 1/2','selection_AP=','checkpoint saved',
+                             'Calibration complete','Assessment:','Complete:'):
+                self.assertIn(expected,log)
+            if enabled:
+                for expected in ('Train 1/2','Selection 1/2','Calibration','Assessment','neighbor table'):
+                    self.assertIn(expected,stderr.getvalue())
+            else:
+                # Third-party deprecation warnings are independent of progress.
+                self.assertNotIn('\r',stderr.getvalue())
+                self.assertNotIn('?txn/s',stderr.getvalue())
+                self.assertNotIn('neighbor table:',stderr.getvalue())
+            history = json.loads((folder/'history.json').read_text())
+            self.assertIn('learning_rate',history[0])
+            self.assertIn('training_nodes_per_second',history[0])
+            self.assertEqual(history[0]['training_roots'],result['train']['roots_per_epoch'])
+            self.assertTrue((folder/'environment.json').exists())
+            self.assertIn(result['stop_reason'],('max_epochs','early_stopping'))
+            summarize(output)
+            self.assertTrue((output/'runs.csv').exists())
+            self.assertTrue((output/'summary.csv').exists())
+        self.assertEqual(LOGGER.handlers,old_handlers)
+        self.assertEqual(runs[0][0]['decision_threshold'],runs[1][0]['decision_threshold'])
+        for role in ('selection','calibration','assessment'):
+            with np.load(runs[0][1]/f'{role}_scores.npz') as left, np.load(runs[1][1]/f'{role}_scores.npz') as right:
+                np.testing.assert_array_equal(left['score'],right['score'])
+        left = torch.load(runs[0][1]/'best.pt',weights_only=True)['state_dict']
+        right = torch.load(runs[1][1]/'best.pt',weights_only=True)['state_dict']
+        for key in left:
+            torch.testing.assert_close(left[key],right[key],rtol=0,atol=0)
+
+    def test_early_stop_and_no_assessment_remain_explicit(self):
+        roles = {'name':'early_stop','train_end':110,
+                 'selection':np.arange(110,130,dtype=np.int32),
+                 'calibration':np.arange(130,150,dtype=np.int32),
+                 'assessment':np.arange(150,170,dtype=np.int32)}
+        output = self.dir/'early_stop'
+        with patch('exp14.trainer.average_precision_score',return_value=.5):
+            result = run_fold(self.store,roles,'R0',42,output,epochs=5,min_epochs=2,
+                patience=1,batch_size=16,eval_batch_size=32,fanout=3,min_fraud=1,
+                device='cpu',progress_bar=False,assess=False)
+        self.assertEqual(result['stop_reason'],'early_stopping')
+        self.assertEqual(result['epochs'],2)
+        self.assertEqual(result['best_epoch'],1)
+        self.assertNotIn('assessment',result)
+        folder = output/'R0_uniform_early_stop_seed42'
+        self.assertFalse((folder/'assessment_scores.npz').exists())
+        self.assertEqual(json.loads((folder/'status.json').read_text())['stop_reason'],'early_stopping')
+
+    def test_keyboard_interrupt_records_interrupted_status(self):
+        roles = {'name':'interrupt','train_end':110,
+                 'selection':np.arange(110,130,dtype=np.int32),
+                 'calibration':np.arange(130,150,dtype=np.int32),
+                 'assessment':np.arange(150,170,dtype=np.int32)}
+        output = self.dir/'interrupt'
+        with patch('exp14.trainer._predict',side_effect=KeyboardInterrupt),self.assertRaises(KeyboardInterrupt):
+            run_fold(self.store,roles,'R0',42,output,epochs=1,min_epochs=1,
+                patience=1,batch_size=16,eval_batch_size=32,fanout=3,min_fraud=1,
+                device='cpu',progress_bar=False)
+        folder = output/'R0_uniform_interrupt_seed42'
+        self.assertEqual(json.loads((folder/'status.json').read_text())['status'],'interrupted')
+        self.assertFalse((folder/'metrics.json').exists())
+
+    def test_cli_no_progress_and_automatic_summary(self):
+        from exp14.cli import main
+        source = self.dir/'cli_transactions.csv'
+        synthetic_csv(source,n=1000)
+        config = yaml.safe_load((ROOT/'config.local.yaml').read_text(encoding='utf-8'))
+        config['data']['transactions'] = str(source)
+        config['paths'] = {'cache':str(self.dir/'cli_cache'),'results':str(self.dir/'cli_result')}
+        config['runtime'].update(duckdb_memory_limit='512MB',cpu_threads=2)
+        config['protocol']['assessment_end_date'] = None
+        config_path = self.dir/'cli.yaml'
+        config_path.write_text(yaml.safe_dump(config),encoding='utf-8')
+        stderr,stdout = io.StringIO(),io.StringIO()
+        with redirect_stdout(stdout),redirect_stderr(stderr):
+            code = main(['run','--config',str(config_path),'--strategy','uniform',
+                         '--epochs','1','--min-fraud','1','--device','cpu','--no-progress'])
+        self.assertEqual(code,0)
+        self.assertNotIn('\r',stderr.getvalue())
+        result = self.dir/'cli_result'
+        log = (result/'run.log').read_text(encoding='utf-8')
+        self.assertIn('Preprocess complete',log)
+        self.assertIn('Epoch 1/1',log)
+        self.assertIn('Summary updated',log)
+        summary = json.loads((result/'summary.json').read_text())
+        self.assertEqual(len(summary['runs']),1)
+        with (result/'runs.csv').open(newline='',encoding='utf-8') as stream:
+            self.assertEqual(len(list(csv.DictReader(stream))),1)
 
 
 if __name__ == '__main__': unittest.main()

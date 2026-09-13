@@ -13,6 +13,7 @@ from .protocol import DAY_NS, calendar_folds
 from .trainer import VARIANTS, run_fold
 from .summary import summarize
 from .audit import temporal_support
+from .runtime import LOGGER, logging_session
 
 
 def _roles_static(store):
@@ -52,23 +53,42 @@ def main(argv=None):
     parser.add_argument('--min-fraud',type=int,help='Smoke-only override guard')
     parser.add_argument('--device',choices=['auto','cpu','cuda'])
     parser.add_argument('--no-assessment',action='store_true')
+    parser.add_argument('--no-progress',action='store_true',
+                        help='Matikan progress bar; log tahap dan epoch tetap ditulis')
     args = parser.parse_args(argv)
     cfg = yaml.safe_load(args.config.read_text(encoding='utf-8'))
+    base = args.config.resolve().parent
+    result_root = (args.results_dir.resolve() if args.results_dir else
+                   (base/cfg['paths']['results']).resolve())
+    with logging_session(result_root/'run.log'):
+        LOGGER.info('EXP14 command=%s; log=%s', args.command, result_root/'run.log')
+        try:
+            return _execute(args, cfg)
+        except KeyboardInterrupt:
+            LOGGER.warning('Interrupted by user')
+            raise
+        except Exception:
+            LOGGER.exception('EXP14 failed')
+            raise
+
+
+def _execute(args, cfg):
     base = args.config.resolve().parent
     data_path = (base/cfg['data']['transactions']).resolve()
     cache_root = (base/cfg['paths']['cache']).resolve()
     result_root = (args.results_dir.resolve() if args.results_dir else
                    (base/cfg['paths']['results']).resolve())
+    enabled = cfg['runtime'].get('progress_bar',True) and not args.no_progress
     if args.command == 'summarize':
         output = summarize(result_root)
-        print(f'Summary: {result_root/"summary.json"}; runs={len(output["runs"])}')
+        LOGGER.info('Summary: %s; runs=%d',result_root/'summary.json',len(output['runs']))
         return 0
     store = prepare(data_path,cache_root,max_rows=args.max_rows,
                     memory_limit=cfg['runtime']['duckdb_memory_limit'],
                     threads=cfg['runtime']['cpu_threads'],
-                    chunk_rows=cfg['runtime']['chunk_rows'])
-    print(f'Feature store: {store.path}, rows={store.n}, features={store.width}, '
-          f'train={store.train_end}, test={store.test_start}',flush=True)
+                    chunk_rows=cfg['runtime']['chunk_rows'],progress_bar=enabled)
+    LOGGER.info('Feature store: %s, rows=%s, features=%d, train=%d, test=%d',
+                store.path,f'{store.n:,}',store.width,store.train_end,store.test_start)
     if args.command == 'preprocess': return 0
     chip_name = 'Chip Transaction'
     chip_code = (store.meta['channel_names'].index(chip_name)
@@ -128,7 +148,7 @@ def main(argv=None):
                             raise RuntimeError('Jalankan B0 origin pertama sebelum B_control')
                         state = torch.load(checkpoint,map_location='cpu',weights_only=True)
                         roles = {**roles,'train_end':earliest['train_end']}
-                    print(f'Run {variant}/{strategy} {roles["name"]} seed {seed}',flush=True)
+                    LOGGER.info('Run %s/%s %s seed %d',variant,strategy,roles['name'],seed)
                     result = run_fold(store,roles,variant,seed,result_root,
                         epochs=args.epochs or train_cfg['epochs'],
                         min_epochs=train_cfg['min_epochs'],patience=train_cfg['patience'],
@@ -141,7 +161,10 @@ def main(argv=None):
                         frozen_state=state,
                         threshold_policy=cfg['evaluation']['primary_threshold'],
                         strategy=strategy,weight_config=cfg.get('sampling'),
-                        negatives_per_positive=train_cfg.get('negatives_per_positive',30))
-                    print(f'Complete: AP selection={result["selection_ap"]:.6f}; '
-                          f'output={result_root}',flush=True)
+                        negatives_per_positive=train_cfg.get('negatives_per_positive',30),
+                        progress_bar=enabled,
+                        progress_update_batches=cfg['runtime'].get('progress_update_batches',100))
+                    LOGGER.info('Complete: AP selection=%.6f; output=%s',result['selection_ap'],result_root)
+                    summarize(result_root)
+                    LOGGER.info('Summary updated: %s', result_root/'summary.json')
     return 0

@@ -6,6 +6,7 @@ import torch
 
 from ..protocol import DAY_NS
 from .weights import FrozenWeightContext, weighted_choice
+from ..runtime import LOGGER, progress
 
 
 def build_csr(store):
@@ -13,7 +14,9 @@ def build_csr(store):
     path = store.path/'entity_csr.npy'
     ptr_path = store.path/'entity_rowptr.npy'
     if path.exists() and ptr_path.exists():
+        LOGGER.info('Graph CSR: reusing local entity index')
         return np.load(ptr_path,mmap_mode='r'),np.load(path,mmap_mode='r')
+    LOGGER.info('Graph CSR: building user/merchant indices for %s transactions', f'{store.n:,}')
     n = store.n
     if n >= np.iinfo(np.int32).max:
         raise ValueError('Jumlah transaksi melampaui indeks int32')
@@ -52,7 +55,7 @@ def _choice(rng, lo, hi, wanted, exclude=()):
 class TemporalNeighborSampler:
     def __init__(self, store, rowptr, col, *, fanout=25, mode='frozen',
                  recency_days=180, recent_count=12, strategy='uniform',
-                 weight_config=None):
+                 weight_config=None, progress_bar=True):
         if fanout < 1 or mode not in {'static','frozen','moving','recent'} or (mode == 'recent' and not 0 <= recent_count <= fanout):
             raise ValueError('Konfigurasi sampler temporal tidak valid')
         if strategy not in {'uniform','topology','importance'}:
@@ -62,6 +65,7 @@ class TemporalNeighborSampler:
         self.store,self.rowptr,self.col = store,rowptr,col
         self.fanout,self.mode = fanout,mode
         self.strategy,self.weight_config = strategy,weight_config
+        self.progress_bar = progress_bar
         self.recency_days,self.recent_count = recency_days,recent_count
         self.static_key = None
         self.static_table = None
@@ -86,7 +90,9 @@ class TemporalNeighborSampler:
         count_entities = self.store.num_users+self.store.num_merchants
         table = np.full((count_entities,self.fanout),-1,dtype=np.int32)
         degree = np.zeros(count_entities,dtype=np.int32)
-        for entity in range(count_entities):
+        LOGGER.info('Sampling: refreshing %s table (seed=%d, cutoff=%d)', self.strategy, seed, fit_end)
+        for entity in progress(range(count_entities), self.progress_bar,
+                               desc=f'{self.strategy} neighbor table', unit='entity', leave=False):
             lo,hi = self.eligible(entity,fit_end)
             degree[entity] = hi-lo
             if self.strategy == 'uniform':
@@ -100,7 +106,8 @@ class TemporalNeighborSampler:
             if positions:
                 table[entity,:len(positions)] = self.col[positions]
         means = np.zeros((count_entities,self.store.width+4),dtype=np.float32)
-        for start in range(0,count_entities,chunk_entities):
+        for start in progress(range(0,count_entities,chunk_entities), self.progress_bar,
+                              desc='Neighbor feature means', unit='batch', leave=False):
             selected = table[start:start+chunk_entities]
             mask = selected>=0
             flat = selected[mask]

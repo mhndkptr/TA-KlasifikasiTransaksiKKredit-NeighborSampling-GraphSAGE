@@ -8,6 +8,8 @@ runtime:
   cpu_threads: 4
   duckdb_memory_limit: 4GB
   chunk_rows: 100000
+  progress_bar: true
+  progress_update_batches: 100
 protocol:
   # Audit full-data: only one non-overlapping 90-day origin has labeled
   # selection, calibration, and assessment before the 2017 fraud gap.

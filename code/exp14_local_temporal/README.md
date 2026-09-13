@@ -8,6 +8,14 @@ Karena training tetap memakai n30 untuk kelayakan lokal, bobot positif pada batc
 
 Input lokal: `dataset/credit_card_transactions-ibm_v2.csv`. Cache: `model/exp14/cache/`. Hasil: `result/exp14/`. Konfigurasi awal di `config.local.yaml` memilih `R0` dan ketiga strategi secara berurutan untuk seed 42. Jalankan seed tambahan dengan `--seed` setelah kontrol pertama diperiksa.
 
+Progress bar aktif secara default (`runtime.progress_bar: true`), seperti pada EXP12. Terminal menampilkan kemajuan preprocessing fitur user dan merchant/channel, refresh tabel tetangga dan rerata fitur, epoch, batch training, selection, calibration, serta assessment. Tahap SQL/CSR dan pembangunan bobot diberi log mulai/selesai; operasi SQL memakai progress bawaan DuckDB jika didukung terminal. Bar menampilkan jumlah pekerjaan, elapsed time, ETA, dan kecepatan. Training menambahkan loss dan learning rate; akhir epoch mencatat AP selection, AP/epoch terbaik, patience, throughput, waktu training/validation, dan RAM.
+
+Log bertimestamp disimpan dengan mode append di `<results-dir>/run.log`. `environment.json` per run mencatat CPU/GPU dan versi library; `history.json` tetap disimpan setiap epoch dengan tambahan learning rate, throughput, dan penanda checkpoint baru. `status.json` membedakan tahap aktif, selesai, gagal, dan interupsi; alasan selesai membedakan batas epoch, early stopping, dan checkpoint beku. Checkpoint/JSON memakai penulisan atomik dengan retry Windows dari EXP12. Setelah setiap run, `summary.json`, `runs.csv`, dan `summary.csv` diperbarui otomatis; run tanpa assessment tidak dimasukkan ke ringkasan hasil assessment.
+
+Untuk terminal/log CI, tambahkan `--no-progress` pada perintah mana pun. Opsi ini hanya mematikan bar; log tahap, metrik epoch, dan artefak tetap tersedia. Frekuensi pembaruan loss pada bar diatur melalui `runtime.progress_update_batches` (default 100 batch). Pengaturan tampilan tidak mengubah seed, sampling, checkpoint selection, threshold, ataupun prediksi.
+
+Identitas cache mencakup source preprocessing. Pembaruan source ini menghasilkan fingerprint cache baru, sehingga preprocessing pertama sesudah pembaruan dapat berjalan ulang; cache lama tidak dihapus. Run lengkap dari source sebelumnya tetap dilindungi oleh pemeriksaan konfigurasi/source. Gunakan `--results-dir result/exp14/monitoring_v2` untuk hasil baru yang terpisah. Perintah yang sudah berjalan perlu dijalankan ulang agar memuat perubahan kode; checkpoint terbaik bukan checkpoint resume optimizer.
+
 Dari root repository, dengan virtual environment proyek:
 
 ```powershell

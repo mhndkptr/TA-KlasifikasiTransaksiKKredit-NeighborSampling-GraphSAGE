@@ -17,6 +17,8 @@ from .legacy import EXP12_DIR, GraphSAGE
 from .sampling.roots import RootSampler
 from .sampling.temporal import TemporalNeighborSampler, build_csr, forward_temporal
 from .sampling.weights import FrozenWeightContext
+from .runtime import LOGGER, environment, progress
+from exp12.artifacts import atomic_json, atomic_torch
 
 
 VARIANTS = {
@@ -41,11 +43,7 @@ def source_manifest():
 
 
 def _write(path,payload):
-    path = Path(path)
-    path.parent.mkdir(parents=True,exist_ok=True)
-    temp = path.with_suffix(path.suffix+'.tmp')
-    temp.write_text(json.dumps(payload,ensure_ascii=False,indent=2,allow_nan=False),encoding='utf-8')
-    temp.replace(path)
+    atomic_json(path,payload)
 
 
 def _positive_weights(store,train_end,power=.5,cap=4.):
@@ -56,11 +54,13 @@ def _positive_weights(store,train_end,power=.5,cap=4.):
     return {int(group):float(weight) for group,weight in zip(groups,costs)}
 
 
-def _predict(model,store,sampler,ids,fit_end,*,seed,batch_size,device):
+def _predict(model,store,sampler,ids,fit_end,*,seed,batch_size,device,
+             progress_bar=True,desc='Predict'):
     model.eval()
     ids = np.asarray(ids,dtype=np.int32)
     out = np.empty(len(ids),dtype=np.float64)
-    with torch.no_grad():
+    with torch.no_grad(), progress(None,progress_bar,total=len(ids),desc=desc,
+                                   unit='txn',unit_scale=True,leave=False) as bar:
         for start in range(0,len(ids),batch_size):
             roots = ids[start:start+batch_size]
             batch_seed = seed if sampler.mode == 'static' else seed+start
@@ -68,6 +68,7 @@ def _predict(model,store,sampler,ids,fit_end,*,seed,batch_size,device):
             cached = sampler.static_means_for(roots) if sampler.mode == 'static' else None
             logits = forward_temporal(model,store,roots,neighbors,degree,device,cached)
             out[start:start+len(roots)] = logits.sigmoid().cpu().numpy()
+            bar.update(len(roots))
     return out
 
 
@@ -83,18 +84,23 @@ def run_fold(store,roles,variant,seed,output_root,*,epochs=100,min_epochs=20,pat
              batch_size=512,eval_batch_size=2048,learning_rate=.001,fanout=25,
              label_delay_days=0,min_fraud=25,device='auto',assess=True,
              frozen_state=None,threshold_policy='fpr_0_001',strategy='uniform',
-             weight_config=None,negatives_per_positive=30):
+             weight_config=None,negatives_per_positive=30,progress_bar=True,
+             progress_update_batches=100):
     """Roles contain arrays of transaction IDs and train_end; no test-role peeking."""
     if variant not in VARIANTS: raise ValueError(f'Varian tidak dikenal: {variant}')
     if strategy not in {'uniform','topology','importance'}:
         raise ValueError('Strategi sampling tidak dikenal')
     if variant != 'R0' and strategy != 'uniform':
         raise ValueError('Perbandingan strategi utama hanya pada R0 dengan graf beku yang sama')
-    if not 0 < batch_size or epochs < 1 or patience < 1 or negatives_per_positive < 1:
+    if batch_size < 2 or eval_batch_size < 1 or epochs < 1 or patience < 1 or negatives_per_positive < 1:
         raise ValueError('Training budget tidak valid')
+    if progress_update_batches < 1:
+        raise ValueError('progress_update_batches harus positif')
     mode = VARIANTS[variant]
     dev = torch.device('cuda' if device == 'auto' and torch.cuda.is_available() else
                        'cpu' if device == 'auto' else device)
+    if dev.type == 'cuda' and not torch.cuda.is_available():
+        raise RuntimeError('CUDA diminta tetapi PyTorch CUDA tidak tersedia; pilih --device cpu')
     torch.manual_seed(seed)
     np.random.seed(seed)
     if dev.type == 'cuda': torch.cuda.manual_seed_all(seed)
@@ -120,6 +126,7 @@ def run_fold(store,roles,variant,seed,output_root,*,epochs=100,min_epochs=20,pat
         previous = json.loads((out/'config.json').read_text(encoding='utf-8'))
         if previous != cfg:
             raise RuntimeError(f'Run selesai memakai konfigurasi/source berbeda: {out}')
+        LOGGER.info('Skip completed run: %s',out)
         return json.loads((out/'metrics.json').read_text(encoding='utf-8'))
     _write(out/'config.json',cfg)
     _write(status_path,{'status':'running','variant':variant,'fold':roles['name'],'seed':seed})
@@ -128,6 +135,9 @@ def run_fold(store,roles,variant,seed,output_root,*,epochs=100,min_epochs=20,pat
         process = psutil.Process()
         observed_rss = process.memory_info().rss
         if dev.type == 'cuda': torch.cuda.reset_peak_memory_stats(dev)
+        runtime = environment(dev)
+        _write(out/'environment.json',runtime)
+        LOGGER.info('Runtime: %s',runtime)
         train_end = int(roles['train_end'])
         if train_end <= 0 or train_end > store.n:
             raise ValueError('Cutoff training tidak valid')
@@ -143,16 +153,21 @@ def run_fold(store,roles,variant,seed,output_root,*,epochs=100,min_epochs=20,pat
         for role,ids in [('selection',select),('calibration',calibration)]:
             if int(np.asarray(store.labels[ids]).sum()) < min_fraud or not (np.asarray(store.labels[ids])==0).any():
                 raise ValueError(f'{role} kurang dukungan fraud/normal')
+            LOGGER.info('%s: rows=%s fraud=%d',role,f'{len(ids):,}',int(np.asarray(store.labels[ids]).sum()))
         rowptr,col = build_csr(store)
         sampler = TemporalNeighborSampler(store,rowptr,col,fanout=fanout,mode=mode['mode'],
-                                          strategy=strategy,weight_config=weight_config)
+                                          strategy=strategy,weight_config=weight_config,
+                                          progress_bar=progress_bar)
         eval_sampler = TemporalNeighborSampler(store,rowptr,col,fanout=fanout,mode=mode['mode'],
-                                               strategy=strategy,weight_config=weight_config)
+                                               strategy=strategy,weight_config=weight_config,
+                                               progress_bar=progress_bar)
         weight_build_seconds = 0.
         if strategy != 'uniform':
+            LOGGER.info('Sampling: building frozen %s weight context',strategy)
             weight_started = time.perf_counter()
             weight_context = FrozenWeightContext(store,train_end,weight_config)
             weight_build_seconds = time.perf_counter()-weight_started
+            LOGGER.info('Weight context ready in %.1fs',weight_build_seconds)
             for active_sampler in (sampler,eval_sampler):
                 active_sampler.weight_context = weight_context
                 active_sampler.weight_context_cutoff = train_end
@@ -170,75 +185,122 @@ def run_fold(store,roles,variant,seed,output_root,*,epochs=100,min_epochs=20,pat
         history = []
         best,best_epoch,stale = -1.,0,0
         best_state = None
+        stop_reason = 'frozen_checkpoint' if frozen_state is not None else 'max_epochs'
+        LOGGER.info('Training %s/%s seed=%d; roots/epoch=%s; batch=%d; '
+                    'min_epochs=%d; patience=%d; population_pos_weight=%.3f; sampled_pos_weight=%.3f',
+                    variant,strategy,seed,f'{len(root_sampler.positive)+root_sampler.negative_count:,}',
+                    batch_size,min_epochs,patience,population_pos_weight,sampled_pos_weight)
         if frozen_state is None:
             optimizer = torch.optim.Adam(model.parameters(),lr=learning_rate,weight_decay=.0001)
             scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer,mode='max',factor=.5,patience=5,min_lr=1e-5)
-            for epoch in range(1,epochs+1):
-                model.train()
-                epoch_started = time.perf_counter()
-                roots = root_sampler.roots()
-                losses = []
-                for start in range(0,len(roots),batch_size):
-                    if start == len(roots)-1:
-                        break  # The previous batch absorbed this singleton.
-                    stop = min(start+batch_size,len(roots))
-                    if len(roots)-stop == 1:
-                        stop = len(roots)
-                    batch = roots[start:stop]
-                    batch_seed = (seed*100000+epoch if sampler.mode == 'static' else
-                                  seed*100000+epoch*1000+start)
-                    neighbors,degree = sampler.sample(batch,train_end,batch_seed,training=True)
-                    cached = sampler.static_means_for(batch) if sampler.mode == 'static' else None
-                    y_np = np.asarray(store.labels[batch],dtype=np.float32)
-                    ch = np.asarray(store.channels[batch])
-                    cost = (np.where(y_np > 0,sampled_pos_weight,1.).astype(np.float32)
-                            if variant == 'R0' else
-                            np.asarray([weights.get(int(c),1.) if y else 1. for c,y in zip(ch,y_np)],dtype=np.float32))
-                    y = torch.from_numpy(y_np).to(dev)
-                    w = torch.from_numpy(cost).to(dev)
-                    optimizer.zero_grad(set_to_none=True)
-                    logits = forward_temporal(model,store,batch,neighbors,degree,dev,cached)
-                    loss = F.binary_cross_entropy_with_logits(logits,y,weight=w)
-                    if not torch.isfinite(loss): raise FloatingPointError('Loss non-finite')
-                    loss.backward()
-                    torch.nn.utils.clip_grad_norm_(model.parameters(),5.,error_if_nonfinite=True)
-                    optimizer.step()
-                    losses.append(float(loss.detach().cpu())*len(batch))
-                    if start % (batch_size*100) == 0:
-                        observed_rss = max(observed_rss,process.memory_info().rss)
-                scores = _predict(model,store,eval_sampler,select,train_end,seed=eval_seed,
-                                  batch_size=eval_batch_size,device=dev)
-                ap = float(average_precision_score(np.asarray(store.labels[select]),scores))
-                if ap > best:
-                    best,best_epoch,stale = ap,epoch,0
-                    best_state = {k:v.detach().cpu().clone() for k,v in model.state_dict().items()}
-                    torch.save({'state_dict':best_state,'input_channels':store.width+4,
-                                'best_epoch':epoch,'selection_ap':ap,'config':cfg},out/'best.pt')
-                else: stale += 1
-                scheduler.step(ap)
-                history.append({'epoch':epoch,'loss':sum(losses)/len(roots),
-                                'selection_ap':ap,'best_epoch':best_epoch,'stale':stale,
-                                'seconds':time.perf_counter()-epoch_started,
-                                'observed_rss_gib':observed_rss/2**30})
-                _write(out/'history.json',history)
-                if epoch >= min_epochs and stale >= patience: break
+            with progress(range(1,epochs+1),progress_bar,
+                          desc=f'{variant}/{strategy} seed {seed}',unit='epoch') as epoch_bar:
+                for epoch in epoch_bar:
+                    model.train()
+                    epoch_started = time.perf_counter()
+                    roots = root_sampler.roots()
+                    losses = []
+                    seen = 0
+                    with progress(None,progress_bar,total=len(roots),desc=f'Train {epoch}/{epochs}',
+                                  unit='txn',unit_scale=True,leave=False) as batch_bar:
+                        for step,start in enumerate(range(0,len(roots),batch_size),1):
+                            if start == len(roots)-1:
+                                break  # The previous batch absorbed this singleton.
+                            stop = min(start+batch_size,len(roots))
+                            if len(roots)-stop == 1:
+                                stop = len(roots)
+                            batch = roots[start:stop]
+                            batch_seed = (seed*100000+epoch if sampler.mode == 'static' else
+                                          seed*100000+epoch*1000+start)
+                            neighbors,degree = sampler.sample(batch,train_end,batch_seed,training=True)
+                            cached = sampler.static_means_for(batch) if sampler.mode == 'static' else None
+                            y_np = np.asarray(store.labels[batch],dtype=np.float32)
+                            ch = np.asarray(store.channels[batch])
+                            cost = (np.where(y_np > 0,sampled_pos_weight,1.).astype(np.float32)
+                                    if variant == 'R0' else
+                                    np.asarray([weights.get(int(c),1.) if y else 1. for c,y in zip(ch,y_np)],dtype=np.float32))
+                            y = torch.from_numpy(y_np).to(dev)
+                            w = torch.from_numpy(cost).to(dev)
+                            optimizer.zero_grad(set_to_none=True)
+                            logits = forward_temporal(model,store,batch,neighbors,degree,dev,cached)
+                            loss = F.binary_cross_entropy_with_logits(logits,y,weight=w)
+                            if not torch.isfinite(loss): raise FloatingPointError('Loss non-finite')
+                            loss.backward()
+                            torch.nn.utils.clip_grad_norm_(model.parameters(),5.,error_if_nonfinite=True)
+                            optimizer.step()
+                            losses.append(float(loss.detach().cpu())*len(batch))
+                            seen += len(batch)
+                            batch_bar.update(len(batch))
+                            if progress_bar and (step == 1 or step % progress_update_batches == 0 or seen == len(roots)):
+                                batch_bar.set_postfix(loss=f'{sum(losses)/seen:.5f}',
+                                    lr=f'{optimizer.param_groups[0]["lr"]:.2g}',
+                                    txn_s=f'{seen/max(time.perf_counter()-epoch_started,1e-9):.0f}')
+                            if start % (batch_size*100) == 0:
+                                observed_rss = max(observed_rss,process.memory_info().rss)
+                    training_seconds = time.perf_counter()-epoch_started
+                    validation_started = time.perf_counter()
+                    scores = _predict(model,store,eval_sampler,select,train_end,seed=eval_seed,
+                                      batch_size=eval_batch_size,device=dev,progress_bar=progress_bar,
+                                      desc=f'Selection {epoch}/{epochs}')
+                    validation_seconds = time.perf_counter()-validation_started
+                    ap = float(average_precision_score(np.asarray(store.labels[select]),scores))
+                    improved = ap > best
+                    if improved:
+                        best,best_epoch,stale = ap,epoch,0
+                        best_state = {k:v.detach().cpu().clone() for k,v in model.state_dict().items()}
+                        atomic_torch(out/'best.pt',{'state_dict':best_state,'input_channels':store.width+4,
+                                    'best_epoch':epoch,'selection_ap':ap,'config':cfg})
+                    else: stale += 1
+                    scheduler.step(ap)
+                    history.append({'epoch':epoch,'loss':sum(losses)/len(roots),
+                                    'selection_ap':ap,'best_epoch':best_epoch,'stale':stale,
+                                    'seconds':time.perf_counter()-epoch_started,
+                                    'learning_rate':optimizer.param_groups[0]['lr'],
+                                    'checkpoint_improved':improved,'training_roots':seen,
+                                    'training_seconds':training_seconds,
+                                    'training_nodes_per_second':seen/max(training_seconds,1e-9),
+                                    'validation_query_seconds':validation_seconds,
+                                    'observed_rss_gib':observed_rss/2**30})
+                    _write(out/'history.json',history)
+                    _write(status_path,{'status':'running','phase':'training','variant':variant,
+                        'strategy':strategy,'fold':roles['name'],'seed':seed,'last_epoch':epoch,
+                        'best_epoch':best_epoch,'best_selection_ap':best,'stale':stale})
+                    LOGGER.info('Epoch %d/%d | loss=%.5f selection_AP=%.6f best=%.6f@%d '
+                        'stale=%d/%d lr=%.2g train=%.1fs (%.0f txn/s) val=%.1fs RSS=%.2f GiB%s',
+                        epoch,epochs,history[-1]['loss'],ap,best,best_epoch,stale,patience,
+                        history[-1]['learning_rate'],training_seconds,history[-1]['training_nodes_per_second'],
+                        validation_seconds,observed_rss/2**30,' | checkpoint saved' if improved else '')
+                    if progress_bar:
+                        epoch_bar.set_postfix(AP=f'{ap:.5f}',best=f'{best:.5f}',stale=f'{stale}/{patience}')
+                    if epoch >= min_epochs and stale >= patience:
+                        stop_reason = 'early_stopping'
+                        LOGGER.info('EARLY STOPPING: epoch=%d stale=%d/%d best=%.6f@%d',
+                                    epoch,stale,patience,best,best_epoch)
+                        break
             model.load_state_dict(best_state)
         else:
             model.load_state_dict(frozen_state['state_dict'])
             best_epoch = frozen_state['best_epoch']
             best = frozen_state['selection_ap']
+        LOGGER.info('Training finished: %s; best checkpoint epoch=%d AP=%.6f',stop_reason,best_epoch,best)
+        _write(status_path,{'status':'running','phase':'calibration','variant':variant,
+                           'fold':roles['name'],'seed':seed,'best_epoch':best_epoch})
         selection_scores = _predict(model,store,eval_sampler,select,train_end,
-                                    seed=eval_seed,batch_size=eval_batch_size,device=dev)
+                                    seed=eval_seed,batch_size=eval_batch_size,device=dev,
+                                    progress_bar=progress_bar,desc='Best checkpoint: selection')
         current_selection_ap = float(average_precision_score(np.asarray(store.labels[select]),selection_scores))
         calibration_scores = _predict(model,store,eval_sampler,calibration,train_end,
-                                      seed=eval_seed,batch_size=eval_batch_size,device=dev)
+                                      seed=eval_seed,batch_size=eval_batch_size,device=dev,
+                                      progress_bar=progress_bar,desc='Calibration')
         options,calibration_f2 = thresholds(np.asarray(store.labels[calibration]),calibration_scores)
         if threshold_policy not in options: raise ValueError('Threshold policy tidak dikenal')
         decision = options[threshold_policy]
+        LOGGER.info('Calibration complete: policy=%s threshold=%.8g',threshold_policy,decision)
         _save_predictions(out/'selection_scores.npz',store,select,selection_scores)
         _save_predictions(out/'calibration_scores.npz',store,calibration,calibration_scores)
         result = {'variant':variant,'strategy':strategy,'seed':seed,'fold':roles['name'],
                   'best_epoch':best_epoch,
+                  'stop_reason':stop_reason,'epochs':len(history),'environment':runtime,
                   'selection_ap':best,'selection_ap_current':current_selection_ap,
                   'thresholds':options,'decision_threshold':decision,
                   'threshold_policy':threshold_policy,'calibration_f2':calibration_f2,
@@ -260,9 +322,13 @@ def run_fold(store,roles,variant,seed,output_root,*,epochs=100,min_epochs=20,pat
                       assessment if len(assessment) else calibration,train_end,eval_seed),
                   'assessment_exploratory':bool(roles.get('assessment_exploratory',False))}
         if assess and len(assessment):
+            LOGGER.info('Assessment: %s transactions; checkpoint and threshold locked',f'{len(assessment):,}')
+            _write(status_path,{'status':'running','phase':'assessment','variant':variant,
+                               'fold':roles['name'],'seed':seed,'best_epoch':best_epoch})
             inference_started = time.perf_counter()
             assessment_scores = _predict(model,store,eval_sampler,assessment,train_end,
-                                         seed=eval_seed,batch_size=eval_batch_size,device=dev)
+                                         seed=eval_seed,batch_size=eval_batch_size,device=dev,
+                                         progress_bar=progress_bar,desc='Assessment')
             inference_seconds = time.perf_counter()-inference_started
             result['assessment_inference'] = {
                 'seconds_including_sampling_and_features':inference_seconds,
@@ -273,11 +339,27 @@ def run_fold(store,roles,variant,seed,output_root,*,epochs=100,min_epochs=20,pat
             result['assessment_other_thresholds'] = {
                 name:report(store,assessment,assessment_scores,value)['overall']
                 for name,value in options.items() if name != threshold_policy}
+            overall = result['assessment']['overall']
+            LOGGER.info('Assessment: AP=%s precision=%s recall=%s F1=%s TP=%s FP=%s FN=%s TN=%s',
+                        *(overall.get(key) for key in ('auprc','precision','recall','f1','tp','fp','fn','tn')))
         result['elapsed_seconds'] = time.perf_counter()-started
+        observed_rss = max(observed_rss,process.memory_info().rss)
+        result['resources'] = {'observed_peak_rss_gib':observed_rss/2**30,
+                              'peak_vram_gib':(torch.cuda.max_memory_allocated(dev)/2**30
+                                               if dev.type=='cuda' else None)}
         _write(out/'metrics.json',result)
         _write(status_path,{'status':'complete','variant':variant,'fold':roles['name'],
-                            'seed':seed,'best_epoch':best_epoch,'epochs':len(history)})
+                            'seed':seed,'best_epoch':best_epoch,'epochs':len(history),
+                            'stop_reason':stop_reason})
+        LOGGER.info('Complete: %s; elapsed=%.1fs; RSS=%.2f GiB; peak VRAM=%s GiB',
+                    out,result['elapsed_seconds'],observed_rss/2**30,result['resources']['peak_vram_gib'])
         return result
+    except KeyboardInterrupt:
+        _write(status_path,{'status':'interrupted','variant':variant,'fold':roles['name'],
+                            'seed':seed,'stop_reason':'keyboard_interrupt'})
+        LOGGER.warning('Run interrupted: %s; saved artifacts retained',out)
+        raise
     except Exception as exc:
         _write(status_path,{'status':'failed','error':str(exc),'type':type(exc).__name__})
+        LOGGER.exception('Run failed: %s',out)
         raise
