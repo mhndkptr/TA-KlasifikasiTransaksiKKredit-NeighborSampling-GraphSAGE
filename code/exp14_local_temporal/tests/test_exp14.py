@@ -4,6 +4,7 @@ from pathlib import Path
 import sys
 import tempfile
 import unittest
+from types import SimpleNamespace
 
 import numpy as np
 import torch
@@ -15,9 +16,12 @@ from exp14.legacy import CONTEXT_NAMES, fill_context_features
 from exp12.data import load_transactions
 from exp14.protocol import DAY_NS, calendar_folds, tie_safe_boundary
 from exp14.sampling.temporal import build_csr, TemporalNeighborSampler
+from exp14.sampling.weights import FrozenWeightContext, DEFAULTS
+from exp12.sampling.weights import build_weights
 from exp14.sampling.roots import RootSampler
 from exp14.evaluation import fpr_threshold, quota_metrics
 from exp14.trainer import run_fold
+from exp14.summary import summarize, _research_gate
 from exp14.audit import temporal_support
 from exp14.sampling.temporal import forward_temporal
 from exp12.graph import TransactionGraph, FeatureStore as BlockStore
@@ -230,6 +234,90 @@ class Exp14Tests(unittest.TestCase):
             run_fold(store,changed,'B1',42,output,epochs=2,min_epochs=1,
                      patience=1,batch_size=16,eval_batch_size=32,
                      fanout=3,min_fraud=1,device='cpu')
+
+    def test_frozen_strategy_scores_match_exp12_at_same_cutoff(self):
+        store,fit_end = self.store,110
+        context = FrozenWeightContext(store,fit_end)
+        rowptr,col = build_csr(store)
+        selected = []
+        for entity in range(store.num_users+store.num_merchants):
+            lo,hi = int(rowptr[entity]),int(rowptr[entity+1])
+            selected.append(np.asarray(col[lo:lo+np.searchsorted(col[lo:hi],fit_end)]))
+        degree = context.degree
+        ptr = np.r_[0,np.cumsum(degree)]
+        graph = SimpleNamespace(
+            rowptr=torch.as_tensor(ptr),col=torch.as_tensor(np.concatenate(selected)),
+            degree=torch.as_tensor(degree),fraud_count=torch.as_tensor(context.fraud),
+            entities=torch.as_tensor(np.column_stack((store.users[:fit_end],
+                                   store.num_users+store.merchants[:fit_end]))),
+            pair_count=torch.as_tensor(context.pair_count),
+            labels=torch.as_tensor(np.asarray(store.labels[:fit_end]).copy()),train_end=fit_end,
+            metadata={'history_nodes':context.history_nodes})
+        cfg={**DEFAULTS,'topology_mode':'historical','edge_chunk_size':31}
+        entity=int(store.users[10])
+        lo,hi=int(ptr[entity]),int(ptr[entity+1])
+        candidates=graph.col[lo:hi].numpy()
+        for strategy in ('topology','importance'):
+            expected=build_weights(graph,strategy,cfg)[lo:hi]
+            np.testing.assert_allclose(context.scores(entity,candidates,strategy),expected,
+                                       rtol=1e-12,atol=1e-12)
+
+    def test_frozen_weights_ignore_validation_and_test_labels(self):
+        store,fit_end=self.store,110
+        changed_labels=np.asarray(store.labels).copy()
+        changed_labels[fit_end:]=1-changed_labels[fit_end:]
+        proxy=SimpleNamespace(n=store.n,num_users=store.num_users,
+                              num_merchants=store.num_merchants,users=store.users,
+                              merchants=store.merchants,labels=changed_labels)
+        original=FrozenWeightContext(store,fit_end)
+        changed=FrozenWeightContext(proxy,fit_end)
+        entity=int(store.users[20])
+        tx=np.flatnonzero(np.asarray(store.users[:fit_end])==entity)
+        for strategy in ('topology','importance'):
+            np.testing.assert_array_equal(original.scores(entity,tx,strategy),
+                                          changed.scores(entity,tx,strategy))
+
+    def test_research_sampling_is_cutoff_safe_and_runs_locally(self):
+        store,fit_end=self.store,110
+        rowptr,col=build_csr(store)
+        for strategy in ('uniform','topology','importance'):
+            sampler=TemporalNeighborSampler(store,rowptr,col,fanout=3,mode='static',
+                                             strategy=strategy)
+            first,_=sampler.sample([15,40,90],fit_end,seed=7)
+            again,_=sampler.sample([15,40,90],fit_end,seed=7)
+            np.testing.assert_array_equal(first,again)
+            self.assertTrue(np.all(first[first>=0] < fit_end))
+        roles={'name':'research_synthetic','train_end':fit_end,
+               'selection':np.arange(110,130,dtype=np.int32),
+               'calibration':np.arange(130,150,dtype=np.int32),
+               'assessment':np.arange(150,170,dtype=np.int32)}
+        output=self.dir/'research_result'
+        for strategy in ('uniform','topology','importance'):
+            result=run_fold(store,roles,'R0',42,output,epochs=1,
+                            min_epochs=1,patience=1,batch_size=16,eval_batch_size=32,
+                            fanout=3,min_fraud=1,device='cpu',strategy=strategy)
+            self.assertEqual(result['strategy'],strategy)
+            self.assertIn('assessment_inference',result)
+            self.assertGreater(result['train']['population_inverse_frequency_pos_weight'],0)
+        grouped=summarize(output)
+        self.assertEqual(set(grouped['groups']),{'R0_uniform','R0_topology','R0_importance'})
+        self.assertEqual(len(grouped['paired_vs_R0_uniform']['topology']),1)
+        self.assertEqual(grouped['research_gate']['topology']['status'],
+                         'pending_full_data_replicates')
+
+    def test_research_gate_requires_full_matched_replicates_and_gain(self):
+        rows=[]
+        for seed in (42,43,44,45,46):
+            common={'variant':'R0','fold':'static_70_15_15','seed':seed,
+                    'family':'same_controls','full_data':True}
+            rows.extend(({**common,'strategy':'uniform','ap':.21,'recall':.20,'f1':.21},
+                         {**common,'strategy':'importance','ap':.24,'recall':.23,'f1':.24}))
+        passed=_research_gate(rows,'importance',.22225)
+        self.assertEqual(passed['status'],'meets_exploratory_gate')
+        self.assertEqual(passed['paired_seeds'],5)
+        rows[-1]['family']='changed_model'
+        self.assertEqual(_research_gate(rows,'importance',.22225)['status'],
+                         'incomparable_controls')
 
 
 if __name__ == '__main__': unittest.main()

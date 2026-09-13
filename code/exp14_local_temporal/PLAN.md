@@ -1,8 +1,8 @@
 **Rencana EXP14 lokal — tindak lanjut hasil EXP12 n30**
 
-Tanggal audit awal: 13 September 2026. Status: rancangan ini telah menjadi dasar implementasi EXP14 lokal. Audit full-data menemukan hanya satu origin 90 hari yang layak sebelum celah fraud 2017; konfigurasi awal mengunci assessment berakhir 1 Januari 2017. Target tiga origin tetap kriteria pembuktian yang belum tercapai. Cakupan kode dan hasil pemeriksaan yang benar-benar selesai dicatat di [README.md](README.md) dan [VALIDATION.md](VALIDATION.md). Dataset tetap CSV IBM lokal; tidak ada layanan atau deployment Kaggle.
+Tanggal audit awal: 13 September 2026; penyesuaian arah penelitian: 14 September 2026. **Perbandingan uniform, topology-aware, dan importance-based neighbor sampling adalah eksperimen utama.** Rolling temporal, recency, dan sampling negatif menjadi analisis tambahan yang tidak boleh menggantikan tiga strategi utama. Audit full-data menemukan hanya satu origin 90 hari yang layak sebelum celah fraud 2017; konfigurasi tambahan temporal mengunci assessment berakhir 1 Januari 2017. Cakupan kode dan hasil pemeriksaan dicatat di [README.md](README.md) dan [VALIDATION.md](VALIDATION.md). Dataset tetap CSV IBM lokal; tidak ada Kaggle.
 
-Tujuan EXP14 adalah meningkatkan kemampuan mendeteksi fraud pada periode terbaru, terutama chip, dengan jumlah false alert yang terukur. Prioritasnya adalah kesesuaian waktu training dan histori graf, kualitas validasi, lalu distribusi contoh training dan kebijakan threshold. Menambah epoch atau memperbesar model belum menjadi prioritas.
+Tujuan utama EXP14 adalah mengukur pengaruh **strategi neighbor sampling** pada deteksi fraud langka dan waktu inferensi GraphSAGE. Uniform menjadi baseline; topology memakai Jaccard dan local homophily; importance memakai degree centrality dan PPR. Kemampuan mendeteksi fraud periode terbaru, terutama chip, tetap dianalisis tetapi bukan pengganti rumusan masalah sampling. Menambah epoch atau memperbesar model belum menjadi prioritas.
 
 **1. Hasil yang sudah diperiksa**
 
@@ -86,29 +86,28 @@ Artefak preprocessing juga mencatat `tie_at_split_boundary.train_val=true` dan `
 
 **3. Keputusan rancangan EXP14**
 
-Basis awal tetap mean GraphSAGE dua layer, hidden 256, LayerNorm, dropout 0,2, 220 fitur contextual, fanout efektif 25 pada histori entity, N:P 30, dan tanpa inverse-frequency `pos_weight` tambahan. Konsep agregasi tetangga mengikuti [GraphSAGE asli](https://arxiv.org/abs/1706.02216). Konfigurasi ini adalah kontrol; pembesaran model, pergantian GNN, dan penambahan banyak fitur sekaligus ditunda.
+Jalur penelitian utama `R0` memakai mean GraphSAGE dua layer, hidden 256, ReLU, **BatchNorm**, sigmoid saat prediksi, dan BCE-with-logits saat training. Seluruh strategi memakai 220 fitur hasil encoding/rekayasa dari 15 kolom mentah yang sama, fanout 25, split timestamp yang sama, N:P 30, dan seed yang sama. Ini mempertahankan sumber data 15 atribut tetapi harus dilaporkan sebagai input terenkode 220 dimensi. Bobot positif batch dikoreksi untuk negative subsampling: inverse-frequency populasi train sekitar ratusan kali, sedangkan rasio efektif pada sampel n30 adalah 30; menerapkan bobot populasi langsung pada n30 akan membobot fraud dua kali. Tidak ada bobot kanal tambahan di `R0`. Konsep agregasi mengikuti [GraphSAGE asli](https://arxiv.org/abs/1706.02216).
 
-Eksperimen dibagi menjadi dua protokol yang dilaporkan terpisah:
+Eksperimen dibagi menjadi jalur utama dan analisis tambahan yang dilaporkan terpisah:
 
 | Protokol | Tujuan | Aturan |
 | --- | --- | --- |
+| R0: perbandingan utama | Menguji hipotesis sampling penelitian | Uniform/topology/importance memakai graf training beku, fitur/model/loss/root sampling/split/fanout/seed yang sama; hanya bobot pemilihan tetangga yang berubah |
 | A: kontrol statis | Mengukur perubahan terhadap rancangan EXP12 | Split sekitar 70/15/15 dengan seluruh timestamp yang sama berada pada satu split; encoder dan graf beku di cutoff train |
 | B: rolling temporal | Mengurangi jarak model/histori terhadap periode prediksi | Training, selection, calibration, dan assessment bergerak maju; akses label dibatasi waktu ketersediaannya |
 
-Protokol B adalah prioritas perbaikan setelah kontrol A sehat. Bila B membaik, hasilnya harus disebut manfaat protokol rolling, bukan otomatis manfaat algoritma sampling. Sampler dibandingkan hanya di dalam protokol yang sama.
+R0 wajib selesai dan direplikasi sebelum manfaat tambahan A/B ditafsirkan sebagai hasil utama. Bila B membaik, hasilnya harus disebut manfaat protokol rolling, bukan otomatis manfaat algoritma sampling. Bobot R0 dihitung hanya dari transaksi dan label train sebelum cutoff bersama; topology mengecualikan label kandidat dari statistiknya, dan importance memakai degree transaksi terproyeksi serta PPR tiga langkah. Bobot dari graf akhir train tidak dipakai untuk snapshot sebelumnya.
 
 **4. Tahap dan kriteria untuk lanjut**
 
 | Tahap | Pekerjaan yang direncanakan | Keluaran dan kriteria lanjut |
 | --- | --- | --- |
-| P0 — audit dan kontrol | Audit jumlah fraud per bulan/kanal, jumlah kartu/user dan episode fraud, umur tetangga, batas timestamp; reproduksi n30 default pada source yang sama dengan ablasi terbaru | Manifest data/source/split; baseline konsisten; timestamp tidak overlap; checkpoint dan prediksi tersimpan |
-| P1 — validasi waktu | Susun kalender fold hanya dari periode pengembangan sebelum test lama; pisahkan selection, calibration, assessment | Kalender dibekukan sebelum training kandidat; dukungan fraud dan label availability memadai; tidak memilih window dari skor test |
-| P2 — rolling refit | Bandingkan model beku dan model yang dilatih ulang pada cutoff lebih baru; arsitektur/fitur/rasio tetap | Ukur apakah label training yang lebih baru meningkatkan AP serta recall chip pada assessment yang sama |
-| P3 — histori graf | Pada protokol rolling yang sama, bandingkan graf beku per-fit dengan histori observasi yang diperbarui tanpa label | Past-only dan tidak ada root sendiri/peer timestamp sama; peningkatan melampaui variasi seed |
-| P4 — negatif training | Uji campuran normal acak dengan normal yang sesuai kanal dan periode fraud training | N:P dan total root tetap; tidak menambah bobot kelas sekaligus; manfaat pada AP dan FP dinilai terpisah |
-| P5 — threshold dan replikasi | Kalibrasi berdasarkan budget alert/FPR; replikasi kandidat yang lolos, lalu bandingkan sampler | Laporan per-seed/periode/kanal dan operating point yang sebanding; keputusan akhir berdasarkan validation assessment |
+| R0a — audit baseline | Pastikan split timestamp, graf train, fitur, BatchNorm, bobot loss, fanout, dan unit waktu sama pada ketiga strategi | Manifest data/source/split serta uji bobot terhadap EXP12; tidak ada label validation/test pada bobot |
+| R0b — tiga strategi | Jalankan uniform, topology-aware, importance-based pada seed dan protokol yang sama | Recall, F1, AP/AUPRC, FN, waktu membangun bobot, refresh tabel, dan waktu inferensi per transaksi tersimpan |
+| R0c — replikasi | Bandingkan selisih berpasangan pada lima seed, kanal, periode, dan budget alert yang sama | Kesimpulan hipotesis sampling dan trade-off akurasi/waktu; laporkan ketidakpastian serta kegagalan bila selisih tidak konsisten |
+| Tambahan A/B | Audit rolling refit, recency, negatif training, threshold menurut rincian di bawah | Hasil dipisahkan dari R0 dan tidak dijadikan bukti efek topology/importance |
 
-Rincian P1 yang harus dituangkan dalam implementasi nanti:
+Rincian protokol temporal tambahan yang berasal dari rancangan awal:
 
 - Gunakan forward chaining: `train < selection < calibration < assessment`. Assessment fold untuk memilih rancangan EXP14 masih merupakan data pengembangan, bukan test final yang independen.
 - Rancangan awal selection, calibration, dan assessment masing-masing 90 hari; origin bergeser 90 hari dan seluruh assessment berakhir sebelum test lama. Training awal memakai expanding history agar 256 contoh chip tidak terbuang oleh window sempit.
@@ -148,7 +147,10 @@ Rincian P5:
 
 | ID | Varian | Pembanding langsung / satu perubahan utama |
 | --- | --- | --- |
-| A0 | N30 default pada source terkunci dan split timestamp yang benar | Kontrol EXP14; catat perubahan jumlah baris dari split EXP12 |
+| R0-uniform | Mean GraphSAGE + uniform neighbor sampling | Baseline utama penelitian |
+| R0-topology | R0-uniform + Jaccard/local homophily | Efek bobot topology pada graf train yang sama |
+| R0-importance | R0-uniform + degree centrality/PPR | Efek bobot importance pada graf train yang sama |
+| A0 | N30 default pada source terkunci dan split timestamp yang benar | Kontrol tambahan historis EXP12; catat perubahan jumlah baris dari split EXP12 |
 | A1 | A0 self-only | Kontribusi graf pada protokol statis yang sama |
 | B0 | N30 expanding refit, histori query held-out beku per-fit | Kontrol B pada cutoff awal, dengan training snapshot kausal yang sama; dampak model/data training lebih baru |
 | B1 | B0 + snapshot histori unlabeled yang bergerak untuk query held-out | B0; training snapshot tetap sama, akses histori held-out yang berubah |
@@ -156,15 +158,17 @@ Rincian P5:
 | B3 | B0 + sampling normal menurut kanal/waktu | B0; dampak distribusi negatif |
 | B4 | Kombinasi komponen yang lolos | Hanya jika ablasi komponennya mendukung; kemudian uji self-only pada protokol B yang sama |
 
-Lakukan pemeriksaan alur dan profiling pada sampel waktu kecil, lalu screening seed 42 hanya pada validation fold. Kandidat yang tidak menunjukkan manfaat tidak otomatis diteruskan. Baseline dan maksimal dua kandidat terbaik dilanjutkan ke seed 42/43/44 pada seluruh origin yang layak; keputusan final direplikasi dengan seed 45/46.
+Lakukan pemeriksaan alur dan profiling pada sampel kecil. Ketiga strategi R0 harus dijalankan pada seed 42/43/44/45/46; jangan menyaring topology atau importance berdasarkan seed 42 saja. A/B tambahan boleh disaring bertahap setelah R0.
 
-Setelah rancangan utama terkunci, baru bandingkan uniform/topology/importance pada lima seed di dalam protokol yang sama. Definisi eligibility waktu harus identik. Bobot topology berlabel dan statistik PPR/degree harus dihitung sesuai cutoff masing-masing; root label dan label belum tersedia dilarang masuk. Jangan menggunakan langsung bobot graf akhir train untuk snapshot sebelumnya. `literal_transaction` mempunyai degree transaksi konstan; ablasikan `projected_transaction` secara terpisah bila kontribusi degree menjadi klaim penelitian.
+Perbandingan uniform/topology/importance dilakukan **lebih dahulu** pada lima seed di dalam protokol R0 yang sama. Eligibility dan fanout identik. Bobot topology berlabel dan statistik PPR/degree dihitung pada cutoff train bersama, tanpa label validation/test; label kandidat train dikeluarkan dari statistik homophily. `literal_transaction` mempunyai degree transaksi konstan, sehingga konfigurasi utama importance memakai `projected_transaction`; mode literal dapat menjadi ablation terpisah.
 
 **6. Tolok ukur keberhasilan**
 
-Keberhasilan dinilai terhadap baseline yang dilatih/dinilai ulang pada protokol sama, bukan terhadap angka test lama yang dipilih paling tinggi.
+Keberhasilan hipotesis utama dinilai dari selisih `R0-topology` dan `R0-importance` terhadap `R0-uniform` pada seed, split, fitur, arsitektur, loss, fanout, dan threshold policy yang sama; bukan terhadap angka test lama yang dipilih paling tinggi. Ukur waktu membangun bobot, refresh tetangga, dan inferensi termasuk sampling/fitur/model agar biaya komputasi tidak tersembunyi.
 
-- AP assessment rata-rata meningkat, dengan AP chip dan hasil tiap origin tetap dilaporkan. Usulan target praktis awal: kenaikan AP absolut minimal 0,02 dan recall chip minimal 5 poin persentase pada budget alert yang sama. Ini kriteria promosi kandidat, bukan janji hasil.
+Gate pelaporan EXP14 tetap `pending` sampai lima seed 42–46 full-data selesai untuk uniform dan strategi kandidat dengan source/data/protokol identik. Kandidat baru boleh disebut membaik secara **eksploratif** jika rerata AP, Recall, dan F1 melebihi uniform, AP menang minimal pada empat dari lima seed, serta rerata AP melampaui AP historis EXP12 terbaik 0,222251. Perbandingan AP historis ini deskriptif karena model dan split berubah; F1/Recall historis tidak dibandingkan langsung pada threshold yang berbeda. Bila syarat gagal, laporkan hasil negatif dan ubah rancangan hanya berdasarkan validation/development, kemudian ulangi ketiga strategi secara adil. Tidak ada kode yang dapat menjamin peningkatan sebelum eksperimen.
+
+- Laporkan Recall, F1-score fraud, AP/AUPRC, FN, dan waktu inferensi untuk ketiga strategi R0; AP chip serta tiap periode turut dilaporkan. Usulan target praktis awal: kenaikan AP absolut minimal 0,02 dan recall chip minimal 5 poin persentase pada budget alert yang sama. Ini kriteria promosi kandidat, bukan janji hasil.
 - Peningkatan muncul pada mayoritas origin dan seed; laporkan mean, simpangan baku, dan selisih berpasangan. Ketidakpastian data sebaiknya memakai bootstrap blok waktu, bukan hanya menganggap jutaan transaksi independen.
 - Bandingkan precision, recall, F1 fraud, TP/FP/FN, alert rate dan FPR aktual, termasuk periode terakhir. Kenaikan recall dengan lonjakan alert tidak dianggap perbaikan tanpa menunjukkan trade-off.
 - Jika selisih tidak konsisten atau hanya muncul pada satu seed/window, simpulkan belum terbukti. Jangan menaikkan target berdasarkan test yang sudah terlihat.

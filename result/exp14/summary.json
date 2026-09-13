@@ -1,5 +1,54 @@
 {
   "runs": [],
   "groups": {},
-  "paired_vs_B0": {}
+  "paired_vs_B0": {},
+  "paired_vs_R0_uniform": {},
+  "exp12_reference": {
+    "runs": {
+      "exp12_recent_context_c39b0e23c708fe40_uniform_seed42": {
+        "ap": 0.2169103137266625,
+        "recall": 0.27503367759317465,
+        "f1": 0.2622564761293085,
+        "fp": 3663
+      },
+      "exp12_channel_equal_n30_e0fe1853a94ef333_uniform_seed42": {
+        "ap": 0.20013632579123666,
+        "recall": 0.24472384373596767,
+        "f1": 0.24710949897982318,
+        "fp": 3278
+      },
+      "exp12_chip_weight_n30_dd39a2ff0c5542ec_uniform_seed42": {
+        "ap": 0.22225055337545002,
+        "recall": 0.21171980242478672,
+        "f1": 0.27637749120750293,
+        "fp": 1427
+      }
+    },
+    "best_ap": 0.22225055337545002,
+    "comparison_limit": "EXP12 memakai source/protokol/threshold berbeda; AP historis hanya konteks eksploratif"
+  },
+  "research_gate": {
+    "topology": {
+      "status": "pending_full_data_replicates",
+      "paired_seeds": 0,
+      "required_seeds": [
+        42,
+        43,
+        44,
+        45,
+        46
+      ]
+    },
+    "importance": {
+      "status": "pending_full_data_replicates",
+      "paired_seeds": 0,
+      "required_seeds": [
+        42,
+        43,
+        44,
+        45,
+        46
+      ]
+    }
+  }
 }

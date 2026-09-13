@@ -1,9 +1,11 @@
 """Query-time, label-free causal neighbors for two-layer mean GraphSAGE."""
 from pathlib import Path
+import time
 import numpy as np
 import torch
 
 from ..protocol import DAY_NS
+from .weights import FrozenWeightContext, weighted_choice
 
 
 def build_csr(store):
@@ -49,16 +51,25 @@ def _choice(rng, lo, hi, wanted, exclude=()):
 
 class TemporalNeighborSampler:
     def __init__(self, store, rowptr, col, *, fanout=25, mode='frozen',
-                 recency_days=180, recent_count=12):
+                 recency_days=180, recent_count=12, strategy='uniform',
+                 weight_config=None):
         if fanout < 1 or mode not in {'static','frozen','moving','recent'} or (mode == 'recent' and not 0 <= recent_count <= fanout):
             raise ValueError('Konfigurasi sampler temporal tidak valid')
+        if strategy not in {'uniform','topology','importance'}:
+            raise ValueError('Strategi tetangga tidak valid')
+        if strategy != 'uniform' and mode != 'static':
+            raise ValueError('Topology/importance membutuhkan satu graf beku; bobot rolling belum tersedia')
         self.store,self.rowptr,self.col = store,rowptr,col
         self.fanout,self.mode = fanout,mode
+        self.strategy,self.weight_config = strategy,weight_config
         self.recency_days,self.recent_count = recency_days,recent_count
         self.static_key = None
         self.static_table = None
         self.static_degree = None
         self.static_mean = None
+        self.weight_context = None
+        self.weight_context_cutoff = None
+        self.static_refresh_seconds = 0.
 
     def prepare_static(self, fit_end, seed, chunk_entities=512):
         """One sampled history and raw mean per entity, reused by every root."""
@@ -67,14 +78,25 @@ class TemporalNeighborSampler:
         key = (fit_end,seed)
         if self.static_key == key:
             return
+        refresh_started = time.perf_counter()
         rng = np.random.default_rng(seed)
+        if self.strategy != 'uniform' and self.weight_context_cutoff != fit_end:
+            self.weight_context = FrozenWeightContext(self.store,fit_end,self.weight_config)
+            self.weight_context_cutoff = fit_end
         count_entities = self.store.num_users+self.store.num_merchants
         table = np.full((count_entities,self.fanout),-1,dtype=np.int32)
         degree = np.zeros(count_entities,dtype=np.int32)
         for entity in range(count_entities):
             lo,hi = self.eligible(entity,fit_end)
             degree[entity] = hi-lo
-            positions = _choice(rng,lo,hi,self.fanout)
+            if self.strategy == 'uniform':
+                positions = _choice(rng,lo,hi,self.fanout)
+            elif hi-lo <= self.fanout:
+                positions = list(range(lo,hi))
+            else:
+                candidate = np.asarray(self.col[lo:hi])
+                weights = self.weight_context.scores(entity,candidate,self.strategy)
+                positions = weighted_choice(rng,lo,hi,self.fanout,weights)
             if positions:
                 table[entity,:len(positions)] = self.col[positions]
         means = np.zeros((count_entities,self.store.width+4),dtype=np.float32)
@@ -89,6 +111,7 @@ class TemporalNeighborSampler:
                 raw[mask,-3] = 1
             means[start:start+len(selected)] = raw.sum(axis=1)/np.maximum(mask.sum(axis=1)[:,None],1)
         self.static_key,self.static_table,self.static_degree,self.static_mean = key,table,degree,means
+        self.static_refresh_seconds += time.perf_counter()-refresh_started
 
     def static_means_for(self, roots):
         ids = np.asarray(roots,dtype=np.int64)
@@ -193,7 +216,13 @@ def forward_temporal(model, store, roots, neighbors, degree, device, neighbor_me
     x = torch.from_numpy(root_features).to(device)
     e = torch.from_numpy(entity).to(device)
     neighbor_mean = torch.from_numpy(mean.astype(np.float32)).to(device)
-    root_h1 = model.from_mean(0,x,e.mean(dim=1))
-    entity_h1 = model.from_mean(0,e.flatten(0,1),neighbor_mean.flatten(0,1))
+    first_conv = model.convs[0]
+    root_raw = first_conv.lin_l(e.mean(dim=1)) + first_conv.lin_r(x)
+    entity_raw = (first_conv.lin_l(neighbor_mean.flatten(0,1)) +
+                  first_conv.lin_r(e.flatten(0,1)))
+    # A single BatchNorm call sees both transaction and entity destinations.
+    # LayerNorm remains pointwise, so the same path serves the temporal arms.
+    first = model.activate(0,torch.cat((root_raw,entity_raw),dim=0))
+    root_h1,entity_h1 = first[:len(roots)],first[len(roots):]
     root_h2 = model.from_mean(1,root_h1,entity_h1.view(len(roots),2,-1).mean(dim=1))
     return model.classifier(root_h2).squeeze(-1)

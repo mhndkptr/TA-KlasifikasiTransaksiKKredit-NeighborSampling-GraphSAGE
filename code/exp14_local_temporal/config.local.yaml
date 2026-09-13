@@ -18,10 +18,19 @@ protocol:
   minimum_fraud: 25
   minimum_chip_fraud: 25
 experiment:
-  # Explicitly select later ablations after the previous comparison is reviewed.
-  variants: [A0]
+  # Primary thesis comparison: only the neighbor strategy changes.
+  variants: [R0]
+  strategies: [uniform, topology, importance]
   seeds: [42]
+sampling:
+  topology_alpha: 0.5
+  topology_smoothing: 20.0
+  topology_balance: true
+  importance_gamma: 0.3
+  importance_degree_mode: projected_transaction
+  ppr_beta: 0.15
 training:
+  negatives_per_positive: 30
   epochs: 100
   min_epochs: 20
   patience: 20

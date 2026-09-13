@@ -1,0 +1,73 @@
+{
+  "variant": "R0",
+  "strategy": "importance",
+  "weight_config": {
+    "topology_alpha": 0.5,
+    "topology_smoothing": 20.0,
+    "topology_balance": true,
+    "importance_gamma": 0.3,
+    "importance_degree_mode": "projected_transaction",
+    "ppr_beta": 0.15
+  },
+  "seed": 42,
+  "epochs": 1,
+  "min_epochs": 20,
+  "patience": 20,
+  "batch_size": 512,
+  "eval_batch_size": 2048,
+  "learning_rate": 0.001,
+  "fanout": 25,
+  "negatives_per_positive": 30,
+  "label_delay_days": 0,
+  "min_fraud": 1,
+  "device": "cuda",
+  "threshold_policy": "fpr_0_001",
+  "roles": {
+    "name": "static_70_15_15",
+    "train_end": 700001,
+    "selection": {
+      "count": 18917,
+      "sha256": "56d49910e0e957e8165a9201baffc7483c094a27f41f51c43a9decce31598ad2"
+    },
+    "calibration": {
+      "count": 18583,
+      "sha256": "08c3eee0f59515590050997d338c7fef37cd3fbd6c91d904fedd11d5bd377130"
+    },
+    "assessment": {
+      "count": 149999,
+      "sha256": "ae87ccc9eeed956e890032faf6b3c9e02e15893278015a4c1dee1bd7bf7b1c5c"
+    },
+    "assessment_exploratory": true
+  },
+  "source_manifest": {
+    "EXP12/behavior.py": "933145f11eb19d6a1d5a0ffe68ac089df4d4a20fc8ab98dcb814d2286b88c069",
+    "EXP12/behavior_v2.py": "e660ea5b36998d0246fc54d8cbf8421be11f29fd454a8a3e55a9d06a74619196",
+    "EXP12/data.py": "8a1f904a1a8dfcad49ae8f35a71a98f0449d27d017bea06efe2d98b2bfcbb9ff",
+    "EXP12/metrics.py": "8261f4fac8086216c787c4132f3f465212178f0bfef207174084334f402dc400",
+    "EXP12/model.py": "dcf5b3ec6fbdcea3abe696bc7ba7101236c291cc6e353a281db453c005af157c",
+    "audit_exp12.py": "8770ff46b69807fc70fc20e8afe098cdbf5a5614eca13b09887fd68f3a867f1f",
+    "exp14\\__init__.py": "cfa49a60ce446cabb6d9b3549aff2a5e12c8a0d5c21c8ba58353c4583e0d4762",
+    "exp14\\audit.py": "d92ac723a020c13c0cf8a5586f74a56203dd99f5650d6317680a4d3a6f061ad3",
+    "exp14\\cli.py": "e376e94ffe44619fd87a2d530ca8715f1275278580118711480599b33e161a65",
+    "exp14\\evaluation.py": "c8163f581b4b7b62a48030567c8849032a032619260d93c9a670462c43496306",
+    "exp14\\feature_store.py": "3452ade637871a4ae5773ff70dcafcf36d0307ba1f1f847a015a33777f4a7106",
+    "exp14\\legacy.py": "1e3caa0dd60d6a1b8ca280118f9fbc451ed554650c34237f5d2bb9d3e5ed70ae",
+    "exp14\\protocol.py": "ac6401ae38393171d5fd6fc474481b3d7cb5d97107debc881f265aab0f5f99cd",
+    "exp14\\sampling\\__init__.py": "ed20f0d146c5dc04f9876c8c26855863ce96e6299c28fdefadc8910405634fdd",
+    "exp14\\sampling\\roots.py": "a0f2f7c75627d326daae3deddddc2f978e400940bc75688b2d593e8a438f3bf5",
+    "exp14\\sampling\\temporal.py": "5fd402b6db41ac3d995fb602f8c69fe7417062d194040df38135c5713e8ff1c9",
+    "exp14\\sampling\\weights.py": "7a8f34dcec234a8e3984a391c5060ff24737a7327995080b4609eded49013428",
+    "exp14\\summary.py": "cb65055698b5b9e1195fcdda987bbe2b9582a5bc24c00f7d53c927041d509e5d",
+    "exp14\\trainer.py": "1eea5a30c45501ea8d682eaa84b89cef539366c86b54d69e18ba51faa50a9297",
+    "run.py": "34f67924f8ac19daa5c5f9de99a93d04c7b6cb056460186fd989c12ddccc232e",
+    "tests\\test_exp14.py": "82516a97443f3cc49b936c1274342ba3523adab9ad3281fcb7b7b744857b8d16"
+  },
+  "data_identity": {
+    "source": "D:\\Projects\\Klasifikasi Transasi Kartu Kredit - GraphSAGE\\tugas-akhir-klasifikasi-transaksi-kartu-kredit\\dataset\\credit_card_transactions-ibm_v2.csv",
+    "size": 2350744057,
+    "mtime_ns": 1787546585093452000,
+    "max_rows": 1000000,
+    "schema": 2,
+    "feature_code_sha256": "08fdb5751886b999fcce86adc5316e28c6a3422fcc221195e44a878a74be2c28"
+  }
+}

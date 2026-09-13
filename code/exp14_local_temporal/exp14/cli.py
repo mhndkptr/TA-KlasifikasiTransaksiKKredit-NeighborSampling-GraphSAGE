@@ -42,9 +42,12 @@ def main(argv=None):
     parser.add_argument('command',choices=['preprocess','audit','run','summarize'])
     parser.add_argument('--config',type=Path,default=Path(__file__).resolve().parents[1]/'config.local.yaml')
     parser.add_argument('--variant',choices=sorted(VARIANTS))
+    parser.add_argument('--strategy',choices=['uniform','topology','importance'],
+                        help='Strategi neighbor sampling untuk perbandingan R0')
     parser.add_argument('--fold',help='Pilih satu origin yang diaudit')
     parser.add_argument('--seed',type=int)
     parser.add_argument('--max-rows',type=int,help='Smoke prefix CSV; bukan evaluasi populasi')
+    parser.add_argument('--results-dir',type=Path,help='Direktori hasil terpisah untuk smoke/ablation')
     parser.add_argument('--epochs',type=int)
     parser.add_argument('--min-fraud',type=int,help='Smoke-only override guard')
     parser.add_argument('--device',choices=['auto','cpu','cuda'])
@@ -54,7 +57,8 @@ def main(argv=None):
     base = args.config.resolve().parent
     data_path = (base/cfg['data']['transactions']).resolve()
     cache_root = (base/cfg['paths']['cache']).resolve()
-    result_root = (base/cfg['paths']['results']).resolve()
+    result_root = (args.results_dir.resolve() if args.results_dir else
+                   (base/cfg['paths']['results']).resolve())
     if args.command == 'summarize':
         output = summarize(result_root)
         print(f'Summary: {result_root/"summary.json"}; runs={len(output["runs"])}')
@@ -98,7 +102,7 @@ def main(argv=None):
     seeds = [args.seed] if args.seed is not None else cfg['experiment']['seeds']
     train_cfg = cfg['training']
     for variant in variants:
-        if variant in {'A0','A1'}:
+        if variant in {'A0','A1','R0'}:
             selected = [_roles_static(store)]
             earliest = None
         else:
@@ -110,27 +114,34 @@ def main(argv=None):
                 selected = [role for role in selected if role['name'] == args.fold]
         if not selected:
             raise RuntimeError(f'Tidak ada fold layak untuk {variant}; lihat fold_manifest.json')
-        for seed in seeds:
-            for roles in selected:
-                state = None
-                if variant == 'B_control':
-                    checkpoint = result_root/f'B0_{earliest["name"]}_seed{seed}'/'best.pt'
-                    if not checkpoint.exists():
-                        raise RuntimeError('Jalankan B0 origin pertama sebelum B_control')
-                    state = torch.load(checkpoint,map_location='cpu',weights_only=True)
-                    roles = {**roles,'train_end':earliest['train_end']}
-                print(f'Run {variant} {roles["name"]} seed {seed}',flush=True)
-                result = run_fold(store,roles,variant,seed,result_root,
-                    epochs=args.epochs or train_cfg['epochs'],
-                    min_epochs=train_cfg['min_epochs'],patience=train_cfg['patience'],
-                    batch_size=train_cfg['batch_size'],
-                    eval_batch_size=train_cfg['eval_batch_size'],
-                    learning_rate=train_cfg['learning_rate'],fanout=train_cfg['fanout'],
-                    label_delay_days=pcfg['label_delay_days'],min_fraud=min_fraud,
-                    device=args.device or cfg['runtime']['device'],
-                    assess=not args.no_assessment,
-                    frozen_state=state,
-                    threshold_policy=cfg['evaluation']['primary_threshold'])
-                print(f'Complete: AP selection={result["selection_ap"]:.6f}; '
-                      f'output={result_root}',flush=True)
+        strategies = ([args.strategy] if args.strategy else
+                      cfg['experiment'].get('strategies',['uniform'])) if variant == 'R0' else ['uniform']
+        if args.strategy and variant != 'R0':
+            raise ValueError('--strategy hanya untuk R0')
+        for strategy in strategies:
+            for seed in seeds:
+                for roles in selected:
+                    state = None
+                    if variant == 'B_control':
+                        checkpoint = result_root/f'B0_{earliest["name"]}_seed{seed}'/'best.pt'
+                        if not checkpoint.exists():
+                            raise RuntimeError('Jalankan B0 origin pertama sebelum B_control')
+                        state = torch.load(checkpoint,map_location='cpu',weights_only=True)
+                        roles = {**roles,'train_end':earliest['train_end']}
+                    print(f'Run {variant}/{strategy} {roles["name"]} seed {seed}',flush=True)
+                    result = run_fold(store,roles,variant,seed,result_root,
+                        epochs=args.epochs or train_cfg['epochs'],
+                        min_epochs=train_cfg['min_epochs'],patience=train_cfg['patience'],
+                        batch_size=train_cfg['batch_size'],
+                        eval_batch_size=train_cfg['eval_batch_size'],
+                        learning_rate=train_cfg['learning_rate'],fanout=train_cfg['fanout'],
+                        label_delay_days=pcfg['label_delay_days'],min_fraud=min_fraud,
+                        device=args.device or cfg['runtime']['device'],
+                        assess=not args.no_assessment,
+                        frozen_state=state,
+                        threshold_policy=cfg['evaluation']['primary_threshold'],
+                        strategy=strategy,weight_config=cfg.get('sampling'),
+                        negatives_per_positive=train_cfg.get('negatives_per_positive',30))
+                    print(f'Complete: AP selection={result["selection_ap"]:.6f}; '
+                          f'output={result_root}',flush=True)
     return 0

@@ -16,9 +16,11 @@ from .evaluation import report, thresholds
 from .legacy import EXP12_DIR, GraphSAGE
 from .sampling.roots import RootSampler
 from .sampling.temporal import TemporalNeighborSampler, build_csr, forward_temporal
+from .sampling.weights import FrozenWeightContext
 
 
 VARIANTS = {
+    'R0': {'mode':'static','roots':'balanced','graph':True},
     'A0': {'mode':'static','roots':'balanced','graph':True},
     'A1': {'mode':'static','roots':'balanced','graph':False},
     'B0': {'mode':'frozen','roots':'balanced','graph':True},
@@ -80,10 +82,15 @@ def _save_predictions(path,store,ids,scores):
 def run_fold(store,roles,variant,seed,output_root,*,epochs=100,min_epochs=20,patience=20,
              batch_size=512,eval_batch_size=2048,learning_rate=.001,fanout=25,
              label_delay_days=0,min_fraud=25,device='auto',assess=True,
-             frozen_state=None,threshold_policy='fpr_0_001'):
+             frozen_state=None,threshold_policy='fpr_0_001',strategy='uniform',
+             weight_config=None,negatives_per_positive=30):
     """Roles contain arrays of transaction IDs and train_end; no test-role peeking."""
     if variant not in VARIANTS: raise ValueError(f'Varian tidak dikenal: {variant}')
-    if not 0 < batch_size or epochs < 1 or patience < 1:
+    if strategy not in {'uniform','topology','importance'}:
+        raise ValueError('Strategi sampling tidak dikenal')
+    if variant != 'R0' and strategy != 'uniform':
+        raise ValueError('Perbandingan strategi utama hanya pada R0 dengan graf beku yang sama')
+    if not 0 < batch_size or epochs < 1 or patience < 1 or negatives_per_positive < 1:
         raise ValueError('Training budget tidak valid')
     mode = VARIANTS[variant]
     dev = torch.device('cuda' if device == 'auto' and torch.cuda.is_available() else
@@ -92,13 +99,20 @@ def run_fold(store,roles,variant,seed,output_root,*,epochs=100,min_epochs=20,pat
     np.random.seed(seed)
     if dev.type == 'cuda': torch.cuda.manual_seed_all(seed)
     torch.set_num_threads(min(torch.get_num_threads(),4))
-    out = Path(output_root)/f'{variant}_{roles["name"]}_seed{seed}'
+    out = Path(output_root)/(f'{variant}_{strategy}_{roles["name"]}_seed{seed}'
+                             if variant == 'R0' else f'{variant}_{roles["name"]}_seed{seed}')
     out.mkdir(parents=True,exist_ok=True)
     status_path = out/'status.json'
-    cfg = {'variant':variant,'seed':seed,'epochs':epochs,'min_epochs':min_epochs,
+    cfg = {'variant':variant,'strategy':strategy,'weight_config':weight_config,
+           'seed':seed,'epochs':epochs,'min_epochs':min_epochs,
            'patience':patience,'batch_size':batch_size,'eval_batch_size':eval_batch_size,
-           'learning_rate':learning_rate,'fanout':fanout,'label_delay_days':label_delay_days,
+           'learning_rate':learning_rate,'fanout':fanout,
+           'negatives_per_positive':negatives_per_positive,
+           'label_delay_days':label_delay_days,
            'min_fraud':min_fraud,'device':str(dev),'threshold_policy':threshold_policy,
+           'normalization':'batch' if variant == 'R0' else 'layer',
+           'loss_policy':('inverse_frequency_corrected_for_negative_subsampling'
+                          if variant == 'R0' else 'channel_weighted_bce'),
            'roles':{k:({'count':len(v),'sha256':hashlib.sha256(np.asarray(v,dtype=np.int32).tobytes()).hexdigest()}
                        if isinstance(v,np.ndarray) else v) for k,v in roles.items()},
            'source_manifest':source_manifest(),'data_identity':store.meta['identity']}
@@ -130,13 +144,29 @@ def run_fold(store,roles,variant,seed,output_root,*,epochs=100,min_epochs=20,pat
             if int(np.asarray(store.labels[ids]).sum()) < min_fraud or not (np.asarray(store.labels[ids])==0).any():
                 raise ValueError(f'{role} kurang dukungan fraud/normal')
         rowptr,col = build_csr(store)
-        sampler = TemporalNeighborSampler(store,rowptr,col,fanout=fanout,mode=mode['mode'])
-        eval_sampler = TemporalNeighborSampler(store,rowptr,col,fanout=fanout,mode=mode['mode'])
+        sampler = TemporalNeighborSampler(store,rowptr,col,fanout=fanout,mode=mode['mode'],
+                                          strategy=strategy,weight_config=weight_config)
+        eval_sampler = TemporalNeighborSampler(store,rowptr,col,fanout=fanout,mode=mode['mode'],
+                                               strategy=strategy,weight_config=weight_config)
+        weight_build_seconds = 0.
+        if strategy != 'uniform':
+            weight_started = time.perf_counter()
+            weight_context = FrozenWeightContext(store,train_end,weight_config)
+            weight_build_seconds = time.perf_counter()-weight_started
+            for active_sampler in (sampler,eval_sampler):
+                active_sampler.weight_context = weight_context
+                active_sampler.weight_context_cutoff = train_end
         eval_seed = 10000+seed*100
         model = GraphSAGE(store.width+4,hidden=256,dropout=.2,
-                          normalization='layer',use_graph_context=mode['graph']).to(dev)
-        weights = _positive_weights(store,train_end)
-        root_sampler = RootSampler(store,train_end,ratio=30,mode=mode['roots'],seed=seed)
+                          normalization='batch' if variant == 'R0' else 'layer',
+                          use_graph_context=mode['graph']).to(dev)
+        weights = _positive_weights(store,train_end) if variant != 'R0' else None
+        root_sampler = RootSampler(store,train_end,ratio=negatives_per_positive,
+                                   mode=mode['roots'],seed=seed)
+        population_pos_weight = len(root_sampler.negative)/len(root_sampler.positive)
+        # Inverse-frequency BCE on the full population, corrected for the
+        # n30 negative subsample, has this same positive:negative ratio.
+        sampled_pos_weight = root_sampler.negative_count/len(root_sampler.positive)
         history = []
         best,best_epoch,stale = -1.,0,0
         best_state = None
@@ -149,17 +179,21 @@ def run_fold(store,roles,variant,seed,output_root,*,epochs=100,min_epochs=20,pat
                 roots = root_sampler.roots()
                 losses = []
                 for start in range(0,len(roots),batch_size):
-                    batch = roots[start:start+batch_size]
-                    if len(batch)==1 and start:
-                        # LayerNorm supports singleton, so no class is dropped.
-                        pass
+                    if start == len(roots)-1:
+                        break  # The previous batch absorbed this singleton.
+                    stop = min(start+batch_size,len(roots))
+                    if len(roots)-stop == 1:
+                        stop = len(roots)
+                    batch = roots[start:stop]
                     batch_seed = (seed*100000+epoch if sampler.mode == 'static' else
                                   seed*100000+epoch*1000+start)
                     neighbors,degree = sampler.sample(batch,train_end,batch_seed,training=True)
                     cached = sampler.static_means_for(batch) if sampler.mode == 'static' else None
                     y_np = np.asarray(store.labels[batch],dtype=np.float32)
                     ch = np.asarray(store.channels[batch])
-                    cost = np.asarray([weights.get(int(c),1.) if y else 1. for c,y in zip(ch,y_np)],dtype=np.float32)
+                    cost = (np.where(y_np > 0,sampled_pos_weight,1.).astype(np.float32)
+                            if variant == 'R0' else
+                            np.asarray([weights.get(int(c),1.) if y else 1. for c,y in zip(ch,y_np)],dtype=np.float32))
                     y = torch.from_numpy(y_np).to(dev)
                     w = torch.from_numpy(cost).to(dev)
                     optimizer.zero_grad(set_to_none=True)
@@ -203,29 +237,43 @@ def run_fold(store,roles,variant,seed,output_root,*,epochs=100,min_epochs=20,pat
         decision = options[threshold_policy]
         _save_predictions(out/'selection_scores.npz',store,select,selection_scores)
         _save_predictions(out/'calibration_scores.npz',store,calibration,calibration_scores)
-        result = {'variant':variant,'seed':seed,'fold':roles['name'],'best_epoch':best_epoch,
+        result = {'variant':variant,'strategy':strategy,'seed':seed,'fold':roles['name'],
+                  'best_epoch':best_epoch,
                   'selection_ap':best,'selection_ap_current':current_selection_ap,
                   'thresholds':options,'decision_threshold':decision,
                   'threshold_policy':threshold_policy,'calibration_f2':calibration_f2,
                   'calibration':report(store,calibration,calibration_scores,decision),
                   'train':{'rows':train_end,'fraud':int(np.asarray(store.labels[:train_end]).sum()),
                            'roots_per_epoch':len(root_sampler.positive)+root_sampler.negative_count,
-                           'positive_channel_weights':weights},
+                           'positive_channel_weights':weights,
+                           'population_inverse_frequency_pos_weight':population_pos_weight,
+                           'sampled_corrected_pos_weight':(sampled_pos_weight if variant == 'R0' else None)},
                   'elapsed_seconds':time.perf_counter()-started,
                   'resources':{'observed_peak_rss_gib':observed_rss/2**30,
                                'peak_vram_gib':(torch.cuda.max_memory_allocated(dev)/2**30
                                                 if dev.type=='cuda' else None)},
+                  'sampling_preparation':{
+                      'weight_context_seconds':weight_build_seconds,
+                      'training_table_refresh_seconds':sampler.static_refresh_seconds,
+                      'evaluation_table_refresh_seconds':eval_sampler.static_refresh_seconds},
                   'neighbor_diagnostics':eval_sampler.diagnostics(
                       assessment if len(assessment) else calibration,train_end,eval_seed),
                   'assessment_exploratory':bool(roles.get('assessment_exploratory',False))}
         if assess and len(assessment):
+            inference_started = time.perf_counter()
             assessment_scores = _predict(model,store,eval_sampler,assessment,train_end,
                                          seed=eval_seed,batch_size=eval_batch_size,device=dev)
+            inference_seconds = time.perf_counter()-inference_started
+            result['assessment_inference'] = {
+                'seconds_including_sampling_and_features':inference_seconds,
+                'transactions_per_second':len(assessment)/inference_seconds,
+                'milliseconds_per_transaction':1000*inference_seconds/len(assessment)}
             _save_predictions(out/'assessment_scores.npz',store,assessment,assessment_scores)
             result['assessment'] = report(store,assessment,assessment_scores,decision)
             result['assessment_other_thresholds'] = {
                 name:report(store,assessment,assessment_scores,value)['overall']
                 for name,value in options.items() if name != threshold_policy}
+        result['elapsed_seconds'] = time.perf_counter()-started
         _write(out/'metrics.json',result)
         _write(status_path,{'status':'complete','variant':variant,'fold':roles['name'],
                             'seed':seed,'best_epoch':best_epoch,'epochs':len(history)})

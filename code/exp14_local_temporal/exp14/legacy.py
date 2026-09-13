@@ -1,4 +1,4 @@
-"""Reuse the audited EXP12 feature formulas and GraphSAGE layers verbatim."""
+"""Make audited EXP12 feature, GraphSAGE, metric, and sampling formulas available."""
 from pathlib import Path
 import sys
 
