@@ -4,6 +4,7 @@ dataset/*
 model/*
 !model/.gitkeep
 
+/code/.venv/
 /code/*/.venv/
 /code/exp13_try_kaggle/kaggle.json
 

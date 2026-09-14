@@ -1,8 +1,238 @@
 {
-  "runs": [],
-  "groups": {},
+  "runs": [
+    {
+      "variant": "R0",
+      "strategy": "importance",
+      "fold": "static_70_15_15",
+      "seed": 42,
+      "family": "6bfbdcebec6e37633e141a0b67007fe67b4ec55d4d14918f214ab60476614f3f",
+      "full_data": true,
+      "protocol": "static",
+      "exploratory": true,
+      "ap": 0.1432709115493529,
+      "chip_ap": 0.12980744173058223,
+      "chip_recall": 0.1958024059380599,
+      "precision": 0.1981637337413925,
+      "recall": 0.23259991019308487,
+      "f1": 0.21400537079115886,
+      "fp": 4192,
+      "fpr": 0.001147368101250823,
+      "inference_seconds": 20.712827800016385
+    },
+    {
+      "variant": "R0",
+      "strategy": "topology",
+      "fold": "static_70_15_15",
+      "seed": 42,
+      "family": "6bfbdcebec6e37633e141a0b67007fe67b4ec55d4d14918f214ab60476614f3f",
+      "full_data": true,
+      "protocol": "static",
+      "exploratory": true,
+      "ap": 0.15793047750075884,
+      "chip_ap": 0.14970339878033712,
+      "chip_recall": 0.18991553621704632,
+      "precision": 0.21881606765327696,
+      "recall": 0.2323753929052537,
+      "f1": 0.22539198606271776,
+      "fp": 3695,
+      "fpr": 0.0010113371026053697,
+      "inference_seconds": 13.730721800005995
+    },
+    {
+      "variant": "R0",
+      "strategy": "uniform",
+      "fold": "static_70_15_15",
+      "seed": 42,
+      "family": "6bfbdcebec6e37633e141a0b67007fe67b4ec55d4d14918f214ab60476614f3f",
+      "full_data": true,
+      "protocol": "static",
+      "exploratory": true,
+      "ap": 0.1871015049555408,
+      "chip_ap": 0.17983790412567788,
+      "chip_recall": 0.22805221397491682,
+      "precision": 0.25862068965517243,
+      "recall": 0.2593174674449933,
+      "f1": 0.2589686098654709,
+      "fp": 3311,
+      "fpr": 0.0009062346811168354,
+      "inference_seconds": 13.656843600037973
+    }
+  ],
+  "groups": {
+    "R0_importance": {
+      "protocol": "static",
+      "n": 1,
+      "strategy": "importance",
+      "ap": {
+        "count": 1,
+        "mean": 0.1432709115493529,
+        "std": null
+      },
+      "chip_ap": {
+        "count": 1,
+        "mean": 0.12980744173058223,
+        "std": null
+      },
+      "chip_recall": {
+        "count": 1,
+        "mean": 0.1958024059380599,
+        "std": null
+      },
+      "precision": {
+        "count": 1,
+        "mean": 0.1981637337413925,
+        "std": null
+      },
+      "recall": {
+        "count": 1,
+        "mean": 0.23259991019308487,
+        "std": null
+      },
+      "f1": {
+        "count": 1,
+        "mean": 0.21400537079115886,
+        "std": null
+      },
+      "fp": {
+        "count": 1,
+        "mean": 4192.0,
+        "std": null
+      },
+      "fpr": {
+        "count": 1,
+        "mean": 0.001147368101250823,
+        "std": null
+      },
+      "inference_seconds": {
+        "count": 1,
+        "mean": 20.712827800016385,
+        "std": null
+      }
+    },
+    "R0_topology": {
+      "protocol": "static",
+      "n": 1,
+      "strategy": "topology",
+      "ap": {
+        "count": 1,
+        "mean": 0.15793047750075884,
+        "std": null
+      },
+      "chip_ap": {
+        "count": 1,
+        "mean": 0.14970339878033712,
+        "std": null
+      },
+      "chip_recall": {
+        "count": 1,
+        "mean": 0.18991553621704632,
+        "std": null
+      },
+      "precision": {
+        "count": 1,
+        "mean": 0.21881606765327696,
+        "std": null
+      },
+      "recall": {
+        "count": 1,
+        "mean": 0.2323753929052537,
+        "std": null
+      },
+      "f1": {
+        "count": 1,
+        "mean": 0.22539198606271776,
+        "std": null
+      },
+      "fp": {
+        "count": 1,
+        "mean": 3695.0,
+        "std": null
+      },
+      "fpr": {
+        "count": 1,
+        "mean": 0.0010113371026053697,
+        "std": null
+      },
+      "inference_seconds": {
+        "count": 1,
+        "mean": 13.730721800005995,
+        "std": null
+      }
+    },
+    "R0_uniform": {
+      "protocol": "static",
+      "n": 1,
+      "strategy": "uniform",
+      "ap": {
+        "count": 1,
+        "mean": 0.1871015049555408,
+        "std": null
+      },
+      "chip_ap": {
+        "count": 1,
+        "mean": 0.17983790412567788,
+        "std": null
+      },
+      "chip_recall": {
+        "count": 1,
+        "mean": 0.22805221397491682,
+        "std": null
+      },
+      "precision": {
+        "count": 1,
+        "mean": 0.25862068965517243,
+        "std": null
+      },
+      "recall": {
+        "count": 1,
+        "mean": 0.2593174674449933,
+        "std": null
+      },
+      "f1": {
+        "count": 1,
+        "mean": 0.2589686098654709,
+        "std": null
+      },
+      "fp": {
+        "count": 1,
+        "mean": 3311.0,
+        "std": null
+      },
+      "fpr": {
+        "count": 1,
+        "mean": 0.0009062346811168354,
+        "std": null
+      },
+      "inference_seconds": {
+        "count": 1,
+        "mean": 13.656843600037973,
+        "std": null
+      }
+    }
+  },
   "paired_vs_B0": {},
-  "paired_vs_R0_uniform": {},
+  "paired_vs_R0_uniform": {
+    "importance": [
+      {
+        "fold": "static_70_15_15",
+        "seed": 42,
+        "delta_ap": -0.04383059340618789,
+        "delta_recall": -0.026717557251908414,
+        "delta_f1": -0.04496323907431202,
+        "delta_inference_seconds": 7.055984199978411
+      }
+    ],
+    "topology": [
+      {
+        "fold": "static_70_15_15",
+        "seed": 42,
+        "delta_ap": -0.02917102745478195,
+        "delta_recall": -0.026942074539739597,
+        "delta_f1": -0.033576623802753114,
+        "delta_inference_seconds": 0.07387819996802136
+      }
+    ]
+  },
   "exp12_reference": {
     "runs": {
       "exp12_recent_context_c39b0e23c708fe40_uniform_seed42": {
@@ -30,7 +260,7 @@
   "research_gate": {
     "topology": {
       "status": "pending_full_data_replicates",
-      "paired_seeds": 0,
+      "paired_seeds": 1,
       "required_seeds": [
         42,
         43,
@@ -41,7 +271,7 @@
     },
     "importance": {
       "status": "pending_full_data_replicates",
-      "paired_seeds": 0,
+      "paired_seeds": 1,
       "required_seeds": [
         42,
         43,

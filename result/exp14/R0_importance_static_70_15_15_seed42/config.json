@@ -1,0 +1,76 @@
+{
+  "variant": "R0",
+  "strategy": "importance",
+  "weight_config": {
+    "topology_alpha": 0.5,
+    "topology_smoothing": 20.0,
+    "topology_balance": true,
+    "importance_gamma": 0.3,
+    "importance_degree_mode": "projected_transaction",
+    "ppr_beta": 0.15
+  },
+  "seed": 42,
+  "epochs": 100,
+  "min_epochs": 20,
+  "patience": 20,
+  "batch_size": 512,
+  "eval_batch_size": 2048,
+  "learning_rate": 0.001,
+  "fanout": 25,
+  "negatives_per_positive": 30,
+  "label_delay_days": 0,
+  "min_fraud": 25,
+  "device": "cuda",
+  "threshold_policy": "fpr_0_001",
+  "normalization": "batch",
+  "loss_policy": "inverse_frequency_corrected_for_negative_subsampling",
+  "roles": {
+    "name": "static_70_15_15",
+    "train_end": 17070833,
+    "selection": {
+      "count": 451857,
+      "sha256": "434209ce43fb96dfac496e55690050897c5199eed28968caaa2b0b58f66d4665"
+    },
+    "calibration": {
+      "count": 462653,
+      "sha256": "4b995246f431eced7c5aa92e92aeb14acf3b8f05a623fbdec1854882ea6939f0"
+    },
+    "assessment": {
+      "count": 3658033,
+      "sha256": "ac3af3b6e8bbe1ca7256278acde143b707ff34e0150b29b4a1df89ec827c370c"
+    },
+    "assessment_exploratory": true
+  },
+  "source_manifest": {
+    "EXP12/behavior.py": "bf9614e55951a2cb58e4f32ee770dc746ac8a4344454948f93fb8982a75d422b",
+    "EXP12/behavior_v2.py": "e503a67c4c54812f0a2b207e392e7fcdf03104f78c9971a2fb1ee8dd1fe31971",
+    "EXP12/data.py": "f3f066ac9fbb23ce062e83be9425334bfc5fe3a23da4fbc1b35074fb4eff6caf",
+    "EXP12/metrics.py": "56fad79e5b8d6aff2811e2b0754795f1e29a68d7edc8ec14c813ef7f4fcbc653",
+    "EXP12/model.py": "e8933f523b2d4134d93eb987e348f6a711cbe85f02f3e4e1d379707c29e7377d",
+    "audit_exp12.py": "6717a44cabcea9fbb028dbcef8b6bf29ee75a93fb131d6efad00642382a24769",
+    "exp14\\__init__.py": "88b31b2d1ae13fe2cefe2a058bd58490dbdfd6787e2a3e4a9c8c22fdb0a7b062",
+    "exp14\\audit.py": "f51d536f1c2a71f6166dec9ab0a6f167f12acd24a417c886c1e4083e5cfb799c",
+    "exp14\\cli.py": "1231f797ee2c629095c33903a40cc04101055cfee04302232973466ad838fc6e",
+    "exp14\\evaluation.py": "ef051d514bdc039a00f270a2f23cbe2be247307d5738c1114a012e9595559076",
+    "exp14\\feature_store.py": "4ccc2f3e2de3980ab22684c66a35f43166016bbbc2b81d4a85b2b78d5ed03a17",
+    "exp14\\legacy.py": "e654301b41ea27458ffea5ac041de5eb8fedbbe679665feb2ab7bbd2f6cb60e3",
+    "exp14\\protocol.py": "57d2d7e8c5a07f115db9fd9df37b71d56edc79c358163c14e0453a32118911c9",
+    "exp14\\runtime.py": "f11b85de9e5833468fc3160d2f50c5fc543041efe894edd59f901e64a911b214",
+    "exp14\\sampling\\__init__.py": "08ce9cd46256a5ca7a96cc756a234089455a2cf98d8d1184c66e1bc4e7905b86",
+    "exp14\\sampling\\roots.py": "8f4e2c45ab6511a213fac448d26d198990a7ea40d99506ce75fb6a0f4daf7105",
+    "exp14\\sampling\\temporal.py": "73bc27afe16b09fbf73622cfbd97569a34fb032901df7c8ddaf5f56aa70a3c17",
+    "exp14\\sampling\\weights.py": "205c7950a5f599691ad9527ed60f469fc8061e7e21d9511102674f2b032c2968",
+    "exp14\\summary.py": "3aa6744f14c38bfee9b51e6347d3d28091f779c6ca478ccf5b61b3db6a8d4879",
+    "exp14\\trainer.py": "261da4f371bdf31bafb453ff782de2109a1607243deac75a95451234eb1d072b",
+    "run.py": "6be4e7bad8c4b532f33371e18819d639e15c16e4797892cf057962dcb322ec68",
+    "tests\\test_exp14.py": "cdc683eb7120b4ff9a34fc5d26a4290de7c189a7c2f2192de5efef8e1fe197b2"
+  },
+  "data_identity": {
+    "source": "D:\\Hendika\\TA-KlasifikasiTransaksiKKredit-NeighborSampling-GraphSAGE\\dataset\\credit_card_transactions-ibm_v2.csv",
+    "size": 2350744057,
+    "mtime_ns": 1787546585093452000,
+    "max_rows": null,
+    "schema": 2,
+    "feature_code_sha256": "c7d346768e9152930b2884de4a4a9554df37023a7e888455e595750696d7aa2a"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "python": "3.12.6",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "torch": "2.14.0+cu130",
+  "torch_geometric": "2.8.0.post1",
+  "numpy": "2.5.3",
+  "device": "cuda",
+  "cpu_threads": 4,
+  "pandas": "2.3.3",
+  "scikit_learn": "1.9.1",
+  "pyyaml": "6.0.3",
+  "float32_matmul_precision": "highest",
+  "cuda": "13.0",
+  "gpu": "NVIDIA GeForce RTX 5060 Ti",
+  "gpu_memory_gb": 15.92828369140625,
+  "determinism": "fixed_seeds_and_evaluation_tables; CUDA scatter reductions may not be bitwise deterministic"
+}

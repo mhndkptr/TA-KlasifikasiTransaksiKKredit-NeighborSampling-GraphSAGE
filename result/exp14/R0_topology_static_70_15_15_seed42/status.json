@@ -1,0 +1,9 @@
+{
+  "status": "complete",
+  "variant": "R0",
+  "fold": "static_70_15_15",
+  "seed": 42,
+  "best_epoch": 14,
+  "epochs": 34,
+  "stop_reason": "early_stopping"
+}

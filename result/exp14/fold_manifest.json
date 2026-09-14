@@ -1,11 +1,11 @@
 {
   "data_identity": {
-    "source": "D:\\Projects\\Klasifikasi Transasi Kartu Kredit - GraphSAGE\\tugas-akhir-klasifikasi-transaksi-kartu-kredit\\dataset\\credit_card_transactions-ibm_v2.csv",
+    "source": "D:\\Hendika\\TA-KlasifikasiTransaksiKKredit-NeighborSampling-GraphSAGE\\dataset\\credit_card_transactions-ibm_v2.csv",
     "size": 2350744057,
     "mtime_ns": 1787546585093452000,
     "max_rows": null,
     "schema": 2,
-    "feature_code_sha256": "08fdb5751886b999fcce86adc5316e28c6a3422fcc221195e44a878a74be2c28"
+    "feature_code_sha256": "c7d346768e9152930b2884de4a4a9554df37023a7e888455e595750696d7aa2a"
   },
   "train_end": 17070833,
   "test_start": 20728867,
