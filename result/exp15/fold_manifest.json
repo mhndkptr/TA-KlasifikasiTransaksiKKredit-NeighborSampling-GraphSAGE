@@ -1,0 +1,145 @@
+{
+  "policy": "first_eligible_train_support_on_5_day_grid",
+  "anchor": "2001-06-13T00:00:00",
+  "literal_folds": [
+    {
+      "name": "fold_1",
+      "literal": true,
+      "start": "1991-01-02T00:00:00",
+      "train_end": "1991-01-14T00:00:00",
+      "end": "1991-01-19T00:00:00",
+      "train_rows": 16,
+      "train_fraud": 0,
+      "holdout_rows": 8,
+      "holdout_fraud": 0,
+      "eligible": false,
+      "reason": "insufficient_train_support_or_incomplete_window"
+    },
+    {
+      "name": "fold_2",
+      "literal": true,
+      "start": "1991-01-07T00:00:00",
+      "train_end": "1991-01-19T00:00:00",
+      "end": "1991-01-24T00:00:00",
+      "train_rows": 13,
+      "train_fraud": 0,
+      "holdout_rows": 14,
+      "holdout_fraud": 0,
+      "eligible": false,
+      "reason": "insufficient_train_support_or_incomplete_window"
+    },
+    {
+      "name": "fold_3",
+      "literal": true,
+      "start": "1991-01-12T00:00:00",
+      "train_end": "1991-01-24T00:00:00",
+      "end": "1991-01-29T00:00:00",
+      "train_rows": 23,
+      "train_fraud": 0,
+      "holdout_rows": 10,
+      "holdout_fraud": 0,
+      "eligible": false,
+      "reason": "insufficient_train_support_or_incomplete_window"
+    },
+    {
+      "name": "fold_4",
+      "literal": true,
+      "start": "1991-01-17T00:00:00",
+      "train_end": "1991-01-29T00:00:00",
+      "end": "1991-02-03T00:00:00",
+      "train_rows": 30,
+      "train_fraud": 0,
+      "holdout_rows": 12,
+      "holdout_fraud": 0,
+      "eligible": false,
+      "reason": "insufficient_train_support_or_incomplete_window"
+    },
+    {
+      "name": "fold_5",
+      "literal": true,
+      "start": "1991-01-22T00:00:00",
+      "train_end": "1991-02-03T00:00:00",
+      "end": "1991-02-08T00:00:00",
+      "train_rows": 28,
+      "train_fraud": 0,
+      "holdout_rows": 7,
+      "holdout_fraud": 0,
+      "eligible": false,
+      "reason": "insufficient_train_support_or_incomplete_window"
+    }
+  ],
+  "folds": [
+    {
+      "name": "fold_1",
+      "literal": false,
+      "start": "2001-06-13T00:00:00",
+      "train_end": "2001-06-25T00:00:00",
+      "end": "2001-06-30T00:00:00",
+      "train_rows": 8707,
+      "train_fraud": 27,
+      "holdout_rows": 3501,
+      "holdout_fraud": 1,
+      "eligible": true,
+      "reason": null
+    },
+    {
+      "name": "fold_2",
+      "literal": false,
+      "start": "2001-06-18T00:00:00",
+      "train_end": "2001-06-30T00:00:00",
+      "end": "2001-07-05T00:00:00",
+      "train_rows": 8600,
+      "train_fraud": 19,
+      "holdout_rows": 3612,
+      "holdout_fraud": 2,
+      "eligible": false,
+      "reason": "insufficient_train_support_or_incomplete_window"
+    },
+    {
+      "name": "fold_3",
+      "literal": false,
+      "start": "2001-06-23T00:00:00",
+      "train_end": "2001-07-05T00:00:00",
+      "end": "2001-07-10T00:00:00",
+      "train_rows": 8608,
+      "train_fraud": 11,
+      "holdout_rows": 3665,
+      "holdout_fraud": 7,
+      "eligible": false,
+      "reason": "insufficient_train_support_or_incomplete_window"
+    },
+    {
+      "name": "fold_4",
+      "literal": false,
+      "start": "2001-06-28T00:00:00",
+      "train_end": "2001-07-10T00:00:00",
+      "end": "2001-07-15T00:00:00",
+      "train_rows": 8755,
+      "train_fraud": 9,
+      "holdout_rows": 3698,
+      "holdout_fraud": 17,
+      "eligible": false,
+      "reason": "insufficient_train_support_or_incomplete_window"
+    },
+    {
+      "name": "fold_5",
+      "literal": false,
+      "start": "2001-07-03T00:00:00",
+      "train_end": "2001-07-15T00:00:00",
+      "end": "2001-07-20T00:00:00",
+      "train_rows": 8766,
+      "train_fraud": 25,
+      "holdout_rows": 3553,
+      "holdout_fraud": 6,
+      "eligible": true,
+      "reason": null
+    }
+  ],
+  "parameters": {
+    "window_days": 17,
+    "holdout_days": 5,
+    "step_days": 5,
+    "minimum_fraud": 25,
+    "minimum_normal": 25
+  }
+}

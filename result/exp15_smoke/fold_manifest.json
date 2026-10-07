@@ -1,0 +1,41 @@
+{
+  "policy": "first_eligible_train_support_on_5_day_grid",
+  "anchor": "2008-09-29T00:00:00",
+  "literal_folds": [
+    {
+      "name": "fold_1",
+      "literal": true,
+      "start": "2002-09-01T00:00:00",
+      "train_end": "2002-09-13T00:00:00",
+      "end": "2002-09-18T00:00:00",
+      "train_rows": 39,
+      "train_fraud": 0,
+      "holdout_rows": 12,
+      "holdout_fraud": 0,
+      "eligible": false,
+      "reason": "insufficient_train_support_or_incomplete_window"
+    }
+  ],
+  "folds": [
+    {
+      "name": "fold_1",
+      "literal": false,
+      "start": "2008-09-29T00:00:00",
+      "train_end": "2008-10-11T00:00:00",
+      "end": "2008-10-16T00:00:00",
+      "train_rows": 48,
+      "train_fraud": 1,
+      "holdout_rows": 31,
+      "holdout_fraud": 7,
+      "eligible": true,
+      "reason": null
+    }
+  ],
+  "parameters": {
+    "window_days": 17,
+    "holdout_days": 5,
+    "step_days": 5,
+    "minimum_fraud": 1,
+    "minimum_normal": 1
+  }
+}

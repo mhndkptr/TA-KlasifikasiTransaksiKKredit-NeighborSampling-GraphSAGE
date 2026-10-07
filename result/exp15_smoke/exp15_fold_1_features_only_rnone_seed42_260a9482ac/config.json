@@ -1,0 +1,111 @@
+{
+  "data": {
+    "transactions": "D:\\Projects\\Klasifikasi Transasi Kartu Kredit - GraphSAGE\\tugas-akhir-klasifikasi-transaksi-kartu-kredit\\dataset\\User0_credit_card_transactions.csv",
+    "max_rows": 20000
+  },
+  "paths": {
+    "cache": "D:\\Projects\\Klasifikasi Transasi Kartu Kredit - GraphSAGE\\tugas-akhir-klasifikasi-transaksi-kartu-kredit\\model\\exp15\\smoke_cache",
+    "results": "D:\\Projects\\Klasifikasi Transasi Kartu Kredit - GraphSAGE\\tugas-akhir-klasifikasi-transaksi-kartu-kredit\\result\\exp15_smoke"
+  },
+  "reference": {
+    "checkout": "D:\\Projects\\Klasifikasi Transasi Kartu Kredit - GraphSAGE\\Ref\\Inductive-Graph-Representation-Learning-for-Fraud-Detection",
+    "files": [
+      "Experimental Pipeline.ipynb",
+      "inductiveGRL/hinsage.py",
+      "Demo/FIGRL.m"
+    ],
+    "proven_parameters": {
+      "window_days": 17,
+      "step_days": 5,
+      "holdout_days": 5,
+      "embedding_size": 64
+    }
+  },
+  "protocol": {
+    "folds": 1,
+    "window_days": 17,
+    "holdout_days": 5,
+    "step_days": 5,
+    "minimum_fraud": 1,
+    "minimum_normal": 1
+  },
+  "experiment": {
+    "variants": [
+      "features_only",
+      "hinsage_plus_features",
+      "figrl_plus_features"
+    ],
+    "seeds": [
+      42
+    ]
+  },
+  "sampling": {
+    "undersampling_rate": null
+  },
+  "hinsage": {
+    "embedding_size": 8,
+    "num_samples": [
+      2,
+      4
+    ],
+    "batch_size": 32,
+    "epochs": 1,
+    "learning_rate": 0.001,
+    "train_fraction": 0.8
+  },
+  "figrl": {
+    "embedding_size": 8,
+    "intermediate_dim": 24
+  },
+  "classifier": {
+    "n_estimators": 10
+  },
+  "evaluation": {
+    "threshold": 0.5
+  },
+  "backends": {
+    "hinsage": "pytorch_compat",
+    "figrl": "scipy_compat",
+    "classifier": "sklearn_compat"
+  },
+  "runtime": {
+    "device": "cpu",
+    "chunk_rows": 5000,
+    "progress_bar": true
+  },
+  "config_path": "D:\\Projects\\Klasifikasi Transasi Kartu Kredit - GraphSAGE\\tugas-akhir-klasifikasi-transaksi-kartu-kredit\\code\\exp15_reference_replication\\config.smoke.yaml",
+  "fold": {
+    "name": "fold_1",
+    "literal": false,
+    "start": "2008-09-29T00:00:00",
+    "train_end": "2008-10-11T00:00:00",
+    "end": "2008-10-16T00:00:00",
+    "train_rows": 48,
+    "train_fraud": 1,
+    "holdout_rows": 31,
+    "holdout_fraud": 7,
+    "eligible": true,
+    "reason": null
+  },
+  "seed": 42,
+  "variant": "features_only",
+  "encoder": {
+    "numeric": [
+      "amount",
+      "hour",
+      "day_of_week",
+      "month"
+    ],
+    "categorical": [
+      "Use Chip",
+      "MCC",
+      "Errors?",
+      "Merchant City",
+      "Merchant State",
+      "Zip"
+    ],
+    "client_mapping_size": 4,
+    "merchant_mapping_size": 19,
+    "policy": "fit_on_full_train_before_graph_undersampling"
+  }
+}

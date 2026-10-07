@@ -4,6 +4,12 @@
 membaca hasil di `result/` dan menghasilkan grafik metrik akhir, riwayat training,
 serta laporan HTML interaktif yang dapat dibuka offline.
 
+Replikasi referensi terbaru tersedia di **[EXP15 — Inductive Graph Representation Learning](code/exp15_reference_replication/README.md)**.
+EXP15 menjalankan pipeline HinSAGE dan FI-GRL dengan classifier downstream pada
+dataset IBM, memakai rolling window dan graph-level undersampling dari referensi.
+Audit full-data serta batas kesetaraan implementasi dicatat terpisah dari hasil
+eksperimen utama EXP12/EXP14.
+
 Implementasi terbaru tersedia di **[EXP12 - Recent Context dan Validation Selaras Drift](code/exp12_recent_context/README.md)**.
 EXP12 menambahkan baseline perilaku jangka pendek/bersyarat dan memilih
 checkpoint dari fraud terbaru yang didominasi chip. [Evaluasi EXP11](code/exp12_recent_context/ANALISIS_EXP11.md)

@@ -1,0 +1,18 @@
+# Same scientific settings as config.reference.yaml with five reproducibility seeds.
+data: {transactions: ../../dataset/credit_card_transactions-ibm_v2.csv, max_rows: null}
+paths: {cache: ../../model/exp15/cache, results: ../../result/exp15_multiseed, manifest: ../../result/exp15/fold_manifest.json}
+reference:
+  checkout: ../../../Ref/Inductive-Graph-Representation-Learning-for-Fraud-Detection
+  files: [Experimental Pipeline.ipynb, inductiveGRL/hinsage.py, inductiveGRL/graphconstruction.py, inductiveGRL/timeframes.py, inductiveGRL/evaluation.py, Demo/FIGRL.m]
+  proven_parameters: {window_days: 17, step_days: 5, holdout_days: 5, embedding_size: 64, num_samples: [2, 32], batch_size: 50, epochs: 10, learning_rate: 0.001, figrl_intermediate_dim: 400, xgboost_estimators: 100}
+protocol: {folds: 5, window_days: 17, holdout_days: 5, step_days: 5, minimum_fraud: 25, minimum_normal: 25}
+experiment:
+  variants: [features_only, hinsage_embedding, hinsage_plus_features, figrl_embedding, figrl_plus_features]
+  seeds: [42, 43, 44, 45, 46]
+sampling: {undersampling_rate: null}
+hinsage: {embedding_size: 64, num_samples: [2, 32], batch_size: 50, epochs: 10, learning_rate: 0.001, train_fraction: 0.8}
+figrl: {embedding_size: 64, intermediate_dim: 400}
+classifier: {n_estimators: 100}
+evaluation: {threshold: 0.5}
+backends: {hinsage: stellargraph, figrl: matlab, classifier: xgboost}
+runtime: {device: auto, chunk_rows: 200000, progress_bar: true}

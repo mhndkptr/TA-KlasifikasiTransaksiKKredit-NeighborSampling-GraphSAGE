@@ -1,0 +1,32 @@
+{
+  "checkout": "D:\\Projects\\Klasifikasi Transasi Kartu Kredit - GraphSAGE\\Ref\\Inductive-Graph-Representation-Learning-for-Fraud-Detection",
+  "commit": "b60d1fa93dce25b536aaf90c7860076f8d9377b1",
+  "files": {
+    "Experimental Pipeline.ipynb": "154cfdfd1c06da934a0ce630a7d338e09fcddbe794002dd96fc7b472b24bdfec",
+    "inductiveGRL/hinsage.py": "30c539df03fc3055140bf91401897d054c78d444b555f15e76d8ad8bf9ac702e",
+    "inductiveGRL/graphconstruction.py": "276ab2742e30e038049592dd2ee6fbedf7e6f8b8e78f867c0fdc172eaa4e1a8b",
+    "inductiveGRL/timeframes.py": "aa374508d28130a7c4148403a28924415f8fbb0888a6b9a717e9ced97f71f788",
+    "inductiveGRL/evaluation.py": "2843415a25294a4dc1282e5c38a91254756bf7f934af8c2d6cbd30f1ae36da8c",
+    "Demo/FIGRL.m": "ce7eea382ad53e5421d7dad7e658bead4f4812093d45070df74c43bb80ffa1fd"
+  },
+  "proven_parameters": {
+    "window_days": 17,
+    "step_days": 5,
+    "holdout_days": 5,
+    "embedding_size": 64,
+    "num_samples": [
+      2,
+      32
+    ],
+    "batch_size": 50,
+    "epochs": 10,
+    "learning_rate": 0.001,
+    "figrl_intermediate_dim": 400,
+    "xgboost_estimators": 100
+  },
+  "unknowns": [
+    "private preprocessed_ccf.csv recipe",
+    "complete paper undersampling grid",
+    "fully locked historical dependency versions"
+  ]
+}

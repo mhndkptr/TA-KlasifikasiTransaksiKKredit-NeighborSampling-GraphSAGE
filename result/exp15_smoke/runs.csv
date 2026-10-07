@@ -1,0 +1,4 @@
+run,fold,variant,seed,undersampling_rate,representation_backend,classifier_backend,average_precision,roc_auc,precision,recall,f1,tp,fp,fn,lift_at_1pct
+exp15_fold_1_features_only_rnone_seed42_260a9482ac,fold_1,features_only,42,,,sklearn_random_forest_compat,0.22580645161290322,0.5,0.0,0.0,0.0,0,0,7,
+exp15_fold_1_figrl_plus_features_rnone_seed42_37e70e2855,fold_1,figrl_plus_features,42,,scipy_figrl_compat,sklearn_random_forest_compat,0.22580645161290322,0.5,0.0,0.0,0.0,0,0,7,
+exp15_fold_1_hinsage_plus_features_rnone_seed42_cd8966a194,fold_1,hinsage_plus_features,42,,pytorch_hinsage_compat,sklearn_random_forest_compat,0.22580645161290322,0.5,0.0,0.0,0.0,0,0,7,

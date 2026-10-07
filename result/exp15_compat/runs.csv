@@ -1,0 +1,2 @@
+run,fold,variant,seed,undersampling_rate,representation_backend,classifier_backend,average_precision,roc_auc,precision,recall,f1,tp,fp,fn,lift_at_1pct
+exp15_fold_1_features_only_rnone_seed42_9ae5e4257e,fold_1,features_only,42,,,sklearn_random_forest_compat,0.00028563267637817766,0.47914285714285715,0.0,0.0,0.0,0,0,1,0.0

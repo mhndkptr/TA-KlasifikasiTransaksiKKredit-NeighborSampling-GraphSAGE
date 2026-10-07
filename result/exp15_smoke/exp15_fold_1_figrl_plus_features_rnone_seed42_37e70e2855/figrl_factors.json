@@ -1,0 +1,4 @@
+{
+  "seed": 42,
+  "backend": "scipy_figrl_compat"
+}

@@ -1,0 +1,7 @@
+2026-09-18 14:11:58,949 | EXP15 command=audit-data config=code\exp15_reference_replication\config.smoke.yaml
+2026-09-18 14:11:59,533 | Audit selesai: rows=19,963 fraud=27 anchor=2008-09-29T00:00:00
+2026-09-18 14:12:09,460 | EXP15 command=run config=code\exp15_reference_replication\config.smoke.yaml
+2026-09-18 14:12:18,175 | Complete exp15_fold_1_features_only_rnone_seed42_260a9482ac: AP=0.22580645161290322
+2026-09-18 14:12:18,585 | Complete exp15_fold_1_hinsage_plus_features_rnone_seed42_cd8966a194: AP=0.22580645161290322
+2026-09-18 14:12:18,971 | Complete exp15_fold_1_figrl_plus_features_rnone_seed42_37e70e2855: AP=0.22580645161290322
+2026-09-18 14:13:01,275 | EXP15 command=summarize config=code\exp15_reference_replication\config.smoke.yaml

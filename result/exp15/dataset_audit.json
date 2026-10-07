@@ -1,0 +1,32 @@
+{
+  "data_identity": {
+    "path": "D:\\Projects\\Klasifikasi Transasi Kartu Kredit - GraphSAGE\\tugas-akhir-klasifikasi-transaksi-kartu-kredit\\dataset\\credit_card_transactions-ibm_v2.csv",
+    "size": 2350744057,
+    "mtime_ns": 1787546585093452000,
+    "max_rows": null
+  },
+  "rows": 24386900,
+  "fraud": 29757,
+  "fraud_rate": 0.0012202042900081602,
+  "clients": 6139,
+  "merchants": 100343,
+  "first_timestamp": "1991-01-02 07:10:00",
+  "last_timestamp": "2020-02-28 23:58:00",
+  "missing": {
+    "User": 0,
+    "Card": 0,
+    "Year": 0,
+    "Month": 0,
+    "Day": 0,
+    "Time": 0,
+    "Amount": 0,
+    "Use Chip": 0,
+    "Merchant Name": 0,
+    "Merchant City": 0,
+    "Merchant State": 2720821,
+    "Zip": 2878135,
+    "MCC": 0,
+    "Errors?": 23998469,
+    "Is Fraud?": 0
+  }
+}

@@ -1,0 +1,118 @@
+{
+  "fold": "fold_1",
+  "variant": "features_only",
+  "seed": 42,
+  "undersampling_rate": null,
+  "representation_backend": null,
+  "classifier_backend": "sklearn_random_forest_compat",
+  "metrics": {
+    "rows": 3501,
+    "fraud": 1,
+    "prevalence": 0.00028563267637817766,
+    "average_precision": 0.00028563267637817766,
+    "roc_auc": 0.47914285714285715,
+    "lift_at_1pct": {
+      "fraction": 0.01,
+      "k": 35,
+      "precision_at_k": 0.0,
+      "prevalence": 0.00028563267637817766,
+      "lift": 0.0
+    },
+    "threshold": 0.5,
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "tn": 3500,
+    "fp": 0,
+    "fn": 1,
+    "tp": 0,
+    "pr_curve": {
+      "precision": [
+        0.00028563267637817766,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "recall": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "thresholds": [
+        0.0,
+        0.01,
+        0.02,
+        0.03,
+        0.04,
+        0.05,
+        0.07,
+        0.08,
+        0.09,
+        0.1,
+        0.11
+      ]
+    },
+    "channels": {
+      "Online Transaction": {
+        "rows": 259,
+        "fraud": 0,
+        "prevalence": 0.0,
+        "average_precision": null,
+        "roc_auc": null,
+        "lift_at_1pct": null,
+        "threshold": 0.5,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "tn": 259,
+        "fp": 0,
+        "fn": 0,
+        "tp": 0
+      },
+      "Swipe Transaction": {
+        "rows": 3242,
+        "fraud": 1,
+        "prevalence": 0.00030845157310302283,
+        "average_precision": 0.00030845157310302283,
+        "roc_auc": 0.4780931811169392,
+        "lift_at_1pct": {
+          "fraction": 0.01,
+          "k": 32,
+          "precision_at_k": 0.0,
+          "prevalence": 0.00030845157310302283,
+          "lift": 0.0
+        },
+        "threshold": 0.5,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "tn": 3241,
+        "fp": 0,
+        "fn": 1,
+        "tp": 0
+      }
+    }
+  },
+  "prediction_file": "predictions.parquet",
+  "plot_file": "precision_recall.png",
+  "timing": {
+    "classifier_seconds": 0.47450690000005125
+  }
+}

@@ -1,0 +1,122 @@
+{
+  "data": {
+    "transactions": "D:\\Projects\\Klasifikasi Transasi Kartu Kredit - GraphSAGE\\tugas-akhir-klasifikasi-transaksi-kartu-kredit\\dataset\\credit_card_transactions-ibm_v2.csv",
+    "max_rows": null
+  },
+  "paths": {
+    "cache": "D:\\Projects\\Klasifikasi Transasi Kartu Kredit - GraphSAGE\\tugas-akhir-klasifikasi-transaksi-kartu-kredit\\model\\exp15\\compat_cache",
+    "results": "D:\\Projects\\Klasifikasi Transasi Kartu Kredit - GraphSAGE\\tugas-akhir-klasifikasi-transaksi-kartu-kredit\\result\\exp15_compat",
+    "manifest": "D:\\Projects\\Klasifikasi Transasi Kartu Kredit - GraphSAGE\\tugas-akhir-klasifikasi-transaksi-kartu-kredit\\result\\exp15\\fold_manifest.json"
+  },
+  "reference": {
+    "checkout": "D:\\Projects\\Klasifikasi Transasi Kartu Kredit - GraphSAGE\\Ref\\Inductive-Graph-Representation-Learning-for-Fraud-Detection",
+    "files": [
+      "Experimental Pipeline.ipynb",
+      "inductiveGRL/hinsage.py",
+      "inductiveGRL/graphconstruction.py",
+      "inductiveGRL/timeframes.py",
+      "inductiveGRL/evaluation.py",
+      "Demo/FIGRL.m"
+    ],
+    "proven_parameters": {
+      "window_days": 17,
+      "step_days": 5,
+      "holdout_days": 5,
+      "embedding_size": 64,
+      "num_samples": [
+        2,
+        32
+      ],
+      "batch_size": 50,
+      "epochs": 10,
+      "learning_rate": 0.001,
+      "figrl_intermediate_dim": 400,
+      "xgboost_estimators": 100
+    }
+  },
+  "protocol": {
+    "folds": 5,
+    "window_days": 17,
+    "holdout_days": 5,
+    "step_days": 5,
+    "minimum_fraud": 25,
+    "minimum_normal": 25
+  },
+  "experiment": {
+    "variants": [
+      "features_only"
+    ],
+    "seeds": [
+      42
+    ]
+  },
+  "sampling": {
+    "undersampling_rate": null
+  },
+  "hinsage": {
+    "embedding_size": 64,
+    "num_samples": [
+      2,
+      32
+    ],
+    "batch_size": 50,
+    "epochs": 10,
+    "learning_rate": 0.001,
+    "train_fraction": 0.8
+  },
+  "figrl": {
+    "embedding_size": 64,
+    "intermediate_dim": 400
+  },
+  "classifier": {
+    "n_estimators": 100
+  },
+  "evaluation": {
+    "threshold": 0.5
+  },
+  "backends": {
+    "hinsage": "pytorch_compat",
+    "figrl": "scipy_compat",
+    "classifier": "sklearn_compat"
+  },
+  "runtime": {
+    "device": "auto",
+    "chunk_rows": 200000,
+    "progress_bar": true
+  },
+  "config_path": "D:\\Projects\\Klasifikasi Transasi Kartu Kredit - GraphSAGE\\tugas-akhir-klasifikasi-transaksi-kartu-kredit\\code\\exp15_reference_replication\\config.compat.yaml",
+  "fold": {
+    "name": "fold_1",
+    "literal": false,
+    "start": "2001-06-13T00:00:00",
+    "train_end": "2001-06-25T00:00:00",
+    "end": "2001-06-30T00:00:00",
+    "train_rows": 8707,
+    "train_fraud": 27,
+    "holdout_rows": 3501,
+    "holdout_fraud": 1,
+    "eligible": true,
+    "reason": null
+  },
+  "seed": 42,
+  "variant": "features_only",
+  "encoder": {
+    "numeric": [
+      "amount",
+      "hour",
+      "day_of_week",
+      "month"
+    ],
+    "categorical": [
+      "Use Chip",
+      "MCC",
+      "Errors?",
+      "Merchant City",
+      "Merchant State",
+      "Zip"
+    ],
+    "client_mapping_size": 293,
+    "merchant_mapping_size": 1543,
+    "policy": "fit_on_full_train_before_graph_undersampling"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "train": {
+    "transactions": 8707,
+    "clients": 293,
+    "merchants": 1543,
+    "nodes": 10543,
+    "undirected_edges": 17414,
+    "transaction_feature_width": 2499
+  },
+  "combined": {
+    "transactions": 12208,
+    "clients": 293,
+    "merchants": 1878,
+    "nodes": 14379,
+    "undirected_edges": 24416,
+    "transaction_feature_width": 2499
+  },
+  "before_sampling": {
+    "rows": 8707,
+    "fraud": 27
+  },
+  "after_sampling": {
+    "rows": 8707,
+    "fraud": 27
+  },
+  "internal_split": {
+    "boundary": 6966,
+    "gradient_rows": 6966,
+    "gradient_fraud": 17,
+    "validation_rows": 1741,
+    "validation_fraud": 10,
+    "policy": "source_order_after_graph_level_resampling"
+  }
+}

@@ -1,0 +1,14 @@
+numpy
+pandas
+scipy
+scikit-learn
+imbalanced-learn
+matplotlib
+tqdm
+psutil
+PyYAML
+xgboost
+
+# StellarGraph/TensorFlow dipasang dari environment.reference.yml karena memerlukan Python <3.9.
+# MATLAB Engine dipasang dari folder extern/engines/python milik instalasi MATLAB.
+

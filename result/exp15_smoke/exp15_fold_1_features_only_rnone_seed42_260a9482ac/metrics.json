@@ -1,0 +1,78 @@
+{
+  "fold": "fold_1",
+  "variant": "features_only",
+  "seed": 42,
+  "undersampling_rate": null,
+  "representation_backend": null,
+  "classifier_backend": "sklearn_random_forest_compat",
+  "metrics": {
+    "rows": 31,
+    "fraud": 7,
+    "prevalence": 0.22580645161290322,
+    "average_precision": 0.22580645161290322,
+    "roc_auc": 0.5,
+    "lift_at_1pct": null,
+    "threshold": 0.5,
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "tn": 24,
+    "fp": 0,
+    "fn": 7,
+    "tp": 0,
+    "pr_curve": {
+      "precision": [
+        0.22580645161290322,
+        1.0
+      ],
+      "recall": [
+        1.0,
+        0.0
+      ],
+      "thresholds": [
+        0.0
+      ]
+    },
+    "channels": {
+      "Online Transaction": {
+        "rows": 2,
+        "fraud": 0,
+        "prevalence": 0.0,
+        "average_precision": null,
+        "roc_auc": null,
+        "lift_at_1pct": null,
+        "threshold": 0.5,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "tn": 2,
+        "fp": 0,
+        "fn": 0,
+        "tp": 0
+      },
+      "Swipe Transaction": {
+        "rows": 29,
+        "fraud": 7,
+        "prevalence": 0.2413793103448276,
+        "average_precision": 0.2413793103448276,
+        "roc_auc": 0.5,
+        "lift_at_1pct": null,
+        "threshold": 0.5,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "tn": 22,
+        "fp": 0,
+        "fn": 7,
+        "tp": 0
+      }
+    }
+  },
+  "prediction_file": "predictions.parquet",
+  "plot_file": "precision_recall.png",
+  "timing": {
+    "hinsage_seconds": 2.82716419999997,
+    "figrl_seconds": 0.008884800000487303,
+    "classifier_seconds": 0.22758950000024925
+  }
+}

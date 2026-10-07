@@ -1,0 +1,52 @@
+{
+  "runs": [
+    {
+      "run": "exp15_fold_1_features_only_rnone_seed42_9ae5e4257e",
+      "fold": "fold_1",
+      "variant": "features_only",
+      "seed": 42,
+      "undersampling_rate": null,
+      "representation_backend": null,
+      "classifier_backend": "sklearn_random_forest_compat",
+      "average_precision": 0.00028563267637817766,
+      "roc_auc": 0.47914285714285715,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "tp": 0,
+      "fp": 0,
+      "fn": 1,
+      "lift_at_1pct": 0.0
+    }
+  ],
+  "groups": {
+    "features_only|None|None|sklearn_random_forest_compat": {
+      "n": 1,
+      "average_precision": {
+        "mean": 0.00028563267637817766,
+        "std": null,
+        "count": 1
+      },
+      "lift_at_1pct": {
+        "mean": 0.0,
+        "std": null,
+        "count": 1
+      },
+      "precision": {
+        "mean": 0.0,
+        "std": null,
+        "count": 1
+      },
+      "recall": {
+        "mean": 0.0,
+        "std": null,
+        "count": 1
+      },
+      "f1": {
+        "mean": 0.0,
+        "std": null,
+        "count": 1
+      }
+    }
+  }
+}
