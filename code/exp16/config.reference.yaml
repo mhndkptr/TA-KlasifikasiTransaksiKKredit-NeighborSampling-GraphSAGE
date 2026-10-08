@@ -1,0 +1,25 @@
+data:
+  transactions: "../../dataset/credit_card_transactions-ibm_v2.csv"
+  max_rows: null
+  train_fraction: 0.7
+  val_fraction: 0.15
+
+sampling:
+  method: "uniform" # Pilihan: uniform, topology, importance
+  undersampling_ratio: 0.02 # Dari 0.1 menjadi 0.02 (sesuai paper 2% undersampling rate)
+
+model:
+  hidden_channels: 64 # Dari 256 menjadi 64 (sesuai final dimension GraphSAGE di paper)
+  out_channels: 1
+  num_layers: 2
+  aggr: "mean"
+
+training:
+  batch_size: 50 # Dari 1024 menjadi 50 (sesuai batch size HinSAGE di paper)
+  epochs: 10 # Dari 5 menjadi 10 (berdasarkan file Experimental Pipeline.ipynb di referensi)
+  learning_rate: 0.001
+  num_neighbors: [2, 32] # Dari [10, 10] menjadi [2, 32] (sesuai paper: 2 first hop, 32 second hop)
+
+output:
+  model_dir: "../../model/exp16"
+  result_dir: "../../result/exp16"

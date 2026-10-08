@@ -1,0 +1,27 @@
+data:
+  # Path dataset yang sudah ada di Kaggle (credit-card-transactions)
+  transactions: "/kaggle/input/credit-card-transactions/credit_card_transactions-ibm_v2.csv"
+  max_rows: null
+  train_fraction: 0.7
+  val_fraction: 0.15
+
+sampling:
+  method: "uniform" # Pilihan: uniform, topology, importance
+  undersampling_ratio: 0.02
+
+model:
+  hidden_channels: 64
+  out_channels: 1
+  num_layers: 2
+  aggr: "mean"
+
+training:
+  batch_size: 50
+  epochs: 10
+  learning_rate: 0.001
+  num_neighbors: [2, 32]
+
+output:
+  # Path output pada Kaggle Notebook (Folder /kaggle/working/ adalah direktori yang akan disimpan setelah run selesai)
+  model_dir: "/kaggle/working/model/exp16"
+  result_dir: "/kaggle/working/result/exp16"
