@@ -20,3 +20,7 @@ result/**/*.ckpt
 **/__pycache__/
 *.py[cod]
 /tmp/
+
+# exp17 outputs
+/code/exp17/model/
+/code/exp17/result/
