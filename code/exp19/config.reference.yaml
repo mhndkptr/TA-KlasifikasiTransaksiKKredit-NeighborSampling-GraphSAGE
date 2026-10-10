@@ -6,13 +6,13 @@ data:
 
 sampling:
   method: "uniform" # Pilihan: uniform, topology, importance
-  undersampling_ratio: 0.02 # Dari 0.1 menjadi 0.02 (sesuai paper 2% undersampling rate)
+  undersampling_ratio: 0.3 # Moderate ratio untuk menjaga struktur graf
 
 model:
-  hidden_channels: 128 # Dari 256 menjadi 128
+  hidden_channels: 256
   out_channels: 1
-  num_layers: 2
-  aggr: "mean"
+  num_layers: 3
+  aggr: "max"
 
 training:
   batch_size: 1024 # Diperbesar agar stabil
@@ -21,5 +21,5 @@ training:
   num_neighbors: [15, 10] # Standard GraphSAGE
 
 output:
-  model_dir: "../../model/exp16"
-  result_dir: "../../result/exp16"
+  model_dir: "../../model/exp19"
+  result_dir: "../../result/exp19"

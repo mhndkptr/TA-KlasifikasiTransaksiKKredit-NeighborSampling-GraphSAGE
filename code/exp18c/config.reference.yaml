@@ -6,7 +6,7 @@ data:
 
 sampling:
   method: "uniform" # Pilihan: uniform, topology, importance
-  undersampling_ratio: 0.02 # Dari 0.1 menjadi 0.02 (sesuai paper 2% undersampling rate)
+  undersampling_ratio: 0.3 # Moderate ratio untuk menjaga struktur graf
 
 model:
   hidden_channels: 128 # Dari 256 menjadi 128

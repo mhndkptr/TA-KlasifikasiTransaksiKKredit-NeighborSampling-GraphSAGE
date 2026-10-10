@@ -7,7 +7,7 @@ data:
 
 sampling:
   method: "uniform" # Pilihan: uniform, topology, importance
-  undersampling_ratio: 0.02 # Sesuai dengan paper (2% undersampling rate)
+  undersampling_ratio: 0.3 # Moderate ratio untuk menjaga struktur graf
 
 model:
   hidden_channels: 128
@@ -23,5 +23,5 @@ training:
 
 output:
   # Path output pada Kaggle Notebook (Folder /kaggle/working/ adalah direktori yang akan disimpan setelah run selesai)
-  model_dir: "/kaggle/working/model/exp17"
-  result_dir: "/kaggle/working/result/exp17"
+  model_dir: "/kaggle/working/model/exp18c"
+  result_dir: "/kaggle/working/result/exp18c"

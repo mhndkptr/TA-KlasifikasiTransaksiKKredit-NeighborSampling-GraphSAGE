@@ -56,6 +56,9 @@ def build_hetero_graph(df: pd.DataFrame, feature_cols: list) -> HeteroData:
     data['transaction'].x = x_tx
     data['transaction'].y = y_tx
     
+    # Add time attribute for temporal sampling (using chronological index)
+    data['transaction'].time = torch.arange(num_transactions)
+    
     # 3. Edges
     user_src = [user_mapping[uid] for uid in df['User']]
     tx_dst = list(range(num_transactions))

@@ -21,6 +21,7 @@ result/**/*.ckpt
 *.py[cod]
 /tmp/
 
-# exp17 outputs
-/code/exp17/model/
-/code/exp17/result/
+# experiment outputs
+/code/exp*/model/
+/code/exp*/result/
+/code/exp*/*.log

@@ -23,5 +23,5 @@ training:
 
 output:
   # Path output pada Kaggle Notebook (Folder /kaggle/working/ adalah direktori yang akan disimpan setelah run selesai)
-  model_dir: "/kaggle/working/model/exp17"
-  result_dir: "/kaggle/working/result/exp17"
+  model_dir: "/kaggle/working/model/exp18b"
+  result_dir: "/kaggle/working/result/exp18b"

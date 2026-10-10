@@ -2,6 +2,7 @@ import torch
 import numpy as np
 import pandas as pd
 from torch_geometric.data import HeteroData
+from sklearn.preprocessing import StandardScaler
 
 def graph_level_undersample(df: pd.DataFrame, ratio=0.1, seed=42) -> pd.DataFrame:
     """
@@ -46,15 +47,46 @@ def build_hetero_graph(df: pd.DataFrame, feature_cols: list) -> HeteroData:
     num_merchants = len(merchant_mapping)
     num_transactions = len(df)
     
-    # Add dummy features for user and merchant (required by some PyG samplers, using empty tensors)
-    data['user'].num_nodes = num_users
-    data['merchant'].num_nodes = num_merchants
+    print("Extracting rich features for users and merchants...")
+    # Group by User and Merchant to get simple aggregates (avg Amount, transaction count)
+    user_agg = df.groupby('User').agg(
+        user_avg_amount=('Amount', 'mean'),
+        user_tx_count=('Amount', 'count')
+    ).reset_index()
+    
+    merchant_agg = df.groupby('Merchant Name').agg(
+        merchant_avg_amount=('Amount', 'mean'),
+        merchant_tx_count=('Amount', 'count')
+    ).reset_index()
+    
+    # Ensure order matches mapping
+    user_agg['mapped_id'] = user_agg['User'].map(user_mapping)
+    user_agg = user_agg.sort_values('mapped_id')
+    
+    # Scale User Features
+    scaler_user = StandardScaler()
+    user_feats_scaled = scaler_user.fit_transform(user_agg[['user_avg_amount', 'user_tx_count']])
+    user_features = torch.tensor(user_feats_scaled, dtype=torch.float)
+    
+    merchant_agg['mapped_id'] = merchant_agg['Merchant Name'].map(merchant_mapping)
+    merchant_agg = merchant_agg.sort_values('mapped_id')
+    
+    # Scale Merchant Features
+    scaler_merchant = StandardScaler()
+    merchant_feats_scaled = scaler_merchant.fit_transform(merchant_agg[['merchant_avg_amount', 'merchant_tx_count']])
+    merchant_features = torch.tensor(merchant_feats_scaled, dtype=torch.float)
+    
+    data['user'].x = user_features
+    data['merchant'].x = merchant_features
     
     # 2. Transaction Features & Labels
     x_tx = torch.tensor(df[feature_cols].values, dtype=torch.float)
     y_tx = torch.tensor(df['Is Fraud?'].values, dtype=torch.float)
     data['transaction'].x = x_tx
     data['transaction'].y = y_tx
+    
+    # Add time attribute for temporal sampling (using chronological index)
+    data['transaction'].time = torch.arange(num_transactions)
     
     # 3. Edges
     user_src = [user_mapping[uid] for uid in df['User']]

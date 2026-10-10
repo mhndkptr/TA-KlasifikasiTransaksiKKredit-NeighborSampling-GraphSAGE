@@ -1,0 +1,19 @@
+{
+  "id": "muhammadhendikaputra/exp18b-graphsage-training",
+  "title": "Exp18b GraphSAGE Training",
+  "code_file": "exp18b_training_notebook.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": "true",
+  "enable_gpu": true,
+  "enable_tpu": false,
+  "enable_internet": true,
+  "machine_shape": "NvidiaTeslaP100",
+  "dataset_sources": [
+    "muhammadhendikaputra/exp18b-graphsage-code",
+    "ealtman2019/credit-card-transactions"
+  ],
+  "competition_sources": [],
+  "kernel_sources": [],
+  "model_sources": []
+}
