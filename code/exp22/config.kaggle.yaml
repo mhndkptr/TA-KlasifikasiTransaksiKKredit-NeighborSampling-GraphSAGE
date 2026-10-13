@@ -1,0 +1,36 @@
+data:
+  transactions: "/kaggle/input/credit-card-transactions/credit_card_transactions-ibm_v2.csv"
+  max_rows: null
+  start_year: 2016
+
+time_window:
+  reference_date: "2018-01-01" # Tanggal T0 (era modern 2016-2020 dengan sebaran fraud stabil)
+  train_days: 300
+  val_days: 30
+  gap_days: 8
+  test_days: 60
+
+sampling:
+  method: "uniform" # Baseline sampling kontrol (Uniform)
+  undersampling_ratio: 1.0 # 1.0 = tidak ada undersampling (mempertahankan topologi asli)
+
+model:
+  hidden_channels: 128
+  out_channels: 1
+  num_layers: 2
+  aggr: "max" # Pilihan: max, mean, sum
+
+training:
+  batch_size: 1024
+  epochs: 10
+  learning_rate: 0.001
+  num_neighbors: [15, 10]
+
+classifier:
+  n_estimators: 100
+  max_depth: 5
+  learning_rate: 0.05
+
+output:
+  model_dir: "/kaggle/working/model/exp22"
+  result_dir: "/kaggle/working/result/exp22"

@@ -16,10 +16,10 @@ model:
   aggr: "mean"
 
 training:
-  batch_size: 1024
-  epochs: 10
+  batch_size: 4096
+  epochs: 7
   learning_rate: 0.001
-  num_neighbors: [15, 10]
+  num_neighbors: [25, 10]
 
 output:
   # Path output pada Kaggle Notebook (Folder /kaggle/working/ adalah direktori yang akan disimpan setelah run selesai)

@@ -17,6 +17,9 @@ def apply_uniform_sampling(data: HeteroData):
     Baseline: Uniform Random Sampling.
     Assigns uniform probability (1.0) to all edges.
     """
+    first_edge = data.edge_types[0]
+    if hasattr(data[first_edge], 'edge_weight') and data[first_edge].edge_weight is not None:
+        return data
     print("Applying Uniform Sampling weights...")
     for edge_type in data.edge_types:
         num_edges = data[edge_type].edge_index.size(1)
@@ -29,6 +32,9 @@ def apply_topology_aware_sampling(data: HeteroData):
     Note: In a bipartite setup, we approximate this by weighting edges 
     connecting highly overlapping neighborhood structures.
     """
+    first_edge = data.edge_types[0]
+    if hasattr(data[first_edge], 'edge_weight') and data[first_edge].edge_weight is not None:
+        return data
     print("Applying Topology-Aware Sampling weights...")
     # Placeholder for actual complex bipartite Jaccard calculation.
     # In practice, this requires building a bipartite projection or 2-hop neighborhood overlap.
@@ -56,6 +62,9 @@ def apply_importance_based_sampling(data: HeteroData):
     Importance-Based Sampling (Degree Centrality and Personalized PageRank).
     Assigns higher sampling probability to important nodes.
     """
+    first_edge = data.edge_types[0]
+    if hasattr(data[first_edge], 'edge_weight') and data[first_edge].edge_weight is not None:
+        return data
     print("Applying Importance-Based Sampling weights...")
     for edge_type in data.edge_types:
         src, rel, dst = edge_type
@@ -75,7 +84,7 @@ def apply_importance_based_sampling(data: HeteroData):
 
     return data
 
-def get_neighbor_loader(data: HeteroData, batch_size: int = 1024, num_neighbors: list = [10, 10], method: str = 'uniform', shuffle: bool = True, input_nodes=None):
+def get_neighbor_loader(data: HeteroData, batch_size: int = 1024, num_neighbors: list = [10, 10], method: str = 'uniform', shuffle: bool = True, input_nodes=None, num_workers: int = 4):
     """
     Returns a PyG NeighborLoader based on the selected sampling strategy.
     """
@@ -98,7 +107,8 @@ def get_neighbor_loader(data: HeteroData, batch_size: int = 1024, num_neighbors:
         batch_size=batch_size,
         input_nodes=input_nodes,
         shuffle=shuffle,
-        weight_attr='edge_weight'
+        weight_attr='edge_weight',
+        num_workers=num_workers
     )
     return loader
 

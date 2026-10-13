@@ -1,6 +1,6 @@
 {
   "id": "muhammadhendikaputra/exp20-graphsage-training",
-  "title": "Exp20 GraphSAGE XGBoost Tuning",
+  "title": "Exp20 GraphSAGE Training",
   "code_file": "exp20_training_notebook.ipynb",
   "language": "python",
   "kernel_type": "notebook",

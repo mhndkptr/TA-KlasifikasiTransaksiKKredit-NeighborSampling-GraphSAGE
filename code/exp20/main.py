@@ -2,7 +2,7 @@ import argparse
 import time
 import torch
 import torch.optim as optim
-from sklearn.metrics import f1_score, recall_score, average_precision_score
+from sklearn.metrics import f1_score, recall_score, average_precision_score, roc_auc_score, accuracy_score, precision_score, confusion_matrix
 from pathlib import Path
 import json
 import numpy as np
@@ -13,13 +13,15 @@ from samplers import get_neighbor_loader
 from model import HeteroGraphSAGE, manual_weighted_bce
 from config import load_config
 
-def extract_features(model, loader, device):
+def extract_features(model, loader, device, total_samples, orig_feat_dim, emb_dim):
     model.eval()
-    all_embeddings = []
-    all_targets = []
-    all_original_features = []
+    
+    # Pre-alokasi memori array secara langsung agar tidak memakan RAM berlebih (mencegah OOM SIGKILL -9)
+    final_features = np.empty((total_samples, orig_feat_dim + emb_dim), dtype=np.float32)
+    all_targets = np.empty((total_samples,), dtype=np.int64)
     
     start_time = time.time()
+    current_idx = 0
     with torch.no_grad():
         for batch in loader:
             batch = batch.to(device)
@@ -28,23 +30,22 @@ def extract_features(model, loader, device):
             embeddings = model(batch.x_dict, batch.edge_index_dict, num_nodes_dict=num_nodes_dict, return_embeddings=True)
             
             batch_size = batch['transaction'].batch_size
+            next_idx = min(current_idx + batch_size, total_samples)
+            actual_count = next_idx - current_idx
             
-            embeddings = embeddings[:batch_size]
-            targets = batch['transaction'].y[:batch_size]
-            original_features = batch['transaction'].x[:batch_size]
+            # Direct placement ke array numpy yang sudah dialokasikan - ZERO memory overhead!
+            final_features[current_idx:next_idx, :orig_feat_dim] = batch['transaction'].x[:actual_count].cpu().numpy()
+            final_features[current_idx:next_idx, orig_feat_dim:] = embeddings[:actual_count].cpu().numpy()
+            all_targets[current_idx:next_idx] = batch['transaction'].y[:actual_count].cpu().numpy()
             
-            all_embeddings.append(embeddings.cpu().numpy())
-            all_targets.append(targets.cpu().numpy())
-            all_original_features.append(original_features.cpu().numpy())
+            current_idx = next_idx
             
     inference_time = time.time() - start_time
     
-    all_embeddings = np.concatenate(all_embeddings, axis=0)
-    all_targets = np.concatenate(all_targets, axis=0)
-    all_original_features = np.concatenate(all_original_features, axis=0)
-    
-    final_features = np.concatenate((all_original_features, all_embeddings), axis=1)
-    
+    if current_idx < total_samples:
+        final_features = final_features[:current_idx]
+        all_targets = all_targets[:current_idx]
+        
     return final_features, all_targets, inference_time
 def main():
     parser = argparse.ArgumentParser()
@@ -85,6 +86,11 @@ def main():
     # Find test node indices in the full graph
     test_start_idx = len(train_df) + len(val_df)
     test_node_indices = torch.arange(test_start_idx, len(df))
+    
+    # Bebaskan memori DataFrame mentah segera (menghemat ~10 GB RAM)
+    import gc
+    del df, train_df, val_df, test_df, train_df_sampled
+    gc.collect()
     
     # 5. Samplers
     batch_size = cfg['training']['batch_size']
@@ -136,7 +142,7 @@ def main():
 
     # 7. Training Loop (Phase 1: Encoder Representation)
     epochs = cfg['training']['epochs']
-    print("\\nStarting Phase 1: Training GraphSAGE as Feature Extractor...")
+    print("\nStarting Phase 1: Training GraphSAGE as Feature Extractor...")
     for epoch in range(epochs):
         model.train()
         total_loss = 0
@@ -159,6 +165,11 @@ def main():
             
         print(f"Epoch {epoch+1:02d}, Loss: {total_loss/len(train_loader):.4f}")
         
+    # Segera bebaskan train_loader dan optimizer
+    del train_loader, optimizer
+    gc.collect()
+    torch.cuda.empty_cache()
+        
     # Create an extract loader for train set (larger batch size, no shuffle)
     train_extract_loader = get_neighbor_loader(
         train_data, 
@@ -169,24 +180,40 @@ def main():
     )
     
     # Phase 2: Feature Extraction
-    print("\\nStarting Phase 2: Extracting Embeddings & Concatenating Features...")
-    train_features, train_labels, _ = extract_features(model, train_extract_loader, device)
-    test_features, test_labels, inf_time_gnn = extract_features(model, test_loader, device)
-
-    # Bebaskan RAM dari memori graph
-    import gc
-    del train_data
-    del test_data
-    del train_loader
-    del train_extract_loader
-    del test_loader
-    del train_df
-    del train_df_sampled
-    del df
+    print("\nStarting Phase 2: Extracting Embeddings & Concatenating Features...")
+    orig_dim = len(feature_cols)
+    emb_dim = hidden_channels
+    train_total_samples = train_data['transaction'].num_nodes
+    
+    print(f"Extracting train features ({train_total_samples} samples)...")
+    train_features, train_labels, _ = extract_features(
+        model, train_extract_loader, device,
+        total_samples=train_total_samples,
+        orig_feat_dim=orig_dim,
+        emb_dim=emb_dim
+    )
+    
+    # Segera bebaskan train_data dan loader-nya sebelum ekstraksi data test
+    del train_data, train_extract_loader
     gc.collect()
+    torch.cuda.empty_cache()
+    
+    test_total_samples = len(test_node_indices)
+    print(f"Extracting test features ({test_total_samples} samples)...")
+    test_features, test_labels, inf_time_gnn = extract_features(
+        model, test_loader, device,
+        total_samples=test_total_samples,
+        orig_feat_dim=orig_dim,
+        emb_dim=emb_dim
+    )
+
+    # Bebaskan seluruh objek graf PyTorch Geometric dan model GNN sebelum Phase 3 (XGBoost)
+    del test_data, test_loader, model
+    gc.collect()
+    torch.cuda.empty_cache()
 
     # Phase 3: Classification with XGBoost
-    print("\\nStarting Phase 3: Training & Evaluating XGBoost Classifier...")
+    print("\nStarting Phase 3: Training & Evaluating XGBoost Classifier...")
     from xgboost import XGBClassifier
     
     num_neg_xgb = (train_labels == 0).sum()
@@ -194,17 +221,23 @@ def main():
     scale_pos_weight = float(num_neg_xgb / num_pos_xgb) if num_pos_xgb > 0 else 1.0
     print(f"XGBoost scale_pos_weight: {scale_pos_weight:.2f}")
     
-    xgb_model = XGBClassifier(
-        n_estimators=500,
-        max_depth=5,
-        learning_rate=0.05,
-        scale_pos_weight=scale_pos_weight,
-        random_state=42,
-        eval_metric='logloss'
-    )
+    xgb_params = {
+        'n_estimators': 300,
+        'max_depth': 5,
+        'learning_rate': 0.05,
+        'scale_pos_weight': scale_pos_weight,
+        'random_state': 42,
+        'eval_metric': 'logloss'
+    }
     
     start_time = time.time()
-    xgb_model.fit(train_features, train_labels)
+    try:
+        xgb_model = XGBClassifier(**xgb_params, tree_method='hist', device='cuda')
+        xgb_model.fit(train_features, train_labels)
+    except Exception as e:
+        print(f"XGBoost GPU failed ({e}), running on CPU hist...")
+        xgb_model = XGBClassifier(**xgb_params, tree_method='hist', n_jobs=-1)
+        xgb_model.fit(train_features, train_labels)
     xgb_train_time = time.time() - start_time
     
     start_time = time.time()
@@ -215,9 +248,21 @@ def main():
     
     preds_bin = (xgb_probs > 0.5).astype(int)
     f1 = f1_score(test_labels, preds_bin)
+    f1_macro = f1_score(test_labels, preds_bin, average='macro')
     recall = recall_score(test_labels, preds_bin)
+    precision = precision_score(test_labels, preds_bin, zero_division=0)
+    accuracy = accuracy_score(test_labels, preds_bin)
+    roc_auc = roc_auc_score(test_labels, xgb_probs)
     auprc = average_precision_score(test_labels, xgb_probs)
     
+    cm = confusion_matrix(test_labels, preds_bin)
+    if cm.shape == (2, 2):
+        tn, fp, fn, tp = cm.ravel()
+        specificity = tn / (tn + fp) if (tn + fp) > 0 else 0.0
+        gmean = float(np.sqrt(recall * specificity))
+    else:
+        gmean = 0.0
+        
     # Calculate 1% Lift
     import pandas as pd
     percentile = 0.01
@@ -231,8 +276,13 @@ def main():
     
     print("=== Results ===")
     print(f"Sampling Method : {sampling_method}")
-    print(f"F1-Score        : {f1:.4f}")
+    print(f"Accuracy        : {accuracy:.4f}")
+    print(f"Precision       : {precision:.4f}")
     print(f"Recall          : {recall:.4f}")
+    print(f"F1-Score (Bin)  : {f1:.4f}")
+    print(f"F1-Score (Macro): {f1_macro:.4f}")
+    print(f"GMean           : {gmean:.4f}")
+    print(f"ROC AUC         : {roc_auc:.4f}")
     print(f"AUPRC           : {auprc:.4f}")
     print(f"Lift@1%         : {lift_1_percent:.4f}")
     print(f"XGB Train Time  : {xgb_train_time:.4f} seconds")
@@ -255,8 +305,13 @@ def main():
     # Save Results as JSON
     result_dict = {
         "sampling_method": sampling_method,
-        "f1_score": float(f1),
+        "accuracy": float(accuracy),
+        "precision": float(precision),
         "recall": float(recall),
+        "f1_score": float(f1),
+        "f1_macro": float(f1_macro),
+        "gmean": float(gmean),
+        "roc_auc": float(roc_auc),
         "auprc": float(auprc),
         "lift_1_percent": float(lift_1_percent),
         "gnn_inference_time": float(inf_time_gnn),

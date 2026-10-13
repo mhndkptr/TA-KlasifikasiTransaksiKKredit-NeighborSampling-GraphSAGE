@@ -1,0 +1,48 @@
+data:
+  transactions: "/kaggle/input/credit-card-transactions/credit_card_transactions-ibm_v2.csv"
+  max_rows: null
+  start_year: 2016
+
+time_window:
+  reference_date: "2018-01-01" # Tanggal T0 (era modern 2016-2020 dengan sebaran fraud stabil)
+  train_days: 300
+  val_days: 30
+  gap_days: 8
+  test_days: 60
+
+sampling:
+  method: "uniform" # Pilihan: uniform, topology, importance
+  undersampling_ratio: 1.0 # 1.0 = tidak ada undersampling (mempertahankan topologi asli)
+
+model:
+  hidden_channels: 256 # Sesuai gambar: Hidden Dimension 256 (ReLU & BatchNorm)
+  out_channels: 1
+  num_layers: 2 # Sesuai gambar: Lapisan GraphSAGE 2
+  aggr: "mean" # Sesuai gambar: Mean Aggregator
+  dropout: 0.2 # Regularisasi dropout optimal
+
+training:
+  batch_size: 1024 # Sesuai gambar: Ukuran Batch 1024
+  epochs: 100 # Maksimal 100 epoch dengan early stopping
+  learning_rate: 0.001 # Sesuai gambar: Learning Rate 0.001 (Adam)
+  weight_decay: 0.0001 # Regularisasi L2 seimbang pada Adam optimizer
+  label_smoothing: 0.0 # Dinonaktifkan: Mencegah tabrakan matematis dengan pos_weight & mode collapse
+  grad_clip_norm: 5.0 # Mencegah exploding gradient tanpa memotong sinyal fraud alami
+  warmup_epochs: 0 # Dinonaktifkan: Pembelajaran aktif sejak epoch pertama
+  use_lr_scheduler: true # Kurangi LR saat performa validasi mendatar
+  lr_scheduler_factor: 0.5 # Sesuai gambar: Decay 0.5x
+  lr_scheduler_patience: 5 # Sesuai gambar: Decay per 5 epoch
+  early_stopping_patience: 15 # Sesuai gambar: Patience 15 epoch tanpa peningkatan AUPRC
+  loss_weight_strategy: "sqrt" # Pilihan: sqrt (teredam ~27x), clipped (maks batas), full (rasio penuh ~732x)
+  max_pos_weight: 50.0 # Batas clipping pos_weight jika memilih strategi clipped
+  log_step_interval: 1 # Interval pencatatan per-step mini-batch (1 = catat setiap step untuk kurva halus)
+  num_neighbors: [25, 10] # Sesuai gambar: Ukuran Sampel (k) 25 & 10 (Hop-1 dan Hop-2)
+
+classifier:
+  n_estimators: 100
+  max_depth: 5
+  learning_rate: 0.05
+
+output:
+  model_dir: "/kaggle/working/model/exp21/v6"
+  result_dir: "/kaggle/working/result/exp21/v6"
