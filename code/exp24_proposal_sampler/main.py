@@ -132,12 +132,16 @@ def extract_features(model, loader, device, num_nodes, feat_dim_tab, hidden_dim)
             num_nodes_dict = {ntype: batch[ntype].num_nodes for ntype in batch.node_types}
             embs = model.get_embeddings(batch.x_dict, batch.edge_index_dict, num_nodes_dict=num_nodes_dict)
             bs = batch["transaction"].batch_size
-            embs_cur = embs[:bs].cpu().numpy()
-            tab_cur = batch["transaction"].x[:bs].cpu().numpy()
-            y_cur = batch["transaction"].y[:bs].cpu().numpy()
-            feat_matrix[curr_idx : curr_idx + bs] = np.hstack([tab_cur, embs_cur])
-            labels[curr_idx : curr_idx + bs] = y_cur
-            curr_idx += bs
+            next_idx = min(curr_idx + bs, num_nodes)
+            actual_count = next_idx - curr_idx
+            if actual_count <= 0:
+                break
+            embs_cur = embs[:actual_count].cpu().numpy()
+            tab_cur = batch["transaction"].x[:actual_count].cpu().numpy()
+            y_cur = batch["transaction"].y[:actual_count].cpu().numpy()
+            feat_matrix[curr_idx : next_idx] = np.hstack([tab_cur, embs_cur])
+            labels[curr_idx : next_idx] = y_cur
+            curr_idx = next_idx
     return feat_matrix, labels, time.time() - start_time
 
 
@@ -292,20 +296,28 @@ def main() -> None:
     aggr = cfg.get("model", {}).get("aggr", "mean")
     dropout = cfg.get("model", {}).get("dropout", 0.2)
 
-    in_channels_dict = {
+    feature_dims = {
         "transaction": len(feature_cols),
         "user": train_graph["user"].x.size(1),
         "merchant": train_graph["merchant"].x.size(1),
     }
     model = HeteroGraphSAGE(
-        edge_types=train_graph.edge_types,
-        in_channels_dict=in_channels_dict,
         hidden_channels=hidden_dim,
         out_channels=1,
         num_layers=num_layers,
+        data_metadata=train_graph.metadata(),
+        feature_dims=feature_dims,
+        edge_types=train_graph.edge_types,
         aggr=aggr,
         dropout=dropout,
     ).to(device)
+
+    # Inisialisasi parameter lazy layer via dry run 1 mini-batch sebelum Optimizer
+    for dry_batch in train_loader:
+        dry_batch = dry_batch.to(device)
+        dry_num_nodes = {ntype: dry_batch[ntype].num_nodes for ntype in dry_batch.node_types}
+        _ = model(dry_batch.x_dict, dry_batch.edge_index_dict, num_nodes_dict=dry_num_nodes)
+        break
 
     # Loss & Pos Weight
     num_pos = float((train_df["Is Fraud?"] == 1).sum())

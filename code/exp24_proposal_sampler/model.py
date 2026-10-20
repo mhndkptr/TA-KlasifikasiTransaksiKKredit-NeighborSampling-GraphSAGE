@@ -6,15 +6,29 @@ from torch_geometric.nn import SAGEConv, HeteroConv
 class HeteroGraphSAGE(nn.Module):
     def __init__(
         self, 
-        hidden_channels: int, 
-        out_channels: int, 
-        num_layers: int, 
-        data_metadata: tuple, 
-        feature_dims: dict, 
+        hidden_channels: int = 128, 
+        out_channels: int = 1, 
+        num_layers: int = 2, 
+        data_metadata: tuple | None = None, 
+        feature_dims: dict | None = None, 
         aggr: str = 'mean',
-        dropout: float = 0.2
+        dropout: float = 0.2,
+        edge_types: list | tuple | None = None,
+        in_channels_dict: dict | None = None,
+        **kwargs,
     ):
         super().__init__()
+        
+        # Penanganan fleksibel untuk data_metadata & edge_types
+        if edge_types is not None:
+            resolved_edge_types = list(edge_types)
+        elif data_metadata is not None:
+            resolved_edge_types = list(data_metadata[1])
+        else:
+            raise ValueError("Harus menyediakan data_metadata atau edge_types untuk HeteroGraphSAGE.")
+
+        # Penanganan fleksibel untuk feature_dims & in_channels_dict
+        resolved_feature_dims = feature_dims if feature_dims is not None else (in_channels_dict or {})
         
         self.num_layers = num_layers
         self.aggr = aggr
@@ -24,7 +38,7 @@ class HeteroGraphSAGE(nn.Module):
         # Inisialisasi proyeksi linear untuk tiap tipe node
         self.lin_embeddings = nn.ModuleDict()
         self.param_embeddings = nn.ParameterDict()
-        for node_type, dim in feature_dims.items():
+        for node_type, dim in resolved_feature_dims.items():
             if dim == 0:
                 self.param_embeddings[node_type] = nn.Parameter(torch.randn(1, hidden_channels))
             else:
@@ -40,7 +54,7 @@ class HeteroGraphSAGE(nn.Module):
                     out_channels=hidden_channels,
                     aggr=aggr
                 )
-                for edge_type in data_metadata[1]
+                for edge_type in resolved_edge_types
             })
             self.convs.append(conv)
             
@@ -50,7 +64,10 @@ class HeteroGraphSAGE(nn.Module):
         # Classifier linear bawaan untuk monitoring val AUPRC selama pelatihan GNN
         self.classifier = nn.Linear(hidden_channels, out_channels)
 
-    def forward(self, x_dict, edge_index_dict, num_nodes_dict, return_embeddings=False):
+    def forward(self, x_dict, edge_index_dict, num_nodes_dict=None, return_embeddings=False):
+        if num_nodes_dict is None:
+            num_nodes_dict = {ntype: x.size(0) for ntype, x in x_dict.items()}
+
         # 1. Proyeksi fitur awal
         h_dict = {}
         
@@ -59,7 +76,7 @@ class HeteroGraphSAGE(nn.Module):
             if node_type in self.lin_embeddings:
                 h_dict[node_type] = self.lin_embeddings[node_type](x)
             elif node_type in self.param_embeddings:
-                num_nodes = num_nodes_dict[node_type]
+                num_nodes = num_nodes_dict.get(node_type, 1)
                 h_dict[node_type] = self.param_embeddings[node_type].expand(num_nodes, -1)
                 
         # 2. Message Passing Layer
@@ -77,6 +94,9 @@ class HeteroGraphSAGE(nn.Module):
             
         out = self.classifier(tx_emb)
         return out.squeeze(-1)
+
+    def get_embeddings(self, x_dict, edge_index_dict, num_nodes_dict=None):
+        return self.forward(x_dict, edge_index_dict, num_nodes_dict=num_nodes_dict, return_embeddings=True)
 
 def manual_weighted_bce(logits, targets, pos_weight):
     """
