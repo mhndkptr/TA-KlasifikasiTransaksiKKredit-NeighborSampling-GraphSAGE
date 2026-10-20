@@ -769,8 +769,8 @@ def main() -> None:
         },
     }
     results_summary["run_id"] = run_id
-    results_summary["is_smoke_test"] = args.nrows is not None
-    results_summary["nrows"] = args.nrows
+    results_summary["is_smoke_test"] = nrows is not None
+    results_summary["nrows"] = nrows
     write_json(result_dir / f"exp24_{sampling_method}_results.json", results_summary)
 
     manifest = {
@@ -782,8 +782,8 @@ def main() -> None:
         "evaluation_seed": evaluation_seed,
         "sampling_method": sampling_method,
         "paired_block": f"seed_{seed}",
-        "nrows": args.nrows,
-        "is_smoke_test": args.nrows is not None,
+        "nrows": nrows,
+        "is_smoke_test": nrows is not None,
         "predictions_file": str(predictions_path.name),
         "history_csv": str(csv_history_path.name),
         "history_json": str(json_history_path.name),

@@ -133,28 +133,19 @@ def enrich(
         if len(pred_labels) != len(id_labels):
             config_data = yaml.safe_load(config_snapshot.read_text(encoding="utf-8"))
             dataset = resolve_transaction_dataset(config_data, config_snapshot)
-            nr_arg = len(pred_labels) if len(pred_labels) < 200000 else None
-            # Jika pred_labels 1100 (smoke test 30k), cari nrows dari manifest jika ada
-            if manifest.is_file():
-                try:
-                    man_data = json.loads(manifest.read_text(encoding="utf-8"))
-                    if man_data.get("nrows"):
-                        nr_arg = man_data.get("nrows")
-                except Exception:
-                    pass
-            identity_dict = build_test_identity(dataset, config_data["time_window"], int(config_data["data"]["start_year"]), nrows=nr_arg)
+            raw_nrows = config_data.get("data", {}).get("max_rows")
+            identity_dict = build_test_identity(dataset, config_data["time_window"], int(config_data["data"]["start_year"]), nrows=raw_nrows)
             np.savez_compressed(identity_path, **identity_dict)
-            identity = np.load(identity_path)
-            id_labels = identity["label"].astype(np.uint8)
+            with np.load(identity_path) as regenerated_id:
+                id_labels = regenerated_id["label"].astype(np.uint8)
+                identity_dict_reloaded = {k: regenerated_id[k] for k in regenerated_id.files}
+            identity = identity_dict_reloaded
 
         if not np.array_equal(pred_labels, id_labels):
-            if len(pred_labels) == len(id_labels):
-                pass
-            else:
-                raise ValueError(
-                    f"Row identity mismatch untuk seed/method {seed_dir.name}/{method} "
-                    f"(pred: {len(pred_labels)}, identity: {len(id_labels)})"
-                )
+            raise ValueError(
+                f"Row identity mismatch untuk seed/method {seed_dir.name}/{method} "
+                f"(pred: {len(pred_labels)}, identity: {len(id_labels)})"
+            )
 
         np.savez_compressed(
             record / "test_predictions_with_identity.npz",
@@ -208,11 +199,13 @@ def run_block(config: dict, config_path: Path, seed: int, device: str | None, nr
     model_root = resolve(config["output"]["model_dir"], config_path)
     model_root.mkdir(parents=True, exist_ok=True)
 
+    effective_nrows = nrows if nrows is not None else config.get("data", {}).get("max_rows")
+
     seed_dir = result_root / f"seed_{seed}"
     seed_dir.mkdir(exist_ok=True)
     events = seed_dir / "orchestrator_events.jsonl"
-    identity_path = prepare_identity(config, config_path, result_root, nrows=nrows)
-    append_event(events, "paired_block_started", seed=seed, transaction_dataset=str(dataset_path), nrows=nrows)
+    identity_path = prepare_identity(config, config_path, result_root, nrows=effective_nrows)
+    append_event(events, "paired_block_started", seed=seed, transaction_dataset=str(dataset_path), nrows=effective_nrows)
 
     # Jalankan validasi sampler proposal
     subprocess.run([sys.executable, str(root / "validate_sampler.py")], cwd=root, check=True)
@@ -236,8 +229,8 @@ def run_block(config: dict, config_path: Path, seed: int, device: str | None, nr
         derived_path.write_text(yaml.safe_dump(derived, sort_keys=False), encoding="utf-8")
 
         run_id = f"exp24_{method}_seed_{seed}"
-        if nrows is not None:
-            run_id += f"_nr{nrows}"
+        if effective_nrows is not None:
+            run_id += f"_nr{effective_nrows}"
 
         command = [
             sys.executable,
@@ -253,8 +246,8 @@ def run_block(config: dict, config_path: Path, seed: int, device: str | None, nr
         ]
         if device:
             command += ["--device", device]
-        if nrows is not None:
-            command += ["--nrows", str(nrows)]
+        if effective_nrows is not None:
+            command += ["--nrows", str(effective_nrows)]
 
         append_event(events, "run_started", seed=seed, method=method)
         resource = monitor(command, root, seed_dir / f"{method}_stdout.log")
