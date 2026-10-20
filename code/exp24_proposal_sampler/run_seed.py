@@ -184,7 +184,22 @@ def run_block(config: dict, config_path: Path, seed: int, device: str | None, nr
         derived_path = seed_dir / f"config_{method}.yaml"
         derived_path.write_text(yaml.safe_dump(derived, sort_keys=False), encoding="utf-8")
 
-        command = [sys.executable, str(root / "main.py"), "--config", str(derived_path), "--sampling", method, "--seed", str(seed)]
+        run_id = f"exp24_{method}_seed_{seed}"
+        if nrows is not None:
+            run_id += f"_nr{nrows}"
+
+        command = [
+            sys.executable,
+            str(root / "main.py"),
+            "--config",
+            str(derived_path),
+            "--sampling",
+            method,
+            "--seed",
+            str(seed),
+            "--run-id",
+            run_id,
+        ]
         if device:
             command += ["--device", device]
         if nrows is not None:

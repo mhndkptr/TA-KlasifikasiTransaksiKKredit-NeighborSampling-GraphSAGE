@@ -2,8 +2,11 @@ from __future__ import annotations
 
 import argparse
 import csv
+from datetime import datetime
 import json
 from pathlib import Path
+import shutil
+import sys
 import time
 import numpy as np
 import psutil
@@ -25,6 +28,63 @@ from data_preprocessing import apply_strict_anti_leakage_preprocessing, load_and
 from graph_builder import build_hetero_graph
 from model import HeteroGraphSAGE
 from samplers import apply_sampling_weights, get_neighbor_loader, sampling_weight_audit
+
+
+class DualLogger:
+    """Menduplikasikan output stdout & stderr secara real-time ke terminal dan ke berkas log."""
+    def __init__(self, log_path: Path):
+        self.terminal_stdout = sys.stdout
+        self.terminal_stderr = sys.stderr
+        log_path.parent.mkdir(parents=True, exist_ok=True)
+        self.log_file = open(log_path, "a", encoding="utf-8")
+        self._closed = False
+        sys.stdout = self
+        sys.stderr = self
+
+    def write(self, message: str) -> None:
+        self.terminal_stdout.write(message)
+        self.terminal_stdout.flush()
+        if not self._closed:
+            try:
+                self.log_file.write(message)
+                self.log_file.flush()
+            except Exception:
+                pass
+
+    def flush(self) -> None:
+        self.terminal_stdout.flush()
+        if not self._closed:
+            try:
+                self.log_file.flush()
+            except Exception:
+                pass
+
+    def close(self) -> None:
+        if not self._closed:
+            self._closed = True
+            sys.stdout = self.terminal_stdout
+            sys.stderr = self.terminal_stderr
+            try:
+                self.log_file.close()
+            except Exception:
+                pass
+
+
+def update_runs_index(index_path: Path, entry: dict) -> None:
+    """Mencatat entri run ke dalam runs_index.csv untuk pemantauan historis terpusat."""
+    index_path.parent.mkdir(parents=True, exist_ok=True)
+    headers = [
+        "run_id", "timestamp", "sampling_method", "seed", "nrows",
+        "best_epoch", "val_auprc", "test_auprc", "test_f1",
+        "optimal_threshold", "test_fp", "test_fn", "runtime_sec",
+        "status", "run_dir", "log_file"
+    ]
+    file_exists = index_path.is_file()
+    with index_path.open("a", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(f, fieldnames=headers)
+        if not file_exists:
+            writer.writeheader()
+        writer.writerow({k: entry.get(k, "") for k in headers})
 
 
 def manual_weighted_bce(logits: torch.Tensor, targets: torch.Tensor, pos_weight: float) -> torch.Tensor:
@@ -175,6 +235,9 @@ def main() -> None:
     parser.add_argument("--seed", type=int, default=None)
     parser.add_argument("--device", type=str, default=None)
     parser.add_argument("--nrows", type=int, default=None)
+    parser.add_argument("--run-id", type=str, default=None, help="ID unik untuk run ini (default: auto timestamped)")
+    parser.add_argument("--log-to-file", action="store_true", default=None, help="Paksa aktifkan pencatatan log ke file")
+    parser.add_argument("--no-log-to-file", action="store_true", help="Nonaktifkan pencatatan log ke file")
     args = parser.parse_args()
 
     cfg = load_config(args.config)
@@ -184,6 +247,7 @@ def main() -> None:
     tw_cfg = cfg.get("time_window", {})
     out_cfg = cfg.get("output", {})
     feat_cfg = cfg.get("features", {})
+    log_cfg = cfg.get("logging", {})
 
     seed = args.seed if args.seed is not None else exp_cfg.get("seed", 42)
     evaluation_seed = exp_cfg.get("evaluation_seed", seed + 1000)
@@ -200,24 +264,67 @@ def main() -> None:
     device_str = args.device or ("cuda" if torch.cuda.is_available() else "cpu")
     device = torch.device(device_str)
 
-    start_total_time = time.time()
+    # 1. Tentukan Run ID
+    timestamp_str = datetime.now().strftime("%Y%m%d_%H%M%S")
+    nrows_tag = f"_nr{args.nrows}" if args.nrows is not None else ""
+    default_run_id = f"exp24_{sampling_method}_s{seed}{nrows_tag}_{timestamp_str}"
+    run_id = args.run_id or exp_cfg.get("run_id") or default_run_id
+
+    # 2. Tentukan Direktori Output
     result_root = Path(out_cfg.get("result_dir", "../../result/exp24_proposal_sampler"))
-    result_dir = result_root / f"seed_{seed}"
-    result_dir.mkdir(parents=True, exist_ok=True)
+    runs_root = Path(out_cfg.get("runs_dir", str(result_root / "runs")))
     model_root = Path(out_cfg.get("model_dir", "../../model/exp24_proposal_sampler"))
-    model_dir = model_root / f"seed_{seed}"
+    log_root = Path(log_cfg.get("log_dir", str(result_root / "logs")))
+
+    # Folder terisolasi khusus untuk run ini (mencegah hasil tercampur)
+    isolate_runs = out_cfg.get("isolate_runs", True)
+    if isolate_runs:
+        result_dir = runs_root / run_id
+        model_dir = model_root / "runs" / run_id
+    else:
+        result_dir = result_root / f"seed_{seed}"
+        model_dir = model_root / f"seed_{seed}"
+
+    result_dir.mkdir(parents=True, exist_ok=True)
     model_dir.mkdir(parents=True, exist_ok=True)
 
+    # Direktori canonical seed (untuk kompatibilitas multi-seed aggregasi EXP24)
+    canonical_seed_dir = result_root / f"seed_{seed}"
+    canonical_seed_dir.mkdir(parents=True, exist_ok=True)
+    canonical_model_dir = model_root / f"seed_{seed}"
+    canonical_model_dir.mkdir(parents=True, exist_ok=True)
+
+    # 3. Setup File Logging jika diaktifkan di YAML atau CLI
+    should_log = log_cfg.get("log_to_file", True)
+    if args.no_log_to_file:
+        should_log = False
+    elif args.log_to_file:
+        should_log = True
+
+    logger = None
+    log_path = None
+    if should_log:
+        log_root.mkdir(parents=True, exist_ok=True)
+        log_path = log_root / f"{run_id}.log"
+        logger = DualLogger(log_path)
+        import atexit
+        atexit.register(logger.close)
+
+    start_total_time = time.time()
     events_path = result_dir / "events.jsonl"
     csv_history_path = result_dir / f"exp24_{sampling_method}_training_history.csv"
     json_history_path = result_dir / f"exp24_{sampling_method}_history.json"
 
     print("=" * 70)
     print("  EXP24: PROPOSAL-ALIGNED NEIGHBOR SAMPLING FOR GRAPHSAGE")
-    print(f"  Sampler: {sampling_method.upper()} | Seed: {seed} | Device: {device}")
+    print(f"  Run ID  : {run_id}")
+    print(f"  Sampler : {sampling_method.upper()} | Seed: {seed} | Device: {device_str}")
+    print(f"  Run Dir : {result_dir}")
+    if log_path:
+        print(f"  Log File: {log_path}")
     print("=" * 70)
 
-    append_event(events_path, "run_initialized", sampling_method=sampling_method, seed=seed)
+    append_event(events_path, "run_initialized", run_id=run_id, sampling_method=sampling_method, seed=seed)
 
     # 1. Pemuatan & Pembagian Temporal
     t_prep_start = time.time()
@@ -648,33 +755,89 @@ def main() -> None:
             "val_latency_ms_per_1k": (inf_val_t / len(val_df)) * 1000.0 * 1000.0,
         },
     }
+    results_summary["run_id"] = run_id
+    results_summary["is_smoke_test"] = args.nrows is not None
+    results_summary["nrows"] = args.nrows
     write_json(result_dir / f"exp24_{sampling_method}_results.json", results_summary)
 
     manifest = {
         "experiment_id": "EXP24-ProposalSampler",
+        "run_id": run_id,
+        "timestamp": datetime.now().isoformat(),
         "status": "complete",
         "seed": seed,
         "evaluation_seed": evaluation_seed,
         "sampling_method": sampling_method,
         "paired_block": f"seed_{seed}",
+        "nrows": args.nrows,
+        "is_smoke_test": args.nrows is not None,
         "predictions_file": str(predictions_path.name),
         "history_csv": str(csv_history_path.name),
         "history_json": str(json_history_path.name),
         "events_log": str(events_path.name),
+        "log_file": str(log_path.resolve()) if log_path else None,
+        "run_dir": str(result_dir.resolve()),
     }
     write_json(result_dir / f"exp24_{sampling_method}_manifest.json", manifest)
 
-    append_event(events_path, "run_completed", **results_summary["test_metrics"])
+    # Sinkronisasi ke canonical seed directory jika ini full run atau jika isolate_runs dimatikan
+    if args.nrows is None or not isolate_runs:
+        for fname in [
+            f"exp24_{sampling_method}_predictions.npz",
+            f"exp24_{sampling_method}_results.json",
+            f"exp24_{sampling_method}_manifest.json",
+            f"exp24_{sampling_method}_training_history.csv",
+            f"exp24_{sampling_method}_history.json",
+            f"exp24_{sampling_method}_xgboost_history.json",
+            f"exp24_{sampling_method}_sampler_weight_audit.json",
+        ]:
+            src = result_dir / fname
+            if src.is_file():
+                shutil.copy2(src, canonical_seed_dir / fname)
+        src_gnn = model_dir / f"exp24_{sampling_method}_best_gnn.pt"
+        if src_gnn.is_file():
+            shutil.copy2(src_gnn, canonical_model_dir / f"exp24_{sampling_method}_best_gnn.pt")
 
+    # Catat ke index terpusat runs_index.csv
+    index_path = result_root / "runs_index.csv"
+    update_runs_index(index_path, {
+        "run_id": run_id,
+        "timestamp": datetime.now().isoformat(),
+        "sampling_method": sampling_method,
+        "seed": seed,
+        "nrows": args.nrows if args.nrows is not None else "full",
+        "best_epoch": best_epoch,
+        "val_auprc": round(float(best_val_auprc), 6),
+        "test_auprc": round(float(m_ind["auprc"]), 6),
+        "test_f1": round(float(m_opt["f1_score"]), 6),
+        "optimal_threshold": round(float(optimal_tau), 4),
+        "test_fp": m_opt["fp"],
+        "test_fn": m_opt["fn"],
+        "runtime_sec": round(total_pipeline_time, 2),
+        "status": "complete",
+        "run_dir": str(result_dir.resolve()),
+        "log_file": str(log_path.resolve()) if log_path else "",
+    })
+
+    append_event(events_path, "run_completed", run_id=run_id, **results_summary["test_metrics"])
+
+    num_test_tx = len(y_test)
+    num_test_fraud = int(y_test.sum())
     print("\n" + "=" * 70)
-    print("  HASIL AKHIR PENGUJIAN EXP24 PADA TEST SET (283.529 TRANSAKSI, 421 FRAUD)")
+    print(f"  HASIL AKHIR PENGUJIAN EXP24 PADA TEST SET ({num_test_tx:,} TRANSAKSI, {num_test_fraud:,} FRAUD)")
+    print(f"  • Run ID    : {run_id}")
     print(f"  • AUPRC     : {m_ind['auprc']:.6f}")
     print(f"  • F1-Score  : {m_opt['f1_score']:.6f} (Tau: {optimal_tau:.4f})")
     print(f"  • Precision : {m_opt['precision']:.6f}")
     print(f"  • Recall    : {m_opt['recall']:.6f}")
     print(f"  • FP / FN   : {m_opt['fp']} / {m_opt['fn']}")
+    print(f"  • Run Dir   : {result_dir}")
+    if log_path:
+        print(f"  • Log File  : {log_path}")
     print(f"  • Total Time: {total_pipeline_time:.1f} detik")
     print("=" * 70)
+    if logger is not None:
+        logger.close()
 
 
 if __name__ == "__main__":

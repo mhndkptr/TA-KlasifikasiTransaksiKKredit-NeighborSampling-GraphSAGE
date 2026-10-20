@@ -139,17 +139,23 @@ Output yang diharapkan:
 ```
 
 ### Langkah 6.2: Smoke Test Cepat (30.000 Baris pada GPU)
-Jalankan uji coba cepat dengan pembatasan baris untuk memverifikasi alur forward/backward pada GPU RTX 5060 Ti Anda:
+Jalankan uji coba cepat dengan pembatasan baris dan Run ID khusus agar hasil smoke test tidak tercampur dengan hasil pelatihan resmi:
 ```cmd
-python main.py --config config.reference.yaml --sampling topology --seed 42 --nrows 30000 --device cuda
+python main.py --config config.reference.yaml --sampling topology --seed 42 --nrows 30000 --run-id smoke_topo_30k --device cuda
 ```
-*Jika proses berhasil menyelesaikan 20 epoch GNN dan downstream XGBoost, sistem lokal Anda siap untuk menjalankan pengujian penuh.*
+*Hasil smoke test akan tersimpan rapi di subfolder terisolasi `../../result/exp24_proposal_sampler/runs/smoke_topo_30k/` dan log konsol tersimpan di `../../result/exp24_proposal_sampler/logs/smoke_topo_30k.log` tanpa menimpa hasil resmi multi-seed.*
 
 ---
 
 ## 7. Eksekusi Pelatihan Penuh (*Full Multi-Seed Run*)
 
 Dengan **RTX 5060 Ti 16GB VRAM** dan **RAM 32GB**, PC Anda mampu menjalankan dataset penuh secara lokal tanpa batasan baris (`nrows: null`).
+
+### Menjalankan 1 Run Penuh Langsung (Contoh: Seed 42, Sampler Topology)
+```cmd
+python main.py --config config.reference.yaml --sampling topology --seed 42 --device cuda
+```
+*(Otomatis menghasilkan Run ID unik berstempel waktu, mencatat log ke berkas, dan menyinkronkan hasil ke `result/exp24_proposal_sampler/seed_42/`).*
 
 ### Menjalankan 5 Seed Berpasangan (15 Training Run Lengkap)
 Perintah ini mengeksekusi 3 metode sampling (`uniform`, `topology`, `importance`) untuk 5 seed berpasangan (`42`, `100`, `2026`, `3407`, `8713`):
@@ -163,20 +169,32 @@ python run_seed.py --config config.reference.yaml --seeds 42 100 2026 3407 8713 
 
 ---
 
-## 8. Pemantauan Real-Time & Pemeriksaan Telemetri Per-Epoch
+## 8. Pemantauan Real-Time, File Logging, & Riwayat Run
 
+### 8.1 Berkas Log Konsol Otomatis (`.log`)
+Seluruh output teks terminal, proses pelatihan, metrik per-epoch, dan peringatan kini **otomatis direkam secara real-time ke berkas log** pada:
+`..\..\result\exp24_proposal_sampler\logs\<run_id>.log`
+
+Pengaturan ini dikendalikan langsung melalui konfigurasi YAML:
+```yaml
+logging:
+  log_to_file: true
+  log_dir: "../../result/exp24_proposal_sampler/logs"
+```
+
+### 8.2 Indeks Pelacak Seluruh Run (`runs_index.csv`)
+Agar hasil eksperimen tidak saling tercampur atau hilang, setiap run (baik smoke-test maupun full run) otomatis tercatat dalam satu baris tabel di:
+`..\..\result\exp24_proposal_sampler\runs_index.csv`
+
+Kolom yang tercatat meliputi: `run_id`, `timestamp`, `sampling_method`, `seed`, `nrows`, `best_epoch`, `val_auprc`, `test_auprc`, `test_f1`, `optimal_threshold`, `test_fp`, `test_fn`, `runtime_sec`, `status`, `run_dir`, `log_file`.
+
+### 8.3 Pemantauan Hardware GPU
 Buka jendela **Anaconda Prompt kedua** untuk memantau proses:
-
-### 8.1 Pemantauan Hardware GPU
 ```cmd
 nvidia-smi -l 2
 ```
 - **GPU-Util**: Akan berada pada kisaran 75% - 98% saat pelatihan GNN.
 - **Memory-Usage**: Penggunaan VRAM berkisar antara **3,0 GB s.d. 5,5 GB** (sangat longgar di dalam kapasitas 16 GB VRAM Anda).
-
-### 8.2 Memeriksa Telemetri Per-Epoch CSV Secara Langsung
-Skrip secara otomatis mencatat metrik dan waktu setiap epoch ke dalam berkas CSV:
-`..\..\result\exp24_proposal_sampler\seed_42\exp24_topology_training_history.csv`
 
 Di Anaconda Prompt kedua, Anda dapat membaca baris-baris epoch terbaru menggunakan perintah `type` atau PowerShell:
 ```cmd

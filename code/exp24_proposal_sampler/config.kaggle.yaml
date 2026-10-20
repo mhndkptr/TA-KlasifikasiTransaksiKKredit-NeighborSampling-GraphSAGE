@@ -1,5 +1,6 @@
 experiment:
   id: "EXP24-ProposalSampler"
+  run_id: null # Optional custom Run ID (null = auto: exp24_{sampling}_s{seed}_{timestamp})
   version: "v1_proposal_aligned"
   seed: 42
   evaluation_seed: 1042
@@ -84,7 +85,14 @@ execution:
   resume_completed: true
   run_tabular_baseline_once: true
 
+logging:
+  log_to_file: true
+  log_dir: "/kaggle/working/result/exp24_proposal_sampler/logs"
+  log_level: "INFO"
+
 output:
   model_dir: "/kaggle/working/model/exp24_proposal_sampler"
   result_dir: "/kaggle/working/result/exp24_proposal_sampler"
+  runs_dir: "/kaggle/working/result/exp24_proposal_sampler/runs"
+  isolate_runs: true
   save_feature_matrices: false
