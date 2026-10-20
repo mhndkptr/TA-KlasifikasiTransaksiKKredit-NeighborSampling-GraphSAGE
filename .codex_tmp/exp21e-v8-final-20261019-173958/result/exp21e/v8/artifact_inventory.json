@@ -1,0 +1,15 @@
+{
+  "status": "passed",
+  "counts": {
+    "v5": 15,
+    "v6": 18,
+    "v7": 5
+  },
+  "required": {
+    "v5": 15,
+    "v6": 18,
+    "v7": 5
+  },
+  "duplicates": {},
+  "errors": []
+}

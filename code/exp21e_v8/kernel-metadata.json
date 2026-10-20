@@ -1,0 +1,24 @@
+{
+  "id": "muhammadhendikaputra/exp21e-v8-mechanism-and-statistical-audit",
+  "title": "EXP21E V8 Mechanism and Statistical Audit",
+  "code_file": "exp21e_v8_mechanism_statistical_audit.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": "true",
+  "enable_gpu": true,
+  "enable_tpu": false,
+  "enable_internet": true,
+  "machine_shape": "NvidiaL4",
+  "dataset_sources": [
+    "ealtman2019/credit-card-transactions"
+  ],
+  "competition_sources": [],
+  "kernel_sources": [
+    "muhammadhendikaputra/exp21e-v5-primary-multi-seed",
+    "muhammadhendikaputra/exp21e-v6-rolling-origin-robustness",
+    "muhammadhendikaputra/exp21e-v6-rolling-plus-180d",
+    "muhammadhendikaputra/exp21e-v7-tabular-mlp-baseline"
+  ],
+  "model_sources": []
+}
+

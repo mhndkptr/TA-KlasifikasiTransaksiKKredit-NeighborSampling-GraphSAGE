@@ -1,0 +1,33 @@
+{
+  "experiment": "EXP21D-v8-FairCtrl-1B",
+  "status": "passed",
+  "checks": [
+    "reference_config_valid",
+    "no_kernel_metadata",
+    "source_contracts_valid",
+    "cross_sampler_tabular_and_labels_equal",
+    "pca_components_orthonormal",
+    "pca_fit_train_rows_only",
+    "transformed_shapes_are_10d_and_20d",
+    "joint_block_permutation_preserves_other_block",
+    "xgboost_validation_threshold_and_test_evaluation_work",
+    "static_train_only_and_single_test_contract",
+    "compileall_passed",
+    "ruff_passed",
+    "notebook_contains_latest_source"
+  ],
+  "real_artifact_smoke_run": {
+    "run_id": "implementation_validation_smoke_v2",
+    "status": "complete",
+    "samplers": ["uniform", "topology", "importance"],
+    "test_evaluations_per_model": 1,
+    "pca_fit_split": "train_only",
+    "artifact_count": 112,
+    "plot_files": 10,
+    "prediction_archives": 3,
+    "feature_matrices": 27,
+    "saved_models_and_pca_artifacts": 15,
+    "reanalysis_without_training": "passed"
+  },
+  "kaggle_push": false
+}

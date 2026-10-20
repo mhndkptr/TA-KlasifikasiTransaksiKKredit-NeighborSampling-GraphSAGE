@@ -1,0 +1,6 @@
+seed,rows,consistent_wrong,prediction_switch,fraud_prediction_switch
+42,283529,51,46,8
+100,283529,60,52,16
+2026,283529,64,18,3
+3407,283529,40,63,22
+8713,283529,57,30,10

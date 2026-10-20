@@ -1,0 +1,23 @@
+experiment:
+  id: "EXP21D-v11-SamplerStatistics-5S"
+  analysis_seed: 20261019
+  selected_training_seeds: [42, 100, 2026]
+
+inputs:
+  exp4s_root: "../../result/exp21d_v10_sampler_multiseed_4s/kaggle_download/result/exp21d_v10_sampler_multiseed_4s"
+
+analysis:
+  methods: ["uniform", "topology", "importance"]
+  primary_metric: "auprc"
+  bootstrap_metrics: ["auprc", "f1"]
+  bootstrap_resamples: 2000
+  confidence_level: 0.95
+  temporal_block: "calendar_day"
+  bootstrap_training_seeds: true
+  budgets: [100, 200, 300, 421, 500, 1000]
+  threshold_offsets: [-0.10, -0.05, 0.00, 0.05, 0.10]
+  mcnemar_cohorts: ["all", "fraud", "nonfraud"]
+
+output:
+  result_dir: "../../result/exp21d_v11_sampler_statistics_5s"
+  snapshot_source: true

@@ -1,0 +1,209 @@
+{
+  "unit_of_resampling": "calendar day, paired within seed and transaction-aligned model outputs",
+  "estimand": "mean daily metric difference against V5 Uniform, averaged across paired seeds",
+  "replicates": 2000,
+  "confidence_level": 0.95,
+  "comparisons": {
+    "topology": {
+      "paired_seeds": [
+        42,
+        100,
+        2026,
+        3407,
+        8713
+      ],
+      "metrics": {
+        "auprc": {
+          "observed_mean_daily_difference": 0.0031539143474611855,
+          "ci_low": -0.005958004840507191,
+          "ci_high": 0.01392930464527795,
+          "bootstrap_probability_positive": 0.723,
+          "per_seed": {
+            "42": {
+              "days": 39,
+              "mean_difference": -0.009587804571022457
+            },
+            "100": {
+              "days": 39,
+              "mean_difference": -0.009747952887506805
+            },
+            "2026": {
+              "days": 39,
+              "mean_difference": 0.002093450642897255
+            },
+            "3407": {
+              "days": 39,
+              "mean_difference": 0.026192664883280703
+            },
+            "8713": {
+              "days": 39,
+              "mean_difference": 0.006819213669657229
+            }
+          }
+        },
+        "f1": {
+          "observed_mean_daily_difference": 0.0007850975316977995,
+          "ci_low": -0.010700975072288834,
+          "ci_high": 0.014390578651404385,
+          "bootstrap_probability_positive": 0.5025,
+          "per_seed": {
+            "42": {
+              "days": 60,
+              "mean_difference": -0.013654797316897106
+            },
+            "100": {
+              "days": 60,
+              "mean_difference": 0.0008718706021892138
+            },
+            "2026": {
+              "days": 60,
+              "mean_difference": 0.010593523905683612
+            },
+            "3407": {
+              "days": 60,
+              "mean_difference": -0.012268061121960048
+            },
+            "8713": {
+              "days": 60,
+              "mean_difference": 0.018382951589473326
+            }
+          }
+        }
+      }
+    },
+    "importance": {
+      "paired_seeds": [
+        42,
+        100,
+        2026,
+        3407,
+        8713
+      ],
+      "metrics": {
+        "auprc": {
+          "observed_mean_daily_difference": 0.0013421905439270113,
+          "ci_low": -0.007860706864353957,
+          "ci_high": 0.011623301862142249,
+          "bootstrap_probability_positive": 0.5865,
+          "per_seed": {
+            "42": {
+              "days": 39,
+              "mean_difference": -0.009416941570577264
+            },
+            "100": {
+              "days": 39,
+              "mean_difference": -0.001953163795001781
+            },
+            "2026": {
+              "days": 39,
+              "mean_difference": -0.0013191366583900133
+            },
+            "3407": {
+              "days": 39,
+              "mean_difference": 0.026284135156731992
+            },
+            "8713": {
+              "days": 39,
+              "mean_difference": -0.006883940413127878
+            }
+          }
+        },
+        "f1": {
+          "observed_mean_daily_difference": 0.0015008388170556824,
+          "ci_low": -0.010613232427729538,
+          "ci_high": 0.01384663248421445,
+          "bootstrap_probability_positive": 0.6005,
+          "per_seed": {
+            "42": {
+              "days": 60,
+              "mean_difference": -0.009261559778044453
+            },
+            "100": {
+              "days": 60,
+              "mean_difference": 0.019291501335005196
+            },
+            "2026": {
+              "days": 60,
+              "mean_difference": -0.00557241785209637
+            },
+            "3407": {
+              "days": 60,
+              "mean_difference": 0.009767042368444525
+            },
+            "8713": {
+              "days": 60,
+              "mean_difference": -0.006720371988030486
+            }
+          }
+        }
+      }
+    },
+    "tabular_mlp": {
+      "paired_seeds": [
+        42,
+        100,
+        2026,
+        3407,
+        8713
+      ],
+      "metrics": {
+        "auprc": {
+          "observed_mean_daily_difference": -2.312388849843791e-05,
+          "ci_low": -0.015789787387275295,
+          "ci_high": 0.014598707425537937,
+          "bootstrap_probability_positive": 0.516,
+          "per_seed": {
+            "42": {
+              "days": 39,
+              "mean_difference": -0.015322454231012445
+            },
+            "100": {
+              "days": 39,
+              "mean_difference": 0.006530794531432731
+            },
+            "2026": {
+              "days": 39,
+              "mean_difference": -0.008466240283707713
+            },
+            "3407": {
+              "days": 39,
+              "mean_difference": 0.03944539204647452
+            },
+            "8713": {
+              "days": 39,
+              "mean_difference": -0.022303111505679284
+            }
+          }
+        },
+        "f1": {
+          "observed_mean_daily_difference": -0.05341421025374795,
+          "ci_low": -0.08156947764103141,
+          "ci_high": -0.02695169370363547,
+          "bootstrap_probability_positive": 0.0,
+          "per_seed": {
+            "42": {
+              "days": 60,
+              "mean_difference": -0.0790538404607439
+            },
+            "100": {
+              "days": 60,
+              "mean_difference": -0.06661166100000353
+            },
+            "2026": {
+              "days": 60,
+              "mean_difference": -0.05378452690729966
+            },
+            "3407": {
+              "days": 60,
+              "mean_difference": -0.07204215128625728
+            },
+            "8713": {
+              "days": 60,
+              "mean_difference": 0.00442112838556459
+            }
+          }
+        }
+      }
+    }
+  }
+}

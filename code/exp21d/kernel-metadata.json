@@ -1,0 +1,19 @@
+{
+  "id": "muhammadhendikaputra/exp21d-graphsage-golden-master",
+  "title": "Exp21d GraphSAGE Golden Master",
+  "code_file": "exp21d_training_notebook.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": "true",
+  "enable_gpu": true,
+  "enable_tpu": false,
+  "enable_internet": true,
+  "machine_shape": "NvidiaTeslaT4",
+  "dataset_sources": [
+    "muhammadhendikaputra/exp21d-graphsage-code",
+    "ealtman2019/credit-card-transactions"
+  ],
+  "competition_sources": [],
+  "kernel_sources": [],
+  "model_sources": []
+}

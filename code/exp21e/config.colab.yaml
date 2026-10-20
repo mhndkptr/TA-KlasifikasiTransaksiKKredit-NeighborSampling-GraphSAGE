@@ -1,0 +1,56 @@
+data:
+  transactions: "/content/dataset/credit_card_transactions-ibm_v2.csv"
+  max_rows: null
+  start_year: 2016
+
+time_window:
+  reference_date: "2018-01-01"
+  train_days: 300
+  val_days: 30
+  gap_days: 8
+  test_days: 60
+
+features:
+  mode: "clean"
+  use_cyclical_time: true
+  use_amount_log: true
+  exclude_high_cardinality: true
+
+sampling:
+  method: "uniform"
+  undersampling_ratio: 1.0
+
+model:
+  hidden_channels: 128
+  out_channels: 1
+  num_layers: 2
+  aggr: "mean"
+  dropout: 0.2
+
+training:
+  batch_size: 1024
+  epochs: 20
+  learning_rate: 0.001
+  weight_decay: 0.0001
+  label_smoothing: 0.0
+  grad_clip_norm: 5.0
+  warmup_epochs: 0
+  use_lr_scheduler: true
+  lr_scheduler_factor: 0.5
+  lr_scheduler_patience: 3
+  early_stopping_patience: 7
+  loss_weight_strategy: "sqrt"
+  max_pos_weight: 50.0
+  log_step_interval: 1
+  num_neighbors: [15, 10]
+
+classifier:
+  type: "end_to_end_gnn"
+
+threshold_calibration:
+  selection_metric: "val_f1"
+  min_precision_constraint: 0.15
+
+output:
+  model_dir: "/content/model/exp21e"
+  result_dir: "/content/result/exp21e"

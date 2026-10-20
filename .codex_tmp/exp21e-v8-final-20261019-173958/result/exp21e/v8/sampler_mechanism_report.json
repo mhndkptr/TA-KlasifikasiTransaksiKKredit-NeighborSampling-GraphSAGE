@@ -1,0 +1,48 @@
+{
+  "scope": "Primary-window training graph; destination groups are deterministically sampled from candidate counts (10, 500].",
+  "draws_per_group": 2000,
+  "fanout": 10,
+  "smoothing_alpha": 0.1,
+  "relations": {
+    "transaction__rev_buys__user": {
+      "groups": 24,
+      "strategies": {
+        "uniform": {
+          "candidates": 9207,
+          "spearman_weight_vs_empirical_inclusion": null,
+          "mean_empirical_inclusion": 0.026067122841316393
+        },
+        "topology": {
+          "candidates": 9207,
+          "spearman_weight_vs_empirical_inclusion": 0.7862876993217168,
+          "mean_empirical_inclusion": 0.026067122841316393
+        },
+        "importance": {
+          "candidates": 9207,
+          "spearman_weight_vs_empirical_inclusion": 0.8236631756687988,
+          "mean_empirical_inclusion": 0.02606712284131639
+        }
+      }
+    },
+    "transaction__rev_sells__merchant": {
+      "groups": 24,
+      "strategies": {
+        "uniform": {
+          "candidates": 1342,
+          "spearman_weight_vs_empirical_inclusion": null,
+          "mean_empirical_inclusion": 0.17883755588673622
+        },
+        "topology": {
+          "candidates": 1342,
+          "spearman_weight_vs_empirical_inclusion": -0.023110415887389237,
+          "mean_empirical_inclusion": 0.17883755588673622
+        },
+        "importance": {
+          "candidates": 1342,
+          "spearman_weight_vs_empirical_inclusion": 0.20556942088869842,
+          "mean_empirical_inclusion": 0.17883755588673622
+        }
+      }
+    }
+  }
+}

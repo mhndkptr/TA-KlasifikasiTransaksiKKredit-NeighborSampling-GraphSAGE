@@ -1,0 +1,18 @@
+{
+  "id": "muhammadhendikaputra/exp21e-v4-causal-temporal-pilot",
+  "title": "EXP21E V4 Causal Temporal Pilot",
+  "code_file": "exp21e_v4_causal_temporal_pilot.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": "true",
+  "enable_gpu": true,
+  "enable_tpu": false,
+  "enable_internet": true,
+  "machine_shape": "NvidiaL4",
+  "dataset_sources": [
+    "ealtman2019/credit-card-transactions"
+  ],
+  "competition_sources": [],
+  "kernel_sources": [],
+  "model_sources": []
+}

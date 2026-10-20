@@ -1,0 +1,55 @@
+experiment:
+  id: "EXP21E"
+  version: "v8"
+  stage: "mechanism_audit_and_statistical_analysis"
+  seed: 2108
+
+data:
+  transactions: "/kaggle/input/credit-card-transactions/credit_card_transactions-ibm_v2.csv"
+  start_year: 2016
+
+time_window:
+  reference_date: "2018-01-01"
+  train_days: 300
+  val_days: 30
+  gap_days: 8
+  test_days: 60
+
+features:
+  mode: "clean"
+  use_cyclical_time: true
+  use_amount_log: true
+
+artifacts:
+  search_roots: ["/kaggle/input"]
+  require_v5_runs: 15
+  require_v6_runs: 18
+  require_v7_runs: 5
+  require_checkpoints: true
+
+sampling:
+  strategies: [uniform, topology, importance]
+  smoothing_alpha: 0.1
+  fanout: 10
+  destination_groups_per_relation: 24
+  empirical_draws: 2000
+  audit_seed: 4108
+
+statistics:
+  bootstrap_replicates: 2000
+  confidence_level: 0.95
+  bootstrap_seed: 3108
+  alert_budgets: [100, 200, 500, 1000]
+  super_hub_quantile: 0.99
+
+embedding_audit:
+  enabled: true
+  batch_size: 1024
+  num_neighbors: [15, 10]
+  probability_tolerance: 0.00001
+  device: "auto"
+
+output:
+  result_dir: "/kaggle/working/result/exp21e/v8"
+  snapshot_source: true
+

@@ -1,0 +1,101 @@
+{
+  "experiment": "EXP21E-v6",
+  "protocol": "rolling_origin_robustness",
+  "selection_locked_before_model_test_performance": true,
+  "selection_uses_model_metrics": false,
+  "eligibility": {
+    "full_horizon_days": 398,
+    "nonempty_all_splits": true,
+    "fraud_required_in": [
+      "validation",
+      "test"
+    ]
+  },
+  "selection_rule": "eligible candidate closest to primary anchor plus/minus 180 days",
+  "primary_reference_date": "2018-01-01",
+  "candidate_count": 718,
+  "dataset_date_range": {
+    "start": "2016-01-01",
+    "end": "2020-02-28"
+  },
+  "durations_days": {
+    "train": 300,
+    "validation": 30,
+    "gap": 8,
+    "test": 60
+  },
+  "selected_windows": [
+    {
+      "reference_date": "2017-07-05",
+      "splits": {
+        "train": {
+          "start": "2017-07-05",
+          "end_exclusive": "2018-05-01",
+          "days": 300,
+          "transactions": 1415786,
+          "fraud": 1081
+        },
+        "validation": {
+          "start": "2018-05-01",
+          "end_exclusive": "2018-05-31",
+          "days": 30,
+          "transactions": 140570,
+          "fraud": 160
+        },
+        "embargo_gap": {
+          "start": "2018-05-31",
+          "end_exclusive": "2018-06-08",
+          "days": 8,
+          "transactions": 37931,
+          "fraud": 68
+        },
+        "test": {
+          "start": "2018-06-08",
+          "end_exclusive": "2018-08-07",
+          "days": 60,
+          "transactions": 283816,
+          "fraud": 294
+        }
+      },
+      "window_id": "rolling_minus_180d",
+      "target_anchor": "2017-07-05",
+      "offset_from_primary_days": -180
+    },
+    {
+      "reference_date": "2018-06-30",
+      "splits": {
+        "train": {
+          "start": "2018-06-30",
+          "end_exclusive": "2019-04-26",
+          "days": 300,
+          "transactions": 1416736,
+          "fraud": 2096
+        },
+        "validation": {
+          "start": "2019-04-26",
+          "end_exclusive": "2019-05-26",
+          "days": 30,
+          "transactions": 141085,
+          "fraud": 259
+        },
+        "embargo_gap": {
+          "start": "2019-05-26",
+          "end_exclusive": "2019-06-03",
+          "days": 8,
+          "transactions": 37975,
+          "fraud": 49
+        },
+        "test": {
+          "start": "2019-06-03",
+          "end_exclusive": "2019-08-02",
+          "days": 60,
+          "transactions": 284263,
+          "fraud": 375
+        }
+      },
+      "window_id": "rolling_plus_180d",
+      "target_anchor": "2018-06-30",
+      "offset_from_primary_days": 180
+    }
+  ]
+}

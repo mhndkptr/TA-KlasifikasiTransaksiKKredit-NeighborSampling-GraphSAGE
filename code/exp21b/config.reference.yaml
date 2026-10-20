@@ -1,0 +1,84 @@
+data:
+  transactions: "../../dataset/credit_card_transactions-ibm_v2.csv"
+  max_rows: null
+  start_year: 2016
+
+time_window:
+  reference_date: "2018-01-01" # Tanggal T0 (era modern 2016-2020)
+  train_days: 300
+  val_days: 30
+  gap_days: 8
+  test_days: 60
+
+features:
+  mode: "clean" # Amount, Use Chip, MCC, Errors?, Merchant State, cyclical time (tanpa Zip & Merchant City)
+  use_cyclical_time: true
+  exclude_high_cardinality: true # Eksplisit memblokir Zip dan Merchant City dari pohon
+
+sampling:
+  method: "uniform" # Pilihan: uniform, topology, importance
+  undersampling_ratio: 1.0 # 1.0 = topologi asli dipertahankan
+
+model:
+  hidden_channels: 128 # 128-dimensi representasi struktural GraphSAGE
+  out_channels: 1
+  num_layers: 2
+  aggr: "mean"
+  dropout: 0.2
+
+training:
+  batch_size: 1024
+  epochs: 20 # Maksimal 20 epoch dengan early stopping
+  learning_rate: 0.001
+  weight_decay: 0.0001
+  label_smoothing: 0.0
+  grad_clip_norm: 5.0
+  warmup_epochs: 0
+  use_lr_scheduler: true
+  lr_scheduler_factor: 0.5
+  lr_scheduler_patience: 3
+  early_stopping_patience: 7 # Early stopping berbasis Val AUPRC
+  loss_weight_strategy: "sqrt" # Sqrt pos_weight teredam (~27x)
+  max_pos_weight: 50.0
+  log_step_interval: 1
+  num_neighbors: [15, 10]
+
+# ==============================================================================
+# PILAR III: EKSPLORASI HYPERPARAMETER TUNING & REGULARISASI POHON (EXP21B)
+# ==============================================================================
+tuning:
+  enabled: true
+  mode: "grid" # Pilihan: "grid" (full grid 108 kombinasi), "ablation" (variasi per dimensi ~14), "focused"
+  selection_metric: "val_f1" # Metrik seleksi model terbaik pada Validation: "val_f1", "val_auprc", "val_gmean"
+  min_precision_constraint: 0.10 # Batasan presisi minimum saat mencari tau* di validasi
+  
+  # Grid parameter sesuai perencanaan 07_eksplorasi_data_splitting_atribut_tuning_exp21.md
+  grid:
+    scale_pos_weight: [1.0, 10.0, 27.0, 50.0] # TUNE-1: Damping Class-Weight
+    max_depth: [3, 4, 5]                       # TUNE-2: Kedalaman pohon dangkal s/d sedang
+    min_child_weight: [5, 20, 50]              # TUNE-2: Regularisasi bobot minimal daun
+    colsample_bytree: [0.6, 0.8, 1.0]          # TUNE-2: Subsampling fitur untuk memberi ruang GNN
+    
+  base_params:
+    n_estimators: 100
+    learning_rate: 0.05
+    subsample: 0.8
+    
+  # Ablasi komparatif tambahan untuk tabel Bab 4 Skripsi
+  run_ablation_benchmarks: true
+  ablation_scale_pos_weights: [1.0, 10.0, 27.0, 50.0, "full"] # "full" = raw ratio (~732 baseline EXP21)
+  ablation_feature_subsets: true # Membandingkan Tabular Only vs GraphSAGE Only vs Hybrid Tuned
+
+classifier:
+  type: "xgboost"
+  n_estimators: 100
+  max_depth: 4
+  learning_rate: 0.05
+  min_child_weight: 10
+  subsample: 0.8
+  colsample_bytree: 0.8
+  scale_pos_weight_strategy: "sqrt"
+
+output:
+  model_dir: "../../model/exp21b"
+  result_dir: "../../result/exp21b"

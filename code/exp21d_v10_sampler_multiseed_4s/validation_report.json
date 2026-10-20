@@ -1,0 +1,22 @@
+{
+  "status": "passed",
+  "checks": {
+    "five_preregistered_seeds": true,
+    "initial_three_seed_batch": true,
+    "extra_two_seed_batch": true,
+    "extra_output_is_isolated": true,
+    "runtime_dependency_files_present": true,
+    "dataset_path_propagated_to_training": true,
+    "dataset_fallback_search_present": true,
+    "three_sampler_order": true,
+    "fifteen_runs_aggregated": true,
+    "paired_delta_rows": true,
+    "operational_budgets_present": true,
+    "tabular_baseline_uniform_only": true,
+    "evaluation_seed_paired": true,
+    "resume_supported": true,
+    "identity_gate_present": true,
+    "resource_monitor_present": true,
+    "figures_created": true
+  }
+}

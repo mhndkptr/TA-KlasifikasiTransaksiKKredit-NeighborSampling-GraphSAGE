@@ -1,0 +1,25 @@
+{
+  "status": "passed",
+  "checks": {
+    "uniform_weights_are_one": true,
+    "topology_weights_decrease": true,
+    "importance_weights_increase": true,
+    "empirical_topology_selects_lower_degree": true,
+    "empirical_importance_selects_higher_degree": true,
+    "paired_streams_not_forced_identical": true,
+    "csr_degree_correct": true,
+    "csr_candidates_correct": true,
+    "sampling_function_has_no_labels": true,
+    "labels_read_after_sampling": true,
+    "edge_level_contract_valid": true,
+    "jaccard_is_bounded": true,
+    "degree_table_covers_hops_and_tail": true,
+    "toy_audit_completed": true,
+    "all_visualizations_created": true
+  },
+  "empirical_selected_counterpart_degree_mean": {
+    "uniform": 21.824,
+    "topology": 6.14975,
+    "importance": 43.56325
+  }
+}

@@ -1,0 +1,68 @@
+experiment:
+  id: "EXP21D-v6-FairCtrl-1C"
+  seed: 42
+  encoder_seed: 42
+  evaluation_seed: 1042
+
+data:
+  transactions: "../../dataset/credit_card_transactions-ibm_v2.csv"
+  start_year: 2016
+  max_rows: null
+
+time_window:
+  reference_date: "2018-01-01"
+  train_days: 300
+  val_days: 30
+  gap_days: 8
+  test_days: 60
+
+features:
+  mode: "clean"
+  use_cyclical_time: true
+  use_amount_log: true
+  input_dim_expected: 10
+
+sampling:
+  methods: ["uniform", "topology", "importance"]
+  undersampling_ratio: 1.0
+  smoothing_alpha: 0.1
+  weight_attr: "sampling_weight"
+
+model:
+  hidden_channels: 128
+  out_channels: 1
+  num_layers: 2
+  aggr: "mean"
+  dropout: 0.2
+
+training:
+  batch_size: 1024
+  num_neighbors: [15, 10]
+
+classifier:
+  n_estimators: 100
+  max_depth: 4
+  learning_rate: 0.05
+  min_child_weight: 10
+  subsample: 0.8
+  colsample_bytree: 0.8
+  scale_pos_weight_strategy: "sqrt"
+  tree_method: "hist"
+  n_jobs: -1
+
+threshold:
+  min_precision: 0.15
+
+reproducibility:
+  deterministic: true
+  warn_only: true
+  compute_dataset_sha256: false
+
+output:
+  model_dir: "../../model/exp21d_v6_fairctrl_1c"
+  result_dir: "../../result/exp21d_v6_fairctrl_1c"
+  save_feature_matrices: true
+  snapshot_source: true
+
+smoke:
+  max_rows_per_split: 20000

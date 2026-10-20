@@ -1,0 +1,617 @@
+from __future__ import annotations
+
+import argparse
+import csv
+import json
+from pathlib import Path
+import time
+import numpy as np
+import psutil
+from sklearn.metrics import (
+    average_precision_score,
+    confusion_matrix,
+    f1_score,
+    precision_recall_curve,
+    precision_score,
+    recall_score,
+    roc_auc_score,
+)
+import torch
+from xgboost import XGBClassifier
+
+from artifacts import append_event, write_json
+from config import load_config
+from data_preprocessing import load_and_split_raw_data, preprocess_features
+from graph_builder import build_hetero_graph
+from model import HeteroGraphSAGE
+from samplers import get_neighbor_loader, sampling_weight_audit
+
+
+def manual_weighted_bce(logits: torch.Tensor, targets: torch.Tensor, pos_weight: float) -> torch.Tensor:
+    probs = torch.sigmoid(logits)
+    probs = torch.clamp(probs, min=1e-7, max=1.0 - 1e-7)
+    weights = torch.where(targets == 1.0, torch.tensor(pos_weight, device=logits.device), torch.tensor(1.0, device=logits.device))
+    loss = -(weights * (targets * torch.log(probs) + (1.0 - targets) * torch.log(1.0 - probs)))
+    return loss.mean()
+
+
+def manual_unweighted_bce(logits: torch.Tensor, targets: torch.Tensor) -> torch.Tensor:
+    probs = torch.sigmoid(logits)
+    probs = torch.clamp(probs, min=1e-7, max=1.0 - 1e-7)
+    loss = -(targets * torch.log(probs) + (1.0 - targets) * torch.log(1.0 - probs))
+    return loss.mean()
+
+
+def find_optimal_threshold(y_probs: np.ndarray, y_true: np.ndarray, min_precision: float = 0.15) -> tuple[float, dict]:
+    precisions, recalls, thresholds = precision_recall_curve(y_true, y_probs)
+    f1_scores = np.divide(
+        2 * (precisions * recalls),
+        (precisions + recalls),
+        out=np.zeros_like(precisions),
+        where=(precisions + recalls) > 0,
+    )
+    valid_mask = precisions[:-1] >= min_precision
+    if np.any(valid_mask):
+        best_idx = np.argmax(f1_scores[:-1][valid_mask])
+        optimal_threshold = float(thresholds[valid_mask][best_idx])
+    else:
+        best_idx = np.argmax(f1_scores[:-1])
+        optimal_threshold = float(thresholds[best_idx])
+
+    y_pred = (y_probs >= optimal_threshold).astype(int)
+    cm = confusion_matrix(y_true, y_pred)
+    tn, fp, fn, tp = [int(v) for v in cm.ravel()]
+
+    metrics = {
+        "optimal_threshold": float(optimal_threshold),
+        "f1_score": float(f1_score(y_true, y_pred, zero_division=0)),
+        "precision": float(precision_score(y_true, y_pred, zero_division=0)),
+        "recall": float(recall_score(y_true, y_pred, zero_division=0)),
+        "tn": tn,
+        "fp": fp,
+        "fn": fn,
+        "tp": tp,
+    }
+    return optimal_threshold, metrics
+
+
+def evaluate_predictions(y_probs: np.ndarray, y_true: np.ndarray, optimal_tau: float) -> dict:
+    try:
+        auprc = float(average_precision_score(y_true, y_probs))
+    except Exception:
+        auprc = 0.0
+    try:
+        roc_auc = float(roc_auc_score(y_true, y_probs))
+    except Exception:
+        roc_auc = 0.0
+
+    y_pred_def = (y_probs >= 0.5).astype(int)
+    cm_def = confusion_matrix(y_true, y_pred_def)
+    tn_d, fp_d, fn_d, tp_d = [int(v) for v in cm_def.ravel()]
+    metrics_def = {
+        "threshold": 0.5,
+        "f1_score": float(f1_score(y_true, y_pred_def, zero_division=0)),
+        "precision": float(precision_score(y_true, y_pred_def, zero_division=0)),
+        "recall": float(recall_score(y_true, y_pred_def, zero_division=0)),
+        "tn": tn_d,
+        "fp": fp_d,
+        "fn": fn_d,
+        "tp": tp_d,
+    }
+
+    y_pred_opt = (y_probs >= optimal_tau).astype(int)
+    cm_opt = confusion_matrix(y_true, y_pred_opt)
+    tn_o, fp_o, fn_o, tp_o = [int(v) for v in cm_opt.ravel()]
+    metrics_opt = {
+        "threshold": float(optimal_tau),
+        "f1_score": float(f1_score(y_true, y_pred_opt, zero_division=0)),
+        "precision": float(precision_score(y_true, y_pred_opt, zero_division=0)),
+        "recall": float(recall_score(y_true, y_pred_opt, zero_division=0)),
+        "tn": tn_o,
+        "fp": fp_o,
+        "fn": fn_o,
+        "tp": tp_o,
+    }
+
+    return {
+        "metrics_threshold_independent": {"auprc": auprc, "roc_auc": roc_auc},
+        "metrics_default_threshold_05": metrics_def,
+        "metrics_optimal_threshold": metrics_opt,
+    }
+
+
+def extract_features(model, loader, device, num_nodes, feat_dim_tab, hidden_dim):
+    model.eval()
+    feat_matrix = np.zeros((num_nodes, feat_dim_tab + hidden_dim), dtype=np.float32)
+    labels = np.zeros(num_nodes, dtype=np.float32)
+    curr_idx = 0
+    start_time = time.time()
+    with torch.no_grad():
+        for batch in loader:
+            batch = batch.to(device)
+            num_nodes_dict = {ntype: batch[ntype].num_nodes for ntype in batch.node_types}
+            embs = model.get_embeddings(batch.x_dict, batch.edge_index_dict, num_nodes_dict=num_nodes_dict)
+            bs = batch["transaction"].batch_size
+            embs_cur = embs[:bs].cpu().numpy()
+            tab_cur = batch["transaction"].x[:bs].cpu().numpy()
+            y_cur = batch["transaction"].y[:bs].cpu().numpy()
+            feat_matrix[curr_idx : curr_idx + bs] = np.hstack([tab_cur, embs_cur])
+            labels[curr_idx : curr_idx + bs] = y_cur
+            curr_idx += bs
+    return feat_matrix, labels, time.time() - start_time
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description="EXP24 Proposal-Aligned Neighbor Sampler Training")
+    parser.add_argument("--config", type=str, default="config.reference.yaml")
+    parser.add_argument("--sampling", type=str, default=None)
+    parser.add_argument("--seed", type=int, default=None)
+    parser.add_argument("--device", type=str, default=None)
+    parser.add_argument("--nrows", type=int, default=None)
+    args = parser.parse_args()
+
+    cfg = load_config(args.config)
+    exp_cfg = cfg.get("experiment", {})
+    t_cfg = cfg.get("training", {})
+    s_cfg = cfg.get("sampling", {})
+    tw_cfg = cfg.get("time_window", {})
+    out_cfg = cfg.get("output", {})
+    feat_cfg = cfg.get("features", {})
+
+    seed = args.seed if args.seed is not None else exp_cfg.get("seed", 42)
+    evaluation_seed = exp_cfg.get("evaluation_seed", seed + 1000)
+    sampling_method = (args.sampling or s_cfg.get("method", "uniform")).lower()
+
+    if sampling_method not in ["uniform", "topology", "importance"]:
+        raise ValueError(f"Metode sampling {sampling_method} tidak valid. Pilih uniform, topology, atau importance.")
+
+    torch.manual_seed(seed)
+    np.random.seed(seed)
+    if torch.cuda.is_available():
+        torch.cuda.manual_seed_all(seed)
+
+    device_str = args.device or ("cuda" if torch.cuda.is_available() else "cpu")
+    device = torch.device(device_str)
+
+    start_total_time = time.time()
+    result_root = Path(out_cfg.get("result_dir", "../../result/exp24_proposal_sampler"))
+    result_dir = result_root / f"seed_{seed}"
+    result_dir.mkdir(parents=True, exist_ok=True)
+    model_root = Path(out_cfg.get("model_dir", "../../model/exp24_proposal_sampler"))
+    model_dir = model_root / f"seed_{seed}"
+    model_dir.mkdir(parents=True, exist_ok=True)
+
+    events_path = result_dir / "events.jsonl"
+    csv_history_path = result_dir / f"exp24_{sampling_method}_training_history.csv"
+    json_history_path = result_dir / f"exp24_{sampling_method}_history.json"
+
+    print("=" * 70)
+    print("  EXP24: PROPOSAL-ALIGNED NEIGHBOR SAMPLING FOR GRAPHSAGE")
+    print(f"  Sampler: {sampling_method.upper()} | Seed: {seed} | Device: {device}")
+    print("=" * 70)
+
+    append_event(events_path, "run_initialized", sampling_method=sampling_method, seed=seed)
+
+    # 1. Pemuatan & Pembagian Temporal
+    t_prep_start = time.time()
+    data_path = cfg.get("data", {}).get("transactions")
+    nrows = args.nrows or cfg.get("data", {}).get("max_rows", None)
+    train_df, val_df, _, test_df = load_and_split_raw_data(
+        file_path=data_path,
+        start_year=cfg.get("data", {}).get("start_year", 2016),
+        nrows=nrows,
+        reference_date=tw_cfg.get("reference_date", "2018-01-01"),
+        train_days=tw_cfg.get("train_days", 300),
+        val_days=tw_cfg.get("val_days", 30),
+        gap_days=tw_cfg.get("gap_days", 8),
+        test_days=tw_cfg.get("test_days", 60),
+    )
+
+    # 2. Preprocessing Fitur Tabular (Clean 10-d)
+    train_df, val_df, test_df, feature_cols, _ = preprocess_features(train_df, val_df, test_df, mode=feat_cfg.get("mode", "clean"))
+
+    # 3. Konstruksi Graf HeteroData
+    train_graph, scalers = build_hetero_graph(train_df, feature_cols, scalers_dict=None)
+    val_graph, _ = build_hetero_graph(val_df, feature_cols, scalers_dict=scalers)
+    test_graph, _ = build_hetero_graph(test_df, feature_cols, scalers_dict=scalers)
+    data_prep_time = time.time() - t_prep_start
+
+    # 4. Audit Bobot Sampler Proposal
+    alpha = s_cfg.get("smoothing_alpha", 0.1)
+    weight_attr = s_cfg.get("weight_attr", "sampling_weight")
+    audit_report = sampling_weight_audit(train_graph, sampling_method, weight_attr=weight_attr)
+    audit_path = result_dir / f"exp24_{sampling_method}_sampler_weight_audit.json"
+    write_json(audit_path, audit_report)
+
+    # 5. Inisialisasi Loader PyG
+    batch_size = t_cfg.get("batch_size", 1024)
+    num_neighbors = t_cfg.get("num_neighbors", [15, 10])
+    train_loader = get_neighbor_loader(
+        train_graph,
+        method=sampling_method,
+        batch_size=batch_size,
+        shuffle=True,
+        num_neighbors=num_neighbors,
+        seed=seed,
+        alpha=alpha,
+        weight_attr=weight_attr,
+        topology_alpha=s_cfg.get("topology_alpha", 0.5),
+        importance_gamma=s_cfg.get("importance_gamma", 0.3),
+        ppr_teleport=s_cfg.get("ppr_teleport", 0.15),
+        ppr_steps=s_cfg.get("ppr_steps", 3),
+    )
+    val_loader = get_neighbor_loader(
+        val_graph,
+        method=sampling_method,
+        batch_size=batch_size,
+        shuffle=False,
+        num_neighbors=num_neighbors,
+        seed=evaluation_seed,
+        alpha=alpha,
+        weight_attr=weight_attr,
+    )
+    test_loader = get_neighbor_loader(
+        test_graph,
+        method=sampling_method,
+        batch_size=batch_size,
+        shuffle=False,
+        num_neighbors=num_neighbors,
+        seed=evaluation_seed + 1,
+        alpha=alpha,
+        weight_attr=weight_attr,
+    )
+
+    # 6. Model HeteroGraphSAGE
+    hidden_dim = cfg.get("model", {}).get("hidden_channels", 128)
+    num_layers = cfg.get("model", {}).get("num_layers", 2)
+    aggr = cfg.get("model", {}).get("aggr", "mean")
+    dropout = cfg.get("model", {}).get("dropout", 0.2)
+
+    in_channels_dict = {
+        "transaction": len(feature_cols),
+        "user": train_graph["user"].x.size(1),
+        "merchant": train_graph["merchant"].x.size(1),
+    }
+    model = HeteroGraphSAGE(
+        edge_types=train_graph.edge_types,
+        in_channels_dict=in_channels_dict,
+        hidden_channels=hidden_dim,
+        out_channels=1,
+        num_layers=num_layers,
+        aggr=aggr,
+        dropout=dropout,
+    ).to(device)
+
+    # Loss & Pos Weight
+    num_pos = float((train_df["Is Fraud?"] == 1).sum())
+    num_neg = float((train_df["Is Fraud?"] == 0).sum())
+    sqrt_pos_weight = float(np.clip(np.sqrt(num_neg / (num_pos + 1e-8)), 1.0, t_cfg.get("max_pos_weight", 50.0)))
+
+    optimizer = torch.optim.Adam(model.parameters(), lr=t_cfg.get("learning_rate", 0.001), weight_decay=t_cfg.get("weight_decay", 1e-4))
+    scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode="max", factor=t_cfg.get("lr_scheduler_factor", 0.5), patience=t_cfg.get("lr_scheduler_patience", 3))
+
+    # 7. Inisialisasi Logging CSV & JSON Detail Per-Epoch
+    csv_headers = [
+        "epoch", "train_loss", "train_acc", "val_loss", "val_auprc", "val_roc_auc",
+        "val_f1_default", "val_f1_optimal", "val_precision_optimal", "val_recall_optimal",
+        "val_optimal_threshold", "val_fp", "val_fn", "learning_rate",
+        "time_train_epoch_sec", "time_val_epoch_sec", "time_epoch_total_sec",
+        "cumulative_runtime_sec", "val_latency_ms_per_1k_tx",
+        "peak_gpu_vram_mb", "peak_ram_mb", "is_best_epoch"
+    ]
+    with csv_history_path.open("w", newline="", encoding="utf-8") as f:
+        writer = csv.writer(f)
+        writer.writerow(csv_headers)
+
+    training_history = {k: [] for k in csv_headers}
+    epochs = t_cfg.get("epochs", 20)
+    early_stopping_patience = t_cfg.get("early_stopping_patience", 7)
+    best_val_auprc = 0.0
+    best_epoch = 0
+    patience_counter = 0
+    best_model_state = None
+    cumulative_time = 0.0
+
+    print("\n" + "=" * 70)
+    print("  MEMULAI PELATIHAN HETEROGRAPHSAGE DENGAN TELEMETRI GRANULAR")
+    print("=" * 70)
+
+    for epoch in range(1, epochs + 1):
+        t_epoch_start = time.perf_counter()
+
+        # Phase A: Training Pass
+        model.train()
+        total_loss = 0.0
+        total_correct = 0
+        total_tx = 0
+        t_train_start = time.perf_counter()
+
+        for batch in train_loader:
+            batch = batch.to(device)
+            optimizer.zero_grad()
+            num_nodes_dict = {ntype: batch[ntype].num_nodes for ntype in batch.node_types}
+            out = model(batch.x_dict, batch.edge_index_dict, num_nodes_dict=num_nodes_dict)
+
+            bs = batch["transaction"].batch_size
+            logits = out[:bs]
+            targets = batch["transaction"].y[:bs]
+
+            loss = manual_weighted_bce(logits, targets, sqrt_pos_weight)
+            loss.backward()
+            torch.nn.utils.clip_grad_norm_(model.parameters(), t_cfg.get("grad_clip_norm", 5.0))
+            optimizer.step()
+
+            total_loss += float(loss.item()) * bs
+            preds = (torch.sigmoid(logits) >= 0.5).float()
+            total_correct += int((preds == targets).sum().item())
+            total_tx += bs
+
+        time_train_epoch_sec = time.perf_counter() - t_train_start
+        train_loss = total_loss / total_tx if total_tx > 0 else 0.0
+        train_acc = total_correct / total_tx if total_tx > 0 else 0.0
+
+        # Phase B: Validation Evaluation Pass
+        model.eval()
+        t_val_start = time.perf_counter()
+        val_loss_total = 0.0
+        val_tx_count = 0
+        all_val_probs = []
+        all_val_targets = []
+
+        with torch.no_grad():
+            for batch in val_loader:
+                batch = batch.to(device)
+                num_nodes_dict = {ntype: batch[ntype].num_nodes for ntype in batch.node_types}
+                out = model(batch.x_dict, batch.edge_index_dict, num_nodes_dict=num_nodes_dict)
+
+                bs = batch["transaction"].batch_size
+                logits = out[:bs]
+                targets = batch["transaction"].y[:bs]
+
+                loss_v = manual_unweighted_bce(logits, targets)
+                val_loss_total += float(loss_v.item()) * bs
+                val_tx_count += bs
+
+                probs = torch.sigmoid(logits).cpu().numpy()
+                all_val_probs.append(probs)
+                all_val_targets.append(targets.cpu().numpy())
+
+        time_val_epoch_sec = time.perf_counter() - t_val_start
+        val_loss = val_loss_total / val_tx_count if val_tx_count > 0 else 0.0
+        val_probs_arr = np.concatenate(all_val_probs)
+        val_targets_arr = np.concatenate(all_val_targets)
+
+        # Metrik threshold-independent
+        try:
+            val_auprc = float(average_precision_score(val_targets_arr, val_probs_arr))
+        except Exception:
+            val_auprc = 0.0
+        try:
+            val_roc_auc = float(roc_auc_score(val_targets_arr, val_probs_arr))
+        except Exception:
+            val_roc_auc = 0.0
+
+        # Metrik threshold 0.5
+        val_preds_05 = (val_probs_arr >= 0.5).astype(int)
+        val_f1_default = float(f1_score(val_targets_arr, val_preds_05, zero_division=0))
+
+        # Kalibrasi threshold optimal PR-Curve pada validasi
+        opt_tau, val_metrics_opt = find_optimal_threshold(val_probs_arr, val_targets_arr, min_precision=0.15)
+        val_f1_opt = val_metrics_opt["f1_score"]
+        val_prec_opt = val_metrics_opt["precision"]
+        val_rec_opt = val_metrics_opt["recall"]
+        val_fp = val_metrics_opt["fp"]
+        val_fn = val_metrics_opt["fn"]
+
+        # Waktu & Sumber Daya
+        time_epoch_total_sec = time.perf_counter() - t_epoch_start
+        cumulative_time += time_epoch_total_sec
+        val_latency_ms_per_1k = (time_val_epoch_sec / max(val_tx_count, 1)) * 1000.0 * 1000.0
+
+        peak_vram_mb = float(torch.cuda.max_memory_allocated() / (1024**2)) if torch.cuda.is_available() else 0.0
+        peak_ram_mb = float(psutil.Process().memory_info().rss / (1024**2))
+
+        # Update Scheduler
+        if scheduler is not None:
+            scheduler.step(val_auprc)
+        current_lr = float(optimizer.param_groups[0]["lr"])
+
+        is_best_epoch = bool(val_auprc > best_val_auprc)
+        if is_best_epoch:
+            best_val_auprc = val_auprc
+            best_epoch = epoch
+            best_model_state = {k: v.cpu().clone() for k, v in model.state_dict().items()}
+            patience_counter = 0
+        else:
+            patience_counter += 1
+
+        # Simpan baris CSV telemetri
+        row_dict = {
+            "epoch": epoch,
+            "train_loss": round(train_loss, 5),
+            "train_acc": round(train_acc, 4),
+            "val_loss": round(val_loss, 5),
+            "val_auprc": round(val_auprc, 5),
+            "val_roc_auc": round(val_roc_auc, 5),
+            "val_f1_default": round(val_f1_default, 4),
+            "val_f1_optimal": round(val_f1_opt, 4),
+            "val_precision_optimal": round(val_prec_opt, 4),
+            "val_recall_optimal": round(val_rec_opt, 4),
+            "val_optimal_threshold": round(opt_tau, 4),
+            "val_fp": val_fp,
+            "val_fn": val_fn,
+            "learning_rate": current_lr,
+            "time_train_epoch_sec": round(time_train_epoch_sec, 2),
+            "time_val_epoch_sec": round(time_val_epoch_sec, 2),
+            "time_epoch_total_sec": round(time_epoch_total_sec, 2),
+            "cumulative_runtime_sec": round(cumulative_time, 2),
+            "val_latency_ms_per_1k_tx": round(val_latency_ms_per_1k, 2),
+            "peak_gpu_vram_mb": round(peak_vram_mb, 2),
+            "peak_ram_mb": round(peak_ram_mb, 2),
+            "is_best_epoch": is_best_epoch,
+        }
+
+        with csv_history_path.open("a", newline="", encoding="utf-8") as f:
+            writer = csv.writer(f)
+            writer.writerow([row_dict[k] for k in csv_headers])
+
+        for k in csv_headers:
+            training_history[k].append(row_dict[k])
+        write_json(json_history_path, training_history)
+
+        append_event(
+            events_path,
+            "epoch_completed",
+            method=sampling_method,
+            epoch=epoch,
+            train_loss=train_loss,
+            val_loss=val_loss,
+            val_auprc=val_auprc,
+            val_f1=val_f1_opt,
+            time_epoch_sec=time_epoch_total_sec,
+            peak_vram_mb=peak_vram_mb,
+            is_best=is_best_epoch,
+        )
+
+        star = " ★ BEST" if is_best_epoch else ""
+        print(
+            f"Epoch {epoch:02d}/{epochs:02d} | "
+            f"Train Loss: {train_loss:.4f} | "
+            f"Val Loss: {val_loss:.4f} | "
+            f"Val AUPRC: {val_auprc:.4f} | "
+            f"Val F1 (Opt): {val_f1_opt:.4f} (Tau: {opt_tau:.3f}) | "
+            f"Waktu: {time_epoch_total_sec:.1f}s (Train: {time_train_epoch_sec:.1f}s, Val: {time_val_epoch_sec:.1f}s){star}"
+        )
+
+        if patience_counter >= early_stopping_patience:
+            print(f"[EARLY STOPPING] Tidak ada peningkatan AUPRC selama {early_stopping_patience} epoch berturut-turut. Berhenti di epoch {epoch}.")
+            append_event(events_path, "early_stopping_triggered", epoch=epoch, best_epoch=best_epoch, best_auprc=best_val_auprc)
+            break
+
+    # Pulihkan checkpoint terbaik
+    if best_model_state is not None:
+        model.load_state_dict({k: v.to(device) for k, v in best_model_state.items()})
+
+    best_model_path = model_dir / f"exp24_{sampling_method}_best_gnn.pt"
+    torch.save(model.state_dict(), best_model_path)
+    print(f"\n[CHECKPOINT] Model GNN terbaik disimpan ke: {best_model_path} (AUPRC: {best_val_auprc:.4f} pada Epoch {best_epoch})")
+
+    # 8. Ekstraksi Fitur Hibrida (10-d Tabular + 128-d GNN Embedding)
+    print("\n" + "=" * 70)
+    print("  EKSTRAKSI FITUR HIBRIDA (10-d TABULAR + 128-d GNN EMBEDDING)")
+    print("=" * 70)
+    feat_dim_tab = len(feature_cols)
+    train_extract_loader = get_neighbor_loader(
+        train_graph, method=sampling_method, batch_size=batch_size, shuffle=False,
+        num_neighbors=num_neighbors, seed=evaluation_seed + 2, alpha=alpha, weight_attr=weight_attr
+    )
+    X_train, y_train, inf_train_t = extract_features(model, train_extract_loader, device, len(train_df), feat_dim_tab, hidden_dim)
+    X_val, y_val, inf_val_t = extract_features(model, val_loader, device, len(val_df), feat_dim_tab, hidden_dim)
+    X_test, y_test, inf_test_t = extract_features(model, test_loader, device, len(test_df), feat_dim_tab, hidden_dim)
+
+    # 9. Pelatihan Downstream XGBoost Classifier
+    print("\n" + "=" * 70)
+    print("  PELATIHAN DOWNSTREAM HYBRID XGBOOST")
+    print("=" * 70)
+    c_cfg = cfg.get("classifier", {})
+    xgb_params = {
+        "n_estimators": c_cfg.get("n_estimators", 100),
+        "max_depth": c_cfg.get("max_depth", 4),
+        "learning_rate": c_cfg.get("learning_rate", 0.05),
+        "min_child_weight": c_cfg.get("min_child_weight", 10),
+        "subsample": c_cfg.get("subsample", 0.8),
+        "colsample_bytree": c_cfg.get("colsample_bytree", 0.8),
+        "scale_pos_weight": sqrt_pos_weight,
+        "random_state": seed,
+        "n_jobs": -1,
+        "eval_metric": "logloss",
+        "tree_method": c_cfg.get("tree_method", "hist"),
+    }
+
+    t_xgb_start = time.perf_counter()
+    xgb_hybrid = XGBClassifier(**xgb_params)
+    xgb_hybrid.fit(X_train, y_train, eval_set=[(X_val, y_val)], verbose=False)
+    xgb_train_time = time.perf_counter() - t_xgb_start
+
+    # Simpan riwayat boosting XGBoost
+    xgb_history_path = result_dir / f"exp24_{sampling_method}_xgboost_history.json"
+    write_json(xgb_history_path, {"hybrid": xgb_hybrid.evals_result(), "fit_time_sec": xgb_train_time})
+
+    hybrid_val_probs = xgb_hybrid.predict_proba(X_val)[:, 1]
+    hybrid_test_probs = xgb_hybrid.predict_proba(X_test)[:, 1]
+
+    # Kalibrasi threshold HANYA dari set validasi (Strict Anti-Leakage)
+    optimal_tau, tau_metrics = find_optimal_threshold(hybrid_val_probs, y_val, min_precision=0.15)
+    test_eval_results = evaluate_predictions(hybrid_test_probs, y_test, optimal_tau=optimal_tau)
+    m_opt = test_eval_results["metrics_optimal_threshold"]
+    m_ind = test_eval_results["metrics_threshold_independent"]
+
+    # Simpan Prediksi Lengkap NPZ
+    predictions_path = result_dir / f"exp24_{sampling_method}_predictions.npz"
+    np.savez_compressed(
+        predictions_path,
+        hybrid_test_probabilities=hybrid_test_probs.astype(np.float32),
+        hybrid_val_probabilities=hybrid_val_probs.astype(np.float32),
+        test_labels=y_test.astype(np.uint8),
+        val_labels=y_val.astype(np.uint8),
+        hybrid_optimal_threshold=float(optimal_tau),
+    )
+
+    # 10. Penyimpanan Hasil Akhir Manifest & Results JSON
+    total_pipeline_time = time.time() - start_total_time
+    results_summary = {
+        "experiment_id": "EXP24-ProposalSampler",
+        "sampling_method": sampling_method,
+        "seed": seed,
+        "best_epoch": best_epoch,
+        "best_val_auprc": float(best_val_auprc),
+        "test_metrics": {
+            "auprc": m_ind["auprc"],
+            "roc_auc": m_ind["roc_auc"],
+            "f1_score": m_opt["f1_score"],
+            "precision": m_opt["precision"],
+            "recall": m_opt["recall"],
+            "optimal_threshold": float(optimal_tau),
+            "fp": m_opt["fp"],
+            "fn": m_opt["fn"],
+        },
+        "runtime_telemetry": {
+            "data_prep_sec": data_prep_time,
+            "gnn_training_sec": cumulative_time,
+            "xgb_training_sec": xgb_train_time,
+            "test_inference_sec": inf_test_t,
+            "total_pipeline_sec": total_pipeline_time,
+            "val_latency_ms_per_1k": (inf_val_t / len(val_df)) * 1000.0 * 1000.0,
+        },
+    }
+    write_json(result_dir / f"exp24_{sampling_method}_results.json", results_summary)
+
+    manifest = {
+        "experiment_id": "EXP24-ProposalSampler",
+        "status": "complete",
+        "seed": seed,
+        "evaluation_seed": evaluation_seed,
+        "sampling_method": sampling_method,
+        "paired_block": f"seed_{seed}",
+        "predictions_file": str(predictions_path.name),
+        "history_csv": str(csv_history_path.name),
+        "history_json": str(json_history_path.name),
+        "events_log": str(events_path.name),
+    }
+    write_json(result_dir / f"exp24_{sampling_method}_manifest.json", manifest)
+
+    append_event(events_path, "run_completed", **results_summary["test_metrics"])
+
+    print("\n" + "=" * 70)
+    print("  HASIL AKHIR PENGUJIAN EXP24 PADA TEST SET (283.529 TRANSAKSI, 421 FRAUD)")
+    print(f"  • AUPRC     : {m_ind['auprc']:.6f}")
+    print(f"  • F1-Score  : {m_opt['f1_score']:.6f} (Tau: {optimal_tau:.4f})")
+    print(f"  • Precision : {m_opt['precision']:.6f}")
+    print(f"  • Recall    : {m_opt['recall']:.6f}")
+    print(f"  • FP / FN   : {m_opt['fp']} / {m_opt['fn']}")
+    print(f"  • Total Time: {total_pipeline_time:.1f} detik")
+    print("=" * 70)
+
+
+if __name__ == "__main__":
+    main()

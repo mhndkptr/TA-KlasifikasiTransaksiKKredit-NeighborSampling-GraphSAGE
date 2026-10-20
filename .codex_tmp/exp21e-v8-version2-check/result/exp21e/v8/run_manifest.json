@@ -1,0 +1,15 @@
+{
+  "experiment": "EXP21E-v8",
+  "stage": "mechanism_audit_and_statistical_analysis",
+  "training_runs_started": 0,
+  "dataset": {
+    "path": "/kaggle/input/datasets/ealtman2019/credit-card-transactions/credit_card_transactions-ibm_v2.csv",
+    "size_bytes": 2350744057,
+    "modified_time_ns": 1792258403502287883
+  },
+  "git": {
+    "commit": null,
+    "dirty": null
+  },
+  "source_run_count": 38
+}

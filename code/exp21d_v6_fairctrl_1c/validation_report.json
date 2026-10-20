@@ -1,0 +1,207 @@
+{
+  "status": "passed",
+  "checks": {
+    "graph_excludes_labels": true,
+    "embedding_shape_is_6x128": true,
+    "all_encoder_parameters_frozen": true,
+    "same_seed_same_state": true,
+    "external_label_flip_does_not_change_embedding": true,
+    "no_backward_in_main": true,
+    "no_torch_optimizer_in_main": true,
+    "main_syntax_valid": true,
+    "all_sampler_audits_pass": true,
+    "tx_to_user_uses_merchant_degree": true,
+    "tx_to_merchant_uses_user_degree": true,
+    "first_hop_is_uniform": true,
+    "neighbor_loader_activates_weight_attr": true,
+    "duplicate_counterpart_is_rejected": true
+  },
+  "sampler_audits": {
+    "uniform": {
+      "method": "uniform",
+      "weight_attr": "sampling_weight",
+      "weighted_relations": [
+        "transaction__rev_buys__user",
+        "transaction__rev_sells__merchant"
+      ],
+      "relations": {
+        "user__buys__transaction": {
+          "num_edges": 6,
+          "counterpart_source": "not_applicable",
+          "weight_min": 1.0,
+          "weight_max": 1.0,
+          "weight_mean": 1.0,
+          "weight_std": 0.0,
+          "unique_weights": 1,
+          "candidate_degree_min": 1.0,
+          "candidate_degree_max": 1.0,
+          "degree_weight_correlation": null,
+          "contract_passed": true
+        },
+        "transaction__rev_buys__user": {
+          "num_edges": 6,
+          "counterpart_source": "merchant_degree",
+          "weight_min": 1.0,
+          "weight_max": 1.0,
+          "weight_mean": 1.0,
+          "weight_std": 0.0,
+          "unique_weights": 1,
+          "candidate_degree_min": 1.0,
+          "candidate_degree_max": 3.0,
+          "degree_weight_correlation": null,
+          "contract_passed": true
+        },
+        "merchant__sells__transaction": {
+          "num_edges": 6,
+          "counterpart_source": "not_applicable",
+          "weight_min": 1.0,
+          "weight_max": 1.0,
+          "weight_mean": 1.0,
+          "weight_std": 0.0,
+          "unique_weights": 1,
+          "candidate_degree_min": 1.0,
+          "candidate_degree_max": 1.0,
+          "degree_weight_correlation": null,
+          "contract_passed": true
+        },
+        "transaction__rev_sells__merchant": {
+          "num_edges": 6,
+          "counterpart_source": "user_degree",
+          "weight_min": 1.0,
+          "weight_max": 1.0,
+          "weight_mean": 1.0,
+          "weight_std": 0.0,
+          "unique_weights": 1,
+          "candidate_degree_min": 1.0,
+          "candidate_degree_max": 3.0,
+          "degree_weight_correlation": null,
+          "contract_passed": true
+        }
+      }
+    },
+    "topology": {
+      "method": "topology",
+      "weight_attr": "sampling_weight",
+      "weighted_relations": [
+        "transaction__rev_buys__user",
+        "transaction__rev_sells__merchant"
+      ],
+      "relations": {
+        "user__buys__transaction": {
+          "num_edges": 6,
+          "counterpart_source": "not_applicable",
+          "weight_min": 1.0,
+          "weight_max": 1.0,
+          "weight_mean": 1.0,
+          "weight_std": 0.0,
+          "unique_weights": 1,
+          "candidate_degree_min": 1.0,
+          "candidate_degree_max": 1.0,
+          "degree_weight_correlation": null,
+          "contract_passed": true
+        },
+        "transaction__rev_buys__user": {
+          "num_edges": 6,
+          "counterpart_source": "merchant_degree",
+          "weight_min": 0.10000000149011612,
+          "weight_max": 1.100000023841858,
+          "weight_mean": 0.35395315289497375,
+          "weight_std": 0.35359761118888855,
+          "unique_weights": 3,
+          "candidate_degree_min": 1.0,
+          "candidate_degree_max": 3.0,
+          "degree_weight_correlation": -0.953564465045929,
+          "contract_passed": true
+        },
+        "merchant__sells__transaction": {
+          "num_edges": 6,
+          "counterpart_source": "not_applicable",
+          "weight_min": 1.0,
+          "weight_max": 1.0,
+          "weight_mean": 1.0,
+          "weight_std": 0.0,
+          "unique_weights": 1,
+          "candidate_degree_min": 1.0,
+          "candidate_degree_max": 1.0,
+          "degree_weight_correlation": null,
+          "contract_passed": true
+        },
+        "transaction__rev_sells__merchant": {
+          "num_edges": 6,
+          "counterpart_source": "user_degree",
+          "weight_min": 0.10000000149011612,
+          "weight_max": 1.100000023841858,
+          "weight_mean": 0.35395315289497375,
+          "weight_std": 0.35359761118888855,
+          "unique_weights": 3,
+          "candidate_degree_min": 1.0,
+          "candidate_degree_max": 3.0,
+          "degree_weight_correlation": -0.9535645246505737,
+          "contract_passed": true
+        }
+      }
+    },
+    "importance": {
+      "method": "importance",
+      "weight_attr": "sampling_weight",
+      "weighted_relations": [
+        "transaction__rev_buys__user",
+        "transaction__rev_sells__merchant"
+      ],
+      "relations": {
+        "user__buys__transaction": {
+          "num_edges": 6,
+          "counterpart_source": "not_applicable",
+          "weight_min": 1.0,
+          "weight_max": 1.0,
+          "weight_mean": 1.0,
+          "weight_std": 0.0,
+          "unique_weights": 1,
+          "candidate_degree_min": 1.0,
+          "candidate_degree_max": 1.0,
+          "degree_weight_correlation": null,
+          "contract_passed": true
+        },
+        "transaction__rev_buys__user": {
+          "num_edges": 6,
+          "counterpart_source": "merchant_degree",
+          "weight_min": 0.10000000149011612,
+          "weight_max": 1.100000023841858,
+          "weight_mean": 0.7949874997138977,
+          "weight_std": 0.3620120882987976,
+          "unique_weights": 3,
+          "candidate_degree_min": 1.0,
+          "candidate_degree_max": 3.0,
+          "degree_weight_correlation": 0.9944765567779541,
+          "contract_passed": true
+        },
+        "merchant__sells__transaction": {
+          "num_edges": 6,
+          "counterpart_source": "not_applicable",
+          "weight_min": 1.0,
+          "weight_max": 1.0,
+          "weight_mean": 1.0,
+          "weight_std": 0.0,
+          "unique_weights": 1,
+          "candidate_degree_min": 1.0,
+          "candidate_degree_max": 1.0,
+          "degree_weight_correlation": null,
+          "contract_passed": true
+        },
+        "transaction__rev_sells__merchant": {
+          "num_edges": 6,
+          "counterpart_source": "user_degree",
+          "weight_min": 0.10000000149011612,
+          "weight_max": 1.100000023841858,
+          "weight_mean": 0.7949876189231873,
+          "weight_std": 0.3620120882987976,
+          "unique_weights": 3,
+          "candidate_degree_min": 1.0,
+          "candidate_degree_max": 3.0,
+          "degree_weight_correlation": 0.9944764375686646,
+          "contract_passed": true
+        }
+      }
+    }
+  }
+}

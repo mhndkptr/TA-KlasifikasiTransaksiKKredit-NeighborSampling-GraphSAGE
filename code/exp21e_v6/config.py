@@ -1,0 +1,14 @@
+import yaml
+from pathlib import Path
+
+
+def load_config(config_path: str = "config.reference.yaml") -> dict:
+    """Memuat dan memvalidasi konfigurasi eksperimen 21E."""
+    path = Path(config_path)
+    if not path.exists():
+        raise FileNotFoundError(f"Berkas konfigurasi tidak ditemukan: {config_path}")
+
+    with open(path, "r", encoding="utf-8") as f:
+        config = yaml.safe_load(f)
+
+    return config

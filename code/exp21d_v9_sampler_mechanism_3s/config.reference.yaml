@@ -1,0 +1,28 @@
+experiment:
+  id: "EXP21D-v9-SamplerMechanism-3S"
+  seed: 42
+
+inputs:
+  transactions: "../../dataset/credit_card_transactions-ibm_v2.csv"
+  exp2a_root: "../../result/exp21d_v5_sampler_correctness/kaggle_download/result/exp21d_v5_sampler_correctness/seed_42"
+  exp2b_root: "../../result/exp21d_v7_sampler_audit_2b/kaggle_download/result/exp21d_v7_sampler_audit_2b/runs"
+
+time_window:
+  source_start_year: 2016
+  reference_date: "2018-01-01"
+  train_days: 300
+  val_days: 30
+  gap_days: 8
+  test_days: 60
+
+analysis:
+  methods: ["uniform", "topology", "importance"]
+  degree_axes: ["user", "merchant", "max"]
+  low_max: 15
+  medium_max: 200
+  pca_majority_sample: 25000
+  save_embeddings: true
+
+output:
+  result_dir: "../../result/exp21d_v9_sampler_mechanism_3s"
+  snapshot_source: true

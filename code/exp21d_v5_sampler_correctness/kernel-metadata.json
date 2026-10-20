@@ -1,0 +1,18 @@
+{
+  "id": "muhammadhendikaputra/exp21d-v5-sampler-correctness",
+  "title": "EXP21D v5 Sampler Correctness",
+  "code_file": "exp21d_v5_sampler_correctness.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": "true",
+  "enable_gpu": true,
+  "enable_tpu": false,
+  "enable_internet": true,
+  "machine_shape": "NvidiaL4",
+  "dataset_sources": [
+    "ealtman2019/credit-card-transactions"
+  ],
+  "competition_sources": [],
+  "kernel_sources": [],
+  "model_sources": []
+}

@@ -1,0 +1,172 @@
+{
+  "groups": {
+    "primary_2018/test": {
+      "reference_run": "exp21e_v7_primary_2018_tabular_mlp_seed42_dda8fc1d2a49",
+      "runs": {
+        "exp21e_v7_primary_2018_tabular_mlp_seed42_dda8fc1d2a49": {
+          "rows": 283529,
+          "aligned": true
+        },
+        "exp21e_v7_primary_2018_tabular_mlp_seed100_8373a26fe35a": {
+          "rows": 283529,
+          "aligned": true
+        },
+        "exp21e_v7_primary_2018_tabular_mlp_seed2026_653ce699195b": {
+          "rows": 283529,
+          "aligned": true
+        },
+        "exp21e_v7_primary_2018_tabular_mlp_seed3407_85e8fe2d264c": {
+          "rows": 283529,
+          "aligned": true
+        },
+        "exp21e_v7_primary_2018_tabular_mlp_seed8713_9c2b8e9d6373": {
+          "rows": 283529,
+          "aligned": true
+        },
+        "exp21e_v5_primary_2018_importance_seed42_e73f7efa9cb5": {
+          "rows": 283529,
+          "aligned": true
+        },
+        "exp21e_v5_primary_2018_importance_seed100_90232d1f9306": {
+          "rows": 283529,
+          "aligned": true
+        },
+        "exp21e_v5_primary_2018_importance_seed2026_4e91de50c6e6": {
+          "rows": 283529,
+          "aligned": true
+        },
+        "exp21e_v5_primary_2018_importance_seed3407_27f94e8e03fd": {
+          "rows": 283529,
+          "aligned": true
+        },
+        "exp21e_v5_primary_2018_importance_seed8713_b7e4805d236e": {
+          "rows": 283529,
+          "aligned": true
+        },
+        "exp21e_v5_primary_2018_topology_seed42_9c9a8dd525be": {
+          "rows": 283529,
+          "aligned": true
+        },
+        "exp21e_v5_primary_2018_topology_seed100_d47d69e04261": {
+          "rows": 283529,
+          "aligned": true
+        },
+        "exp21e_v5_primary_2018_topology_seed2026_1ba5a04b07fc": {
+          "rows": 283529,
+          "aligned": true
+        },
+        "exp21e_v5_primary_2018_topology_seed3407_ae23936fe7b1": {
+          "rows": 283529,
+          "aligned": true
+        },
+        "exp21e_v5_primary_2018_topology_seed8713_29858415cd5d": {
+          "rows": 283529,
+          "aligned": true
+        },
+        "exp21e_v5_primary_2018_uniform_seed42_5f1502a35764": {
+          "rows": 283529,
+          "aligned": true
+        },
+        "exp21e_v5_primary_2018_uniform_seed100_e74208faa75e": {
+          "rows": 283529,
+          "aligned": true
+        },
+        "exp21e_v5_primary_2018_uniform_seed2026_278da0641eed": {
+          "rows": 283529,
+          "aligned": true
+        },
+        "exp21e_v5_primary_2018_uniform_seed3407_af8fb4aa402d": {
+          "rows": 283529,
+          "aligned": true
+        },
+        "exp21e_v5_primary_2018_uniform_seed8713_eac1040efdbe": {
+          "rows": 283529,
+          "aligned": true
+        }
+      }
+    },
+    "rolling_minus_180d/test": {
+      "reference_run": "exp21e_v6_rolling_minus_180d_importance_seed42_3e02ca755a17",
+      "runs": {
+        "exp21e_v6_rolling_minus_180d_importance_seed42_3e02ca755a17": {
+          "rows": 283816,
+          "aligned": true
+        },
+        "exp21e_v6_rolling_minus_180d_importance_seed100_f20bfe6e4a77": {
+          "rows": 283816,
+          "aligned": true
+        },
+        "exp21e_v6_rolling_minus_180d_importance_seed2026_e4402979c14d": {
+          "rows": 283816,
+          "aligned": true
+        },
+        "exp21e_v6_rolling_minus_180d_topology_seed42_8662bb21d640": {
+          "rows": 283816,
+          "aligned": true
+        },
+        "exp21e_v6_rolling_minus_180d_topology_seed100_f65304cdfc88": {
+          "rows": 283816,
+          "aligned": true
+        },
+        "exp21e_v6_rolling_minus_180d_topology_seed2026_e1f3f57521e6": {
+          "rows": 283816,
+          "aligned": true
+        },
+        "exp21e_v6_rolling_minus_180d_uniform_seed42_01afdd7afeb4": {
+          "rows": 283816,
+          "aligned": true
+        },
+        "exp21e_v6_rolling_minus_180d_uniform_seed100_ac9eee76220c": {
+          "rows": 283816,
+          "aligned": true
+        },
+        "exp21e_v6_rolling_minus_180d_uniform_seed2026_9585ca1ce0f3": {
+          "rows": 283816,
+          "aligned": true
+        }
+      }
+    },
+    "rolling_plus_180d/test": {
+      "reference_run": "exp21e_v6_rolling_plus_180d_importance_seed42_636a6afb4c50",
+      "runs": {
+        "exp21e_v6_rolling_plus_180d_importance_seed42_636a6afb4c50": {
+          "rows": 284263,
+          "aligned": true
+        },
+        "exp21e_v6_rolling_plus_180d_importance_seed100_a42c07bd292f": {
+          "rows": 284263,
+          "aligned": true
+        },
+        "exp21e_v6_rolling_plus_180d_importance_seed2026_8cb0e4e99f42": {
+          "rows": 284263,
+          "aligned": true
+        },
+        "exp21e_v6_rolling_plus_180d_topology_seed42_8359281d17b4": {
+          "rows": 284263,
+          "aligned": true
+        },
+        "exp21e_v6_rolling_plus_180d_topology_seed100_29ff426e3382": {
+          "rows": 284263,
+          "aligned": true
+        },
+        "exp21e_v6_rolling_plus_180d_topology_seed2026_4c59599ed6e6": {
+          "rows": 284263,
+          "aligned": true
+        },
+        "exp21e_v6_rolling_plus_180d_uniform_seed42_5f84da33b10f": {
+          "rows": 284263,
+          "aligned": true
+        },
+        "exp21e_v6_rolling_plus_180d_uniform_seed100_b571448306b1": {
+          "rows": 284263,
+          "aligned": true
+        },
+        "exp21e_v6_rolling_plus_180d_uniform_seed2026_5acf44c3eed9": {
+          "rows": 284263,
+          "aligned": true
+        }
+      }
+    }
+  },
+  "passed": true
+}

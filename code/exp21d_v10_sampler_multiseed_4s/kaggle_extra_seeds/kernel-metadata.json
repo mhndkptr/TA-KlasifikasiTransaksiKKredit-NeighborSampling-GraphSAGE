@@ -1,0 +1,18 @@
+{
+  "id": "muhammadhendikaputra/exp21d-v10-sampler-multiseed-4s-extra-seeds",
+  "title": "EXP21D v10 Sampler MultiSeed 4S Extra Seeds",
+  "code_file": "exp21d_v10_sampler_multiseed_4s_extra.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": "true",
+  "enable_gpu": true,
+  "enable_tpu": false,
+  "enable_internet": true,
+  "machine_shape": "NvidiaTeslaT4",
+  "dataset_sources": [
+    "ealtman2019/credit-card-transactions"
+  ],
+  "competition_sources": [],
+  "kernel_sources": [],
+  "model_sources": []
+}

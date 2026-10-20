@@ -1,0 +1,32 @@
+experiment:
+  id: "EXP21D-v7-SamplerAudit-2B"
+  seed: 42
+
+data:
+  transactions: "../../dataset/credit_card_transactions-ibm_v2.csv"
+  start_year: 2016
+  max_rows: null
+
+time_window:
+  reference_date: "2018-01-01"
+  train_days: 300
+  val_days: 30
+  gap_days: 8
+  test_days: 60
+
+sampling:
+  methods: ["uniform", "topology", "importance"]
+  num_neighbors: [15, 10]
+  smoothing_alpha: 0.1
+
+audit:
+  splits: ["test"]
+  population_roots: 10000
+  max_fraud_roots: null
+  repetitions: 5
+  save_edge_level: true
+  figure_sample_edges: 100000
+
+output:
+  result_dir: "../../result/exp21d_v7_sampler_audit_2b"
+  snapshot_source: true

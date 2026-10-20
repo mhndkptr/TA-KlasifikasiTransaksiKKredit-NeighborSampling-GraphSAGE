@@ -1,0 +1,17 @@
+{
+  "id": "muhammadhendikaputra/exp21d-v7-sampler-audit-2b",
+  "title": "EXP21D v7 Sampler Audit 2B",
+  "code_file": "exp21d_v7_sampler_audit_2b.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": "true",
+  "enable_gpu": false,
+  "enable_tpu": false,
+  "enable_internet": true,
+  "dataset_sources": [
+    "ealtman2019/credit-card-transactions"
+  ],
+  "competition_sources": [],
+  "kernel_sources": [],
+  "model_sources": []
+}

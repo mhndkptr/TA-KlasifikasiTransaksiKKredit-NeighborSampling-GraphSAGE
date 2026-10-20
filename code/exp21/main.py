@@ -602,6 +602,64 @@ def main():
     xgb_model.save_model(xgb_model_path)
     print(f"Model XGBoost tersimpan di: {xgb_model_path}")
 
+    # AUDIT FEATURE IMPORTANCE XGBOOST (Tabular vs GNN)
+    booster = xgb_model.get_booster()
+    score_gain = booster.get_score(importance_type='gain')
+    score_weight = booster.get_score(importance_type='weight')
+    
+    feature_names = list(feature_cols) + [f"gnn_emb_{i}" for i in range(emb_dim)]
+    importance_list = []
+    total_gain_all = 0.0
+    total_gain_tabular = 0.0
+    total_gain_gnn = 0.0
+
+    for idx, name in enumerate(feature_names):
+        f_key = f"f{idx}"
+        gain = score_gain.get(f_key, 0.0)
+        weight = score_weight.get(f_key, 0)
+        is_gnn = name.startswith("gnn_emb_")
+        total_gain_all += gain
+        if is_gnn:
+            total_gain_gnn += gain
+        else:
+            total_gain_tabular += gain
+            
+        importance_list.append({
+            "feature_index": idx,
+            "feature_name": name,
+            "is_gnn": is_gnn,
+            "gain": float(gain),
+            "weight": int(weight)
+        })
+
+    importance_list.sort(key=lambda x: x['gain'], reverse=True)
+    pct_tabular = (total_gain_tabular / max(1e-5, total_gain_all)) * 100
+    pct_gnn = (total_gain_gnn / max(1e-5, total_gain_all)) * 100
+
+    print("\n" + "="*80)
+    print("  AUDIT FEATURE IMPORTANCE XGBOOST (TABULAR VS GRAPH REPRESENTATION)")
+    print("="*80)
+    print(f"Total Gain Tabular Fitur : {total_gain_tabular:12.2f} ({pct_tabular:5.2f}%)")
+    print(f"Total Gain GNN Fitur     : {total_gain_gnn:12.2f} ({pct_gnn:5.2f}%)")
+    print("-" * 80)
+    print("Top 10 Fitur Paling Berpengaruh Berdasarkan Gain:")
+    for rank, item in enumerate(importance_list[:10], 1):
+        tipe = "[GNN]" if item['is_gnn'] else "[TAB]"
+        print(f"  {rank:2d}. {tipe} {item['feature_name']:20s} | Gain: {item['gain']:10.2f} | Split Count: {item['weight']:4d}")
+    print("="*80)
+
+    # Simpan hasil audit feature importance
+    importance_summary = {
+        "total_gain_all": float(total_gain_all),
+        "total_gain_tabular": float(total_gain_tabular),
+        "total_gain_gnn": float(total_gain_gnn),
+        "pct_tabular_gain": float(pct_tabular),
+        "pct_gnn_gain": float(pct_gnn),
+        "top_features": importance_list[:30]
+    }
+    with open(result_dir / f"exp21_{sampling_method}_feature_importance.json", 'w') as f:
+        json.dump(importance_summary, f, indent=4)
+
     # 10. Phase 4: Kalibrasi Threshold Dinamis pada Validation & Evaluasi Test
     print("\n--- [Phase 4: Kalibrasi Threshold Dinamis & Evaluasi Final] ---")
     # Prediksi probabilitas pada Validation

@@ -1,0 +1,16 @@
+{
+  "status": "passed",
+  "checks": {
+    "strata_contract": true,
+    "all_axes_present": true,
+    "all_methods_present": true,
+    "fraud_membership_complete": true,
+    "eight_capture_patterns_reported": true,
+    "threshold_predictions_used": true,
+    "latent_dimensions_correct": true,
+    "fisher_is_finite": true,
+    "pca_contains_all_fraud": true,
+    "pca_marked_exploratory": true,
+    "all_visualizations_created": true
+  }
+}

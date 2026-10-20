@@ -1,0 +1,48 @@
+experiment:
+  id: "EXP21D-v8-FairCtrl-1B"
+  seed: 42
+  evaluation_seed: 1042
+  samplers: ["uniform", "topology", "importance"]
+
+input:
+  source_result_dir: "../../result/exp21d_v5_sampler_correctness/kaggle_download/result/exp21d_v5_sampler_correctness/seed_42"
+  expected_hybrid_dimensions: 138
+  tabular_dimensions: 10
+  embedding_dimensions: 128
+  compute_sha256: false
+
+pca:
+  n_components: 10
+  batch_size: 65536
+  transform_batch_size: 100000
+  whiten: false
+
+classifier:
+  n_estimators: 100
+  max_depth: 4
+  learning_rate: 0.05
+  min_child_weight: 10
+  subsample: 0.8
+  colsample_bytree: 0.8
+  scale_pos_weight_strategy: "sqrt"
+  tree_method: "hist"
+  n_jobs: -1
+
+threshold:
+  min_precision: 0.15
+
+permutation_importance:
+  repeats: 20
+  blocks: ["tabular_10d", "gnn_pca_10d"]
+
+output:
+  result_dir: "../../result/exp21d_v8_fairctrl_1b"
+  save_transformed_features: true
+  snapshot_source: true
+
+smoke:
+  max_rows_per_split: 5000
+  pca_batch_size: 512
+  permutation_repeats: 2
+  n_estimators: 10
+

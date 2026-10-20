@@ -1,0 +1,20 @@
+{
+  "id": "muhammadhendikaputra/exp21d-v4-fairctrl-1a",
+  "title": "EXP21D v4 FairCtrl 1A",
+  "code_file": "exp21d_v4_fairctrl_1a.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": "true",
+  "enable_gpu": true,
+  "enable_tpu": false,
+  "enable_internet": true,
+  "machine_shape": "NvidiaL4",
+  "dataset_sources": [
+    "ealtman2019/credit-card-transactions"
+  ],
+  "competition_sources": [],
+  "kernel_sources": [
+    "muhammadhendikaputra/exp21d-graphsage-golden-master"
+  ],
+  "model_sources": []
+}

@@ -1,0 +1,14 @@
+{
+  "status": "passed",
+  "training_runs_started": 0,
+  "inventory_passed": true,
+  "prediction_alignment_passed": true,
+  "figures": [
+    "degree_stratified_errors.png",
+    "precision_recall_fraud_capture.png",
+    "sampler_mechanism.png"
+  ],
+  "machine_readable_statistical_report": true,
+  "embedding_checkpoint_reproduction_passed": true,
+  "runtime_seconds": 2642.270974636078
+}

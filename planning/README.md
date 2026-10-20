@@ -16,6 +16,9 @@ Seluruh perencanaan dipecah ke dalam **6 dokumen eksperimen terpisah** dengan pr
 | 4 | [04_exp23_pure_graphsage_end_to_end.md](file:///d:/Projects/Klasifikasi%20Transasi%20Kartu%20Kredit%20-%20GraphSAGE/tugas-akhir-klasifikasi-transaksi-kartu-kredit/planning/04_exp23_pure_graphsage_end_to_end.md) | `EXP23` | **Pure End-to-End HeteroGraphSAGE (Ablasi Eliminasi XGBoost)**: Mengeliminasi classifier downstream XGBoost dan mengevaluasi klasifikasi sigmoid murni GraphSAGE pada protokol rolling window 2016–2020 untuk mengisolasi kausalitas neighbor sampling. | $\approx 15$ menit |
 | 5 | [05_exp24_attribute_aware_sampling.md](file:///d:/Projects/Klasifikasi%20Transasi%20Kartu%20Kredit%20-%20GraphSAGE/tugas-akhir-klasifikasi-transaksi-kartu-kredit/planning/05_exp24_attribute_aware_sampling.md) | `EXP24` | **Penyempurnaan Neighbor Sampling (Core Thesis)**: Memperkaya metode sampling `topology` dan `importance` dengan bobot kedekatan waktu dan signifikansi nominal, serta membandingkannya dengan *Uniform* dan *NN Sampler* SHINE. | $\approx 45$ menit (4 sampler) |
 | 6 | [06_exp25_integrated_hybrid_ablation.md](file:///d:/Projects/Klasifikasi%20Transasi%20Kartu%20Kredit%20-%20GraphSAGE/tugas-akhir-klasifikasi-transaksi-kartu-kredit/planning/06_exp25_integrated_hybrid_ablation.md) | `EXP25` | **Integrasi Pipeline Hibrida Final & Studi Ablasi**: Menyusun matriks komparasi master (Tabular vs GNN vs Hybrid) untuk tabel hasil utama Bab 4 Tugas Akhir. | $\approx 60$ menit |
+| 7 | [07_eksplorasi_data_splitting_atribut_tuning_exp21.md](file:///d:/Projects/Klasifikasi%20Transasi%20Kartu%20Kredit%20-%20GraphSAGE/tugas-akhir-klasifikasi-transaksi-kartu-kredit/planning/07_eksplorasi_data_splitting_atribut_tuning_exp21.md) | `EXP21-REV` | **Remediasi & Eksplorasi EXP21 (Saran Pembimbing)**: Mengatasi bias *too good to be true* melalui 3 fase eksperimen:<br>• `EXP21A`: Audit & Eliminasi Kebocoran Atribut (`Zip`/`City`).<br>• `EXP21B`: Balanced Hyperparameter Tuning & Tree Regularization.<br>• `EXP21C`: Multi-Window Temporal Splitting & Walk-Forward Validation. | $\approx 45$ menit |
+| 8 | [08_exp21d_optimal_synthesis_model.md](file:///d:/Projects/Klasifikasi%20Transasi%20Kartu%20Kredit%20-%20GraphSAGE/tugas-akhir-klasifikasi-transaksi-kartu-kredit/planning/08_exp21d_optimal_synthesis_model.md) | `EXP21D` | **The Golden Master Hybrid Pipeline (Sintesis EXP21A, EXP21B, EXP21C)**: Mengintegrasikan konfigurasi terbaik (clean features tanpa Zip/City, regularized XGBoost SPW=10-27, embargo gap 8 hari pada window 2018 aktif) menjadi satu model acuan utama. | $\approx 35$ menit |
+| 9 | [09_exp21e_pure_end_to_end_graphsage.md](file:///d:/Projects/Klasifikasi%20Transasi%20Kartu%20Kredit%20-%20GraphSAGE/tugas-akhir-klasifikasi-transaksi-kartu-kredit/planning/09_exp21e_pure_end_to_end_graphsage.md) | `EXP21E` | **Pure End-to-End HeteroGraphSAGE Architecture (Proposal Alignment)**: Mengimplementasikan model klasifikasi murni GraphSAGE (Linear Head + Sigmoid) tanpa classifier downstream XGBoost, dengan seluruh preprocessing, fitur, window temporal, dan sampling identik dengan EXP21D. | $\approx 20$ menit |
 
 ---
 
@@ -34,23 +37,28 @@ Seluruh perencanaan dipecah ke dalam **6 dokumen eksperimen terpisah** dengan pr
 │      EXP21       │ ──> Standarisasi data era 2016-2020 (Hybrid GNN + XGBoost)
 └──────────────────┘
          │
-         ▼
-┌──────────────────┐
-│      EXP22       │ ──> Validasi Agregator 'max' pada arsitektur ringan 2-layer
-└──────────────────┘
-         │
-         ▼
-┌──────────────────┐
-│      EXP23       │ ──> Pure End-to-End GraphSAGE (Ablasi Eliminasi Total XGBoost)
-└──────────────────┘
-         │
-         ▼
-┌──────────────────┐
-│      EXP24       │ ──> Komparasi 4 strategi neighbor sampling (Inti kontribusi TA)
-└──────────────────┘
-         │
-         ▼
-┌──────────────────┐
-│      EXP25       │ ──> Studi ablasi menyeluruh & penyusunan tabel hasil final Bab 4
-└──────────────────┘
+         ├───────────────────────────────────────────┐
+         │ (Audit & Remediasi Masukan Pembimbing)     │
+         ▼                                           ▼
+┌──────────────────┐                       ┌──────────────────┐
+│  EXP21A, B, C    │                       │      EXP22       │ ──> Validasi Agregator 'max'
+└──────────────────┘                       └──────────────────┘
+         │                                           │
+         ▼                                           ▼
+┌──────────────────┐                       ┌──────────────────┐
+│      EXP21D      │ (The Golden Master)   │      EXP23       │ ──> Pure End-to-End GraphSAGE
+└──────────────────┘                       └──────────────────┘
+         │                                           │
+         └─────────────────────┬─────────────────────┘
+                               │
+                               ▼
+                     ┌──────────────────┐
+                     │      EXP24       │ ──> Komparasi 4 strategi neighbor sampling
+                     └──────────────────┘
+                               │
+                               ▼
+                     ┌──────────────────┐
+                     │      EXP25       │ ──> Studi ablasi final Bab 4
+                     └──────────────────┘
 ```
+

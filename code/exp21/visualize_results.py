@@ -9,6 +9,7 @@ import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 from datetime import datetime, timedelta
 from sklearn.metrics import precision_recall_curve, roc_curve
+from matplotlib.patches import Patch
 
 # Set font & style standard
 plt.rcParams['font.sans-serif'] = 'DejaVu Sans'
@@ -1024,14 +1025,228 @@ def plot_chart17_step_accuracy(histories, out_dir: Path):
     plt.close()
     print(f"[SAVED] {out_path.name}")
 
+def plot_chart18_feature_importance(result_dir: Path, output_dir: Path, model_dir: Path = None):
+    """
+    Chart 18 & Plot Mandiri: Visualisasi Feature Importance XGBoost (Tabular vs GNN Embeddings).
+    Memuat exp21_{method}_feature_importance.json atau mengekstrak langsung dari model JSON jika belum tersedia.
+    """
+    methods = ['uniform', 'topology', 'importance']
+    feature_cols = ['Amount', 'Use Chip', 'Merchant City', 'Merchant State', 'Zip', 'MCC', 'Errors?']
+    importance_data = {}
+
+    for method in methods:
+        imp_path = result_dir / f"exp21_{method}_feature_importance.json"
+        
+        # Jika belum ada, coba muat dari model JSON di model_dir jika disediakan
+        if not imp_path.exists():
+            candidate_model_dirs = []
+            if model_dir is not None:
+                candidate_model_dirs.append(Path(model_dir))
+            candidate_model_dirs.extend([
+                result_dir.parent.parent / "model/exp21" / result_dir.name,
+                result_dir.parent.parent / "model/exp21",
+                Path("../../model/exp21") / result_dir.name,
+                Path("../../model/exp21")
+            ])
+            
+            for mdir in candidate_model_dirs:
+                mpath = mdir / f"exp21_{method}_xgb.json"
+                if mpath.exists():
+                    try:
+                        import xgboost as xgb
+                        booster = xgb.Booster()
+                        booster.load_model(str(mpath))
+                        score_gain = booster.get_score(importance_type='gain')
+                        score_weight = booster.get_score(importance_type='weight')
+                        
+                        hidden_dim = 128
+                        res_p = result_dir / f"exp21_{method}_results.json"
+                        if res_p.exists():
+                            with open(res_p, 'r') as rf:
+                                rdata = json.load(rf)
+                                hidden_dim = rdata.get('hyperparameters', {}).get('hidden_channels', 128)
+                                
+                        feat_names = list(feature_cols) + [f"gnn_emb_{i}" for i in range(hidden_dim)]
+                        tot_all = 0.0
+                        tot_tab = 0.0
+                        tot_gnn = 0.0
+                        items = []
+                        for idx, name in enumerate(feat_names):
+                            k = f"f{idx}"
+                            g = float(score_gain.get(k, 0.0))
+                            w = int(score_weight.get(k, 0))
+                            is_gnn = name.startswith('gnn_emb_')
+                            tot_all += g
+                            if is_gnn:
+                                tot_gnn += g
+                            else:
+                                tot_tab += g
+                            items.append({
+                                'feature_index': idx,
+                                'feature_name': name,
+                                'gain': g,
+                                'weight': w,
+                                'is_gnn': is_gnn
+                            })
+                        items.sort(key=lambda x: x['gain'], reverse=True)
+                        pct_tab = (tot_tab / max(1e-5, tot_all)) * 100
+                        pct_gnn = (tot_gnn / max(1e-5, tot_all)) * 100
+                        summary = {
+                            "total_gain_all": float(tot_all),
+                            "total_gain_tabular": float(tot_tab),
+                            "total_gain_gnn": float(tot_gnn),
+                            "pct_tabular_gain": float(pct_tab),
+                            "pct_gnn_gain": float(pct_gnn),
+                            "top_features": items[:30]
+                        }
+                        with open(imp_path, 'w') as jf:
+                            json.dump(summary, jf, indent=4)
+                        print(f"[EXTRACTED & SAVED] {imp_path.name}")
+                        break
+                    except Exception:
+                        pass
+
+        if imp_path.exists():
+            with open(imp_path, 'r') as f:
+                importance_data[method] = json.load(f)
+
+    if not importance_data:
+        print("[INFO] Data feature importance belum tersedia di result dir atau model dir.")
+        return
+
+    # 1. Plot Individual (Linear & Log Scale)
+    for method, data in importance_data.items():
+        non_zero_features = [it for it in data.get('top_features', []) if it['gain'] > 0]
+        if not non_zero_features:
+            non_zero_features = data.get('top_features', [])[:10]
+            
+        names = [item['feature_name'] for item in reversed(non_zero_features)]
+        gains = [item['gain'] for item in reversed(non_zero_features)]
+        colors = ['#1f77b4' if item['is_gnn'] else '#ff7f0e' for item in reversed(non_zero_features)]
+        
+        # Linear Plot
+        fig_h = max(5.0, len(non_zero_features) * 0.65)
+        fig, ax = plt.subplots(figsize=(10.5, fig_h), dpi=300)
+        bars = ax.barh(names, gains, color=colors, edgecolor='black', linewidth=0.7)
+        max_gain = max(gains) if gains else 1.0
+        for bar in bars:
+            width = bar.get_width()
+            y_pos = bar.get_y() + bar.get_height() / 2
+            if width > max_gain * 0.18:
+                ax.annotate(f"{width:,.2f}",
+                            xy=(width - max_gain * 0.02, y_pos),
+                            ha='right', va='center', fontsize=9.5, fontweight='bold', color='white')
+            else:
+                ax.annotate(f"{width:,.2f}",
+                            xy=(width + max_gain * 0.015, y_pos),
+                            ha='left', va='center', fontsize=9, fontweight='bold', color='#1E293B')
+                
+        ax.set_xlabel('Split Gain (Tingkat Kepentingan Keputusan)', fontsize=11, fontweight='semibold')
+        ax.set_title(f'EXP21: Feature Importance XGBoost ({method.upper()})\n'
+                     f'Tabular: {data["pct_tabular_gain"]:.1f}% | GNN Embeddings: {data["pct_gnn_gain"]:.1f}%', 
+                     fontweight='bold', pad=12)
+        ax.grid(axis='x', linestyle='--', alpha=0.6)
+        ax.set_xlim(0, max_gain * 1.15)
+        
+        legend_elements = [
+            Patch(facecolor='#ff7f0e', edgecolor='black', label='Tabular Feature (Raw/Categorical)'),
+            Patch(facecolor='#1f77b4', edgecolor='black', label='GraphSAGE Representation')
+        ]
+        ax.legend(handles=legend_elements, loc='lower right', framealpha=0.95)
+        plt.tight_layout()
+        save_path = output_dir / f"exp21_{method}_feature_importance.png"
+        plt.savefig(save_path)
+        plt.close()
+        print(f"[SAVED] {save_path.name}")
+
+        # Log Scale Plot
+        fig, ax = plt.subplots(figsize=(10.5, fig_h), dpi=300)
+        bars = ax.barh(names, gains, color=colors, edgecolor='black', linewidth=0.7)
+        ax.set_xscale('log')
+        for bar in bars:
+            width = bar.get_width()
+            y_pos = bar.get_y() + bar.get_height() / 2
+            ax.annotate(f"{width:,.2f}",
+                        xy=(width * 1.15, y_pos),
+                        ha='left', va='center', fontsize=9, fontweight='bold', color='#1E293B')
+        ax.set_xlabel('Split Gain (Skala Logaritmik)', fontsize=11, fontweight='semibold')
+        ax.set_title(f'EXP21: Feature Importance XGBoost ({method.upper()}) [Log Scale]\n'
+                     f'Tabular: {data["pct_tabular_gain"]:.1f}% | GNN Embeddings: {data["pct_gnn_gain"]:.1f}%', 
+                     fontweight='bold', pad=12)
+        ax.grid(axis='x', linestyle='--', alpha=0.6, which='both')
+        min_g = min(gains) if gains else 1.0
+        ax.set_xlim(min_g * 0.4, max_gain * 4.5)
+        ax.legend(handles=legend_elements, loc='lower right', framealpha=0.95)
+        plt.tight_layout()
+        save_path_log = output_dir / f"exp21_{method}_feature_importance_log.png"
+        plt.savefig(save_path_log)
+        plt.close()
+        print(f"[SAVED] {save_path_log.name}")
+
+    # 2. Combined 3-Panel Chart (Chart 18)
+    fig, axes = plt.subplots(1, 3, figsize=(18, 6.5), dpi=300)
+    fig.patch.set_facecolor('#FFFFFF')
+    method_titles = {
+        'uniform': 'Uniform Sampling (Baseline)',
+        'topology': 'Topology-Aware Sampling',
+        'importance': 'Importance-Based Sampling'
+    }
+    for idx, m in enumerate(methods):
+        ax = axes[idx]
+        ax.set_facecolor('#F8FAFC')
+        data = importance_data.get(m, {})
+        if not data:
+            continue
+        all_features = [it for it in data.get('top_features', []) if it['gain'] > 0]
+        if not all_features:
+            all_features = data.get('top_features', [])[:8]
+        names = [item['feature_name'] for item in reversed(all_features)]
+        gains = [item['gain'] for item in reversed(all_features)]
+        colors = ['#3B82F6' if item['is_gnn'] else '#F59E0B' for item in reversed(all_features)]
+        bars = ax.barh(names, gains, color=colors, edgecolor='#1E293B', linewidth=0.8, alpha=0.92)
+        max_gain = max(gains) if gains else 1.0
+        for bar in bars:
+            width = bar.get_width()
+            y_pos = bar.get_y() + bar.get_height() / 2
+            if width > max_gain * 0.20:
+                ax.annotate(f"{width:,.1f}",
+                            xy=(width - max_gain * 0.03, y_pos),
+                            ha='right', va='center', fontsize=8.5, fontweight='bold', color='white')
+            else:
+                ax.annotate(f"{width:,.1f}",
+                            xy=(width + max_gain * 0.02, y_pos),
+                            ha='left', va='center', fontsize=8.5, fontweight='bold', color='#1E293B')
+        ax.set_title(f"{method_titles[m]}\nTabular: {data['pct_tabular_gain']:.2f}% | GNN: {data['pct_gnn_gain']:.2f}%", 
+                     fontsize=11.5, fontweight='bold', color='#1E293B', pad=10)
+        ax.set_xlabel("Split Gain", fontsize=10, fontweight='semibold', color='#475569')
+        ax.grid(axis='x', linestyle='--', alpha=0.5, color='#CBD5E1')
+        ax.set_xlim(0, max_gain * 1.18)
+
+    legend_elements = [
+        Patch(facecolor='#F59E0B', edgecolor='#1E293B', label='Tabular Feature (Zip, City, etc.)'),
+        Patch(facecolor='#3B82F6', edgecolor='#1E293B', label='GraphSAGE Representation')
+    ]
+    fig.legend(handles=legend_elements, loc='lower center', ncol=2, framealpha=0.95, 
+               facecolor='#FFFFFF', edgecolor='#CBD5E1', fontsize=10.5, bbox_to_anchor=(0.5, -0.02))
+    fig.suptitle("EXP21: Audit Feature Importance XGBoost antar Strategi Neighbor Sampling\n"
+                 "(Dominasi Fitur Tabular High-Cardinality [Zip & City] Sebagai Bukti Empiris Perlunya Strict Anti-Leakage di EXP21A)",
+                 fontsize=13, fontweight='bold', y=1.02, color='#0F172A')
+    plt.tight_layout()
+    out_path = output_dir / "chart18_feature_importance.png"
+    plt.savefig(out_path, bbox_inches='tight')
+    plt.close()
+    print(f"[SAVED] {out_path.name}")
+
 def main():
     parser = argparse.ArgumentParser(description="EXP21: Visualisasi Komprehensif Hasil Eksperimen")
     parser.add_argument('--result-dir', type=str, default='../../result/exp21', help='Direktori artefak hasil exp21')
     parser.add_argument('--output-dir', type=str, default='../../result/exp21/plots', help='Direktori penyimpanan plot gambar')
+    parser.add_argument('--model-dir', type=str, default=None, help='Direktori model exp21 jika audit JSON perlu diekstrak')
     args = parser.parse_args()
     
     result_dir = Path(args.result_dir).resolve()
     output_dir = Path(args.output_dir).resolve()
+    model_dir = Path(args.model_dir).resolve() if args.model_dir else None
     output_dir.mkdir(parents=True, exist_ok=True)
     
     print(f"\n=======================================================")
@@ -1081,6 +1296,9 @@ def main():
     else:
         print("[INFO] File eksp21_{method}_history.json belum tersedia di result dir.")
         print("       Jalankan ulang training di Kaggle untuk menghasilkan kurva Loss, Acc, dan Multi-Metrik per-epoch.")
+    
+    print(f"\n--- [Generasi Feature Importance XGBoost (Chart 18 & Plot Mandiri)] ---")
+    plot_chart18_feature_importance(result_dir, output_dir, model_dir)
     
     print(f"\n=======================================================")
     print(f"  [SUCCESS] PROSES GENERASI VISUALISASI SELESAI!")
