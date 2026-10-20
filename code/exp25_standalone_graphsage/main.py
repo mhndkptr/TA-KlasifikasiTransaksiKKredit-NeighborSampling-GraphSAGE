@@ -453,7 +453,7 @@ def main() -> None:
 
     # 5. Inisialisasi Loader PyG
     batch_size = t_cfg.get("batch_size", 1024)
-    num_neighbors = t_cfg.get("num_neighbors", [15, 10])
+    num_neighbors = t_cfg.get("num_neighbors", [25, 10])
     train_loader = get_neighbor_loader(
         train_graph,
         method=sampling_method,

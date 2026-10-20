@@ -56,7 +56,7 @@ training:
   loss_weight_strategy: "sqrt"
   max_pos_weight: 50.0
   log_step_interval: 1
-  num_neighbors: [15, 10]
+  num_neighbors: [25, 10]
 
 threshold_calibration:
   selection_metric: "val_f1"

@@ -344,9 +344,9 @@ def get_neighbor_loader(
 ) -> NeighborLoader:
     """Membangun PyG NeighborLoader dengan bobot sampling EXP24 yang telah disesuaikan."""
     if num_neighbors is None:
-        num_neighbors = [15, 10]
+        num_neighbors = [25, 10]
     if len(num_neighbors) != 2 or any(value <= 0 for value in num_neighbors):
-        raise ValueError("num_neighbors harus berisi dua fan-out positif [15, 10]")
+        raise ValueError("num_neighbors harus berisi dua fan-out positif [k1, k2]")
 
     apply_sampling_weights(
         data, method, alpha=alpha, weight_attr=weight_attr,
