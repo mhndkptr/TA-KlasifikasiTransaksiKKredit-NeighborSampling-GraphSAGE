@@ -43,6 +43,23 @@ def manual_unweighted_bce(logits: torch.Tensor, targets: torch.Tensor) -> torch.
 
 
 def find_optimal_threshold(y_probs: np.ndarray, y_true: np.ndarray, min_precision: float = 0.15) -> tuple[float, dict]:
+    # Edge case: jika tidak ada sampel positif sama sekali (misal pada smoke test nrows kecil)
+    if (y_true == 1).sum() == 0:
+        optimal_threshold = 0.5
+        y_pred = (y_probs >= optimal_threshold).astype(int)
+        cm = confusion_matrix(y_true, y_pred, labels=[0, 1])
+        tn, fp, fn, tp = [int(v) for v in cm.ravel()]
+        return optimal_threshold, {
+            "optimal_threshold": 0.5,
+            "f1_score": 0.0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "tn": tn,
+            "fp": fp,
+            "fn": fn,
+            "tp": tp,
+        }
+
     precisions, recalls, thresholds = precision_recall_curve(y_true, y_probs)
     f1_scores = np.divide(
         2 * (precisions * recalls),
@@ -54,12 +71,14 @@ def find_optimal_threshold(y_probs: np.ndarray, y_true: np.ndarray, min_precisio
     if np.any(valid_mask):
         best_idx = np.argmax(f1_scores[:-1][valid_mask])
         optimal_threshold = float(thresholds[valid_mask][best_idx])
-    else:
+    elif len(f1_scores) > 1 and len(thresholds) > 0:
         best_idx = np.argmax(f1_scores[:-1])
         optimal_threshold = float(thresholds[best_idx])
+    else:
+        optimal_threshold = 0.5
 
     y_pred = (y_probs >= optimal_threshold).astype(int)
-    cm = confusion_matrix(y_true, y_pred)
+    cm = confusion_matrix(y_true, y_pred, labels=[0, 1])
     tn, fp, fn, tp = [int(v) for v in cm.ravel()]
 
     metrics = {
@@ -76,17 +95,21 @@ def find_optimal_threshold(y_probs: np.ndarray, y_true: np.ndarray, min_precisio
 
 
 def evaluate_predictions(y_probs: np.ndarray, y_true: np.ndarray, optimal_tau: float) -> dict:
-    try:
-        auprc = float(average_precision_score(y_true, y_probs))
-    except Exception:
+    if (y_true == 1).sum() == 0 or (y_true == 0).sum() == 0:
         auprc = 0.0
-    try:
-        roc_auc = float(roc_auc_score(y_true, y_probs))
-    except Exception:
-        roc_auc = 0.0
+        roc_auc = 0.5
+    else:
+        try:
+            auprc = float(average_precision_score(y_true, y_probs))
+        except Exception:
+            auprc = 0.0
+        try:
+            roc_auc = float(roc_auc_score(y_true, y_probs))
+        except Exception:
+            roc_auc = 0.5
 
     y_pred_def = (y_probs >= 0.5).astype(int)
-    cm_def = confusion_matrix(y_true, y_pred_def)
+    cm_def = confusion_matrix(y_true, y_pred_def, labels=[0, 1])
     tn_d, fp_d, fn_d, tp_d = [int(v) for v in cm_def.ravel()]
     metrics_def = {
         "threshold": 0.5,
@@ -100,7 +123,7 @@ def evaluate_predictions(y_probs: np.ndarray, y_true: np.ndarray, optimal_tau: f
     }
 
     y_pred_opt = (y_probs >= optimal_tau).astype(int)
-    cm_opt = confusion_matrix(y_true, y_pred_opt)
+    cm_opt = confusion_matrix(y_true, y_pred_opt, labels=[0, 1])
     tn_o, fp_o, fn_o, tp_o = [int(v) for v in cm_opt.ravel()]
     metrics_opt = {
         "threshold": float(optimal_tau),
@@ -419,14 +442,18 @@ def main() -> None:
         val_targets_arr = np.concatenate(all_val_targets)
 
         # Metrik threshold-independent
-        try:
-            val_auprc = float(average_precision_score(val_targets_arr, val_probs_arr))
-        except Exception:
+        if (val_targets_arr == 1).sum() == 0 or (val_targets_arr == 0).sum() == 0:
             val_auprc = 0.0
-        try:
-            val_roc_auc = float(roc_auc_score(val_targets_arr, val_probs_arr))
-        except Exception:
-            val_roc_auc = 0.0
+            val_roc_auc = 0.5
+        else:
+            try:
+                val_auprc = float(average_precision_score(val_targets_arr, val_probs_arr))
+            except Exception:
+                val_auprc = 0.0
+            try:
+                val_roc_auc = float(roc_auc_score(val_targets_arr, val_probs_arr))
+            except Exception:
+                val_roc_auc = 0.5
 
         # Metrik threshold 0.5
         val_preds_05 = (val_probs_arr >= 0.5).astype(int)
