@@ -92,10 +92,23 @@ Di **Anaconda Prompt** (dengan `mhp_exp24_gpu` aktif):
 
 Pastikan seluruh pustaka pendukung terpasang di environment `mhp_exp24_gpu`:
 
-```cmd
-pip install torch_geometric
-pip install xgboost scikit-learn pandas numpy psutil pyyaml matplotlib tabulate
-```
+1. **Instalasi PyG Core & Ekstensi Sampling C++ (`pyg-lib`)**:
+   > [!IMPORTANT] Persyaratan Mutlak untuk Weighted Sampling ('topology' & 'importance')
+   > PyTorch Geometric memerlukan modul C++ **`pyg_lib`** untuk menjalankan *weighted neighbor sampling*. Jika tidak diinstal, akan muncul `ImportError: Weighted neighbor sampling requires 'pyg-lib>=0.3.0'`.
+   
+   Jalankan perintah deteksi dan instalasi otomatis berikut di **Anaconda Prompt** (dengan `mhp_exp24_gpu` aktif):
+   ```cmd
+   python -c "import torch, subprocess, sys; cmd = f'pip install torch_geometric pyg_lib torch_scatter torch_sparse -f https://data.pyg.org/whl/torch-{torch.__version__.split(\"+\")[0]}+cu{torch.version.cuda.replace(\".\", \"\")}.html'; print('Menjalankan:', cmd); subprocess.check_call(cmd, shell=True)"
+   ```
+   *Atau jika via Conda:*
+   ```cmd
+   conda install pyg-lib -c pyg -c conda-forge
+   ```
+
+2. **Instalasi Dependensi Data Science & Evaluasi**:
+   ```cmd
+   pip install xgboost scikit-learn pandas numpy psutil pyyaml matplotlib tabulate
+   ```
 
 ---
 
@@ -197,3 +210,34 @@ python aggregate_exp24.py
    - Skrip telah dikunci dengan `num_workers=0` pada DataLoader PyTorch Geometric. Hal ini disengaja untuk mencegah *deadlock* pada mekanisme `multiprocessing.spawn` bawaan OS Windows.
 3. **Penyimpanan Drive D:**:
    - Pastikan drive `D:` menggunakan SSD (NVMe atau SATA) agar pembacaan dataset 2,35 GB dan penulisan embedding berjalan dalam hitungan detik.
+
+---
+
+## 11. Troubleshooting Kendala Umum di Anaconda Prompt
+
+### A. `ImportError: Weighted neighbor sampling requires 'pyg-lib>=0.3.0'`
+- **Penyebab**: PyTorch Geometric memerlukan ekstensi biner C++ `pyg_lib` untuk sampling berbobot non-seragam (`topology` dan `importance`).
+- **Solusi**: Di Anaconda Prompt, pastikan environment `mhp_exp24_gpu` aktif, lalu jalankan:
+  ```cmd
+  python -c "import torch, subprocess, sys; cmd = f'pip install pyg_lib -f https://data.pyg.org/whl/torch-{torch.__version__.split(\"+\")[0]}+cu{torch.version.cuda.replace(\".\", \"\")}.html'; subprocess.check_call(cmd, shell=True)"
+  ```
+  Atau via conda:
+  ```cmd
+  conda install pyg-lib -c pyg -c conda-forge
+  ```
+- **Catatan**: Metode `uniform` tidak memerlukan `pyg_lib` dan dapat berjalan secara *native*.
+
+### B. `UserWarning: NVIDIA GeForce RTX 5060 Ti with CUDA capability sm_120 is not compatible...`
+- **Penyebab**: PyTorch yang terpasang belum menyertakan pre-compiled kernel untuk arsitektur Blackwell (`sm_120`).
+- **Solusi Cepat (tanpa reinstall)**:
+  ```cmd
+  set CUDA_FORCE_PTX_JIT=1
+  ```
+- **Solusi Permanen**:
+  ```cmd
+  pip install --pre torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/cu128
+  ```
+
+### C. `ImportError: cannot import name 'preprocess_features' from 'data_preprocessing'`
+- **Penyebab**: Nama fungsi preprocessing telah distandarisasi ke `apply_strict_anti_leakage_preprocessing`.
+- **Solusi**: Pastikan Anda telah memperbarui file `data_preprocessing.py` dan `main.py` ke versi terbaru dari repositori.

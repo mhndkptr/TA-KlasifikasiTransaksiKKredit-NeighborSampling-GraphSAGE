@@ -357,6 +357,32 @@ def get_neighbor_loader(
     if input_nodes is None:
         input_nodes = torch.arange(int(data["transaction"].num_nodes))
 
+    # PyG NeighborLoader:
+    # 1. Untuk method == 'uniform', semua edge memiliki peluang identik (bobot konstan 1.0).
+    #    Kita gunakan weight_attr=None agar PyG memakai sampling uniform native yang sangat
+    #    cepat dan TIDAK membutuhkan ekstensi C++ eksternal 'pyg_lib'.
+    # 2. Untuk method 'topology' dan 'importance', PyG secara ketat membutuhkan 'pyg_lib>=0.3.0'.
+    loader_weight_attr = None if method == "uniform" else weight_attr
+
+    if loader_weight_attr is not None:
+        try:
+            import pyg_lib  # noqa: F401
+        except ImportError:
+            torch_ver = torch.__version__.split("+")[0]
+            cuda_ver = torch.version.cuda
+            cuda_tag = f"cu{cuda_ver.replace('.', '')}" if cuda_ver else "cpu"
+            wheel_url = f"https://data.pyg.org/whl/torch-{torch_ver}+{cuda_tag}.html"
+            raise ImportError(
+                f"\n{'='*75}\n"
+                f"[EXP24 ERROR] Weighted neighbor sampling (metode '{method}') memerlukan pustaka 'pyg-lib>=0.3.0'.\n"
+                f"Pustaka 'pyg_lib' belum terpasang di Python environment Anda.\n\n"
+                f"Solusi: Jalankan perintah berikut di Anaconda Prompt pada PC running Anda:\n"
+                f"  pip install pyg_lib -f {wheel_url}\n\n"
+                f"Atau jika menggunakan conda-forge:\n"
+                f"  conda install pyg-lib -c pyg -c conda-forge\n"
+                f"{'='*75}\n"
+            )
+
     generator = torch.Generator().manual_seed(seed)
     loader = NeighborLoader(
         data,
@@ -365,7 +391,7 @@ def get_neighbor_loader(
         input_nodes=("transaction", input_nodes),
         shuffle=shuffle,
         num_workers=0,
-        weight_attr=weight_attr,
+        weight_attr=loader_weight_attr,
         generator=generator,
         subgraph_type="directional",
     )

@@ -70,7 +70,7 @@ def main() -> None:
                 "torch_version = torch.__version__.split('+')[0]\n",
                 "cuda = torch.version.cuda.replace('.', '') if torch.version.cuda else 'cpu'\n",
                 "wheel_url = f'https://data.pyg.org/whl/torch-{torch_version}+cu{cuda}.html' if cuda != 'cpu' else f'https://data.pyg.org/whl/torch-{torch_version}+cpu.html'\n",
-                "if importlib.util.find_spec('torch_geometric') is None:\n",
+                "if importlib.util.find_spec('pyg_lib') is None or importlib.util.find_spec('torch_geometric') is None:\n",
                 "    subprocess.run([sys.executable, '-m', 'pip', 'install', '-q', 'torch_geometric', 'pyg_lib', 'torch_scatter', 'torch_sparse', '-f', wheel_url], check=True)\n",
                 "missing = [p for m, p in {'xgboost': 'xgboost', 'psutil': 'psutil', 'pyyaml': 'pyyaml'}.items() if importlib.util.find_spec(m) is None]\n",
                 "if missing:\n",
