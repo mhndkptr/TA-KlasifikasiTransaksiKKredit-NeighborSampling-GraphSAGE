@@ -8,6 +8,15 @@ from pathlib import Path
 import shutil
 import sys
 import time
+
+if sys.platform == "win32":
+    try:
+        if hasattr(sys.stdout, "reconfigure"):
+            sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+        if hasattr(sys.stderr, "reconfigure"):
+            sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+    except Exception:
+        pass
 import numpy as np
 import psutil
 from sklearn.metrics import (
@@ -42,7 +51,11 @@ class DualLogger:
         sys.stderr = self
 
     def write(self, message: str) -> None:
-        self.terminal_stdout.write(message)
+        try:
+            self.terminal_stdout.write(message)
+        except UnicodeEncodeError:
+            encoding = getattr(self.terminal_stdout, "encoding", "utf-8") or "utf-8"
+            self.terminal_stdout.write(message.encode(encoding, errors="replace").decode(encoding))
         self.terminal_stdout.flush()
         if not self._closed:
             try:
@@ -644,7 +657,7 @@ def main() -> None:
             is_best=is_best_epoch,
         )
 
-        star = " ★ BEST" if is_best_epoch else ""
+        star = " [BEST]" if is_best_epoch else ""
         print(
             f"Epoch {epoch:02d}/{epochs:02d} | "
             f"Train Loss: {train_loss:.4f} | "

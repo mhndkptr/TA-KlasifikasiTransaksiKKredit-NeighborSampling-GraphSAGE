@@ -7,6 +7,15 @@ import subprocess
 import sys
 import threading
 import time
+
+if sys.platform == "win32":
+    try:
+        if hasattr(sys.stdout, "reconfigure"):
+            sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+        if hasattr(sys.stderr, "reconfigure"):
+            sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+    except Exception:
+        pass
 import numpy as np
 import psutil
 import yaml
@@ -42,12 +51,20 @@ def resolve_transaction_dataset(config: dict, config_path: Path, search_roots: l
 def monitor(command: list[str], cwd: Path, log_path: Path) -> dict:
     started = time.time()
     peak_rss = peak_gpu = 0.0
-    process = subprocess.Popen(command, cwd=cwd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, bufsize=1)
-    with log_path.open("w", encoding="utf-8") as log:
+    process = subprocess.Popen(
+        command, cwd=cwd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+        text=True, bufsize=1, encoding="utf-8", errors="replace"
+    )
+    with log_path.open("w", encoding="utf-8", errors="replace") as log:
         def tee() -> None:
             assert process.stdout is not None
             for line in process.stdout:
-                print(line, end="", flush=True)
+                try:
+                    print(line, end="", flush=True)
+                except UnicodeEncodeError:
+                    encoding = getattr(sys.stdout, "encoding", "utf-8") or "utf-8"
+                    sys.stdout.write(line.encode(encoding, errors="replace").decode(encoding))
+                    sys.stdout.flush()
                 log.write(line)
                 log.flush()
         thread = threading.Thread(target=tee, daemon=True)
