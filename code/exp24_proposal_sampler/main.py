@@ -24,7 +24,7 @@ from config import load_config
 from data_preprocessing import apply_strict_anti_leakage_preprocessing, load_and_split_raw_data
 from graph_builder import build_hetero_graph
 from model import HeteroGraphSAGE
-from samplers import get_neighbor_loader, sampling_weight_audit
+from samplers import apply_sampling_weights, get_neighbor_loader, sampling_weight_audit
 
 
 def manual_weighted_bce(logits: torch.Tensor, targets: torch.Tensor, pos_weight: float) -> torch.Tensor:
@@ -224,9 +224,26 @@ def main() -> None:
     test_graph, _ = build_hetero_graph(test_df, feature_cols, scalers_dict=scalers)
     data_prep_time = time.time() - t_prep_start
 
-    # 4. Audit Bobot Sampler Proposal
+    # 4. Audit & Penerapan Bobot Sampler Proposal
     alpha = s_cfg.get("smoothing_alpha", 0.1)
     weight_attr = s_cfg.get("weight_attr", "sampling_weight")
+    topo_alpha = s_cfg.get("topology_alpha", 0.5)
+    imp_gamma = s_cfg.get("importance_gamma", 0.3)
+    ppr_teleport = s_cfg.get("ppr_teleport", 0.15)
+    ppr_steps = s_cfg.get("ppr_steps", 3)
+
+    for g in (train_graph, val_graph, test_graph):
+        apply_sampling_weights(
+            g,
+            method=sampling_method,
+            alpha=alpha,
+            weight_attr=weight_attr,
+            topology_alpha=topo_alpha,
+            importance_gamma=imp_gamma,
+            ppr_teleport=ppr_teleport,
+            ppr_steps=ppr_steps,
+        )
+
     audit_report = sampling_weight_audit(train_graph, sampling_method, weight_attr=weight_attr)
     audit_path = result_dir / f"exp24_{sampling_method}_sampler_weight_audit.json"
     write_json(audit_path, audit_report)

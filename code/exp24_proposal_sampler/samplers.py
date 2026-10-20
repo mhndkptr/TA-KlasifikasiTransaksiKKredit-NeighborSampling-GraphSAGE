@@ -294,8 +294,14 @@ def validate_sampling_weight_contract(data: HeteroData, method: str, weight_attr
                 raise ValueError(f"Bobot {method} melanggar smoothing floor 0.1 pada {edge_type}")
 
 
-def sampling_weight_audit(data: HeteroData, method: str, weight_attr: str = WEIGHT_ATTR) -> dict[str, Any]:
+def sampling_weight_audit(data: HeteroData, method: str, weight_attr: str = WEIGHT_ATTR, **kwargs) -> dict[str, Any]:
     """Menghasilkan laporan audit statistik bobot sampling."""
+    # Pastikan bobot sampling sudah diterapkan secara defensif jika belum ada
+    for edge_type in data.edge_types:
+        if weight_attr not in data[edge_type]:
+            apply_sampling_weights(data, method, weight_attr=weight_attr, **kwargs)
+            break
+
     report: dict[str, Any] = {
         "method": method,
         "weight_attr": weight_attr,
