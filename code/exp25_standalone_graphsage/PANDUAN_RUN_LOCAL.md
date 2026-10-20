@@ -77,7 +77,16 @@ python run_seed.py --seeds 42 100 2026 3407 8713 --device cuda
 python run_seed.py --fanouts all --device cuda
 ```
 
-### E. Menjalankan Agregasi & Visualisasi Mandiri Kapan Saja:
+### E. Mengubah Pangkat Bobot Sampling (Power Exponent p)
+Secara default $p = 1.0$ (skala linier proposal). Jika ingin menaikkan ketajaman pembobotan (misal $p = 2.0$):
+- **Lewat CLI:**
+  ```cmd
+  python run_seed.py --methods topology importance --fanouts 5,5 --power-exponent 2.0 --seeds 42 --device cuda
+  ```
+- **Atau lewat `config.reference.yaml`:**
+  Ubah baris `power_exponent: 1.0` menjadi `power_exponent: 2.0`.
+
+### F. Menjalankan Agregasi & Visualisasi Mandiri Kapan Saja:
 ```cmd
 python aggregate_exp25.py
 ```

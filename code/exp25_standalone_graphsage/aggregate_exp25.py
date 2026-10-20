@@ -51,8 +51,14 @@ def compute_ndcg(y_true: np.ndarray, y_probs: np.ndarray) -> float:
 
 
 def evaluate(labels: np.ndarray, probs: np.ndarray, threshold: float, budgets: list[int]) -> dict:
-    predicted = probs >= threshold
-    tn, fp, fn, tp = confusion_matrix(labels, predicted, labels=[0, 1]).ravel()
+    # Metrik pada threshold default 0.5 (Standar Paper)
+    pred_05 = probs >= 0.5
+    tn_05, fp_05, fn_05, tp_05 = confusion_matrix(labels, pred_05, labels=[0, 1]).ravel()
+
+    # Metrik pada threshold optimal
+    pred_opt = probs >= threshold
+    tn_opt, fp_opt, fn_opt, tp_opt = confusion_matrix(labels, pred_opt, labels=[0, 1]).ravel()
+
     try:
         auprc = float(average_precision_score(labels, probs))
     except Exception:
@@ -61,19 +67,40 @@ def evaluate(labels: np.ndarray, probs: np.ndarray, threshold: float, budgets: l
         roc_auc = float(roc_auc_score(labels, probs))
     except Exception:
         roc_auc = 0.5
+
     row = {
         "auprc": auprc,
         "roc_auc": roc_auc,
         "map": compute_map(labels, probs),
         "ndcg": compute_ndcg(labels, probs),
-        "accuracy": float(accuracy_score(labels, predicted)),
-        "f1": float(f1_score(labels, predicted, zero_division=0)),
-        "precision": float(precision_score(labels, predicted, zero_division=0)),
-        "recall": float(recall_score(labels, predicted, zero_division=0)),
-        "tn": int(tn),
-        "fp": int(fp),
-        "fn": int(fn),
-        "tp": int(tp),
+        # Default Threshold 0.5 (Standar Utama Paper)
+        "accuracy": float(accuracy_score(labels, pred_05)),
+        "f1": float(f1_score(labels, pred_05, zero_division=0)),
+        "precision": float(precision_score(labels, pred_05, zero_division=0)),
+        "recall": float(recall_score(labels, pred_05, zero_division=0)),
+        "tn": int(tn_05),
+        "fp": int(fp_05),
+        "fn": int(fn_05),
+        "tp": int(tp_05),
+        # Eksplisit Default 0.5
+        "accuracy_default": float(accuracy_score(labels, pred_05)),
+        "f1_default": float(f1_score(labels, pred_05, zero_division=0)),
+        "precision_default": float(precision_score(labels, pred_05, zero_division=0)),
+        "recall_default": float(recall_score(labels, pred_05, zero_division=0)),
+        "tn_default": int(tn_05),
+        "fp_default": int(fp_05),
+        "fn_default": int(fn_05),
+        "tp_default": int(tp_05),
+        # Optimal Threshold
+        "optimal_threshold": float(threshold),
+        "accuracy_optimal": float(accuracy_score(labels, pred_opt)),
+        "f1_optimal": float(f1_score(labels, pred_opt, zero_division=0)),
+        "precision_optimal": float(precision_score(labels, pred_opt, zero_division=0)),
+        "recall_optimal": float(recall_score(labels, pred_opt, zero_division=0)),
+        "tn_optimal": int(tn_opt),
+        "fp_optimal": int(fp_opt),
+        "fn_optimal": int(fn_opt),
+        "tp_optimal": int(tp_opt),
     }
     order = np.argsort(-probs, kind="stable")
     for budget in budgets:
@@ -209,10 +236,13 @@ def aggregate_fanout_comparison(result_root: str | Path, budgets: list[int] | No
 
         num_neighbors = m_data.get("num_neighbors", [25, 10])
         fanout_str = f"{num_neighbors[0]}x{num_neighbors[1]}"
+        power_exponent = float(m_data.get("power_exponent", 1.0))
 
         # Cari file prediksi
+        p_tag = f"_p{power_exponent:.1f}".replace(".", "p") if (power_exponent != 1.0 and method != "uniform") else ""
         pred_candidates = [
             manifest_path.parent / m_data.get("predictions_file", ""),
+            manifest_path.parent / f"exp25_{method}_k{num_neighbors[0]}x{num_neighbors[1]}{p_tag}_predictions.npz",
             manifest_path.parent / f"exp25_{method}_k{num_neighbors[0]}x{num_neighbors[1]}_predictions.npz",
             manifest_path.parent / f"exp25_{method}_predictions.npz",
         ]
@@ -222,7 +252,7 @@ def aggregate_fanout_comparison(result_root: str | Path, budgets: list[int] | No
 
         # Waktu modifikasi untuk deduplikasi (ambil yang terbaru)
         mtime = manifest_path.stat().st_mtime
-        key = (int(seed), method, fanout_str)
+        key = (int(seed), method, fanout_str, power_exponent)
         if key in runs_map and runs_map[key]["mtime"] >= mtime:
             continue
 
@@ -271,6 +301,7 @@ def aggregate_fanout_comparison(result_root: str | Path, budgets: list[int] | No
             "fanout": fanout_str,
             "k1": num_neighbors[0],
             "k2": num_neighbors[1],
+            "power_exponent": power_exponent,
             "threshold": threshold,
             **eval_metrics,
             "runtime_sec": runtime_sec,
@@ -290,7 +321,13 @@ def aggregate_fanout_comparison(result_root: str | Path, budgets: list[int] | No
 
     # Buat summary per (method, fanout)
     summary_rows = []
-    numeric_cols = ["auprc", "roc_auc", "map", "ndcg", "accuracy", "f1", "precision", "recall", "runtime_sec"]
+    numeric_cols = [
+        "auprc", "roc_auc", "map", "ndcg",
+        "accuracy", "f1", "precision", "recall",
+        "accuracy_default", "f1_default", "precision_default", "recall_default",
+        "accuracy_optimal", "f1_optimal", "precision_optimal", "recall_optimal",
+        "runtime_sec"
+    ]
     for (method, fanout_str), grp in df.groupby(["method", "fanout"], sort=False):
         k1 = int(grp["k1"].iloc[0])
         k2 = int(grp["k2"].iloc[0])

@@ -26,17 +26,22 @@ def _bincount(index: torch.Tensor, size: int) -> torch.Tensor:
     return torch.bincount(index, minlength=size).to(dtype=torch.float32)
 
 
-def _minmax_plus_floor(values: torch.Tensor, alpha: float = 0.1) -> torch.Tensor:
-    """Implementasi min-max scaling dengan smoothing floor alpha (Proposal & EXP21D)."""
+def _minmax_plus_floor(values: torch.Tensor, alpha: float = 0.1, power: float = 1.0) -> torch.Tensor:
+    """Implementasi min-max scaling dengan power exponent p dan smoothing floor alpha (Proposal & EXP21D)."""
     if not 0.0 < alpha <= 1.0:
         raise ValueError(f"alpha harus berada pada (0, 1], diterima {alpha}")
+    if power <= 0.0:
+        raise ValueError(f"power_exponent harus bernilai positif > 0, diterima {power}")
     values = values.to(dtype=torch.float32)
     if values.numel() == 0:
         return values
     minimum, maximum = values.min(), values.max()
     if torch.isclose(maximum, minimum):
         return torch.ones_like(values)
-    return (values - minimum) / (maximum - minimum + 1e-8) + alpha
+    norm = (values - minimum) / (maximum - minimum + 1e-8)
+    if power != 1.0:
+        norm = torch.pow(torch.clamp(norm, min=0.0, max=1.0), power)
+    return norm + alpha
 
 
 def compute_bipartite_jaccard(
@@ -206,12 +211,13 @@ def apply_sampling_weights(
     importance_gamma: float = 0.3,
     ppr_teleport: float = 0.15,
     ppr_steps: int = 3,
+    power_exponent: float = 1.0,
 ) -> HeteroData:
     """
-    Menghitung dan menyematkan bobot sampling pada graf sesuai Proposal EXP24:
+    Menghitung dan menyematkan bobot sampling pada graf sesuai Proposal EXP24 & EXP25:
     - Uniform: w = 1.0 (Baseline)
-    - Topology: w = minmax(alpha * Jaccard + (1 - alpha) * Homophily_ASAGNN) + floor (Algoritma 3 Proposal)
-    - Importance: w = minmax(gamma * Degree + (1 - gamma) * PPR) + floor (Algoritma 4 Proposal)
+    - Topology: w = (minmax(alpha * Jaccard + (1 - alpha) * Homophily_ASAGNN))^p + floor (Algoritma 3 Proposal)
+    - Importance: w = (minmax(gamma * Degree + (1 - gamma) * PPR))^p + floor (Algoritma 4 Proposal)
     """
     method = method.lower()
     topo = _transaction_topology_structures(data)
@@ -248,14 +254,20 @@ def apply_sampling_weights(
             candidate_deg = torch.ones(num_edges, dtype=torch.float32)
         elif edge_type == TX_TO_USER:
             candidate_deg = merchant_deg[merchant_for_tx[edge_index[0]]]
-            weights = _minmax_plus_floor(raw_tx_to_user[edge_index[0]], alpha=alpha)
+            weights = _minmax_plus_floor(raw_tx_to_user[edge_index[0]], alpha=alpha, power=power_exponent)
         elif edge_type == TX_TO_MERCHANT:
             candidate_deg = user_deg[user_for_tx[edge_index[0]]]
-            weights = _minmax_plus_floor(raw_tx_to_merchant[edge_index[0]], alpha=alpha)
+            weights = _minmax_plus_floor(raw_tx_to_merchant[edge_index[0]], alpha=alpha, power=power_exponent)
         else:
             # Hop 1 selalu uniform 1.0 (deterministik non-kompetitif)
             weights = torch.ones(num_edges, dtype=torch.float32)
             candidate_deg = torch.ones(num_edges, dtype=torch.float32)
+
+        if weights.numel() != num_edges or not torch.isfinite(weights).all() or (weights <= 0).any():
+            raise ValueError(f"Bobot sampling invalid untuk relasi {edge_type}")
+
+        data[edge_type][weight_attr] = weights.contiguous()
+        data[edge_type].candidate_degree = candidate_deg.contiguous()
 
         if weights.numel() != num_edges or not torch.isfinite(weights).all() or (weights <= 0).any():
             raise ValueError(f"Bobot sampling invalid untuk relasi {edge_type}")
@@ -341,8 +353,9 @@ def get_neighbor_loader(
     importance_gamma: float = 0.3,
     ppr_teleport: float = 0.15,
     ppr_steps: int = 3,
+    power_exponent: float = 1.0,
 ) -> NeighborLoader:
-    """Membangun PyG NeighborLoader dengan bobot sampling EXP24 yang telah disesuaikan."""
+    """Membangun PyG NeighborLoader dengan bobot sampling EXP24 & EXP25 yang telah disesuaikan."""
     if num_neighbors is None:
         num_neighbors = [25, 10]
     if len(num_neighbors) != 2 or any(value <= 0 for value in num_neighbors):
@@ -351,7 +364,8 @@ def get_neighbor_loader(
     apply_sampling_weights(
         data, method, alpha=alpha, weight_attr=weight_attr,
         topology_alpha=topology_alpha, importance_gamma=importance_gamma,
-        ppr_teleport=ppr_teleport, ppr_steps=ppr_steps
+        ppr_teleport=ppr_teleport, ppr_steps=ppr_steps,
+        power_exponent=power_exponent,
     )
 
     if input_nodes is None:

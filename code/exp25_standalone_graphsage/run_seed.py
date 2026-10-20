@@ -124,21 +124,30 @@ def enrich(
     resource: dict,
     result_root: Path,
     model_root: Path,
+    power_exponent: float = 1.0,
 ) -> None:
     k1, k2 = fanout
     k_tag = f"_k{k1}x{k2}"
-    record = seed_dir / "run_records" / f"{method}{k_tag}"
+    p_tag = f"_p{power_exponent:.1f}".replace(".", "p") if (power_exponent != 1.0 and method != "uniform") else ""
+    full_tag = f"{k_tag}{p_tag}"
+    record = seed_dir / "run_records" / f"{method}{full_tag}"
     record.mkdir(parents=True, exist_ok=True)
     write_json(record / "resource_usage.json", resource)
 
     # Deteksi file prediksi bertag atau standar
-    predictions = seed_dir / f"exp25_{method}{k_tag}_predictions.npz"
+    predictions = seed_dir / f"exp25_{method}{full_tag}_predictions.npz"
+    if not predictions.is_file():
+        predictions = seed_dir / f"exp25_{method}{k_tag}_predictions.npz"
     if not predictions.is_file():
         predictions = seed_dir / f"exp25_{method}_predictions.npz"
-    manifest = seed_dir / f"exp25_{method}{k_tag}_manifest.json"
+    manifest = seed_dir / f"exp25_{method}{full_tag}_manifest.json"
+    if not manifest.is_file():
+        manifest = seed_dir / f"exp25_{method}{k_tag}_manifest.json"
     if not manifest.is_file():
         manifest = seed_dir / f"exp25_{method}_manifest.json"
-    results = seed_dir / f"exp25_{method}{k_tag}_results.json"
+    results = seed_dir / f"exp25_{method}{full_tag}_results.json"
+    if not results.is_file():
+        results = seed_dir / f"exp25_{method}{k_tag}_results.json"
     if not results.is_file():
         results = seed_dir / f"exp25_{method}_results.json"
 
@@ -223,6 +232,7 @@ def run_block(
     device: str | None,
     nrows: int | None,
     force: bool = False,
+    power_exponent: float | None = None,
 ) -> None:
     dataset_path = resolve_transaction_dataset(config, config_path)
     config = json.loads(json.dumps(config))
@@ -234,6 +244,8 @@ def run_block(
     model_root.mkdir(parents=True, exist_ok=True)
 
     effective_nrows = nrows if nrows is not None else config.get("data", {}).get("max_rows")
+    effective_p = power_exponent if power_exponent is not None else float(config.get("sampling", {}).get("power_exponent", 1.0))
+    p_tag = f"_p{effective_p:.1f}".replace(".", "p") if (effective_p != 1.0) else ""
 
     seed_dir = result_root / f"seed_{seed}"
     seed_dir.mkdir(exist_ok=True)
@@ -247,6 +259,7 @@ def run_block(
         nrows=effective_nrows,
         methods=methods,
         fanouts=fanouts,
+        power_exponent=effective_p,
     )
 
     # Jalankan validasi sampler proposal
@@ -257,9 +270,10 @@ def run_block(
         k_tag = f"_k{k1}x{k2}"
 
         for method in methods:
-            completed_tagged = seed_dir / f"exp25_{method}{k_tag}_manifest.json"
+            full_tag = f"{k_tag}{p_tag if method != 'uniform' else ''}"
+            completed_tagged = seed_dir / f"exp25_{method}{full_tag}_manifest.json"
             completed_std = seed_dir / f"exp25_{method}_manifest.json"
-            record_index = seed_dir / "run_records" / f"{method}{k_tag}" / "artifact_index.json"
+            record_index = seed_dir / "run_records" / f"{method}{full_tag}" / "artifact_index.json"
 
             is_already_done = False
             if not force and config["execution"].get("resume_completed", True):
@@ -270,7 +284,7 @@ def run_block(
                             is_already_done = True
                     except Exception:
                         pass
-                elif (k1 == 25 and k2 == 10) and completed_std.is_file():
+                elif (k1 == 25 and k2 == 10 and effective_p == 1.0) and completed_std.is_file():
                     try:
                         m_data = json.loads(completed_std.read_text(encoding="utf-8"))
                         if m_data.get("status") == "complete" and m_data.get("num_neighbors", [25, 10]) == [25, 10]:
@@ -281,20 +295,21 @@ def run_block(
             derived = json.loads(json.dumps(config))
             derived["experiment"].update({"seed": seed, "evaluation_seed": seed + 1000})
             derived["sampling"]["method"] = method
+            derived["sampling"]["power_exponent"] = effective_p
             derived["training"]["num_neighbors"] = [k1, k2]
             derived["output"].update({"result_dir": str(result_root), "model_dir": str(model_root), "save_feature_matrices": False})
-            derived_path = seed_dir / f"config_{method}{k_tag}.yaml"
+            derived_path = seed_dir / f"config_{method}{full_tag}.yaml"
             derived_path.write_text(yaml.safe_dump(derived, sort_keys=False), encoding="utf-8")
 
             if is_already_done:
                 if not record_index.is_file():
                     resource = {"runtime_seconds": None, "peak_rss_mb": None, "peak_gpu_used_mb": None, "recovered_existing_run": True}
-                    enrich(seed_dir, method, fanout, derived_path, identity_path, resource, result_root, model_root)
-                append_event(events, "run_skipped_complete", seed=seed, method=method, fanout=[k1, k2])
-                print(f"[RESUME] Run {method} (Fan-out [{k1}, {k2}], Seed {seed}) sudah selesai sebelumnya. Dilewati.")
+                    enrich(seed_dir, method, fanout, derived_path, identity_path, resource, result_root, model_root, power_exponent=effective_p)
+                append_event(events, "run_skipped_complete", seed=seed, method=method, fanout=[k1, k2], power_exponent=effective_p)
+                print(f"[RESUME] Run {method} (Fan-out [{k1}, {k2}], Power p={effective_p}, Seed {seed}) sudah selesai sebelumnya. Dilewati.")
                 continue
 
-            run_id = f"exp25_{method}_seed_{seed}{k_tag}"
+            run_id = f"exp25_{method}_seed_{seed}{full_tag}"
             if effective_nrows is not None:
                 run_id += f"_nr{effective_nrows}"
 
@@ -310,6 +325,8 @@ def run_block(
                 "--num-neighbors",
                 str(k1),
                 str(k2),
+                "--power-exponent",
+                str(effective_p),
                 "--run-id",
                 run_id,
             ]
@@ -318,10 +335,10 @@ def run_block(
             if effective_nrows is not None:
                 command += ["--nrows", str(effective_nrows)]
 
-            append_event(events, "run_started", seed=seed, method=method, fanout=[k1, k2])
-            resource = monitor(command, root, seed_dir / f"{method}{k_tag}_stdout.log")
-            enrich(seed_dir, method, fanout, derived_path, identity_path, resource, result_root, model_root)
-            append_event(events, "run_completed", seed=seed, method=method, fanout=[k1, k2], **resource)
+            append_event(events, "run_started", seed=seed, method=method, fanout=[k1, k2], power_exponent=effective_p)
+            resource = monitor(command, root, seed_dir / f"{method}{full_tag}_stdout.log")
+            enrich(seed_dir, method, fanout, derived_path, identity_path, resource, result_root, model_root, power_exponent=effective_p)
+            append_event(events, "run_completed", seed=seed, method=method, fanout=[k1, k2], power_exponent=effective_p, **resource)
 
     # Jalankan agregasi otomatis setelah block selesai
     try:
@@ -353,6 +370,7 @@ def main() -> None:
         help="Daftar fan-out sampling (misal: '5,5', '15,10', '25,10' atau 'all')",
     )
     parser.add_argument("--device", help="Device target ('cuda' atau 'cpu')")
+    parser.add_argument("--power-exponent", type=float, default=None, help="Pangkat eksponen pembobotan sampling p (default: dari config atau 1.0)")
     parser.add_argument("--nrows", type=int, default=None, help="Batas baris data untuk smoke test")
     parser.add_argument("--force", action="store_true", help="Paksa jalankan ulang meskipun run sudah selesai sebelumnya")
     args = parser.parse_args()
@@ -383,12 +401,15 @@ def main() -> None:
     else:
         fanouts = [parse_fanout(f) for f in args.fanouts]
 
+    p_val = args.power_exponent if args.power_exponent is not None else config.get("sampling", {}).get("power_exponent", 1.0)
+
     print("=" * 70)
     print("  EXP25: STANDALONE GRAPHSAGE MULTI-SEED & FAN-OUT RUNNER")
     print(f"  Config   : {config_path.name}")
     print(f"  Seeds    : {seeds}")
     print(f"  Methods  : {methods}")
     print(f"  Fan-outs : {fanouts}")
+    print(f"  Power p  : {p_val}")
     print(f"  Device   : {args.device or 'auto'}")
     if args.nrows:
         print(f"  Rows     : {args.nrows} (Smoke Test)")
@@ -396,7 +417,17 @@ def main() -> None:
     print("=" * 70)
 
     for seed in seeds:
-        run_block(config, config_path, int(seed), methods, fanouts, args.device, args.nrows, force=args.force)
+        run_block(
+            config,
+            config_path,
+            int(seed),
+            methods,
+            fanouts,
+            args.device,
+            args.nrows,
+            force=args.force,
+            power_exponent=args.power_exponent,
+        )
 
 
 if __name__ == "__main__":

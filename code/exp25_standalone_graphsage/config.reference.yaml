@@ -28,6 +28,7 @@ sampling:
   method: "uniform"
   undersampling_ratio: 1.0
   weight_attr: "sampling_weight"
+  power_exponent: 1.0
   smoothing_alpha: 0.1
   topology_alpha: 0.5
   importance_gamma: 0.3

@@ -303,6 +303,7 @@ def main() -> None:
     parser.add_argument("--device", type=str, default=None)
     parser.add_argument("--nrows", type=int, default=None)
     parser.add_argument("--num-neighbors", type=int, nargs=2, default=None, help="Ukuran fan-out sampling tetangga [k1, k2] (default dari config)")
+    parser.add_argument("--power-exponent", type=float, default=None, help="Pangkat eksponen pembobotan sampling tetangga p (default: 1.0 dari config)")
     parser.add_argument("--run-id", type=str, default=None, help="ID unik untuk run ini (default: auto timestamped)")
     parser.add_argument("--log-to-file", action="store_true", default=None, help="Paksa aktifkan pencatatan log ke file")
     parser.add_argument("--no-log-to-file", action="store_true", help="Nonaktifkan pencatatan log ke file")
@@ -335,12 +336,14 @@ def main() -> None:
 
     nrows = args.nrows or cfg.get("data", {}).get("max_rows", None)
     num_neighbors = list(args.num_neighbors) if args.num_neighbors is not None else t_cfg.get("num_neighbors", [25, 10])
+    power_exponent = float(args.power_exponent) if args.power_exponent is not None else float(s_cfg.get("power_exponent", 1.0))
 
     # 1. Tentukan Run ID
     timestamp_str = datetime.now().strftime("%Y%m%d_%H%M%S")
     nrows_tag = f"_nr{nrows}" if nrows is not None else ""
     k_tag = f"_k{num_neighbors[0]}x{num_neighbors[1]}"
-    default_run_id = f"exp25_{sampling_method}_s{seed}{k_tag}{nrows_tag}_{timestamp_str}"
+    p_tag = f"_p{power_exponent:.1f}".replace(".", "p") if (power_exponent != 1.0 and sampling_method != "uniform") else ""
+    default_run_id = f"exp25_{sampling_method}_s{seed}{k_tag}{p_tag}{nrows_tag}_{timestamp_str}"
     run_id = args.run_id or exp_cfg.get("run_id") or default_run_id
 
     # 2. Tentukan Direktori Output
@@ -391,7 +394,8 @@ def main() -> None:
     print("=" * 70)
     print("  EXP25: STANDALONE GRAPHSAGE WITH PROPOSAL NEIGHBOR SAMPLING")
     print(f"  Run ID  : {run_id}")
-    print(f"  Sampler : {sampling_method.upper()} | Seed: {seed} | Fan-out: [{num_neighbors[0]}, {num_neighbors[1]}] | Device: {device_str}")
+    p_info = f" | Power p: {power_exponent}" if (power_exponent != 1.0 or sampling_method != "uniform") else ""
+    print(f"  Sampler : {sampling_method.upper()} | Seed: {seed} | Fan-out: [{num_neighbors[0]}, {num_neighbors[1]}]{p_info} | Device: {device_str}")
     print(f"  Run Dir : {result_dir}")
     if log_path:
         print(f"  Log File: {log_path}")
@@ -448,9 +452,10 @@ def main() -> None:
             importance_gamma=imp_gamma,
             ppr_teleport=ppr_teleport,
             ppr_steps=ppr_steps,
+            power_exponent=power_exponent,
         )
 
-    audit_report = sampling_weight_audit(train_graph, sampling_method, weight_attr=weight_attr)
+    audit_report = sampling_weight_audit(train_graph, sampling_method, weight_attr=weight_attr, power_exponent=power_exponent)
     audit_path = result_dir / f"exp25_{sampling_method}_sampler_weight_audit.json"
     write_json(audit_path, audit_report)
 
@@ -470,6 +475,7 @@ def main() -> None:
         importance_gamma=imp_gamma,
         ppr_teleport=ppr_teleport,
         ppr_steps=ppr_steps,
+        power_exponent=power_exponent,
     )
     val_loader = get_neighbor_loader(
         val_graph,
@@ -484,6 +490,7 @@ def main() -> None:
         importance_gamma=imp_gamma,
         ppr_teleport=ppr_teleport,
         ppr_steps=ppr_steps,
+        power_exponent=power_exponent,
     )
     test_loader = get_neighbor_loader(
         test_graph,
@@ -498,6 +505,7 @@ def main() -> None:
         importance_gamma=imp_gamma,
         ppr_teleport=ppr_teleport,
         ppr_steps=ppr_steps,
+        power_exponent=power_exponent,
     )
 
     # 6. Model HeteroGraphSAGE (Standalone Classifier sesuai Bab 3.4 Proposal)
@@ -540,8 +548,11 @@ def main() -> None:
     # 7. Inisialisasi Logging CSV & JSON Detail Per-Epoch
     csv_headers = [
         "epoch", "train_loss", "train_acc", "val_loss", "val_auprc", "val_roc_auc",
-        "val_f1_default", "val_f1_optimal", "val_precision_optimal", "val_recall_optimal",
-        "val_optimal_threshold", "val_fp", "val_fn", "learning_rate",
+        "val_acc_default", "val_f1_default", "val_precision_default", "val_recall_default",
+        "val_tp_default", "val_fp_default", "val_tn_default", "val_fn_default",
+        "val_f1_optimal", "val_precision_optimal", "val_recall_optimal", "val_optimal_threshold",
+        "val_tp_optimal", "val_fp_optimal", "val_tn_optimal", "val_fn_optimal",
+        "learning_rate",
         "time_train_epoch_sec", "time_val_epoch_sec", "time_epoch_total_sec",
         "cumulative_runtime_sec", "val_latency_ms_per_1k_tx",
         "peak_gpu_vram_mb", "peak_ram_mb", "is_best_epoch"
@@ -643,17 +654,24 @@ def main() -> None:
             except Exception:
                 val_roc_auc = 0.5
 
-        # Metrik threshold 0.5
+        # Metrik threshold 0.5 (Default)
         val_preds_05 = (val_probs_arr >= 0.5).astype(int)
+        val_acc_default = float(accuracy_score(val_targets_arr, val_preds_05))
         val_f1_default = float(f1_score(val_targets_arr, val_preds_05, zero_division=0))
+        val_prec_default = float(precision_score(val_targets_arr, val_preds_05, zero_division=0))
+        val_rec_default = float(recall_score(val_targets_arr, val_preds_05, zero_division=0))
+        cm_05 = confusion_matrix(val_targets_arr, val_preds_05, labels=[0, 1])
+        tn_05, fp_05, fn_05, tp_05 = [int(v) for v in cm_05.ravel()]
 
         # Kalibrasi threshold optimal PR-Curve pada validasi
         opt_tau, val_metrics_opt = find_optimal_threshold(val_probs_arr, val_targets_arr, min_precision=min_prec_constraint)
         val_f1_opt = val_metrics_opt["f1_score"]
         val_prec_opt = val_metrics_opt["precision"]
         val_rec_opt = val_metrics_opt["recall"]
-        val_fp = val_metrics_opt["fp"]
-        val_fn = val_metrics_opt["fn"]
+        val_tp_opt = val_metrics_opt["tp"]
+        val_fp_opt = val_metrics_opt["fp"]
+        val_tn_opt = val_metrics_opt["tn"]
+        val_fn_opt = val_metrics_opt["fn"]
 
         # Waktu & Sumber Daya
         time_epoch_total_sec = time.perf_counter() - t_epoch_start
@@ -685,13 +703,22 @@ def main() -> None:
             "val_loss": round(val_loss, 5),
             "val_auprc": round(val_auprc, 5),
             "val_roc_auc": round(val_roc_auc, 5),
+            "val_acc_default": round(val_acc_default, 4),
             "val_f1_default": round(val_f1_default, 4),
+            "val_precision_default": round(val_prec_default, 4),
+            "val_recall_default": round(val_rec_default, 4),
+            "val_tp_default": tp_05,
+            "val_fp_default": fp_05,
+            "val_tn_default": tn_05,
+            "val_fn_default": fn_05,
             "val_f1_optimal": round(val_f1_opt, 4),
             "val_precision_optimal": round(val_prec_opt, 4),
             "val_recall_optimal": round(val_rec_opt, 4),
             "val_optimal_threshold": round(opt_tau, 4),
-            "val_fp": val_fp,
-            "val_fn": val_fn,
+            "val_tp_optimal": val_tp_opt,
+            "val_fp_optimal": val_fp_opt,
+            "val_tn_optimal": val_tn_opt,
+            "val_fn_optimal": val_fn_opt,
             "learning_rate": current_lr,
             "time_train_epoch_sec": round(time_train_epoch_sec, 2),
             "time_val_epoch_sec": round(time_val_epoch_sec, 2),
@@ -788,6 +815,7 @@ def main() -> None:
         "seed": seed,
         "num_neighbors": num_neighbors,
         "fanout": f"{num_neighbors[0]}x{num_neighbors[1]}",
+        "power_exponent": power_exponent,
         "best_epoch": best_epoch,
         "best_val_auprc": float(best_val_auprc),
         "test_metrics": {
@@ -832,6 +860,7 @@ def main() -> None:
         "sampling_method": sampling_method,
         "num_neighbors": num_neighbors,
         "fanout": f"{num_neighbors[0]}x{num_neighbors[1]}",
+        "power_exponent": power_exponent,
         "paired_block": f"seed_{seed}",
         "nrows": nrows,
         "is_smoke_test": nrows is not None,
@@ -847,6 +876,8 @@ def main() -> None:
     # Selalu sinkronisasikan artefak ke canonical seed directory (seed_{seed})
     # Dan simpan juga file bertag fan-out (misal: exp25_uniform_k5x5_predictions.npz)
     k_suffix = f"_k{num_neighbors[0]}x{num_neighbors[1]}"
+    p_suffix = f"_p{power_exponent:.1f}".replace(".", "p") if (power_exponent != 1.0 and sampling_method != "uniform") else ""
+    full_suffix = f"{k_suffix}{p_suffix}"
     for fname in [
         f"exp25_{sampling_method}_predictions.npz",
         f"exp25_{sampling_method}_results.json",
@@ -858,7 +889,7 @@ def main() -> None:
         src = result_dir / fname
         if src.is_file():
             shutil.copy2(src, canonical_seed_dir / fname)
-            tagged_name = fname.replace(f"exp25_{sampling_method}", f"exp25_{sampling_method}{k_suffix}")
+            tagged_name = fname.replace(f"exp25_{sampling_method}", f"exp25_{sampling_method}{full_suffix}")
             shutil.copy2(src, canonical_seed_dir / tagged_name)
             # Salin juga ke result_dir jika terpisah
             if tagged_name != fname:
@@ -867,7 +898,7 @@ def main() -> None:
     src_gnn = model_dir / f"exp25_{sampling_method}_best_gnn.pt"
     if src_gnn.is_file():
         shutil.copy2(src_gnn, canonical_model_dir / f"exp25_{sampling_method}_best_gnn.pt")
-        tagged_model_name = f"exp25_{sampling_method}{k_suffix}_best_gnn.pt"
+        tagged_model_name = f"exp25_{sampling_method}{full_suffix}_best_gnn.pt"
         shutil.copy2(src_gnn, canonical_model_dir / tagged_model_name)
         if tagged_model_name != f"exp25_{sampling_method}_best_gnn.pt":
             shutil.copy2(src_gnn, model_dir / tagged_model_name)
@@ -880,6 +911,7 @@ def main() -> None:
         "sampling_method": sampling_method,
         "seed": seed,
         "fanout": f"{num_neighbors[0]}x{num_neighbors[1]}",
+        "power_exponent": power_exponent,
         "k1": num_neighbors[0],
         "k2": num_neighbors[1],
         "seed": seed,
