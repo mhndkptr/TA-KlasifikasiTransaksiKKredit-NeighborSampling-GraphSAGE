@@ -780,23 +780,23 @@ def main() -> None:
     }
     write_json(result_dir / f"exp24_{sampling_method}_manifest.json", manifest)
 
-    # Sinkronisasi ke canonical seed directory jika ini full run atau jika isolate_runs dimatikan
-    if args.nrows is None or not isolate_runs:
-        for fname in [
-            f"exp24_{sampling_method}_predictions.npz",
-            f"exp24_{sampling_method}_results.json",
-            f"exp24_{sampling_method}_manifest.json",
-            f"exp24_{sampling_method}_training_history.csv",
-            f"exp24_{sampling_method}_history.json",
-            f"exp24_{sampling_method}_xgboost_history.json",
-            f"exp24_{sampling_method}_sampler_weight_audit.json",
-        ]:
-            src = result_dir / fname
-            if src.is_file():
-                shutil.copy2(src, canonical_seed_dir / fname)
-        src_gnn = model_dir / f"exp24_{sampling_method}_best_gnn.pt"
-        if src_gnn.is_file():
-            shutil.copy2(src_gnn, canonical_model_dir / f"exp24_{sampling_method}_best_gnn.pt")
+    # Selalu sinkronisasikan artefak terbaru ke canonical seed directory (seed_{seed})
+    # agar modul orchestrator (run_seed.py) dan agregasi (aggregate_exp24.py) selalu dapat menemukannya
+    for fname in [
+        f"exp24_{sampling_method}_predictions.npz",
+        f"exp24_{sampling_method}_results.json",
+        f"exp24_{sampling_method}_manifest.json",
+        f"exp24_{sampling_method}_training_history.csv",
+        f"exp24_{sampling_method}_history.json",
+        f"exp24_{sampling_method}_xgboost_history.json",
+        f"exp24_{sampling_method}_sampler_weight_audit.json",
+    ]:
+        src = result_dir / fname
+        if src.is_file():
+            shutil.copy2(src, canonical_seed_dir / fname)
+    src_gnn = model_dir / f"exp24_{sampling_method}_best_gnn.pt"
+    if src_gnn.is_file():
+        shutil.copy2(src_gnn, canonical_model_dir / f"exp24_{sampling_method}_best_gnn.pt")
 
     # Catat ke index terpusat runs_index.csv
     index_path = result_root / "runs_index.csv"

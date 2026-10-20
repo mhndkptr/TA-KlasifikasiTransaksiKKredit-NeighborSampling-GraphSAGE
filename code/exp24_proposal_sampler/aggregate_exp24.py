@@ -18,12 +18,20 @@ COLORS = {"uniform": "#4472C4", "topology": "#ED7D31", "importance": "#70AD47"}
 def evaluate(labels: np.ndarray, probs: np.ndarray, threshold: float, budgets: list[int]) -> dict:
     predicted = probs >= threshold
     tn, fp, fn, tp = confusion_matrix(labels, predicted, labels=[0, 1]).ravel()
+    try:
+        auprc = float(average_precision_score(labels, probs))
+    except Exception:
+        auprc = 0.0
+    try:
+        roc_auc = float(roc_auc_score(labels, probs))
+    except Exception:
+        roc_auc = 0.5
     row = {
-        "auprc": float(average_precision_score(labels, probs)),
-        "roc_auc": float(roc_auc_score(labels, probs)),
-        "f1": float(f1_score(labels, predicted)),
-        "precision": float(precision_score(labels, predicted)),
-        "recall": float(recall_score(labels, predicted)),
+        "auprc": auprc,
+        "roc_auc": roc_auc,
+        "f1": float(f1_score(labels, predicted, zero_division=0)),
+        "precision": float(precision_score(labels, predicted, zero_division=0)),
+        "recall": float(recall_score(labels, predicted, zero_division=0)),
         "tn": int(tn),
         "fp": int(fp),
         "fn": int(fn),

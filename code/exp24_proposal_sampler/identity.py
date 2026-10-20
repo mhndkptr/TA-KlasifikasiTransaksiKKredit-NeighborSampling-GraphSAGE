@@ -14,15 +14,21 @@ def entity_hash(values: pd.Series) -> np.ndarray:
     return values.astype(str).map(mapping).to_numpy(dtype="U16")
 
 
-def build_test_identity(dataset: str | Path, window: dict, start_year: int) -> dict[str, np.ndarray]:
+def build_test_identity(dataset: str | Path, window: dict, start_year: int, nrows: int | None = None) -> dict[str, np.ndarray]:
     columns = ["User", "Merchant Name", "Is Fraud?", "Year", "Month", "Day", "Time"]
-    chunks = []
-    for chunk in pd.read_csv(dataset, usecols=columns, chunksize=1_000_000):
-        filtered = chunk.loc[chunk["Year"] >= start_year].copy()
-        if len(filtered):
-            filtered["source_row"] = filtered.index.to_numpy(dtype=np.int64)
-            chunks.append(filtered)
-    frame = pd.concat(chunks, ignore_index=True)
+    if nrows is not None:
+        frame = pd.read_csv(dataset, usecols=columns, nrows=nrows)
+        frame = frame.loc[frame["Year"] >= start_year].copy()
+        if len(frame):
+            frame["source_row"] = frame.index.to_numpy(dtype=np.int64)
+    else:
+        chunks = []
+        for chunk in pd.read_csv(dataset, usecols=columns, chunksize=1_000_000):
+            filtered = chunk.loc[chunk["Year"] >= start_year].copy()
+            if len(filtered):
+                filtered["source_row"] = filtered.index.to_numpy(dtype=np.int64)
+                chunks.append(filtered)
+        frame = pd.concat(chunks, ignore_index=True)
     frame["Time"] = frame["Time"].fillna("00:00")
     frame["datetime"] = pd.to_datetime(frame["Year"].astype(str) + "-" + frame["Month"].astype(str).str.zfill(2) + "-" + frame["Day"].astype(str).str.zfill(2) + " " + frame["Time"])
     frame = frame.sort_values("datetime").reset_index(drop=True)

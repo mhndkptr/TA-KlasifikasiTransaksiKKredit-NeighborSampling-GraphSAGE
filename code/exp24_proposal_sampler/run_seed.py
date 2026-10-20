@@ -72,14 +72,15 @@ def monitor(command: list[str], cwd: Path, log_path: Path) -> dict:
     return {"runtime_seconds": time.time() - started, "peak_rss_mb": peak_rss, "peak_gpu_used_mb": peak_gpu}
 
 
-def prepare_identity(config: dict, config_path: Path, result_root: Path) -> Path:
+def prepare_identity(config: dict, config_path: Path, result_root: Path, nrows: int | None = None) -> Path:
     shared = result_root / "shared"
     shared.mkdir(parents=True, exist_ok=True)
-    target = shared / "test_row_identity.npz"
+    suffix = f"_nr{nrows}" if nrows is not None else ""
+    target = shared / f"test_row_identity{suffix}.npz"
     if target.is_file():
         return target
     dataset = resolve_transaction_dataset(config, config_path)
-    identity = build_test_identity(dataset, config["time_window"], int(config["data"]["start_year"]))
+    identity = build_test_identity(dataset, config["time_window"], int(config["data"]["start_year"]), nrows=nrows)
     np.savez_compressed(target, **identity)
     return target
 
@@ -160,8 +161,8 @@ def run_block(config: dict, config_path: Path, seed: int, device: str | None, nr
     seed_dir = result_root / f"seed_{seed}"
     seed_dir.mkdir(exist_ok=True)
     events = seed_dir / "orchestrator_events.jsonl"
-    identity_path = prepare_identity(config, config_path, result_root)
-    append_event(events, "paired_block_started", seed=seed, transaction_dataset=str(dataset_path))
+    identity_path = prepare_identity(config, config_path, result_root, nrows=nrows)
+    append_event(events, "paired_block_started", seed=seed, transaction_dataset=str(dataset_path), nrows=nrows)
 
     # Jalankan validasi sampler proposal
     subprocess.run([sys.executable, str(root / "validate_sampler.py")], cwd=root, check=True)
