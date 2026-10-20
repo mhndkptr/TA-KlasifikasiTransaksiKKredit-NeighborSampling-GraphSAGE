@@ -302,6 +302,7 @@ def main() -> None:
     parser.add_argument("--seed", type=int, default=None)
     parser.add_argument("--device", type=str, default=None)
     parser.add_argument("--nrows", type=int, default=None)
+    parser.add_argument("--num-neighbors", type=int, nargs=2, default=None, help="Ukuran fan-out sampling tetangga [k1, k2] (default dari config)")
     parser.add_argument("--run-id", type=str, default=None, help="ID unik untuk run ini (default: auto timestamped)")
     parser.add_argument("--log-to-file", action="store_true", default=None, help="Paksa aktifkan pencatatan log ke file")
     parser.add_argument("--no-log-to-file", action="store_true", help="Nonaktifkan pencatatan log ke file")
@@ -333,11 +334,13 @@ def main() -> None:
     device = torch.device(device_str)
 
     nrows = args.nrows or cfg.get("data", {}).get("max_rows", None)
+    num_neighbors = list(args.num_neighbors) if args.num_neighbors is not None else t_cfg.get("num_neighbors", [25, 10])
 
     # 1. Tentukan Run ID
     timestamp_str = datetime.now().strftime("%Y%m%d_%H%M%S")
     nrows_tag = f"_nr{nrows}" if nrows is not None else ""
-    default_run_id = f"exp25_{sampling_method}_s{seed}{nrows_tag}_{timestamp_str}"
+    k_tag = f"_k{num_neighbors[0]}x{num_neighbors[1]}"
+    default_run_id = f"exp25_{sampling_method}_s{seed}{k_tag}{nrows_tag}_{timestamp_str}"
     run_id = args.run_id or exp_cfg.get("run_id") or default_run_id
 
     # 2. Tentukan Direktori Output
@@ -388,7 +391,7 @@ def main() -> None:
     print("=" * 70)
     print("  EXP25: STANDALONE GRAPHSAGE WITH PROPOSAL NEIGHBOR SAMPLING")
     print(f"  Run ID  : {run_id}")
-    print(f"  Sampler : {sampling_method.upper()} | Seed: {seed} | Device: {device_str}")
+    print(f"  Sampler : {sampling_method.upper()} | Seed: {seed} | Fan-out: [{num_neighbors[0]}, {num_neighbors[1]}] | Device: {device_str}")
     print(f"  Run Dir : {result_dir}")
     if log_path:
         print(f"  Log File: {log_path}")
@@ -453,7 +456,7 @@ def main() -> None:
 
     # 5. Inisialisasi Loader PyG
     batch_size = t_cfg.get("batch_size", 1024)
-    num_neighbors = t_cfg.get("num_neighbors", [25, 10])
+    # Gunakan num_neighbors dari args jika ada, atau config
     train_loader = get_neighbor_loader(
         train_graph,
         method=sampling_method,
@@ -783,6 +786,8 @@ def main() -> None:
         "classifier_architecture": "standalone_graphsage_linear_sigmoid",
         "sampling_method": sampling_method,
         "seed": seed,
+        "num_neighbors": num_neighbors,
+        "fanout": f"{num_neighbors[0]}x{num_neighbors[1]}",
         "best_epoch": best_epoch,
         "best_val_auprc": float(best_val_auprc),
         "test_metrics": {
@@ -825,6 +830,8 @@ def main() -> None:
         "seed": seed,
         "evaluation_seed": evaluation_seed,
         "sampling_method": sampling_method,
+        "num_neighbors": num_neighbors,
+        "fanout": f"{num_neighbors[0]}x{num_neighbors[1]}",
         "paired_block": f"seed_{seed}",
         "nrows": nrows,
         "is_smoke_test": nrows is not None,
@@ -837,8 +844,9 @@ def main() -> None:
     }
     write_json(result_dir / f"exp25_{sampling_method}_manifest.json", manifest)
 
-    # Selalu sinkronisasikan artefak terbaru ke canonical seed directory (seed_{seed})
-    # agar modul orchestrator (run_seed.py) dan agregasi (aggregate_exp25.py) selalu dapat menemukannya
+    # Selalu sinkronisasikan artefak ke canonical seed directory (seed_{seed})
+    # Dan simpan juga file bertag fan-out (misal: exp25_uniform_k5x5_predictions.npz)
+    k_suffix = f"_k{num_neighbors[0]}x{num_neighbors[1]}"
     for fname in [
         f"exp25_{sampling_method}_predictions.npz",
         f"exp25_{sampling_method}_results.json",
@@ -850,9 +858,19 @@ def main() -> None:
         src = result_dir / fname
         if src.is_file():
             shutil.copy2(src, canonical_seed_dir / fname)
+            tagged_name = fname.replace(f"exp25_{sampling_method}", f"exp25_{sampling_method}{k_suffix}")
+            shutil.copy2(src, canonical_seed_dir / tagged_name)
+            # Salin juga ke result_dir jika terpisah
+            if tagged_name != fname:
+                shutil.copy2(src, result_dir / tagged_name)
+
     src_gnn = model_dir / f"exp25_{sampling_method}_best_gnn.pt"
     if src_gnn.is_file():
         shutil.copy2(src_gnn, canonical_model_dir / f"exp25_{sampling_method}_best_gnn.pt")
+        tagged_model_name = f"exp25_{sampling_method}{k_suffix}_best_gnn.pt"
+        shutil.copy2(src_gnn, canonical_model_dir / tagged_model_name)
+        if tagged_model_name != f"exp25_{sampling_method}_best_gnn.pt":
+            shutil.copy2(src_gnn, model_dir / tagged_model_name)
 
     # Catat ke index terpusat runs_index.csv
     index_path = result_root / "runs_index.csv"
@@ -860,6 +878,10 @@ def main() -> None:
         "run_id": run_id,
         "timestamp": datetime.now().isoformat(),
         "sampling_method": sampling_method,
+        "seed": seed,
+        "fanout": f"{num_neighbors[0]}x{num_neighbors[1]}",
+        "k1": num_neighbors[0],
+        "k2": num_neighbors[1],
         "seed": seed,
         "nrows": nrows if nrows is not None else "full",
         "best_epoch": best_epoch,

@@ -49,12 +49,29 @@ python validate_sampler.py
 python run_seed.py --config config.smoke.yaml --seeds 42 --device cuda
 ```
 
-### C. Eksekusi Penuh Multi-Seed Paired (5 Seed)
-```cmd
-python run_seed.py --config config.reference.yaml --seeds 42 100 2026 3407 8713 --device cuda
-```
+### C. Eksekusi Penuh Multi-Fanout & Multi-Seed
+
+1. **Uji 1 Metode (misal Uniform) dengan 3 Fan-Out Hop ([5, 5], [15, 10], [25, 10]) pada Seed 42**:
+   ```cmd
+   python run_seed.py --methods uniform --fanouts all --seeds 42 --device cuda
+   ```
+
+2. **Uji 3 Metode Sampling dengan 3 Fan-Out Hop pada Seed 42**:
+   ```cmd
+   python run_seed.py --methods all --fanouts all --seeds 42 --device cuda
+   ```
+
+3. **Uji 5 Seed Berpasangan dengan Default Fan-Out [25, 10] (15 Run)**:
+   ```cmd
+   python run_seed.py --seeds 42 100 2026 3407 8713 --device cuda
+   ```
+
+4. **Full Multi-Fanout & Multi-Seed Sweep (3 Metode × 3 Fan-Out × 5 Seed = 45 Run)**:
+   ```cmd
+   python run_seed.py --fanouts all --device cuda
+   ```
 
 ### D. Single Run Manual
 ```cmd
-python main.py --config config.reference.yaml --sampling topology --seed 42 --device cuda
+python main.py --config config.reference.yaml --sampling topology --seed 42 --num-neighbors 5 5 --device cuda
 ```

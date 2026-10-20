@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import argparse
 import json
 from itertools import combinations
 from pathlib import Path
@@ -13,6 +14,8 @@ from artifacts import write_json
 METHODS = ("uniform", "topology", "importance")
 METRICS = ("auprc", "roc_auc", "map", "ndcg", "accuracy", "f1", "precision", "recall")
 COLORS = {"uniform": "#4472C4", "topology": "#ED7D31", "importance": "#70AD47"}
+MARKERS = {"uniform": "o", "topology": "s", "importance": "^"}
+FANOUT_ORDER = ["5x5", "15x10", "25x10"]
 
 
 def compute_map(y_true: np.ndarray, y_probs: np.ndarray) -> float:
@@ -147,7 +150,7 @@ def aggregate(result_root: str | Path, seeds: list[int], budgets: list[int]) -> 
     deltas = pd.DataFrame(delta_rows)
     deltas.to_csv(root / "exp25_paired_seed_deltas.csv", index=False)
 
-    # Visualisasi
+    # Visualisasi paired per seed
     if len(per_run):
         figures = root / "plots"
         figures.mkdir(exist_ok=True)
@@ -176,3 +179,204 @@ def aggregate(result_root: str | Path, seeds: list[int], budgets: list[int]) -> 
     }
     write_json(root / "exp25_multiseed_status.json", report)
     return report
+
+
+def aggregate_fanout_comparison(result_root: str | Path, budgets: list[int] | None = None) -> dict:
+    """
+    Mengumpulkan dan membandingkan performa seluruh run eksperimen EXP25 berdasarkan
+    variasi fan-out hop [k1, k2] (misal: [5, 5], [15, 10], [25, 10]) untuk ketiga
+    strategi sampling (Uniform, Topology-Aware, Importance-Based).
+    """
+    root = Path(result_root)
+    budgets = budgets or [100, 250, 500, 1000]
+
+    # Temukan seluruh manifest run di runs/ dan seed_*/
+    manifest_candidates = sorted(list(root.glob("runs/*/exp25_*manifest.json")) + list(root.glob("seed_*/exp25_*manifest.json")))
+    runs_map: dict[tuple[int, str, str], dict] = {}
+
+    for manifest_path in manifest_candidates:
+        try:
+            m_data = json.loads(manifest_path.read_text(encoding="utf-8"))
+        except Exception:
+            continue
+        if m_data.get("status") != "complete":
+            continue
+
+        method = m_data.get("sampling_method")
+        seed = m_data.get("seed")
+        if method not in METHODS or seed is None:
+            continue
+
+        num_neighbors = m_data.get("num_neighbors", [25, 10])
+        fanout_str = f"{num_neighbors[0]}x{num_neighbors[1]}"
+
+        # Cari file prediksi
+        pred_candidates = [
+            manifest_path.parent / m_data.get("predictions_file", ""),
+            manifest_path.parent / f"exp25_{method}_k{num_neighbors[0]}x{num_neighbors[1]}_predictions.npz",
+            manifest_path.parent / f"exp25_{method}_predictions.npz",
+        ]
+        pred_path = next((p for p in pred_candidates if p.is_file()), None)
+        if pred_path is None:
+            continue
+
+        # Waktu modifikasi untuk deduplikasi (ambil yang terbaru)
+        mtime = manifest_path.stat().st_mtime
+        key = (int(seed), method, fanout_str)
+        if key in runs_map and runs_map[key]["mtime"] >= mtime:
+            continue
+
+        # Load prediksi & evaluasi
+        try:
+            with np.load(pred_path) as values:
+                labels = values["test_labels"].astype(np.uint8)
+                probs_key = "test_probabilities" if "test_probabilities" in values else "gnn_test_probabilities"
+                tau_key = "optimal_threshold" if "optimal_threshold" in values else "gnn_optimal_threshold"
+                probabilities = values[probs_key].astype(np.float64)
+                threshold = float(values[tau_key])
+            eval_metrics = evaluate(labels, probabilities, threshold, budgets)
+        except Exception as err:
+            continue
+
+        # Cari runtime telemetry dari results.json jika ada
+        results_path = manifest_path.parent / f"exp25_{method}_results.json"
+        runtime_sec = None
+        if results_path.is_file():
+            try:
+                res_data = json.loads(results_path.read_text(encoding="utf-8"))
+                runtime_sec = res_data.get("runtime_telemetry", {}).get("total_pipeline_sec")
+            except Exception:
+                pass
+
+        # Cari monitor resource jika ada
+        resource_path = manifest_path.parent / "run_records" / f"{method}_k{num_neighbors[0]}x{num_neighbors[1]}" / "resource_usage.json"
+        if not resource_path.is_file():
+            resource_path = manifest_path.parent / "run_records" / method / "resource_usage.json"
+        peak_gpu = None
+        peak_rss = None
+        if resource_path.is_file():
+            try:
+                res_rec = json.loads(resource_path.read_text(encoding="utf-8"))
+                peak_gpu = res_rec.get("peak_gpu_used_mb")
+                peak_rss = res_rec.get("peak_rss_mb")
+                if runtime_sec is None:
+                    runtime_sec = res_rec.get("runtime_seconds")
+            except Exception:
+                pass
+
+        runs_map[key] = {
+            "mtime": mtime,
+            "seed": int(seed),
+            "method": method,
+            "fanout": fanout_str,
+            "k1": num_neighbors[0],
+            "k2": num_neighbors[1],
+            "threshold": threshold,
+            **eval_metrics,
+            "runtime_sec": runtime_sec,
+            "peak_rss_mb": peak_rss,
+            "peak_gpu_used_mb": peak_gpu,
+            "run_id": m_data.get("run_id", manifest_path.parent.name),
+        }
+
+    rows = [v for v in runs_map.values()]
+    if not rows:
+        return {"status": "no_runs_found"}
+
+    df = pd.DataFrame(rows).drop(columns=["mtime"])
+    # Sort secara konsisten
+    df = df.sort_values(by=["k1", "k2", "method", "seed"]).reset_index(drop=True)
+    df.to_csv(root / "exp25_fanout_comparison.csv", index=False)
+
+    # Buat summary per (method, fanout)
+    summary_rows = []
+    numeric_cols = ["auprc", "roc_auc", "map", "ndcg", "accuracy", "f1", "precision", "recall", "runtime_sec"]
+    for (method, fanout_str), grp in df.groupby(["method", "fanout"], sort=False):
+        k1 = int(grp["k1"].iloc[0])
+        k2 = int(grp["k2"].iloc[0])
+        for col in numeric_cols:
+            if col in grp.columns:
+                vals = pd.to_numeric(grp[col], errors="coerce").dropna()
+                if len(vals) > 0:
+                    summary_rows.append({
+                        "method": method,
+                        "fanout": fanout_str,
+                        "k1": k1,
+                        "k2": k2,
+                        "metric": col,
+                        "n": len(vals),
+                        "mean": float(vals.mean()),
+                        "sd": float(vals.std(ddof=1)) if len(vals) > 1 else np.nan,
+                        "median": float(vals.median()),
+                        "min": float(vals.min()),
+                        "max": float(vals.max()),
+                    })
+    summary_df = pd.DataFrame(summary_rows)
+    summary_df.to_csv(root / "exp25_fanout_summary.csv", index=False)
+
+    # Visualisasi sensitivitas Fan-out
+    figures = root / "plots"
+    figures.mkdir(exist_ok=True)
+    unique_fanouts = sorted(df["fanout"].unique(), key=lambda f: (int(f.split("x")[0]), int(f.split("x")[1])))
+
+    if len(unique_fanouts) >= 1:
+        fig, axes = plt.subplots(1, 3, figsize=(16, 4.8))
+        metrics_to_plot = [("auprc", "AUPRC (Area Under PR Curve)"), ("f1", "Optimal F1-Score"), ("runtime_sec", "Pipeline Latency (s)")]
+
+        for ax, (m_col, m_title) in zip(axes, metrics_to_plot):
+            for method in METHODS:
+                sub_method = summary_df[(summary_df["method"] == method) & (summary_df["metric"] == m_col)]
+                if len(sub_method) == 0:
+                    continue
+                # Order by unique_fanouts
+                sub_method = sub_method.set_index("fanout").reindex(unique_fanouts).dropna(subset=["mean"]).reset_index()
+                x_labels = [f"[{f.replace('x', ', ')}]" for f in sub_method["fanout"]]
+                y_means = sub_method["mean"].values
+                y_errs = sub_method["sd"].fillna(0).values
+
+                ax.plot(
+                    x_labels,
+                    y_means,
+                    marker=MARKERS.get(method, "o"),
+                    color=COLORS.get(method, "#333333"),
+                    linewidth=2,
+                    markersize=8,
+                    label=method.capitalize(),
+                )
+                if len(sub_method) > 0 and not np.isnan(y_errs).all() and (y_errs > 0).any():
+                    ax.fill_between(x_labels, y_means - y_errs, y_means + y_errs, color=COLORS.get(method, "#333333"), alpha=0.15)
+
+            ax.set_title(m_title, fontsize=12, fontweight="bold")
+            ax.set_xlabel("Fan-Out Sampling [k1, k2]", fontsize=10)
+            ax.grid(alpha=0.3, linestyle="--")
+            if ax == axes[0]:
+                ax.set_ylabel("Score / Latency", fontsize=10)
+            ax.legend(frameon=True, fontsize=9)
+
+        fig.suptitle("EXP25 Standalone GraphSAGE — Neighbor Sampling Fan-Out Sensitivity", fontsize=14, fontweight="bold")
+        fig.tight_layout()
+        for suffix in ("png", "pdf"):
+            fig.savefig(figures / f"exp25_fanout_sensitivity.{suffix}", dpi=300, bbox_inches="tight")
+        plt.close(fig)
+
+    return {"status": "complete", "total_runs": len(df), "unique_fanouts": unique_fanouts}
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description="EXP25 Standalone GraphSAGE Results Aggregator")
+    parser.add_argument("--result-dir", default="../../result/exp25_standalone_graphsage", help="Direktori hasil")
+    parser.add_argument("--seeds", type=int, nargs="*", default=[42, 100, 2026, 3407, 8713], help="Daftar seed")
+    parser.add_argument("--budgets", type=int, nargs="*", default=[100, 250, 500, 1000], help="Operational budgets")
+    args = parser.parse_args()
+
+    result_root = Path(args.result_dir).resolve()
+    print(f"Mengumpulkan metrik dari: {result_root}")
+    res_paired = aggregate(result_root, args.seeds, args.budgets)
+    print(f"Paired Aggregation Status: {res_paired.get('status')}")
+    res_fanout = aggregate_fanout_comparison(result_root, args.budgets)
+    print(f"Fan-out Sensitivity Status: {res_fanout.get('status')} ({res_fanout.get('total_runs', 0)} runs)")
+
+
+if __name__ == "__main__":
+    main()
+

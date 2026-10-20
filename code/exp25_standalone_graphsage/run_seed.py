@@ -20,7 +20,7 @@ import numpy as np
 import psutil
 import yaml
 
-from aggregate_exp25 import METHODS, aggregate
+from aggregate_exp25 import METHODS, aggregate, aggregate_fanout_comparison
 from artifacts import append_event, index_references, sha256, write_json
 from identity import build_test_identity
 
@@ -107,21 +107,40 @@ def prepare_identity(config: dict, config_path: Path, result_root: Path, nrows: 
     return target
 
 
+def parse_fanout(val: str) -> list[int]:
+    """Mengurai string fan-out seperti '5,5', '15,10', '25,10' menjadi [k1, k2]."""
+    parts = [int(p.strip()) for p in val.replace("-", ",").replace("x", ",").replace(":", ",").split(",") if p.strip()]
+    if len(parts) != 2:
+        raise ValueError(f"Format fan-out '{val}' tidak valid. Gunakan format '5,5', '15,10', atau '25,10'.")
+    return parts
+
+
 def enrich(
     seed_dir: Path,
     method: str,
+    fanout: list[int],
     config_snapshot: Path,
     identity_path: Path,
     resource: dict,
     result_root: Path,
     model_root: Path,
 ) -> None:
-    record = seed_dir / "run_records" / method
+    k1, k2 = fanout
+    k_tag = f"_k{k1}x{k2}"
+    record = seed_dir / "run_records" / f"{method}{k_tag}"
     record.mkdir(parents=True, exist_ok=True)
     write_json(record / "resource_usage.json", resource)
-    predictions = seed_dir / f"exp25_{method}_predictions.npz"
-    manifest = seed_dir / f"exp25_{method}_manifest.json"
-    results = seed_dir / f"exp25_{method}_results.json"
+
+    # Deteksi file prediksi bertag atau standar
+    predictions = seed_dir / f"exp25_{method}{k_tag}_predictions.npz"
+    if not predictions.is_file():
+        predictions = seed_dir / f"exp25_{method}_predictions.npz"
+    manifest = seed_dir / f"exp25_{method}{k_tag}_manifest.json"
+    if not manifest.is_file():
+        manifest = seed_dir / f"exp25_{method}_manifest.json"
+    results = seed_dir / f"exp25_{method}{k_tag}_results.json"
+    if not results.is_file():
+        results = seed_dir / f"exp25_{method}_results.json"
 
     with np.load(predictions) as pred, np.load(identity_path) as identity:
         pred_labels = pred["test_labels"].astype(np.uint8)
@@ -139,7 +158,7 @@ def enrich(
 
         if not np.array_equal(pred_labels, id_labels):
             raise ValueError(
-                f"Row identity mismatch untuk seed/method {seed_dir.name}/{method} "
+                f"Row identity mismatch untuk seed/method {seed_dir.name}/{method}{k_tag} "
                 f"(pred: {len(pred_labels)}, identity: {len(id_labels)})"
             )
 
@@ -166,15 +185,20 @@ def enrich(
         manifest,
         results,
         predictions,
+        seed_dir / f"exp25_{method}{k_tag}_history.json",
         seed_dir / f"exp25_{method}_history.json",
+        seed_dir / f"exp25_{method}{k_tag}_training_history.csv",
         seed_dir / f"exp25_{method}_training_history.csv",
+        seed_dir / f"exp25_{method}{k_tag}_sampler_weight_audit.json",
         seed_dir / f"exp25_{method}_sampler_weight_audit.json",
         seed_dir / "events.jsonl",
         config_snapshot,
+        seed_dir / f"{method}{k_tag}_stdout.log",
         seed_dir / f"{method}_stdout.log",
         record / "resource_usage.json",
         record / "test_predictions_with_identity.npz",
         identity_path,
+        model_root / seed / f"exp25_{method}{k_tag}_best_gnn.pt",
         model_root / seed / f"exp25_{method}_best_gnn.pt",
     ]
     write_json(
@@ -183,13 +207,23 @@ def enrich(
             "experiment_id": "EXP25-StandaloneGraphSAGE",
             "seed": seed,
             "method": method,
+            "fanout": [k1, k2],
             "config_hash": sha256(config_snapshot),
             "files": index_references(references, result_root),
         },
     )
 
 
-def run_block(config: dict, config_path: Path, seed: int, device: str | None, nrows: int | None) -> None:
+def run_block(
+    config: dict,
+    config_path: Path,
+    seed: int,
+    methods: list[str],
+    fanouts: list[list[int]],
+    device: str | None,
+    nrows: int | None,
+    force: bool = False,
+) -> None:
     dataset_path = resolve_transaction_dataset(config, config_path)
     config = json.loads(json.dumps(config))
     config["data"]["transactions"] = str(dataset_path)
@@ -205,72 +239,164 @@ def run_block(config: dict, config_path: Path, seed: int, device: str | None, nr
     seed_dir.mkdir(exist_ok=True)
     events = seed_dir / "orchestrator_events.jsonl"
     identity_path = prepare_identity(config, config_path, result_root, nrows=effective_nrows)
-    append_event(events, "paired_block_started", seed=seed, transaction_dataset=str(dataset_path), nrows=effective_nrows)
+    append_event(
+        events,
+        "paired_block_started",
+        seed=seed,
+        transaction_dataset=str(dataset_path),
+        nrows=effective_nrows,
+        methods=methods,
+        fanouts=fanouts,
+    )
 
     # Jalankan validasi sampler proposal
     subprocess.run([sys.executable, str(root / "validate_sampler.py")], cwd=root, check=True)
 
-    for method in METHODS:
-        completed = seed_dir / f"exp25_{method}_manifest.json"
-        record_index = seed_dir / "run_records" / method / "artifact_index.json"
-        if config["execution"].get("resume_completed", True) and completed.is_file() and json.loads(completed.read_text(encoding="utf-8")).get("status") == "complete":
-            if not record_index.is_file():
-                derived_path = seed_dir / f"config_{method}.yaml"
-                resource = {"runtime_seconds": None, "peak_rss_mb": None, "peak_gpu_used_mb": None, "recovered_existing_run": True}
-                enrich(seed_dir, method, derived_path, identity_path, resource, result_root, model_root)
-            append_event(events, "run_skipped_complete", seed=seed, method=method)
-            continue
+    for fanout in fanouts:
+        k1, k2 = fanout
+        k_tag = f"_k{k1}x{k2}"
 
-        derived = json.loads(json.dumps(config))
-        derived["experiment"].update({"seed": seed, "evaluation_seed": seed + 1000})
-        derived["sampling"]["method"] = method
-        derived["output"].update({"result_dir": str(result_root), "model_dir": str(model_root), "save_feature_matrices": False})
-        derived_path = seed_dir / f"config_{method}.yaml"
-        derived_path.write_text(yaml.safe_dump(derived, sort_keys=False), encoding="utf-8")
+        for method in methods:
+            completed_tagged = seed_dir / f"exp25_{method}{k_tag}_manifest.json"
+            completed_std = seed_dir / f"exp25_{method}_manifest.json"
+            record_index = seed_dir / "run_records" / f"{method}{k_tag}" / "artifact_index.json"
 
-        run_id = f"exp25_{method}_seed_{seed}"
-        if effective_nrows is not None:
-            run_id += f"_nr{effective_nrows}"
+            is_already_done = False
+            if not force and config["execution"].get("resume_completed", True):
+                if completed_tagged.is_file():
+                    try:
+                        m_data = json.loads(completed_tagged.read_text(encoding="utf-8"))
+                        if m_data.get("status") == "complete":
+                            is_already_done = True
+                    except Exception:
+                        pass
+                elif (k1 == 25 and k2 == 10) and completed_std.is_file():
+                    try:
+                        m_data = json.loads(completed_std.read_text(encoding="utf-8"))
+                        if m_data.get("status") == "complete" and m_data.get("num_neighbors", [25, 10]) == [25, 10]:
+                            is_already_done = True
+                    except Exception:
+                        pass
 
-        command = [
-            sys.executable,
-            str(root / "main.py"),
-            "--config",
-            str(derived_path),
-            "--sampling",
-            method,
-            "--seed",
-            str(seed),
-            "--run-id",
-            run_id,
-        ]
-        if device:
-            command += ["--device", device]
-        if effective_nrows is not None:
-            command += ["--nrows", str(effective_nrows)]
+            derived = json.loads(json.dumps(config))
+            derived["experiment"].update({"seed": seed, "evaluation_seed": seed + 1000})
+            derived["sampling"]["method"] = method
+            derived["training"]["num_neighbors"] = [k1, k2]
+            derived["output"].update({"result_dir": str(result_root), "model_dir": str(model_root), "save_feature_matrices": False})
+            derived_path = seed_dir / f"config_{method}{k_tag}.yaml"
+            derived_path.write_text(yaml.safe_dump(derived, sort_keys=False), encoding="utf-8")
 
-        append_event(events, "run_started", seed=seed, method=method)
-        resource = monitor(command, root, seed_dir / f"{method}_stdout.log")
-        enrich(seed_dir, method, derived_path, identity_path, resource, result_root, model_root)
-        append_event(events, "run_completed", seed=seed, method=method, **resource)
+            if is_already_done:
+                if not record_index.is_file():
+                    resource = {"runtime_seconds": None, "peak_rss_mb": None, "peak_gpu_used_mb": None, "recovered_existing_run": True}
+                    enrich(seed_dir, method, fanout, derived_path, identity_path, resource, result_root, model_root)
+                append_event(events, "run_skipped_complete", seed=seed, method=method, fanout=[k1, k2])
+                print(f"[RESUME] Run {method} (Fan-out [{k1}, {k2}], Seed {seed}) sudah selesai sebelumnya. Dilewati.")
+                continue
 
-    aggregate(result_root, [int(item) for item in config["experiment"]["seeds"]], [int(item) for item in config["operational"]["budgets"]])
+            run_id = f"exp25_{method}_seed_{seed}{k_tag}"
+            if effective_nrows is not None:
+                run_id += f"_nr{effective_nrows}"
+
+            command = [
+                sys.executable,
+                str(root / "main.py"),
+                "--config",
+                str(derived_path),
+                "--sampling",
+                method,
+                "--seed",
+                str(seed),
+                "--num-neighbors",
+                str(k1),
+                str(k2),
+                "--run-id",
+                run_id,
+            ]
+            if device:
+                command += ["--device", device]
+            if effective_nrows is not None:
+                command += ["--nrows", str(effective_nrows)]
+
+            append_event(events, "run_started", seed=seed, method=method, fanout=[k1, k2])
+            resource = monitor(command, root, seed_dir / f"{method}{k_tag}_stdout.log")
+            enrich(seed_dir, method, fanout, derived_path, identity_path, resource, result_root, model_root)
+            append_event(events, "run_completed", seed=seed, method=method, fanout=[k1, k2], **resource)
+
+    # Jalankan agregasi otomatis setelah block selesai
+    try:
+        budgets = [int(item) for item in config.get("operational", {}).get("budgets", [100, 250, 500, 1000])]
+        seeds = [int(item) for item in config.get("experiment", {}).get("seeds", [42, 100, 2026, 3407, 8713])]
+        aggregate(result_root, seeds, budgets)
+        aggregate_fanout_comparison(result_root, budgets)
+    except Exception as agg_err:
+        print(f"[WARNING] Agregasi otomatis menemui kendala: {agg_err}")
     append_event(events, "paired_block_completed", seed=seed)
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="EXP25 Multi-Seed Paired Runner (Standalone GraphSAGE)")
-    parser.add_argument("--config", default="config.reference.yaml")
-    parser.add_argument("--seeds", type=int, nargs="*")
-    parser.add_argument("--device")
+    parser = argparse.ArgumentParser(description="EXP25 Multi-Seed & Multi-Fanout Paired Runner (Standalone GraphSAGE)")
+    parser.add_argument("--config", default="config.reference.yaml", help="Path konfigurasi YAML")
+    parser.add_argument("--seeds", type=int, nargs="*", help="Daftar seed (default dari config, misal: 42 atau 42 100 2026)")
+    parser.add_argument(
+        "--methods",
+        type=str,
+        nargs="*",
+        default=None,
+        help="Daftar metode sampling ('uniform', 'topology', 'importance', atau 'all')",
+    )
+    parser.add_argument(
+        "--fanouts",
+        type=str,
+        nargs="*",
+        default=None,
+        help="Daftar fan-out sampling (misal: '5,5', '15,10', '25,10' atau 'all')",
+    )
+    parser.add_argument("--device", help="Device target ('cuda' atau 'cpu')")
     parser.add_argument("--nrows", type=int, default=None, help="Batas baris data untuk smoke test")
+    parser.add_argument("--force", action="store_true", help="Paksa jalankan ulang meskipun run sudah selesai sebelumnya")
     args = parser.parse_args()
 
     config_path = Path(args.config).resolve()
     config = yaml.safe_load(config_path.read_text(encoding="utf-8"))
+
+    # Parse seeds
     seeds = args.seeds or config["execution"]["seeds_to_run"]
+
+    # Parse methods
+    if args.methods is None:
+        methods = list(METHODS)
+    elif "all" in [m.lower() for m in args.methods]:
+        methods = list(METHODS)
+    else:
+        methods = [m.lower() for m in args.methods]
+        for m in methods:
+            if m not in METHODS:
+                raise ValueError(f"Metode sampling '{m}' tidak valid. Pilihan: {METHODS}")
+
+    # Parse fanouts
+    if args.fanouts is None:
+        default_cfg_fanout = config.get("training", {}).get("num_neighbors", [25, 10])
+        fanouts = [default_cfg_fanout]
+    elif "all" in [f.lower() for f in args.fanouts]:
+        fanouts = [[5, 5], [15, 10], [25, 10]]
+    else:
+        fanouts = [parse_fanout(f) for f in args.fanouts]
+
+    print("=" * 70)
+    print("  EXP25: STANDALONE GRAPHSAGE MULTI-SEED & FAN-OUT RUNNER")
+    print(f"  Config   : {config_path.name}")
+    print(f"  Seeds    : {seeds}")
+    print(f"  Methods  : {methods}")
+    print(f"  Fan-outs : {fanouts}")
+    print(f"  Device   : {args.device or 'auto'}")
+    if args.nrows:
+        print(f"  Rows     : {args.nrows} (Smoke Test)")
+    print(f"  Force Run: {args.force}")
+    print("=" * 70)
+
     for seed in seeds:
-        run_block(config, config_path, int(seed), args.device, args.nrows)
+        run_block(config, config_path, int(seed), methods, fanouts, args.device, args.nrows, force=args.force)
 
 
 if __name__ == "__main__":

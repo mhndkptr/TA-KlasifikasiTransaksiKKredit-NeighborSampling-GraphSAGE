@@ -56,14 +56,30 @@ python run_seed.py --config config.smoke.yaml --seeds 42 100 2026 3407 8713 --de
 
 ## 4. Langkah 3: Eksekusi Eksperimen Utama (Full Dataset)
 
-### A. Menjalankan 1 Seed Penuh (Ketiga Metode: Uniform, Topology, Importance)
+### A. Menjalankan 1 Metode (misal Uniform) dengan 3 Fan-Out Hop ([5, 5], [15, 10], [25, 10]) pada Seed 42:
 ```cmd
-python run_seed.py --config config.reference.yaml --seeds 42 --device cuda
+python run_seed.py --methods uniform --fanouts all --seeds 42 --device cuda
+```
+*(Atau tentukan fan-out spesifik: `--fanouts 5,5 15,10 25,10`)*
+
+### B. Menjalankan Ketiga Metode Sampling dengan 3 Fan-Out Hop pada Seed Tertentu (misal Seed 42):
+```cmd
+python run_seed.py --methods all --fanouts all --seeds 42 --device cuda
 ```
 
-### B. Menjalankan Seluruh 5 Seed Berpasangan (15 Run Total)
+### C. Menjalankan Seluruh 5 Seed Berpasangan dengan Default Fan-Out [25, 10] (15 Run Total):
 ```cmd
-python run_seed.py --config config.reference.yaml --seeds 42 100 2026 3407 8713 --device cuda
+python run_seed.py --seeds 42 100 2026 3407 8713 --device cuda
+```
+
+### D. Menjalankan Full Multi-Fanout & Multi-Seed Sweep (3 Metode × 3 Fan-Out × 5 Seed = 45 Run):
+```cmd
+python run_seed.py --fanouts all --device cuda
+```
+
+### E. Menjalankan Agregasi & Visualisasi Mandiri Kapan Saja:
+```cmd
+python aggregate_exp25.py
 ```
 
 ---
@@ -72,12 +88,15 @@ python run_seed.py --config config.reference.yaml --seeds 42 100 2026 3407 8713 
 
 Seluruh artefak EXP25 tersimpan secara terpisah dari EXP24 di dalam:
 - **Folder Hasil Utama**: `..\..\result\exp25_standalone_graphsage\`
-  - `runs_index.csv`: Tabel indeks ringkasan seluruh run yang pernah dijalankan.
+  - `runs_index.csv`: Tabel indeks ringkasan seluruh run yang pernah dijalankan (mencakup kolom `fanout`, `k1`, `k2`, metrik MAP, NDCG, Accuracy, dll).
   - `logs\<run_id>.log`: Berkas log terminal lengkap untuk setiap run.
   - `runs\<run_id>\`: Direktori terisolasi berisi konfigurasi, CSV history per-epoch, JSON hasil akhir, dan NPZ prediksi untuk masing-masing run.
   - `seed_<seed>\`: Direktori kanonikal per-seed untuk agregasi multi-seed.
+  - `exp25_fanout_comparison.csv`: Tabel perbandingan metrik seluruh run berdasarkan variasi fan-out hop.
+  - `exp25_fanout_summary.csv`: Ringkasan mean, standar deviasi, dan median untuk setiap kombinasi `(method, fanout)`.
   - `exp25_multiseed_per_run_metrics.csv`: Hasil seluruh run berdampingan.
   - `exp25_multiseed_summary.csv`: Rata-rata, standar deviasi, dan median antar-seed.
   - `exp25_paired_seed_deltas.csv`: Selisih berpasangan (*paired delta*) antar metode sampling.
+  - `plots\exp25_fanout_sensitivity.png`: Grafik komparasi sensitivitas fan-out hop ([5, 5], [15, 10], [25, 10]) terhadap AUPRC, F1-Score, dan Latensi.
   - `plots\exp25_paired_auprc_f1.png`: Grafik perbandingan AUPRC dan F1 antar-seed.
 - **Folder Model Checkpoint**: `..\..\model\exp25_standalone_graphsage\`
