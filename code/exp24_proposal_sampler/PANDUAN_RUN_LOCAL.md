@@ -138,12 +138,25 @@ Output yang diharapkan:
 [SUKSES] Seluruh 8 Correctness Gates EXP24 LULUS.
 ```
 
-### Langkah 6.2: Smoke Test Cepat (30.000 Baris pada GPU)
-Jalankan uji coba cepat dengan pembatasan baris dan Run ID khusus agar hasil smoke test tidak tercampur dengan hasil pelatihan resmi:
+### Langkah 6.2: Smoke Test Cepat Menggunakan `config.smoke.yaml`
+Kami telah menyediakan berkas konfigurasi khusus smoke test **`config.smoke.yaml`**:
+- **Jendela Temporal Proposal Penuh**: Tetap menggunakan **300 hari Train, 30 hari Val, 8 hari Gap, dan 60 hari Test**.
+- **Data Cepat & Memuat Fraud Riil**: Menggunakan `max_rows: 180000` (terfilter era modern $\ge 2016$). Pada 180.000 baris ini:
+  - **Train**: ~35.840 transaksi (**67 fraud**)
+  - **Val**: ~3.585 transaksi (**5 fraud**, sehingga AUPRC valid & non-zero!)
+  - **Test**: ~7.060 transaksi (**18 fraud**, sehingga F1, Precision, Recall non-zero!)
+- **Sangat Ringan**: 10 Epoch pelatihan GNN (~8 detik) dan 50 pohon XGBoost (~1 detik).
+
+#### A. Menjalankan 1 Sampler Smoke Test (Contoh: Topology)
 ```cmd
-python main.py --config config.reference.yaml --sampling topology --seed 42 --nrows 30000 --run-id smoke_topo_30k --device cuda
+python main.py --config config.smoke.yaml --sampling topology --seed 42 --device cuda
 ```
-*Hasil smoke test akan tersimpan rapi di subfolder terisolasi `../../result/exp24_proposal_sampler/runs/smoke_topo_30k/` dan log konsol tersimpan di `../../result/exp24_proposal_sampler/logs/smoke_topo_30k.log` tanpa menimpa hasil resmi multi-seed.*
+
+#### B. Menjalankan Multi-Seed Smoke Test Berpasangan (3 Sampler: Uniform, Topology, Importance)
+```cmd
+python run_seed.py --config config.smoke.yaml --seeds 42 --device cuda
+```
+*(Atau uji ke-5 seed sekaligus secara kilat dengan menambahkan `--seeds 42 100 2026 3407 8713`).*
 
 ---
 

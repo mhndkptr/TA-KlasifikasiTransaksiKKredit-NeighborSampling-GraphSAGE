@@ -7,6 +7,7 @@ FILES = (
     "requirements.txt",
     "config.reference.yaml",
     "config.kaggle.yaml",
+    "config.smoke.yaml",
     "config.py",
     "data_preprocessing.py",
     "graph_builder.py",
