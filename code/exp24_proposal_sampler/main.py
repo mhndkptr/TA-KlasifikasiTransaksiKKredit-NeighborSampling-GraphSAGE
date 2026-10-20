@@ -21,7 +21,7 @@ from xgboost import XGBClassifier
 
 from artifacts import append_event, write_json
 from config import load_config
-from data_preprocessing import load_and_split_raw_data, preprocess_features
+from data_preprocessing import apply_strict_anti_leakage_preprocessing, load_and_split_raw_data
 from graph_builder import build_hetero_graph
 from model import HeteroGraphSAGE
 from samplers import get_neighbor_loader, sampling_weight_audit
@@ -196,7 +196,7 @@ def main() -> None:
     t_prep_start = time.time()
     data_path = cfg.get("data", {}).get("transactions")
     nrows = args.nrows or cfg.get("data", {}).get("max_rows", None)
-    train_df, val_df, _, test_df = load_and_split_raw_data(
+    train_df, val_df, test_df, gap_df, stats_dict = load_and_split_raw_data(
         file_path=data_path,
         start_year=cfg.get("data", {}).get("start_year", 2016),
         nrows=nrows,
@@ -208,7 +208,15 @@ def main() -> None:
     )
 
     # 2. Preprocessing Fitur Tabular (Clean 10-d)
-    train_df, val_df, test_df, feature_cols, _ = preprocess_features(train_df, val_df, test_df, mode=feat_cfg.get("mode", "clean"))
+    train_df, val_df, test_df, gap_df, feature_cols, art_prep = apply_strict_anti_leakage_preprocessing(
+        train_df=train_df,
+        val_df=val_df,
+        test_df=test_df,
+        gap_df=gap_df,
+        feature_mode=feat_cfg.get("mode", "clean"),
+        use_cyclical_time=feat_cfg.get("use_cyclical_time", True),
+        use_amount_log=feat_cfg.get("use_amount_log", True),
+    )
 
     # 3. Konstruksi Graf HeteroData
     train_graph, scalers = build_hetero_graph(train_df, feature_cols, scalers_dict=None)

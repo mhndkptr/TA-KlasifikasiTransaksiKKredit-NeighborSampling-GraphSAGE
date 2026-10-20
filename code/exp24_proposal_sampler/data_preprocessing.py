@@ -242,3 +242,8 @@ def apply_strict_anti_leakage_preprocessing(
     
     return train_df, val_df, test_df, gap_df, feature_cols, artifacts
 
+
+# Alias untuk kemudahan kompatibilitas impor
+preprocess_features = apply_strict_anti_leakage_preprocessing
+
+
