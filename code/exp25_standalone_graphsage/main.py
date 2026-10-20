@@ -19,6 +19,7 @@ if sys.platform == "win32":
 import numpy as np
 import psutil
 from sklearn.metrics import (
+    accuracy_score,
     average_precision_score,
     confusion_matrix,
     f1_score,
@@ -86,7 +87,7 @@ def update_runs_index(index_path: Path, entry: dict) -> None:
     index_path.parent.mkdir(parents=True, exist_ok=True)
     headers = [
         "run_id", "timestamp", "sampling_method", "seed", "nrows",
-        "best_epoch", "val_auprc", "test_auprc", "test_f1",
+        "best_epoch", "val_auprc", "test_auprc", "test_map", "test_ndcg", "test_acc", "test_f1",
         "optimal_threshold", "test_fp", "test_fn", "runtime_sec",
         "status", "run_dir", "log_file"
     ]
@@ -165,10 +166,53 @@ def find_optimal_threshold(y_probs: np.ndarray, y_true: np.ndarray, min_precisio
     return optimal_threshold, metrics
 
 
+def compute_map(y_true: np.ndarray, y_probs: np.ndarray) -> float:
+    """
+    Mean Average Precision (MAP) sesuai formula Tabel 1 Paper Bu Fitriyani (BTS-I2C 2025):
+    order = np.argsort(-pred)
+    prec@k = cumsum(relevant)/(index+1)
+    MAP = Σ(prec@k * relevant) / Σ(relevant)
+    """
+    if (y_true == 1).sum() == 0:
+        return 0.0
+    order = np.argsort(-y_probs)
+    relevant = y_true[order].astype(np.float64)
+    total_relevant = relevant.sum()
+    if total_relevant == 0:
+        return 0.0
+    cum_relevant = np.cumsum(relevant)
+    ranks = np.arange(1, len(relevant) + 1, dtype=np.float64)
+    prec_at_k = cum_relevant / ranks
+    return float(np.sum(prec_at_k * relevant) / total_relevant)
+
+
+def compute_ndcg(y_true: np.ndarray, y_probs: np.ndarray) -> float:
+    """
+    Normalized Discounted Cumulative Gain (NDCG) sesuai formula Tabel 1 Paper Bu Fitriyani (BTS-I2C 2025):
+    DCG = Σ((2^label - 1)/log2(rank+1))
+    NDCG = DCG / IDCG
+    """
+    if (y_true == 1).sum() == 0:
+        return 0.0
+    order = np.argsort(-y_probs)
+    sorted_labels = y_true[order].astype(np.float64)
+    ranks = np.arange(1, len(sorted_labels) + 1, dtype=np.float64)
+    discounts = np.log2(ranks + 1.0)
+    dcg = np.sum((np.power(2.0, sorted_labels) - 1.0) / discounts)
+
+    ideal_labels = np.sort(y_true)[::-1].astype(np.float64)
+    idcg = np.sum((np.power(2.0, ideal_labels) - 1.0) / discounts)
+    if idcg <= 0.0:
+        return 0.0
+    return float(dcg / idcg)
+
+
 def evaluate_predictions(y_probs: np.ndarray, y_true: np.ndarray, optimal_tau: float) -> dict:
     if (y_true == 1).sum() == 0 or (y_true == 0).sum() == 0:
         auprc = 0.0
         roc_auc = 0.5
+        map_score = 0.0
+        ndcg_score = 0.0
     else:
         try:
             auprc = float(average_precision_score(y_true, y_probs))
@@ -178,12 +222,15 @@ def evaluate_predictions(y_probs: np.ndarray, y_true: np.ndarray, optimal_tau: f
             roc_auc = float(roc_auc_score(y_true, y_probs))
         except Exception:
             roc_auc = 0.5
+        map_score = compute_map(y_true, y_probs)
+        ndcg_score = compute_ndcg(y_true, y_probs)
 
     y_pred_def = (y_probs >= 0.5).astype(int)
     cm_def = confusion_matrix(y_true, y_pred_def, labels=[0, 1])
     tn_d, fp_d, fn_d, tp_d = [int(v) for v in cm_def.ravel()]
     metrics_def = {
         "threshold": 0.5,
+        "accuracy": float(accuracy_score(y_true, y_pred_def)),
         "f1_score": float(f1_score(y_true, y_pred_def, zero_division=0)),
         "precision": float(precision_score(y_true, y_pred_def, zero_division=0)),
         "recall": float(recall_score(y_true, y_pred_def, zero_division=0)),
@@ -198,6 +245,7 @@ def evaluate_predictions(y_probs: np.ndarray, y_true: np.ndarray, optimal_tau: f
     tn_o, fp_o, fn_o, tp_o = [int(v) for v in cm_opt.ravel()]
     metrics_opt = {
         "threshold": float(optimal_tau),
+        "accuracy": float(accuracy_score(y_true, y_pred_opt)),
         "f1_score": float(f1_score(y_true, y_pred_opt, zero_division=0)),
         "precision": float(precision_score(y_true, y_pred_opt, zero_division=0)),
         "recall": float(recall_score(y_true, y_pred_opt, zero_division=0)),
@@ -208,7 +256,12 @@ def evaluate_predictions(y_probs: np.ndarray, y_true: np.ndarray, optimal_tau: f
     }
 
     return {
-        "metrics_threshold_independent": {"auprc": auprc, "roc_auc": roc_auc},
+        "metrics_threshold_independent": {
+            "auprc": auprc,
+            "roc_auc": roc_auc,
+            "map": map_score,
+            "ndcg": ndcg_score,
+        },
         "metrics_default_threshold_05": metrics_def,
         "metrics_optimal_threshold": metrics_opt,
     }
@@ -735,6 +788,9 @@ def main() -> None:
         "test_metrics": {
             "auprc": m_ind["auprc"],
             "roc_auc": m_ind["roc_auc"],
+            "map": m_ind["map"],
+            "ndcg": m_ind["ndcg"],
+            "accuracy": m_opt["accuracy"],
             "f1_score": m_opt["f1_score"],
             "precision": m_opt["precision"],
             "recall": m_opt["recall"],
@@ -809,6 +865,9 @@ def main() -> None:
         "best_epoch": best_epoch,
         "val_auprc": round(float(best_val_auprc), 6),
         "test_auprc": round(float(m_ind["auprc"]), 6),
+        "test_map": round(float(m_ind["map"]), 6),
+        "test_ndcg": round(float(m_ind["ndcg"]), 6),
+        "test_acc": round(float(m_opt["accuracy"]), 6),
         "test_f1": round(float(m_opt["f1_score"]), 6),
         "optimal_threshold": round(float(optimal_tau), 4),
         "test_fp": m_opt["fp"],
@@ -828,11 +887,14 @@ def main() -> None:
     print(f"  • Run ID               : {run_id}")
     print(f"  • AUPRC                : {m_ind['auprc']:.6f}")
     print(f"  • ROC-AUC              : {m_ind['roc_auc']:.6f}")
+    print(f"  • MAP                  : {m_ind['map']:.6f}")
+    print(f"  • NDCG                 : {m_ind['ndcg']:.6f}")
+    print(f"  • Accuracy (Opt Tau)   : {m_opt['accuracy']:.6f}")
     print(f"  • F1-Score (Opt Tau)   : {m_opt['f1_score']:.6f} (Tau: {optimal_tau:.4f})")
     print(f"  • Precision (Opt Tau)  : {m_opt['precision']:.6f}")
     print(f"  • Recall (Opt Tau)     : {m_opt['recall']:.6f}")
     print(f"  • FP / FN (Opt Tau)    : {m_opt['fp']} / {m_opt['fn']}")
-    print(f"  • F1-Score (Tau=0.50)  : {m_def['f1_score']:.6f} (Prec: {m_def['precision']:.4f}, Rec: {m_def['recall']:.4f})")
+    print(f"  • F1-Score (Tau=0.50)  : {m_def['f1_score']:.6f} (Acc: {m_def['accuracy']:.4f}, Prec: {m_def['precision']:.4f}, Rec: {m_def['recall']:.4f})")
     print(f"  • Inference Latency    : {test_latency_ms_per_1k:.2f} ms / 1.000 tx ({inf_test_t:.2f}s total)")
     print(f"  • Run Dir              : {result_dir}")
     if log_path:

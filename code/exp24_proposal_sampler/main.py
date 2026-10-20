@@ -20,6 +20,7 @@ if sys.platform == "win32":
 import numpy as np
 import psutil
 from sklearn.metrics import (
+    accuracy_score,
     average_precision_score,
     confusion_matrix,
     f1_score,
@@ -167,10 +168,44 @@ def find_optimal_threshold(y_probs: np.ndarray, y_true: np.ndarray, min_precisio
     return optimal_threshold, metrics
 
 
+def compute_map(y_true: np.ndarray, y_probs: np.ndarray) -> float:
+    """Mean Average Precision (MAP) sesuai formula Tabel 1 Paper Bu Fitriyani (BTS-I2C 2025)."""
+    if (y_true == 1).sum() == 0:
+        return 0.0
+    order = np.argsort(-y_probs)
+    relevant = y_true[order].astype(np.float64)
+    total_relevant = relevant.sum()
+    if total_relevant == 0:
+        return 0.0
+    cum_relevant = np.cumsum(relevant)
+    ranks = np.arange(1, len(relevant) + 1, dtype=np.float64)
+    prec_at_k = cum_relevant / ranks
+    return float(np.sum(prec_at_k * relevant) / total_relevant)
+
+
+def compute_ndcg(y_true: np.ndarray, y_probs: np.ndarray) -> float:
+    """Normalized Discounted Cumulative Gain (NDCG) sesuai formula Tabel 1 Paper Bu Fitriyani (BTS-I2C 2025)."""
+    if (y_true == 1).sum() == 0:
+        return 0.0
+    order = np.argsort(-y_probs)
+    sorted_labels = y_true[order].astype(np.float64)
+    ranks = np.arange(1, len(sorted_labels) + 1, dtype=np.float64)
+    discounts = np.log2(ranks + 1.0)
+    dcg = np.sum((np.power(2.0, sorted_labels) - 1.0) / discounts)
+
+    ideal_labels = np.sort(y_true)[::-1].astype(np.float64)
+    idcg = np.sum((np.power(2.0, ideal_labels) - 1.0) / discounts)
+    if idcg <= 0.0:
+        return 0.0
+    return float(dcg / idcg)
+
+
 def evaluate_predictions(y_probs: np.ndarray, y_true: np.ndarray, optimal_tau: float) -> dict:
     if (y_true == 1).sum() == 0 or (y_true == 0).sum() == 0:
         auprc = 0.0
         roc_auc = 0.5
+        map_score = 0.0
+        ndcg_score = 0.0
     else:
         try:
             auprc = float(average_precision_score(y_true, y_probs))
@@ -180,12 +215,15 @@ def evaluate_predictions(y_probs: np.ndarray, y_true: np.ndarray, optimal_tau: f
             roc_auc = float(roc_auc_score(y_true, y_probs))
         except Exception:
             roc_auc = 0.5
+        map_score = compute_map(y_true, y_probs)
+        ndcg_score = compute_ndcg(y_true, y_probs)
 
     y_pred_def = (y_probs >= 0.5).astype(int)
     cm_def = confusion_matrix(y_true, y_pred_def, labels=[0, 1])
     tn_d, fp_d, fn_d, tp_d = [int(v) for v in cm_def.ravel()]
     metrics_def = {
         "threshold": 0.5,
+        "accuracy": float(accuracy_score(y_true, y_pred_def)),
         "f1_score": float(f1_score(y_true, y_pred_def, zero_division=0)),
         "precision": float(precision_score(y_true, y_pred_def, zero_division=0)),
         "recall": float(recall_score(y_true, y_pred_def, zero_division=0)),
@@ -200,6 +238,7 @@ def evaluate_predictions(y_probs: np.ndarray, y_true: np.ndarray, optimal_tau: f
     tn_o, fp_o, fn_o, tp_o = [int(v) for v in cm_opt.ravel()]
     metrics_opt = {
         "threshold": float(optimal_tau),
+        "accuracy": float(accuracy_score(y_true, y_pred_opt)),
         "f1_score": float(f1_score(y_true, y_pred_opt, zero_division=0)),
         "precision": float(precision_score(y_true, y_pred_opt, zero_division=0)),
         "recall": float(recall_score(y_true, y_pred_opt, zero_division=0)),
@@ -210,7 +249,12 @@ def evaluate_predictions(y_probs: np.ndarray, y_true: np.ndarray, optimal_tau: f
     }
 
     return {
-        "metrics_threshold_independent": {"auprc": auprc, "roc_auc": roc_auc},
+        "metrics_threshold_independent": {
+            "auprc": auprc,
+            "roc_auc": roc_auc,
+            "map": map_score,
+            "ndcg": ndcg_score,
+        },
         "metrics_default_threshold_05": metrics_def,
         "metrics_optimal_threshold": metrics_opt,
     }
@@ -752,6 +796,9 @@ def main() -> None:
         "test_metrics": {
             "auprc": m_ind["auprc"],
             "roc_auc": m_ind["roc_auc"],
+            "map": m_ind["map"],
+            "ndcg": m_ind["ndcg"],
+            "accuracy": m_opt["accuracy"],
             "f1_score": m_opt["f1_score"],
             "precision": m_opt["precision"],
             "recall": m_opt["recall"],
@@ -840,6 +887,10 @@ def main() -> None:
     print(f"  HASIL AKHIR PENGUJIAN EXP24 PADA TEST SET ({num_test_tx:,} TRANSAKSI, {num_test_fraud:,} FRAUD)")
     print(f"  • Run ID    : {run_id}")
     print(f"  • AUPRC     : {m_ind['auprc']:.6f}")
+    print(f"  • ROC-AUC   : {m_ind['roc_auc']:.6f}")
+    print(f"  • MAP       : {m_ind['map']:.6f}")
+    print(f"  • NDCG      : {m_ind['ndcg']:.6f}")
+    print(f"  • Accuracy  : {m_opt['accuracy']:.6f}")
     print(f"  • F1-Score  : {m_opt['f1_score']:.6f} (Tau: {optimal_tau:.4f})")
     print(f"  • Precision : {m_opt['precision']:.6f}")
     print(f"  • Recall    : {m_opt['recall']:.6f}")

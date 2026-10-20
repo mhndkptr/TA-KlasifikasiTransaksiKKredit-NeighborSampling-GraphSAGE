@@ -6,13 +6,45 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from sklearn.metrics import average_precision_score, confusion_matrix, f1_score, precision_score, recall_score, roc_auc_score
+from sklearn.metrics import accuracy_score, average_precision_score, confusion_matrix, f1_score, precision_score, recall_score, roc_auc_score
 
 from artifacts import write_json
 
 METHODS = ("uniform", "topology", "importance")
-METRICS = ("auprc", "f1", "precision", "recall", "roc_auc")
+METRICS = ("auprc", "roc_auc", "map", "ndcg", "accuracy", "f1", "precision", "recall")
 COLORS = {"uniform": "#4472C4", "topology": "#ED7D31", "importance": "#70AD47"}
+
+
+def compute_map(y_true: np.ndarray, y_probs: np.ndarray) -> float:
+    """Mean Average Precision (MAP) sesuai formula Tabel 1 Paper Bu Fitriyani (BTS-I2C 2025)."""
+    if (y_true == 1).sum() == 0:
+        return 0.0
+    order = np.argsort(-y_probs)
+    relevant = y_true[order].astype(np.float64)
+    total_relevant = relevant.sum()
+    if total_relevant == 0:
+        return 0.0
+    cum_relevant = np.cumsum(relevant)
+    ranks = np.arange(1, len(relevant) + 1, dtype=np.float64)
+    prec_at_k = cum_relevant / ranks
+    return float(np.sum(prec_at_k * relevant) / total_relevant)
+
+
+def compute_ndcg(y_true: np.ndarray, y_probs: np.ndarray) -> float:
+    """Normalized Discounted Cumulative Gain (NDCG) sesuai formula Tabel 1 Paper Bu Fitriyani (BTS-I2C 2025)."""
+    if (y_true == 1).sum() == 0:
+        return 0.0
+    order = np.argsort(-y_probs)
+    sorted_labels = y_true[order].astype(np.float64)
+    ranks = np.arange(1, len(sorted_labels) + 1, dtype=np.float64)
+    discounts = np.log2(ranks + 1.0)
+    dcg = np.sum((np.power(2.0, sorted_labels) - 1.0) / discounts)
+
+    ideal_labels = np.sort(y_true)[::-1].astype(np.float64)
+    idcg = np.sum((np.power(2.0, ideal_labels) - 1.0) / discounts)
+    if idcg <= 0.0:
+        return 0.0
+    return float(dcg / idcg)
 
 
 def evaluate(labels: np.ndarray, probs: np.ndarray, threshold: float, budgets: list[int]) -> dict:
@@ -29,6 +61,9 @@ def evaluate(labels: np.ndarray, probs: np.ndarray, threshold: float, budgets: l
     row = {
         "auprc": auprc,
         "roc_auc": roc_auc,
+        "map": compute_map(labels, probs),
+        "ndcg": compute_ndcg(labels, probs),
+        "accuracy": float(accuracy_score(labels, predicted)),
         "f1": float(f1_score(labels, predicted, zero_division=0)),
         "precision": float(precision_score(labels, predicted, zero_division=0)),
         "recall": float(recall_score(labels, predicted, zero_division=0)),
