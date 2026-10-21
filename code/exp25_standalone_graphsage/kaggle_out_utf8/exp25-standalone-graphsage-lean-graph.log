@@ -1,0 +1,807 @@
+[{"stream_name":"stderr","time":7.372933602,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":7.373000578,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":7.373007549,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":7.373011346,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stderr","time":7.9945026519999995,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":7.994534527,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":7.994548934,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":7.994553198,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stdout","time":9.102032383,"data":"Writing requirements.txt\n"}
+,{"stream_name":"stdout","time":9.118062272,"data":"Writing config.reference.yaml\n"}
+,{"stream_name":"stdout","time":9.133135699,"data":"Writing config.kaggle.yaml\n"}
+,{"stream_name":"stdout","time":9.148184331,"data":"Writing config.smoke.yaml\n"}
+,{"stream_name":"stdout","time":9.162722681,"data":"Writing config.lean.yaml\n"}
+,{"stream_name":"stdout","time":9.17624771,"data":"Writing config.py\n"}
+,{"stream_name":"stdout","time":9.195052525,"data":"Writing data_preprocessing.py\n"}
+,{"stream_name":"stdout","time":9.211487303,"data":"Writing graph_builder.py\n"}
+,{"stream_name":"stdout","time":9.227741142,"data":"Writing model.py\n"}
+,{"stream_name":"stdout","time":9.249144513,"data":"Writing samplers.py\n"}
+,{"stream_name":"stdout","time":9.264562006,"data":"Writing validate_sampler.py\n"}
+,{"stream_name":"stdout","time":9.296656066,"data":"Writing main.py\n"}
+,{"stream_name":"stdout","time":9.311438573,"data":"Writing artifacts.py\n"}
+,{"stream_name":"stdout","time":9.327133822,"data":"Writing identity.py\n"}
+,{"stream_name":"stdout","time":9.348978864,"data":"Writing aggregate_exp25.py\n"}
+,{"stream_name":"stdout","time":9.370755131,"data":"Writing run_seed.py\n"}
+,{"stream_name":"stdout","time":18.076920663,"data":"     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 64.4/64.4 kB 2.4 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":18.278973643,"data":"     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 64.4/64.4 kB 2.4 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":18.2914646,"data":"     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 5.1/5.1 MB 97.5 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":18.493487796,"data":"     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 5.1/5.1 MB 97.5 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":18.721940042,"data":"     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 10.9/10.9 MB 43.6 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":18.924364605,"data":"     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 10.9/10.9 MB 43.6 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":18.964548241,"data":"     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 5.4/5.4 MB 99.8 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":19.166940025,"data":"   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.3/1.3 MB 23.4 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":19.166965565,"data":"     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 5.4/5.4 MB 99.8 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":19.368859281,"data":"   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.3/1.3 MB 23.4 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":50.274996672,"data":"Menjalankan Correctness Gates untuk EXP25 Standalone GraphSAGE Sampler...\r\n"}
+,{"stream_name":"stdout","time":50.478310937,"data":"{\r\n"}
+,{"stream_name":"stdout","time":50.478347547,"data":"  \"status\": \"passed\",\r\n"}
+,{"stream_name":"stdout","time":50.478357438,"data":"  \"checks\": {\r\n"}
+,{"stream_name":"stdout","time":50.478360937,"data":"    \"uniform_weights_are_strictly_one\": true,\r\n"}
+,{"stream_name":"stdout","time":50.478364281,"data":"    \"first_hop_remains_uniform\": true,\r\n"}
+,{"stream_name":"stdout","time":50.478367585,"data":"    \"zero_label_leakage_topology\": true,\r\n"}
+,{"stream_name":"stdout","time":50.478392453,"data":"    \"zero_label_leakage_importance\": true,\r\n"}
+,{"stream_name":"stdout","time":50.478398353,"data":"    \"topology_weights_bounded\": true,\r\n"}
+,{"stream_name":"stdout","time":50.478403324,"data":"    \"importance_weights_bounded\": true,\r\n"}
+,{"stream_name":"stdout","time":50.478408709,"data":"    \"neighbor_loader_uses_weight_attr\": true,\r\n"}
+,{"stream_name":"stdout","time":50.478413321,"data":"    \"topology_audit_passed\": true,\r\n"}
+,{"stream_name":"stdout","time":50.478418711,"data":"    \"importance_audit_passed\": true\r\n"}
+,{"stream_name":"stdout","time":50.478423437000004,"data":"  }\r\n"}
+,{"stream_name":"stdout","time":50.478427827,"data":"}\r\n"}
+,{"stream_name":"stdout","time":50.478432095,"data":"\r\n"}
+,{"stream_name":"stdout","time":50.4784364,"data":"[SUKSES] Seluruh 8 Correctness Gates EXP25 LULUS.\r\n"}
+,{"stream_name":"stdout","time":57.082998116,"data":"======================================================================\r\n"}
+,{"stream_name":"stdout","time":57.083044757,"data":"  EXP25: STANDALONE GRAPHSAGE MULTI-SEED \u0026 FAN-OUT RUNNER\r\n"}
+,{"stream_name":"stdout","time":57.083051567,"data":"  Config   : config.lean.yaml\r\n"}
+,{"stream_name":"stdout","time":57.083056416,"data":"  Seeds    : [42]\r\n"}
+,{"stream_name":"stdout","time":57.083061014,"data":"  Methods  : ['uniform', 'topology', 'importance']\r\n"}
+,{"stream_name":"stdout","time":57.083065822,"data":"  Fan-outs : [[5, 5], [15, 10], [25, 10]]\r\n"}
+,{"stream_name":"stdout","time":57.083070554,"data":"  Power p  : 1.0\r\n"}
+,{"stream_name":"stdout","time":57.083075094,"data":"  Device   : cuda\r\n"}
+,{"stream_name":"stdout","time":57.083079689,"data":"  Force Run: False\r\n"}
+,{"stream_name":"stdout","time":57.083084334,"data":"======================================================================\r\n"}
+,{"stream_name":"stdout","time":109.238085104,"data":"Menjalankan Correctness Gates untuk EXP25 Standalone GraphSAGE Sampler...\r\n"}
+,{"stream_name":"stdout","time":109.283640477,"data":"{\r\n"}
+,{"stream_name":"stdout","time":109.283691444,"data":"  \"status\": \"passed\",\r\n"}
+,{"stream_name":"stdout","time":109.283700683,"data":"  \"checks\": {\r\n"}
+,{"stream_name":"stdout","time":109.283715769,"data":"    \"uniform_weights_are_strictly_one\": true,\r\n"}
+,{"stream_name":"stdout","time":109.283719447,"data":"    \"first_hop_remains_uniform\": true,\r\n"}
+,{"stream_name":"stdout","time":109.28372283,"data":"    \"zero_label_leakage_topology\": true,\r\n"}
+,{"stream_name":"stdout","time":109.283726353,"data":"    \"zero_label_leakage_importance\": true,\r\n"}
+,{"stream_name":"stdout","time":109.283735322,"data":"    \"topology_weights_bounded\": true,\r\n"}
+,{"stream_name":"stdout","time":109.283738464,"data":"    \"importance_weights_bounded\": true,\r\n"}
+,{"stream_name":"stdout","time":109.28374069,"data":"    \"neighbor_loader_uses_weight_attr\": true,\r\n"}
+,{"stream_name":"stdout","time":109.283742989,"data":"    \"topology_audit_passed\": true,\r\n"}
+,{"stream_name":"stdout","time":109.283745134,"data":"    \"importance_audit_passed\": true\r\n"}
+,{"stream_name":"stdout","time":109.283747344,"data":"  }\r\n"}
+,{"stream_name":"stdout","time":109.283749963,"data":"}\r\n"}
+,{"stream_name":"stdout","time":109.28376551,"data":"\r\n"}
+,{"stream_name":"stdout","time":109.283769217,"data":"[SUKSES] Seluruh 8 Correctness Gates EXP25 LULUS.\r\n"}
+,{"stream_name":"stdout","time":117.837273024,"data":"======================================================================\r\n"}
+,{"stream_name":"stdout","time":117.837307559,"data":"  EXP25: STANDALONE GRAPHSAGE WITH PROPOSAL NEIGHBOR SAMPLING\r\n"}
+,{"stream_name":"stdout","time":117.837312669,"data":"  Run ID  : exp25_uniform_seed_42_k5x5\r\n"}
+,{"stream_name":"stdout","time":117.837316694,"data":"  Sampler : UNIFORM | Seed: 42 | Fan-out: [5, 5] | Device: cuda\r\n"}
+,{"stream_name":"stdout","time":117.837324674,"data":"  Run Dir : ../../result/exp25_standalone_graphsage/runs/exp25_uniform_seed_42_k5x5\r\n"}
+,{"stream_name":"stdout","time":117.837328688,"data":"  Log File: ../../result/exp25_standalone_graphsage/logs/exp25_uniform_seed_42_k5x5.log\r\n"}
+,{"stream_name":"stdout","time":117.837332724,"data":"======================================================================\r\n"}
+,{"stream_name":"stdout","time":117.837337264,"data":"Loading data from /kaggle/input/datasets/ealtman2019/credit-card-transactions/credit_card_transactions-ibm_v2.csv (Filter: Year \u003e= 2018, nrows=None)...\r\n"}
+,{"stream_name":"stdout","time":158.249320319,"data":"Memproses 3782053 baris data mentah...\r\n"}
+,{"stream_name":"stdout","time":158.249362008,"data":"Parsing timestamps...\r\n"}
+,{"stream_name":"stdout","time":165.341128348,"data":"Sorting chronologically...\r\n"}
+,{"stream_name":"stdout","time":170.218349528,"data":"Cleaning Amount \u0026 Target Label...\r\n"}
+,{"stream_name":"stdout","time":173.463807808,"data":"\r\n"}
+,{"stream_name":"stdout","time":173.46386762,"data":"Melakukan pembagian temporal window strictly chronologic...\r\n"}
+,{"stream_name":"stdout","time":174.328319564,"data":"\r\n"}
+,{"stream_name":"stdout","time":174.328357262,"data":"[STRICT ANTI-LEAKAGE] Menerapkan preprocessing (Mode: clean, Cyclical Time: True, Amount Log: True)...\r\n"}
+,{"stream_name":"stdout","time":174.328364743,"data":"  • Fitur High-Cardinality ('Zip', 'Merchant City') DIHAPUS dari input!\r\n"}
+,{"stream_name":"stdout","time":174.379151642,"data":"  • Amount Scaler fit pada Train: mean=42.8491, std=80.8563\r\n"}
+,{"stream_name":"stdout","time":174.379186255,"data":"  • Amount Log Scaler fit pada Train: mean=3.1358, std=1.3914\r\n"}
+,{"stream_name":"stdout","time":174.531948575,"data":"  • Kolom 'Use Chip': 3 kategori train dipelajari (OOV di Val: 0, di Test: 0)\r\n"}
+,{"stream_name":"stdout","time":174.684289985,"data":"  • Kolom 'Merchant State': 96 kategori train dipelajari (OOV di Val: 80, di Test: 98)\r\n"}
+,{"stream_name":"stdout","time":175.089238172,"data":"  • Kolom 'MCC': 109 kategori train dipelajari (OOV di Val: 0, di Test: 0)\r\n"}
+,{"stream_name":"stdout","time":175.293136612,"data":"  • Kolom 'Errors?': 14 kategori train dipelajari (OOV di Val: 2, di Test: 3)\r\n"}
+,{"stream_name":"stdout","time":175.444992648,"data":"  • Ditambahkan 4 fitur waktu siklik: ['hour_sin', 'hour_cos', 'dow_sin', 'dow_cos']\r\n"}
+,{"stream_name":"stdout","time":175.445033499,"data":"Total fitur transaksi bersih (feature_cols): 10 fitur -\u003e ['Amount', 'amount_log', 'Use Chip', 'Merchant State', 'MCC', 'Errors?', 'hour_sin', 'hour_cos', 'dow_sin', 'dow_cos']\r\n"}
+,{"stream_name":"stdout","time":175.445040498,"data":"Membangun HeteroData graf (424341 transaksi)...\r\n"}
+,{"stream_name":"stdout","time":175.597438294,"data":"HeteroData selesai: 424341 tx, 1523 users, 20410 merchants.\r\n"}
+,{"stream_name":"stdout","time":175.597474399,"data":"Membangun HeteroData graf (141270 transaksi)...\r\n"}
+,{"stream_name":"stdout","time":175.648492376,"data":"HeteroData selesai: 141270 tx, 1521 users, 12587 merchants.\r\n"}
+,{"stream_name":"stdout","time":175.64852676,"data":"Membangun HeteroData graf (283529 transaksi)...\r\n"}
+,{"stream_name":"stdout","time":175.750543675,"data":"HeteroData selesai: 283529 tx, 1526 users, 16860 merchants.\r\n"}
+,{"stream_name":"stdout","time":177.06992592,"data":"\r\n"}
+,{"stream_name":"stdout","time":177.069966848,"data":"======================================================================\r\n"}
+,{"stream_name":"stdout","time":177.069972844,"data":"  MEMULAI PELATIHAN STANDALONE HETEROGRAPHSAGE DENGAN TELEMETRI GRANULAR\r\n"}
+,{"stream_name":"stdout","time":177.069976891,"data":"======================================================================\r\n"}
+,{"stream_name":"stdout","time":185.638199752,"data":"Epoch 01/20 | Train Loss: 0.1045 | Val Loss: 0.0495 | Val AUPRC: 0.0744 | Val F1 (Opt): 0.1715 (Tau: 0.625) | Waktu: 8.6s (Train: 7.3s, Val: 1.1s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":193.496854189,"data":"Epoch 02/20 | Train Loss: 0.0662 | Val Loss: 0.0260 | Val AUPRC: 0.1309 | Val F1 (Opt): 0.2039 (Tau: 0.516) | Waktu: 7.8s (Train: 6.6s, Val: 1.1s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":201.289073253,"data":"Epoch 03/20 | Train Loss: 0.0524 | Val Loss: 0.0329 | Val AUPRC: 0.3084 | Val F1 (Opt): 0.3761 (Tau: 0.747) | Waktu: 7.8s (Train: 6.5s, Val: 1.1s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":209.195301191,"data":"Epoch 04/20 | Train Loss: 0.0482 | Val Loss: 0.0206 | Val AUPRC: 0.3418 | Val F1 (Opt): 0.4215 (Tau: 0.630) | Waktu: 7.9s (Train: 6.6s, Val: 1.2s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":217.207740682,"data":"Epoch 05/20 | Train Loss: 0.0454 | Val Loss: 0.1554 | Val AUPRC: 0.4368 | Val F1 (Opt): 0.5033 (Tau: 0.967) | Waktu: 8.0s (Train: 6.7s, Val: 1.2s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":225.126073323,"data":"Epoch 06/20 | Train Loss: 0.0407 | Val Loss: 0.0175 | Val AUPRC: 0.3857 | Val F1 (Opt): 0.4440 (Tau: 0.615) | Waktu: 7.9s (Train: 6.7s, Val: 1.1s)\r\n"}
+,{"stream_name":"stdout","time":233.140035007,"data":"Epoch 07/20 | Train Loss: 0.0341 | Val Loss: 0.0312 | Val AUPRC: 0.5041 | Val F1 (Opt): 0.5577 (Tau: 0.858) | Waktu: 8.0s (Train: 6.7s, Val: 1.2s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":240.996040681,"data":"Epoch 08/20 | Train Loss: 0.0289 | Val Loss: 0.0176 | Val AUPRC: 0.4622 | Val F1 (Opt): 0.5125 (Tau: 0.808) | Waktu: 7.9s (Train: 6.6s, Val: 1.1s)\r\n"}
+,{"stream_name":"stdout","time":248.9069762,"data":"Epoch 09/20 | Train Loss: 0.0285 | Val Loss: 0.0753 | Val AUPRC: 0.5016 | Val F1 (Opt): 0.5911 (Tau: 0.954) | Waktu: 7.9s (Train: 6.6s, Val: 1.1s)\r\n"}
+,{"stream_name":"stdout","time":256.923862699,"data":"Epoch 10/20 | Train Loss: 0.0248 | Val Loss: 0.0202 | Val AUPRC: 0.5804 | Val F1 (Opt): 0.6546 (Tau: 0.836) | Waktu: 8.0s (Train: 6.6s, Val: 1.2s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":264.718269287,"data":"Epoch 11/20 | Train Loss: 0.0176 | Val Loss: 0.0249 | Val AUPRC: 0.6247 | Val F1 (Opt): 0.7316 (Tau: 0.892) | Waktu: 7.8s (Train: 6.5s, Val: 1.1s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":272.521559449,"data":"Epoch 12/20 | Train Loss: 0.0143 | Val Loss: 0.0210 | Val AUPRC: 0.6207 | Val F1 (Opt): 0.7078 (Tau: 0.862) | Waktu: 7.8s (Train: 6.5s, Val: 1.1s)\r\n"}
+,{"stream_name":"stdout","time":280.380955709,"data":"Epoch 13/20 | Train Loss: 0.0123 | Val Loss: 0.0142 | Val AUPRC: 0.6388 | Val F1 (Opt): 0.7530 (Tau: 0.688) | Waktu: 7.8s (Train: 6.5s, Val: 1.1s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":288.29945962,"data":"Epoch 14/20 | Train Loss: 0.0114 | Val Loss: 0.0240 | Val AUPRC: 0.6460 | Val F1 (Opt): 0.7609 (Tau: 0.972) | Waktu: 8.0s (Train: 6.6s, Val: 1.2s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":296.192618688,"data":"Epoch 15/20 | Train Loss: 0.0084 | Val Loss: 0.0131 | Val AUPRC: 0.6346 | Val F1 (Opt): 0.7561 (Tau: 0.874) | Waktu: 7.9s (Train: 6.6s, Val: 1.1s)\r\n"}
+,{"stream_name":"stdout","time":303.943292609,"data":"Epoch 16/20 | Train Loss: 0.0085 | Val Loss: 0.0134 | Val AUPRC: 0.6347 | Val F1 (Opt): 0.7541 (Tau: 0.909) | Waktu: 7.7s (Train: 6.4s, Val: 1.1s)\r\n"}
+,{"stream_name":"stdout","time":311.694644627,"data":"Epoch 17/20 | Train Loss: 0.0070 | Val Loss: 0.0157 | Val AUPRC: 0.6303 | Val F1 (Opt): 0.7670 (Tau: 0.933) | Waktu: 7.8s (Train: 6.4s, Val: 1.2s)\r\n"}
+,{"stream_name":"stdout","time":319.399813536,"data":"Epoch 18/20 | Train Loss: 0.0056 | Val Loss: 0.0132 | Val AUPRC: 0.6268 | Val F1 (Opt): 0.7406 (Tau: 0.882) | Waktu: 7.7s (Train: 6.5s, Val: 1.1s)\r\n"}
+,{"stream_name":"stdout","time":327.290883729,"data":"Epoch 19/20 | Train Loss: 0.0050 | Val Loss: 0.0122 | Val AUPRC: 0.6437 | Val F1 (Opt): 0.7652 (Tau: 0.913) | Waktu: 7.9s (Train: 6.7s, Val: 1.1s)\r\n"}
+,{"stream_name":"stdout","time":335.196258099,"data":"Epoch 20/20 | Train Loss: 0.0051 | Val Loss: 0.0128 | Val AUPRC: 0.6400 | Val F1 (Opt): 0.7621 (Tau: 0.967) | Waktu: 7.9s (Train: 6.5s, Val: 1.2s)\r\n"}
+,{"stream_name":"stdout","time":335.196297578,"data":"\r\n"}
+,{"stream_name":"stdout","time":335.196304164,"data":"[CHECKPOINT] Model GNN terbaik disimpan ke: /model/exp25_standalone_graphsage/runs/exp25_uniform_seed_42_k5x5/exp25_uniform_best_gnn.pt (AUPRC: 0.6460 pada Epoch 14)\r\n"}
+,{"stream_name":"stdout","time":335.196309087,"data":"\r\n"}
+,{"stream_name":"stdout","time":335.196313762,"data":"======================================================================\r\n"}
+,{"stream_name":"stdout","time":335.196318513,"data":"  EVALUASI END-TO-END STANDALONE GRAPHSAGE (TANPA XGBOOST)\r\n"}
+,{"stream_name":"stdout","time":335.196323247,"data":"======================================================================\r\n"}
+,{"stream_name":"stdout","time":339.248328811,"data":"\r\n"}
+,{"stream_name":"stdout","time":339.248381417,"data":"======================================================================\r\n"}
+,{"stream_name":"stdout","time":339.248388494,"data":"  HASIL AKHIR PENGUJIAN EXP25 STANDALONE GRAPHSAGE PADA TEST SET (283,529 TRANSAKSI, 421 FRAUD)\r\n"}
+,{"stream_name":"stdout","time":339.248392999,"data":"  • Run ID               : exp25_uniform_seed_42_k5x5\r\n"}
+,{"stream_name":"stdout","time":339.248398592,"data":"  • AUPRC                : 0.918922\r\n"}
+,{"stream_name":"stdout","time":339.24840301,"data":"  • ROC-AUC              : 0.999909\r\n"}
+,{"stream_name":"stdout","time":339.248406968,"data":"  • MAP                  : 0.918922\r\n"}
+,{"stream_name":"stdout","time":339.248424507,"data":"  • NDCG                 : 0.986611\r\n"}
+,{"stream_name":"stdout","time":339.248428159,"data":"  • Accuracy (Opt Tau)   : 0.999609\r\n"}
+,{"stream_name":"stdout","time":339.248431521,"data":"  • F1-Score (Opt Tau)   : 0.874292 (Tau: 0.9598)\r\n"}
+,{"stream_name":"stdout","time":339.248434677,"data":"  • Precision (Opt Tau)  : 0.835498\r\n"}
+,{"stream_name":"stdout","time":339.248437934,"data":"  • Recall (Opt Tau)     : 0.916865\r\n"}
+,{"stream_name":"stdout","time":339.248441037,"data":"  • FP / FN (Opt Tau)    : 76 / 35\r\n"}
+,{"stream_name":"stdout","time":339.248444502,"data":"  • F1-Score (Tau=0.50)  : 0.553947 (Acc: 0.9976, Prec: 0.3831, Rec: 1.0000)\r\n"}
+,{"stream_name":"stdout","time":339.248447894,"data":"  • Inference Latency    : 0.01 ms / 1.000 tx (2.45s total)\r\n"}
+,{"stream_name":"stdout","time":339.248451125,"data":"  • Run Dir              : ../../result/exp25_standalone_graphsage/runs/exp25_uniform_seed_42_k5x5\r\n"}
+,{"stream_name":"stdout","time":339.248454429,"data":"  • Log File             : ../../result/exp25_standalone_graphsage/logs/exp25_uniform_seed_42_k5x5.log\r\n"}
+,{"stream_name":"stdout","time":339.248457702,"data":"  • Total Time           : 221.4 detik\r\n"}
+,{"stream_name":"stdout","time":339.24846142,"data":"======================================================================\r\n"}
+,{"stream_name":"stdout","time":350.97311056,"data":"======================================================================\r\n"}
+,{"stream_name":"stdout","time":350.973162809,"data":"  EXP25: STANDALONE GRAPHSAGE WITH PROPOSAL NEIGHBOR SAMPLING\r\n"}
+,{"stream_name":"stdout","time":350.973169118,"data":"  Run ID  : exp25_topology_seed_42_k5x5\r\n"}
+,{"stream_name":"stdout","time":350.973173994,"data":"  Sampler : TOPOLOGY | Seed: 42 | Fan-out: [5, 5] | Power p: 1.0 | Device: cuda\r\n"}
+,{"stream_name":"stdout","time":350.973178309,"data":"  Run Dir : ../../result/exp25_standalone_graphsage/runs/exp25_topology_seed_42_k5x5\r\n"}
+,{"stream_name":"stdout","time":350.973182744,"data":"  Log File: ../../result/exp25_standalone_graphsage/logs/exp25_topology_seed_42_k5x5.log\r\n"}
+,{"stream_name":"stdout","time":350.973188186,"data":"======================================================================\r\n"}
+,{"stream_name":"stdout","time":350.973193392,"data":"Loading data from /kaggle/input/datasets/ealtman2019/credit-card-transactions/credit_card_transactions-ibm_v2.csv (Filter: Year \u003e= 2018, nrows=None)...\r\n"}
+,{"stream_name":"stdout","time":391.947937003,"data":"Memproses 3782053 baris data mentah...\r\n"}
+,{"stream_name":"stdout","time":391.9479865,"data":"Parsing timestamps...\r\n"}
+,{"stream_name":"stdout","time":399.148321331,"data":"Sorting chronologically...\r\n"}
+,{"stream_name":"stdout","time":404.175206391,"data":"Cleaning Amount \u0026 Target Label...\r\n"}
+,{"stream_name":"stdout","time":407.571756005,"data":"\r\n"}
+,{"stream_name":"stdout","time":407.571792957,"data":"Melakukan pembagian temporal window strictly chronologic...\r\n"}
+,{"stream_name":"stdout","time":408.488399781,"data":"\r\n"}
+,{"stream_name":"stdout","time":408.488427832,"data":"[STRICT ANTI-LEAKAGE] Menerapkan preprocessing (Mode: clean, Cyclical Time: True, Amount Log: True)...\r\n"}
+,{"stream_name":"stdout","time":408.488433127,"data":"  • Fitur High-Cardinality ('Zip', 'Merchant City') DIHAPUS dari input!\r\n"}
+,{"stream_name":"stdout","time":408.488438424,"data":"  • Amount Scaler fit pada Train: mean=42.8491, std=80.8563\r\n"}
+,{"stream_name":"stdout","time":408.488442689,"data":"  • Amount Log Scaler fit pada Train: mean=3.1358, std=1.3914\r\n"}
+,{"stream_name":"stdout","time":408.640973314,"data":"  • Kolom 'Use Chip': 3 kategori train dipelajari (OOV di Val: 0, di Test: 0)\r\n"}
+,{"stream_name":"stdout","time":408.844501529,"data":"  • Kolom 'Merchant State': 96 kategori train dipelajari (OOV di Val: 80, di Test: 98)\r\n"}
+,{"stream_name":"stdout","time":409.20013826,"data":"  • Kolom 'MCC': 109 kategori train dipelajari (OOV di Val: 0, di Test: 0)\r\n"}
+,{"stream_name":"stdout","time":409.45509876,"data":"  • Kolom 'Errors?': 14 kategori train dipelajari (OOV di Val: 2, di Test: 3)\r\n"}
+,{"stream_name":"stdout","time":409.607592331,"data":"  • Ditambahkan 4 fitur waktu siklik: ['hour_sin', 'hour_cos', 'dow_sin', 'dow_cos']\r\n"}
+,{"stream_name":"stdout","time":409.607667804,"data":"Total fitur transaksi bersih (feature_cols): 10 fitur -\u003e ['Amount', 'amount_log', 'Use Chip', 'Merchant State', 'MCC', 'Errors?', 'hour_sin', 'hour_cos', 'dow_sin', 'dow_cos']\r\n"}
+,{"stream_name":"stdout","time":409.607675684,"data":"Membangun HeteroData graf (424341 transaksi)...\r\n"}
+,{"stream_name":"stdout","time":409.7090449,"data":"HeteroData selesai: 424341 tx, 1523 users, 20410 merchants.\r\n"}
+,{"stream_name":"stdout","time":409.709079248,"data":"Membangun HeteroData graf (141270 transaksi)...\r\n"}
+,{"stream_name":"stdout","time":409.760036984,"data":"HeteroData selesai: 141270 tx, 1521 users, 12587 merchants.\r\n"}
+,{"stream_name":"stdout","time":409.760073029,"data":"Membangun HeteroData graf (283529 transaksi)...\r\n"}
+,{"stream_name":"stdout","time":409.862085467,"data":"HeteroData selesai: 283529 tx, 1526 users, 16860 merchants.\r\n"}
+,{"stream_name":"stdout","time":411.740930384,"data":"\r\n"}
+,{"stream_name":"stdout","time":411.740989497,"data":"======================================================================\r\n"}
+,{"stream_name":"stdout","time":411.740995183,"data":"  MEMULAI PELATIHAN STANDALONE HETEROGRAPHSAGE DENGAN TELEMETRI GRANULAR\r\n"}
+,{"stream_name":"stdout","time":411.740999448,"data":"======================================================================\r\n"}
+,{"stream_name":"stdout","time":431.643338061,"data":"Epoch 01/20 | Train Loss: 0.1035 | Val Loss: 0.0352 | Val AUPRC: 0.0919 | Val F1 (Opt): 0.1837 (Tau: 0.542) | Waktu: 19.9s (Train: 16.4s, Val: 3.4s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":450.840485126,"data":"Epoch 02/20 | Train Loss: 0.0652 | Val Loss: 0.0311 | Val AUPRC: 0.2379 | Val F1 (Opt): 0.3053 (Tau: 0.715) | Waktu: 19.2s (Train: 15.8s, Val: 3.3s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":470.341568283,"data":"Epoch 03/20 | Train Loss: 0.0511 | Val Loss: 0.0462 | Val AUPRC: 0.4062 | Val F1 (Opt): 0.4748 (Tau: 0.834) | Waktu: 19.5s (Train: 16.0s, Val: 3.4s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":490.065918615,"data":"Epoch 04/20 | Train Loss: 0.0447 | Val Loss: 0.0268 | Val AUPRC: 0.4483 | Val F1 (Opt): 0.5159 (Tau: 0.730) | Waktu: 19.7s (Train: 16.1s, Val: 3.5s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":509.404775583,"data":"Epoch 05/20 | Train Loss: 0.0397 | Val Loss: 0.1203 | Val AUPRC: 0.4803 | Val F1 (Opt): 0.5410 (Tau: 0.953) | Waktu: 19.3s (Train: 15.7s, Val: 3.4s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":529.086990935,"data":"Epoch 06/20 | Train Loss: 0.0351 | Val Loss: 0.0221 | Val AUPRC: 0.5381 | Val F1 (Opt): 0.6017 (Tau: 0.760) | Waktu: 19.7s (Train: 16.3s, Val: 3.2s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":548.21440349,"data":"Epoch 07/20 | Train Loss: 0.0268 | Val Loss: 0.0370 | Val AUPRC: 0.6070 | Val F1 (Opt): 0.6829 (Tau: 0.890) | Waktu: 19.1s (Train: 15.6s, Val: 3.4s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":567.743570572,"data":"Epoch 08/20 | Train Loss: 0.0202 | Val Loss: 0.0274 | Val AUPRC: 0.5883 | Val F1 (Opt): 0.6888 (Tau: 0.877) | Waktu: 19.5s (Train: 16.0s, Val: 3.3s)\r\n"}
+,{"stream_name":"stdout","time":587.080978785,"data":"Epoch 09/20 | Train Loss: 0.0156 | Val Loss: 0.0168 | Val AUPRC: 0.6441 | Val F1 (Opt): 0.7607 (Tau: 0.886) | Waktu: 19.3s (Train: 15.9s, Val: 3.3s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":606.410340511,"data":"Epoch 10/20 | Train Loss: 0.0154 | Val Loss: 0.0155 | Val AUPRC: 0.6308 | Val F1 (Opt): 0.7670 (Tau: 0.855) | Waktu: 19.3s (Train: 16.0s, Val: 3.2s)\r\n"}
+,{"stream_name":"stdout","time":625.807565338,"data":"Epoch 11/20 | Train Loss: 0.0119 | Val Loss: 0.0137 | Val AUPRC: 0.6080 | Val F1 (Opt): 0.7226 (Tau: 0.720) | Waktu: 19.4s (Train: 16.1s, Val: 3.2s)\r\n"}
+,{"stream_name":"stdout","time":644.976509137,"data":"Epoch 12/20 | Train Loss: 0.0082 | Val Loss: 0.0211 | Val AUPRC: 0.6327 | Val F1 (Opt): 0.7613 (Tau: 0.925) | Waktu: 19.2s (Train: 15.7s, Val: 3.3s)\r\n"}
+,{"stream_name":"stdout","time":664.211399314,"data":"Epoch 13/20 | Train Loss: 0.0075 | Val Loss: 0.0129 | Val AUPRC: 0.6322 | Val F1 (Opt): 0.7683 (Tau: 0.768) | Waktu: 19.2s (Train: 15.7s, Val: 3.4s)\r\n"}
+,{"stream_name":"stdout","time":683.516744764,"data":"Epoch 14/20 | Train Loss: 0.0057 | Val Loss: 0.0125 | Val AUPRC: 0.6429 | Val F1 (Opt): 0.7699 (Tau: 0.832) | Waktu: 19.3s (Train: 15.8s, Val: 3.3s)\r\n"}
+,{"stream_name":"stdout","time":702.34900235,"data":"Epoch 15/20 | Train Loss: 0.0049 | Val Loss: 0.0137 | Val AUPRC: 0.6441 | Val F1 (Opt): 0.7623 (Tau: 0.976) | Waktu: 18.8s (Train: 15.5s, Val: 3.2s)\r\n"}
+,{"stream_name":"stdout","time":721.424959242,"data":"Epoch 16/20 | Train Loss: 0.0058 | Val Loss: 0.0138 | Val AUPRC: 0.6390 | Val F1 (Opt): 0.7714 (Tau: 0.929) | Waktu: 19.1s (Train: 15.7s, Val: 3.3s)\r\n"}
+,{"stream_name":"stdout","time":721.424996366,"data":"[EARLY STOPPING] Tidak ada peningkatan AUPRC selama 7 epoch berturut-turut. Berhenti di epoch 16.\r\n"}
+,{"stream_name":"stdout","time":721.475841989,"data":"\r\n"}
+,{"stream_name":"stdout","time":721.475877491,"data":"[CHECKPOINT] Model GNN terbaik disimpan ke: /model/exp25_standalone_graphsage/runs/exp25_topology_seed_42_k5x5/exp25_topology_best_gnn.pt (AUPRC: 0.6441 pada Epoch 9)\r\n"}
+,{"stream_name":"stdout","time":721.475883713,"data":"\r\n"}
+,{"stream_name":"stdout","time":721.475887804,"data":"======================================================================\r\n"}
+,{"stream_name":"stdout","time":721.475892146,"data":"  EVALUASI END-TO-END STANDALONE GRAPHSAGE (TANPA XGBOOST)\r\n"}
+,{"stream_name":"stdout","time":721.475896284,"data":"======================================================================\r\n"}
+,{"stream_name":"stdout","time":732.845780254,"data":"\r\n"}
+,{"stream_name":"stdout","time":732.845817221,"data":"======================================================================\r\n"}
+,{"stream_name":"stdout","time":732.845823372,"data":"  HASIL AKHIR PENGUJIAN EXP25 STANDALONE GRAPHSAGE PADA TEST SET (283,529 TRANSAKSI, 421 FRAUD)\r\n"}
+,{"stream_name":"stdout","time":732.845828247,"data":"  • Run ID               : exp25_topology_seed_42_k5x5\r\n"}
+,{"stream_name":"stdout","time":732.84583329,"data":"  • AUPRC                : 0.942960\r\n"}
+,{"stream_name":"stdout","time":732.845837895,"data":"  • ROC-AUC              : 0.999943\r\n"}
+,{"stream_name":"stdout","time":732.845842423,"data":"  • MAP                  : 0.942959\r\n"}
+,{"stream_name":"stdout","time":732.845847029,"data":"  • NDCG                 : 0.989688\r\n"}
+,{"stream_name":"stdout","time":732.845851081,"data":"  • Accuracy (Opt Tau)   : 0.999704\r\n"}
+,{"stream_name":"stdout","time":732.845855294,"data":"  • F1-Score (Opt Tau)   : 0.900474 (Tau: 0.9017)\r\n"}
+,{"stream_name":"stdout","time":732.845859791,"data":"  • Precision (Opt Tau)  : 0.898345\r\n"}
+,{"stream_name":"stdout","time":732.845864328,"data":"  • Recall (Opt Tau)     : 0.902613\r\n"}
+,{"stream_name":"stdout","time":732.845878656,"data":"  • FP / FN (Opt Tau)    : 43 / 41\r\n"}
+,{"stream_name":"stdout","time":732.845882783,"data":"  • F1-Score (Tau=0.50)  : 0.865365 (Acc: 0.9995, Prec: 0.7627, Rec: 1.0000)\r\n"}
+,{"stream_name":"stdout","time":732.84588662,"data":"  • Inference Latency    : 0.03 ms / 1.000 tx (7.66s total)\r\n"}
+,{"stream_name":"stdout","time":732.845890466,"data":"  • Run Dir              : ../../result/exp25_standalone_graphsage/runs/exp25_topology_seed_42_k5x5\r\n"}
+,{"stream_name":"stdout","time":732.845894623,"data":"  • Log File             : ../../result/exp25_standalone_graphsage/logs/exp25_topology_seed_42_k5x5.log\r\n"}
+,{"stream_name":"stdout","time":732.845898302,"data":"  • Total Time           : 381.8 detik\r\n"}
+,{"stream_name":"stdout","time":732.845901661,"data":"======================================================================\r\n"}
+,{"stream_name":"stdout","time":745.010865083,"data":"======================================================================\r\n"}
+,{"stream_name":"stdout","time":745.010904129,"data":"  EXP25: STANDALONE GRAPHSAGE WITH PROPOSAL NEIGHBOR SAMPLING\r\n"}
+,{"stream_name":"stdout","time":745.010908718,"data":"  Run ID  : exp25_importance_seed_42_k5x5\r\n"}
+,{"stream_name":"stdout","time":745.01091185,"data":"  Sampler : IMPORTANCE | Seed: 42 | Fan-out: [5, 5] | Power p: 1.0 | Device: cuda\r\n"}
+,{"stream_name":"stdout","time":745.010914979,"data":"  Run Dir : ../../result/exp25_standalone_graphsage/runs/exp25_importance_seed_42_k5x5\r\n"}
+,{"stream_name":"stdout","time":745.010918159,"data":"  Log File: ../../result/exp25_standalone_graphsage/logs/exp25_importance_seed_42_k5x5.log\r\n"}
+,{"stream_name":"stdout","time":745.010920994,"data":"======================================================================\r\n"}
+,{"stream_name":"stdout","time":745.010923802,"data":"Loading data from /kaggle/input/datasets/ealtman2019/credit-card-transactions/credit_card_transactions-ibm_v2.csv (Filter: Year \u003e= 2018, nrows=None)...\r\n"}
+,{"stream_name":"stdout","time":785.065550399,"data":"Memproses 3782053 baris data mentah...\r\n"}
+,{"stream_name":"stdout","time":785.065585904,"data":"Parsing timestamps...\r\n"}
+,{"stream_name":"stdout","time":792.100040094,"data":"Sorting chronologically...\r\n"}
+,{"stream_name":"stdout","time":796.970414232,"data":"Cleaning Amount \u0026 Target Label...\r\n"}
+,{"stream_name":"stdout","time":800.318707506,"data":"\r\n"}
+,{"stream_name":"stdout","time":800.318754799,"data":"Melakukan pembagian temporal window strictly chronologic...\r\n"}
+,{"stream_name":"stdout","time":801.234809394,"data":"\r\n"}
+,{"stream_name":"stdout","time":801.234845437,"data":"[STRICT ANTI-LEAKAGE] Menerapkan preprocessing (Mode: clean, Cyclical Time: True, Amount Log: True)...\r\n"}
+,{"stream_name":"stdout","time":801.285510044,"data":"  • Fitur High-Cardinality ('Zip', 'Merchant City') DIHAPUS dari input!\r\n"}
+,{"stream_name":"stdout","time":801.285537008,"data":"  • Amount Scaler fit pada Train: mean=42.8491, std=80.8563\r\n"}
+,{"stream_name":"stdout","time":801.285542092,"data":"  • Amount Log Scaler fit pada Train: mean=3.1358, std=1.3914\r\n"}
+,{"stream_name":"stdout","time":801.437551553,"data":"  • Kolom 'Use Chip': 3 kategori train dipelajari (OOV di Val: 0, di Test: 0)\r\n"}
+,{"stream_name":"stdout","time":801.640647207,"data":"  • Kolom 'Merchant State': 96 kategori train dipelajari (OOV di Val: 80, di Test: 98)\r\n"}
+,{"stream_name":"stdout","time":801.995657674,"data":"  • Kolom 'MCC': 109 kategori train dipelajari (OOV di Val: 0, di Test: 0)\r\n"}
+,{"stream_name":"stdout","time":802.249362075,"data":"  • Kolom 'Errors?': 14 kategori train dipelajari (OOV di Val: 2, di Test: 3)\r\n"}
+,{"stream_name":"stdout","time":802.351060375,"data":"  • Ditambahkan 4 fitur waktu siklik: ['hour_sin', 'hour_cos', 'dow_sin', 'dow_cos']\r\n"}
+,{"stream_name":"stdout","time":802.351094291,"data":"Total fitur transaksi bersih (feature_cols): 10 fitur -\u003e ['Amount', 'amount_log', 'Use Chip', 'Merchant State', 'MCC', 'Errors?', 'hour_sin', 'hour_cos', 'dow_sin', 'dow_cos']\r\n"}
+,{"stream_name":"stdout","time":802.351100792,"data":"Membangun HeteroData graf (424341 transaksi)...\r\n"}
+,{"stream_name":"stdout","time":802.503716517,"data":"HeteroData selesai: 424341 tx, 1523 users, 20410 merchants.\r\n"}
+,{"stream_name":"stdout","time":802.50375788,"data":"Membangun HeteroData graf (141270 transaksi)...\r\n"}
+,{"stream_name":"stdout","time":802.554770903,"data":"HeteroData selesai: 141270 tx, 1521 users, 12587 merchants.\r\n"}
+,{"stream_name":"stdout","time":802.554798914,"data":"Membangun HeteroData graf (283529 transaksi)...\r\n"}
+,{"stream_name":"stdout","time":802.65713365,"data":"HeteroData selesai: 283529 tx, 1526 users, 16860 merchants.\r\n"}
+,{"stream_name":"stdout","time":803.87446141,"data":"\r\n"}
+,{"stream_name":"stdout","time":803.874496956,"data":"======================================================================\r\n"}
+,{"stream_name":"stdout","time":803.87450231,"data":"  MEMULAI PELATIHAN STANDALONE HETEROGRAPHSAGE DENGAN TELEMETRI GRANULAR\r\n"}
+,{"stream_name":"stdout","time":803.874506206,"data":"======================================================================\r\n"}
+,{"stream_name":"stdout","time":823.664960748,"data":"Epoch 01/20 | Train Loss: 0.1043 | Val Loss: 0.0498 | Val AUPRC: 0.1835 | Val F1 (Opt): 0.2826 (Tau: 0.621) | Waktu: 19.8s (Train: 16.1s, Val: 3.5s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":842.712733493,"data":"Epoch 02/20 | Train Loss: 0.0649 | Val Loss: 0.0400 | Val AUPRC: 0.2153 | Val F1 (Opt): 0.2996 (Tau: 0.758) | Waktu: 19.1s (Train: 15.6s, Val: 3.3s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":862.623743827,"data":"Epoch 03/20 | Train Loss: 0.0529 | Val Loss: 0.0538 | Val AUPRC: 0.3064 | Val F1 (Opt): 0.3661 (Tau: 0.792) | Waktu: 19.9s (Train: 16.3s, Val: 3.4s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":882.051950049,"data":"Epoch 04/20 | Train Loss: 0.0487 | Val Loss: 0.0184 | Val AUPRC: 0.2976 | Val F1 (Opt): 0.3786 (Tau: 0.491) | Waktu: 19.4s (Train: 15.9s, Val: 3.4s)\r\n"}
+,{"stream_name":"stdout","time":901.124717031,"data":"Epoch 05/20 | Train Loss: 0.0477 | Val Loss: 0.1222 | Val AUPRC: 0.4359 | Val F1 (Opt): 0.5127 (Tau: 0.942) | Waktu: 19.1s (Train: 15.6s, Val: 3.4s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":920.796499178,"data":"Epoch 06/20 | Train Loss: 0.0460 | Val Loss: 0.0183 | Val AUPRC: 0.3446 | Val F1 (Opt): 0.4271 (Tau: 0.571) | Waktu: 19.7s (Train: 16.2s, Val: 3.3s)\r\n"}
+,{"stream_name":"stdout","time":940.178824412,"data":"Epoch 07/20 | Train Loss: 0.0382 | Val Loss: 0.0428 | Val AUPRC: 0.4764 | Val F1 (Opt): 0.5341 (Tau: 0.885) | Waktu: 19.4s (Train: 16.0s, Val: 3.2s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":959.331373136,"data":"Epoch 08/20 | Train Loss: 0.0362 | Val Loss: 0.0266 | Val AUPRC: 0.4040 | Val F1 (Opt): 0.4679 (Tau: 0.848) | Waktu: 19.2s (Train: 15.7s, Val: 3.3s)\r\n"}
+,{"stream_name":"stdout","time":978.296805166,"data":"Epoch 09/20 | Train Loss: 0.0277 | Val Loss: 0.0619 | Val AUPRC: 0.5814 | Val F1 (Opt): 0.6561 (Tau: 0.938) | Waktu: 19.0s (Train: 15.5s, Val: 3.3s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":997.232148555,"data":"Epoch 10/20 | Train Loss: 0.0299 | Val Loss: 0.0363 | Val AUPRC: 0.5746 | Val F1 (Opt): 0.6429 (Tau: 0.914) | Waktu: 18.9s (Train: 15.6s, Val: 3.2s)\r\n"}
+,{"stream_name":"stdout","time":1016.028783268,"data":"Epoch 11/20 | Train Loss: 0.0210 | Val Loss: 0.0440 | Val AUPRC: 0.6116 | Val F1 (Opt): 0.6918 (Tau: 0.939) | Waktu: 18.8s (Train: 15.5s, Val: 3.1s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":1034.72077128,"data":"Epoch 12/20 | Train Loss: 0.0192 | Val Loss: 0.0233 | Val AUPRC: 0.6160 | Val F1 (Opt): 0.7022 (Tau: 0.811) | Waktu: 18.7s (Train: 15.3s, Val: 3.3s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":1053.702806158,"data":"Epoch 13/20 | Train Loss: 0.0174 | Val Loss: 0.0259 | Val AUPRC: 0.6063 | Val F1 (Opt): 0.6898 (Tau: 0.908) | Waktu: 19.0s (Train: 15.6s, Val: 3.3s)\r\n"}
+,{"stream_name":"stdout","time":1072.219424687,"data":"Epoch 14/20 | Train Loss: 0.0108 | Val Loss: 0.0153 | Val AUPRC: 0.6139 | Val F1 (Opt): 0.7324 (Tau: 0.789) | Waktu: 18.5s (Train: 15.1s, Val: 3.3s)\r\n"}
+,{"stream_name":"stdout","time":1091.195362005,"data":"Epoch 15/20 | Train Loss: 0.0126 | Val Loss: 0.0154 | Val AUPRC: 0.6404 | Val F1 (Opt): 0.7490 (Tau: 0.866) | Waktu: 19.0s (Train: 15.5s, Val: 3.3s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":1109.928042475,"data":"Epoch 16/20 | Train Loss: 0.0098 | Val Loss: 0.0141 | Val AUPRC: 0.6351 | Val F1 (Opt): 0.7627 (Tau: 0.921) | Waktu: 18.7s (Train: 15.4s, Val: 3.2s)\r\n"}
+,{"stream_name":"stdout","time":1128.528728603,"data":"Epoch 17/20 | Train Loss: 0.0080 | Val Loss: 0.0165 | Val AUPRC: 0.6284 | Val F1 (Opt): 0.7465 (Tau: 0.942) | Waktu: 18.6s (Train: 15.2s, Val: 3.2s)\r\n"}
+,{"stream_name":"stdout","time":1147.478999513,"data":"Epoch 18/20 | Train Loss: 0.0091 | Val Loss: 0.0265 | Val AUPRC: 0.5268 | Val F1 (Opt): 0.6719 (Tau: 0.973) | Waktu: 18.9s (Train: 15.5s, Val: 3.3s)\r\n"}
+,{"stream_name":"stdout","time":1166.390435017,"data":"Epoch 19/20 | Train Loss: 0.0083 | Val Loss: 0.0122 | Val AUPRC: 0.6460 | Val F1 (Opt): 0.7615 (Tau: 0.766) | Waktu: 18.9s (Train: 15.5s, Val: 3.2s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":1185.081828231,"data":"Epoch 20/20 | Train Loss: 0.0061 | Val Loss: 0.0133 | Val AUPRC: 0.6379 | Val F1 (Opt): 0.7593 (Tau: 0.985) | Waktu: 18.7s (Train: 15.4s, Val: 3.2s)\r\n"}
+,{"stream_name":"stdout","time":1185.081884563,"data":"\r\n"}
+,{"stream_name":"stdout","time":1185.081894593,"data":"[CHECKPOINT] Model GNN terbaik disimpan ke: /model/exp25_standalone_graphsage/runs/exp25_importance_seed_42_k5x5/exp25_importance_best_gnn.pt (AUPRC: 0.6460 pada Epoch 19)\r\n"}
+,{"stream_name":"stdout","time":1185.081902775,"data":"\r\n"}
+,{"stream_name":"stdout","time":1185.081909844,"data":"======================================================================\r\n"}
+,{"stream_name":"stdout","time":1185.081916848,"data":"  EVALUASI END-TO-END STANDALONE GRAPHSAGE (TANPA XGBOOST)\r\n"}
+,{"stream_name":"stdout","time":1185.081924124,"data":"======================================================================\r\n"}
+,{"stream_name":"stdout","time":1196.230044415,"data":"\r\n"}
+,{"stream_name":"stdout","time":1196.230088777,"data":"======================================================================\r\n"}
+,{"stream_name":"stdout","time":1196.230095788,"data":"  HASIL AKHIR PENGUJIAN EXP25 STANDALONE GRAPHSAGE PADA TEST SET (283,529 TRANSAKSI, 421 FRAUD)\r\n"}
+,{"stream_name":"stdout","time":1196.230100931,"data":"  • Run ID               : exp25_importance_seed_42_k5x5\r\n"}
+,{"stream_name":"stdout","time":1196.230106479,"data":"  • AUPRC                : 0.974730\r\n"}
+,{"stream_name":"stdout","time":1196.230111185,"data":"  • ROC-AUC              : 0.999969\r\n"}
+,{"stream_name":"stdout","time":1196.230115907,"data":"  • MAP                  : 0.974730\r\n"}
+,{"stream_name":"stdout","time":1196.230120953,"data":"  • NDCG                 : 0.996323\r\n"}
+,{"stream_name":"stdout","time":1196.230125618,"data":"  • Accuracy (Opt Tau)   : 0.999750\r\n"}
+,{"stream_name":"stdout","time":1196.230130025,"data":"  • F1-Score (Opt Tau)   : 0.921892 (Tau: 0.7664)\r\n"}
+,{"stream_name":"stdout","time":1196.230147585,"data":"  • Precision (Opt Tau)  : 0.858607\r\n"}
+,{"stream_name":"stdout","time":1196.230151582,"data":"  • Recall (Opt Tau)     : 0.995249\r\n"}
+,{"stream_name":"stdout","time":1196.230155383,"data":"  • FP / FN (Opt Tau)    : 69 / 2\r\n"}
+,{"stream_name":"stdout","time":1196.230159321,"data":"  • F1-Score (Tau=0.50)  : 0.910270 (Acc: 0.9997, Prec: 0.8353, Rec: 1.0000)\r\n"}
+,{"stream_name":"stdout","time":1196.230163324,"data":"  • Inference Latency    : 0.03 ms / 1.000 tx (7.37s total)\r\n"}
+,{"stream_name":"stdout","time":1196.230167591,"data":"  • Run Dir              : ../../result/exp25_standalone_graphsage/runs/exp25_importance_seed_42_k5x5\r\n"}
+,{"stream_name":"stdout","time":1196.23017151,"data":"  • Log File             : ../../result/exp25_standalone_graphsage/logs/exp25_importance_seed_42_k5x5.log\r\n"}
+,{"stream_name":"stdout","time":1196.230175508,"data":"  • Total Time           : 451.2 detik\r\n"}
+,{"stream_name":"stdout","time":1196.230179325,"data":"======================================================================\r\n"}
+,{"stream_name":"stdout","time":1208.500556313,"data":"======================================================================\r\n"}
+,{"stream_name":"stdout","time":1208.500597902,"data":"  EXP25: STANDALONE GRAPHSAGE WITH PROPOSAL NEIGHBOR SAMPLING\r\n"}
+,{"stream_name":"stdout","time":1208.500605516,"data":"  Run ID  : exp25_uniform_seed_42_k15x10\r\n"}
+,{"stream_name":"stdout","time":1208.500612889,"data":"  Sampler : UNIFORM | Seed: 42 | Fan-out: [15, 10] | Device: cuda\r\n"}
+,{"stream_name":"stdout","time":1208.500620183,"data":"  Run Dir : ../../result/exp25_standalone_graphsage/runs/exp25_uniform_seed_42_k15x10\r\n"}
+,{"stream_name":"stdout","time":1208.500627159,"data":"  Log File: ../../result/exp25_standalone_graphsage/logs/exp25_uniform_seed_42_k15x10.log\r\n"}
+,{"stream_name":"stdout","time":1208.500634821,"data":"======================================================================\r\n"}
+,{"stream_name":"stdout","time":1208.500653132,"data":"Loading data from /kaggle/input/datasets/ealtman2019/credit-card-transactions/credit_card_transactions-ibm_v2.csv (Filter: Year \u003e= 2018, nrows=None)...\r\n"}
+,{"stream_name":"stdout","time":1248.115648433,"data":"Memproses 3782053 baris data mentah...\r\n"}
+,{"stream_name":"stdout","time":1248.115706063,"data":"Parsing timestamps...\r\n"}
+,{"stream_name":"stdout","time":1255.056881183,"data":"Sorting chronologically...\r\n"}
+,{"stream_name":"stdout","time":1259.776136767,"data":"Cleaning Amount \u0026 Target Label...\r\n"}
+,{"stream_name":"stdout","time":1263.073628066,"data":"\r\n"}
+,{"stream_name":"stdout","time":1263.073695755,"data":"Melakukan pembagian temporal window strictly chronologic...\r\n"}
+,{"stream_name":"stdout","time":1263.988460988,"data":"\r\n"}
+,{"stream_name":"stdout","time":1263.988514876,"data":"[STRICT ANTI-LEAKAGE] Menerapkan preprocessing (Mode: clean, Cyclical Time: True, Amount Log: True)...\r\n"}
+,{"stream_name":"stdout","time":1263.988522398,"data":"  • Fitur High-Cardinality ('Zip', 'Merchant City') DIHAPUS dari input!\r\n"}
+,{"stream_name":"stdout","time":1263.98852859,"data":"  • Amount Scaler fit pada Train: mean=42.8491, std=80.8563\r\n"}
+,{"stream_name":"stdout","time":1263.988534483,"data":"  • Amount Log Scaler fit pada Train: mean=3.1358, std=1.3914\r\n"}
+,{"stream_name":"stdout","time":1264.141102096,"data":"  • Kolom 'Use Chip': 3 kategori train dipelajari (OOV di Val: 0, di Test: 0)\r\n"}
+,{"stream_name":"stdout","time":1264.344792119,"data":"  • Kolom 'Merchant State': 96 kategori train dipelajari (OOV di Val: 80, di Test: 98)\r\n"}
+,{"stream_name":"stdout","time":1264.699924957,"data":"  • Kolom 'MCC': 109 kategori train dipelajari (OOV di Val: 0, di Test: 0)\r\n"}
+,{"stream_name":"stdout","time":1264.902698621,"data":"  • Kolom 'Errors?': 14 kategori train dipelajari (OOV di Val: 2, di Test: 3)\r\n"}
+,{"stream_name":"stdout","time":1265.054791629,"data":"  • Ditambahkan 4 fitur waktu siklik: ['hour_sin', 'hour_cos', 'dow_sin', 'dow_cos']\r\n"}
+,{"stream_name":"stdout","time":1265.054829923,"data":"Total fitur transaksi bersih (feature_cols): 10 fitur -\u003e ['Amount', 'amount_log', 'Use Chip', 'Merchant State', 'MCC', 'Errors?', 'hour_sin', 'hour_cos', 'dow_sin', 'dow_cos']\r\n"}
+,{"stream_name":"stdout","time":1265.054834916,"data":"Membangun HeteroData graf (424341 transaksi)...\r\n"}
+,{"stream_name":"stdout","time":1265.207307142,"data":"HeteroData selesai: 424341 tx, 1523 users, 20410 merchants.\r\n"}
+,{"stream_name":"stdout","time":1265.207333723,"data":"Membangun HeteroData graf (141270 transaksi)...\r\n"}
+,{"stream_name":"stdout","time":1265.257817388,"data":"HeteroData selesai: 141270 tx, 1521 users, 12587 merchants.\r\n"}
+,{"stream_name":"stdout","time":1265.257850675,"data":"Membangun HeteroData graf (283529 transaksi)...\r\n"}
+,{"stream_name":"stdout","time":1265.359997138,"data":"HeteroData selesai: 283529 tx, 1526 users, 16860 merchants.\r\n"}
+,{"stream_name":"stdout","time":1266.323394572,"data":"\r\n"}
+,{"stream_name":"stdout","time":1266.323424862,"data":"======================================================================\r\n"}
+,{"stream_name":"stdout","time":1266.323430439,"data":"  MEMULAI PELATIHAN STANDALONE HETEROGRAPHSAGE DENGAN TELEMETRI GRANULAR\r\n"}
+,{"stream_name":"stdout","time":1266.323435293,"data":"======================================================================\r\n"}
+,{"stream_name":"stdout","time":1275.499627937,"data":"Epoch 01/20 | Train Loss: 0.1050 | Val Loss: 0.0273 | Val AUPRC: 0.0671 | Val F1 (Opt): 0.1596 (Tau: 0.520) | Waktu: 9.1s (Train: 7.7s, Val: 1.3s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":1284.180259705,"data":"Epoch 02/20 | Train Loss: 0.0652 | Val Loss: 0.0363 | Val AUPRC: 0.2499 | Val F1 (Opt): 0.2980 (Tau: 0.650) | Waktu: 8.7s (Train: 7.3s, Val: 1.3s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":1292.732012469,"data":"Epoch 03/20 | Train Loss: 0.0535 | Val Loss: 0.0505 | Val AUPRC: 0.3693 | Val F1 (Opt): 0.4402 (Tau: 0.839) | Waktu: 8.6s (Train: 7.2s, Val: 1.2s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":1301.607613508,"data":"Epoch 04/20 | Train Loss: 0.0509 | Val Loss: 0.0176 | Val AUPRC: 0.3243 | Val F1 (Opt): 0.3945 (Tau: 0.546) | Waktu: 8.9s (Train: 7.4s, Val: 1.4s)\r\n"}
+,{"stream_name":"stdout","time":1310.264824499,"data":"Epoch 05/20 | Train Loss: 0.0464 | Val Loss: 0.0972 | Val AUPRC: 0.4011 | Val F1 (Opt): 0.4645 (Tau: 0.930) | Waktu: 8.7s (Train: 7.2s, Val: 1.3s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":1318.785402258,"data":"Epoch 06/20 | Train Loss: 0.0425 | Val Loss: 0.0315 | Val AUPRC: 0.3760 | Val F1 (Opt): 0.4325 (Tau: 0.826) | Waktu: 8.5s (Train: 7.1s, Val: 1.2s)\r\n"}
+,{"stream_name":"stdout","time":1327.596474054,"data":"Epoch 07/20 | Train Loss: 0.0404 | Val Loss: 0.0322 | Val AUPRC: 0.4501 | Val F1 (Opt): 0.5030 (Tau: 0.822) | Waktu: 8.8s (Train: 7.5s, Val: 1.2s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":1336.369827499,"data":"Epoch 08/20 | Train Loss: 0.0365 | Val Loss: 0.0283 | Val AUPRC: 0.3426 | Val F1 (Opt): 0.4224 (Tau: 0.850) | Waktu: 8.8s (Train: 7.4s, Val: 1.3s)\r\n"}
+,{"stream_name":"stdout","time":1345.036735155,"data":"Epoch 09/20 | Train Loss: 0.0342 | Val Loss: 0.0691 | Val AUPRC: 0.3866 | Val F1 (Opt): 0.4480 (Tau: 0.906) | Waktu: 8.6s (Train: 7.2s, Val: 1.3s)\r\n"}
+,{"stream_name":"stdout","time":1353.660154163,"data":"Epoch 10/20 | Train Loss: 0.0354 | Val Loss: 0.0401 | Val AUPRC: 0.4638 | Val F1 (Opt): 0.5102 (Tau: 0.901) | Waktu: 8.6s (Train: 7.2s, Val: 1.3s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":1362.264384332,"data":"Epoch 11/20 | Train Loss: 0.0294 | Val Loss: 0.0307 | Val AUPRC: 0.5164 | Val F1 (Opt): 0.5732 (Tau: 0.890) | Waktu: 8.6s (Train: 7.2s, Val: 1.3s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":1370.571472154,"data":"Epoch 12/20 | Train Loss: 0.0274 | Val Loss: 0.0446 | Val AUPRC: 0.5333 | Val F1 (Opt): 0.5960 (Tau: 0.885) | Waktu: 8.3s (Train: 6.9s, Val: 1.2s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":1379.08216185,"data":"Epoch 13/20 | Train Loss: 0.0274 | Val Loss: 0.0455 | Val AUPRC: 0.5017 | Val F1 (Opt): 0.5544 (Tau: 0.956) | Waktu: 8.5s (Train: 7.1s, Val: 1.3s)\r\n"}
+,{"stream_name":"stdout","time":1387.769724801,"data":"Epoch 14/20 | Train Loss: 0.0226 | Val Loss: 0.0394 | Val AUPRC: 0.6127 | Val F1 (Opt): 0.6864 (Tau: 0.928) | Waktu: 8.7s (Train: 7.3s, Val: 1.3s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":1396.167534093,"data":"Epoch 15/20 | Train Loss: 0.0170 | Val Loss: 0.0271 | Val AUPRC: 0.5918 | Val F1 (Opt): 0.6723 (Tau: 0.910) | Waktu: 8.4s (Train: 7.0s, Val: 1.3s)\r\n"}
+,{"stream_name":"stdout","time":1405.092776682,"data":"Epoch 16/20 | Train Loss: 0.0164 | Val Loss: 0.0141 | Val AUPRC: 0.5918 | Val F1 (Opt): 0.6848 (Tau: 0.724) | Waktu: 8.9s (Train: 7.5s, Val: 1.3s)\r\n"}
+,{"stream_name":"stdout","time":1413.606376232,"data":"Epoch 17/20 | Train Loss: 0.0143 | Val Loss: 0.0174 | Val AUPRC: 0.6199 | Val F1 (Opt): 0.7140 (Tau: 0.780) | Waktu: 8.5s (Train: 7.2s, Val: 1.2s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":1422.229994532,"data":"Epoch 18/20 | Train Loss: 0.0108 | Val Loss: 0.0167 | Val AUPRC: 0.6196 | Val F1 (Opt): 0.7210 (Tau: 0.899) | Waktu: 8.6s (Train: 7.1s, Val: 1.4s)\r\n"}
+,{"stream_name":"stdout","time":1430.94044689,"data":"Epoch 19/20 | Train Loss: 0.0114 | Val Loss: 0.0173 | Val AUPRC: 0.6307 | Val F1 (Opt): 0.7530 (Tau: 0.938) | Waktu: 8.7s (Train: 7.4s, Val: 1.2s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":1439.605869551,"data":"Epoch 20/20 | Train Loss: 0.0083 | Val Loss: 0.0141 | Val AUPRC: 0.6347 | Val F1 (Opt): 0.7575 (Tau: 0.902) | Waktu: 8.6s (Train: 7.2s, Val: 1.3s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":1439.605906736,"data":"\r\n"}
+,{"stream_name":"stdout","time":1439.605914079,"data":"[CHECKPOINT] Model GNN terbaik disimpan ke: /model/exp25_standalone_graphsage/runs/exp25_uniform_seed_42_k15x10/exp25_uniform_best_gnn.pt (AUPRC: 0.6347 pada Epoch 20)\r\n"}
+,{"stream_name":"stdout","time":1439.605919921,"data":"\r\n"}
+,{"stream_name":"stdout","time":1439.605923875,"data":"======================================================================\r\n"}
+,{"stream_name":"stdout","time":1439.605928161,"data":"  EVALUASI END-TO-END STANDALONE GRAPHSAGE (TANPA XGBOOST)\r\n"}
+,{"stream_name":"stdout","time":1439.605932429,"data":"======================================================================\r\n"}
+,{"stream_name":"stdout","time":1444.216549273,"data":"\r\n"}
+,{"stream_name":"stdout","time":1444.216593094,"data":"======================================================================\r\n"}
+,{"stream_name":"stdout","time":1444.216599488,"data":"  HASIL AKHIR PENGUJIAN EXP25 STANDALONE GRAPHSAGE PADA TEST SET (283,529 TRANSAKSI, 421 FRAUD)\r\n"}
+,{"stream_name":"stdout","time":1444.216604473,"data":"  • Run ID               : exp25_uniform_seed_42_k15x10\r\n"}
+,{"stream_name":"stdout","time":1444.216609745,"data":"  • AUPRC                : 0.943815\r\n"}
+,{"stream_name":"stdout","time":1444.216614066,"data":"  • ROC-AUC              : 0.999945\r\n"}
+,{"stream_name":"stdout","time":1444.216618465,"data":"  • MAP                  : 0.943815\r\n"}
+,{"stream_name":"stdout","time":1444.216622811,"data":"  • NDCG                 : 0.990200\r\n"}
+,{"stream_name":"stdout","time":1444.216642428,"data":"  • Accuracy (Opt Tau)   : 0.999750\r\n"}
+,{"stream_name":"stdout","time":1444.216646217,"data":"  • F1-Score (Opt Tau)   : 0.921892 (Tau: 0.9028)\r\n"}
+,{"stream_name":"stdout","time":1444.21664984,"data":"  • Precision (Opt Tau)  : 0.858607\r\n"}
+,{"stream_name":"stdout","time":1444.216653415,"data":"  • Recall (Opt Tau)     : 0.995249\r\n"}
+,{"stream_name":"stdout","time":1444.21665709,"data":"  • FP / FN (Opt Tau)    : 69 / 2\r\n"}
+,{"stream_name":"stdout","time":1444.216660596,"data":"  • F1-Score (Tau=0.50)  : 0.887250 (Acc: 0.9996, Prec: 0.7973, Rec: 1.0000)\r\n"}
+,{"stream_name":"stdout","time":1444.216664327,"data":"  • Inference Latency    : 0.01 ms / 1.000 tx (2.90s total)\r\n"}
+,{"stream_name":"stdout","time":1444.2166859230001,"data":"  • Run Dir              : ../../result/exp25_standalone_graphsage/runs/exp25_uniform_seed_42_k15x10\r\n"}
+,{"stream_name":"stdout","time":1444.216692057,"data":"  • Log File             : ../../result/exp25_standalone_graphsage/logs/exp25_uniform_seed_42_k15x10.log\r\n"}
+,{"stream_name":"stdout","time":1444.216696885,"data":"  • Total Time           : 235.7 detik\r\n"}
+,{"stream_name":"stdout","time":1444.216700413,"data":"======================================================================\r\n"}
+,{"stream_name":"stdout","time":1455.578915999,"data":"======================================================================\r\n"}
+,{"stream_name":"stdout","time":1455.578947147,"data":"  EXP25: STANDALONE GRAPHSAGE WITH PROPOSAL NEIGHBOR SAMPLING\r\n"}
+,{"stream_name":"stdout","time":1455.578952921,"data":"  Run ID  : exp25_topology_seed_42_k15x10\r\n"}
+,{"stream_name":"stdout","time":1455.578957202,"data":"  Sampler : TOPOLOGY | Seed: 42 | Fan-out: [15, 10] | Power p: 1.0 | Device: cuda\r\n"}
+,{"stream_name":"stdout","time":1455.578961576,"data":"  Run Dir : ../../result/exp25_standalone_graphsage/runs/exp25_topology_seed_42_k15x10\r\n"}
+,{"stream_name":"stdout","time":1455.57897218,"data":"  Log File: ../../result/exp25_standalone_graphsage/logs/exp25_topology_seed_42_k15x10.log\r\n"}
+,{"stream_name":"stdout","time":1455.578976706,"data":"======================================================================\r\n"}
+,{"stream_name":"stdout","time":1455.578979637,"data":"Loading data from /kaggle/input/datasets/ealtman2019/credit-card-transactions/credit_card_transactions-ibm_v2.csv (Filter: Year \u003e= 2018, nrows=None)...\r\n"}
+,{"stream_name":"stdout","time":1495.457213367,"data":"Memproses 3782053 baris data mentah...\r\n"}
+,{"stream_name":"stdout","time":1495.457251079,"data":"Parsing timestamps...\r\n"}
+,{"stream_name":"stdout","time":1502.39234234,"data":"Sorting chronologically...\r\n"}
+,{"stream_name":"stdout","time":1507.212940177,"data":"Cleaning Amount \u0026 Target Label...\r\n"}
+,{"stream_name":"stdout","time":1510.559417146,"data":"\r\n"}
+,{"stream_name":"stdout","time":1510.559459751,"data":"Melakukan pembagian temporal window strictly chronologic...\r\n"}
+,{"stream_name":"stdout","time":1511.525545352,"data":"\r\n"}
+,{"stream_name":"stdout","time":1511.525583715,"data":"[STRICT ANTI-LEAKAGE] Menerapkan preprocessing (Mode: clean, Cyclical Time: True, Amount Log: True)...\r\n"}
+,{"stream_name":"stdout","time":1511.525590635,"data":"  • Fitur High-Cardinality ('Zip', 'Merchant City') DIHAPUS dari input!\r\n"}
+,{"stream_name":"stdout","time":1511.576381226,"data":"  • Amount Scaler fit pada Train: mean=42.8491, std=80.8563\r\n"}
+,{"stream_name":"stdout","time":1511.576415139,"data":"  • Amount Log Scaler fit pada Train: mean=3.1358, std=1.3914\r\n"}
+,{"stream_name":"stdout","time":1511.728728231,"data":"  • Kolom 'Use Chip': 3 kategori train dipelajari (OOV di Val: 0, di Test: 0)\r\n"}
+,{"stream_name":"stdout","time":1511.881253965,"data":"  • Kolom 'Merchant State': 96 kategori train dipelajari (OOV di Val: 80, di Test: 98)\r\n"}
+,{"stream_name":"stdout","time":1512.287664078,"data":"  • Kolom 'MCC': 109 kategori train dipelajari (OOV di Val: 0, di Test: 0)\r\n"}
+,{"stream_name":"stdout","time":1512.541562494,"data":"  • Kolom 'Errors?': 14 kategori train dipelajari (OOV di Val: 2, di Test: 3)\r\n"}
+,{"stream_name":"stdout","time":1512.694127405,"data":"  • Ditambahkan 4 fitur waktu siklik: ['hour_sin', 'hour_cos', 'dow_sin', 'dow_cos']\r\n"}
+,{"stream_name":"stdout","time":1512.694165579,"data":"Total fitur transaksi bersih (feature_cols): 10 fitur -\u003e ['Amount', 'amount_log', 'Use Chip', 'Merchant State', 'MCC', 'Errors?', 'hour_sin', 'hour_cos', 'dow_sin', 'dow_cos']\r\n"}
+,{"stream_name":"stdout","time":1512.694172582,"data":"Membangun HeteroData graf (424341 transaksi)...\r\n"}
+,{"stream_name":"stdout","time":1512.795836145,"data":"HeteroData selesai: 424341 tx, 1523 users, 20410 merchants.\r\n"}
+,{"stream_name":"stdout","time":1512.795862803,"data":"Membangun HeteroData graf (141270 transaksi)...\r\n"}
+,{"stream_name":"stdout","time":1512.896992183,"data":"HeteroData selesai: 141270 tx, 1521 users, 12587 merchants.\r\n"}
+,{"stream_name":"stdout","time":1512.89702845,"data":"Membangun HeteroData graf (283529 transaksi)...\r\n"}
+,{"stream_name":"stdout","time":1512.999117797,"data":"HeteroData selesai: 283529 tx, 1526 users, 16860 merchants.\r\n"}
+,{"stream_name":"stdout","time":1514.725950758,"data":"\r\n"}
+,{"stream_name":"stdout","time":1514.725991505,"data":"======================================================================\r\n"}
+,{"stream_name":"stdout","time":1514.725997779,"data":"  MEMULAI PELATIHAN STANDALONE HETEROGRAPHSAGE DENGAN TELEMETRI GRANULAR\r\n"}
+,{"stream_name":"stdout","time":1514.726002391,"data":"======================================================================\r\n"}
+,{"stream_name":"stdout","time":1535.89883693,"data":"Epoch 01/20 | Train Loss: 0.1089 | Val Loss: 0.0471 | Val AUPRC: 0.0779 | Val F1 (Opt): 0.1497 (Tau: 0.625) | Waktu: 21.1s (Train: 17.6s, Val: 3.4s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":1556.779717435,"data":"Epoch 02/20 | Train Loss: 0.0662 | Val Loss: 0.0250 | Val AUPRC: 0.1600 | Val F1 (Opt): 0.2222 (Tau: 0.590) | Waktu: 20.9s (Train: 17.4s, Val: 3.4s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":1577.476117929,"data":"Epoch 03/20 | Train Loss: 0.0530 | Val Loss: 0.0604 | Val AUPRC: 0.2999 | Val F1 (Opt): 0.3550 (Tau: 0.846) | Waktu: 20.7s (Train: 17.3s, Val: 3.3s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":1598.039747107,"data":"Epoch 04/20 | Train Loss: 0.0492 | Val Loss: 0.0231 | Val AUPRC: 0.3335 | Val F1 (Opt): 0.3827 (Tau: 0.716) | Waktu: 20.5s (Train: 17.2s, Val: 3.3s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":1618.838263221,"data":"Epoch 05/20 | Train Loss: 0.0450 | Val Loss: 0.1425 | Val AUPRC: 0.3641 | Val F1 (Opt): 0.4158 (Tau: 0.943) | Waktu: 20.8s (Train: 17.4s, Val: 3.3s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":1639.657800743,"data":"Epoch 06/20 | Train Loss: 0.0426 | Val Loss: 0.0235 | Val AUPRC: 0.3164 | Val F1 (Opt): 0.3644 (Tau: 0.815) | Waktu: 20.9s (Train: 17.3s, Val: 3.5s)\r\n"}
+,{"stream_name":"stdout","time":1660.562131799,"data":"Epoch 07/20 | Train Loss: 0.0375 | Val Loss: 0.0216 | Val AUPRC: 0.4773 | Val F1 (Opt): 0.5495 (Tau: 0.701) | Waktu: 20.9s (Train: 17.4s, Val: 3.4s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":1681.494806402,"data":"Epoch 08/20 | Train Loss: 0.0311 | Val Loss: 0.0228 | Val AUPRC: 0.4649 | Val F1 (Opt): 0.5331 (Tau: 0.830) | Waktu: 20.9s (Train: 17.3s, Val: 3.5s)\r\n"}
+,{"stream_name":"stdout","time":1702.18106417,"data":"Epoch 09/20 | Train Loss: 0.0278 | Val Loss: 0.0246 | Val AUPRC: 0.6115 | Val F1 (Opt): 0.6949 (Tau: 0.833) | Waktu: 20.7s (Train: 17.1s, Val: 3.4s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":1722.900384934,"data":"Epoch 10/20 | Train Loss: 0.0247 | Val Loss: 0.0208 | Val AUPRC: 0.3190 | Val F1 (Opt): 0.4248 (Tau: 0.805) | Waktu: 20.7s (Train: 17.2s, Val: 3.4s)\r\n"}
+,{"stream_name":"stdout","time":1743.489619107,"data":"Epoch 11/20 | Train Loss: 0.0213 | Val Loss: 0.0260 | Val AUPRC: 0.6087 | Val F1 (Opt): 0.6880 (Tau: 0.912) | Waktu: 20.6s (Train: 17.0s, Val: 3.5s)\r\n"}
+,{"stream_name":"stdout","time":1764.15371809,"data":"Epoch 12/20 | Train Loss: 0.0183 | Val Loss: 0.0176 | Val AUPRC: 0.6170 | Val F1 (Opt): 0.7038 (Tau: 0.740) | Waktu: 20.7s (Train: 17.0s, Val: 3.5s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":1784.744418503,"data":"Epoch 13/20 | Train Loss: 0.0186 | Val Loss: 0.0276 | Val AUPRC: 0.5994 | Val F1 (Opt): 0.6925 (Tau: 0.892) | Waktu: 20.6s (Train: 17.1s, Val: 3.3s)\r\n"}
+,{"stream_name":"stdout","time":1805.512947143,"data":"Epoch 14/20 | Train Loss: 0.0131 | Val Loss: 0.0154 | Val AUPRC: 0.6345 | Val F1 (Opt): 0.7505 (Tau: 0.813) | Waktu: 20.7s (Train: 17.2s, Val: 3.4s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":1825.99348455,"data":"Epoch 15/20 | Train Loss: 0.0095 | Val Loss: 0.0164 | Val AUPRC: 0.6344 | Val F1 (Opt): 0.7375 (Tau: 0.842) | Waktu: 20.5s (Train: 17.1s, Val: 3.2s)\r\n"}
+,{"stream_name":"stdout","time":1846.813997495,"data":"Epoch 16/20 | Train Loss: 0.0117 | Val Loss: 0.0135 | Val AUPRC: 0.6388 | Val F1 (Opt): 0.7606 (Tau: 0.883) | Waktu: 20.8s (Train: 17.4s, Val: 3.3s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":1867.614071713,"data":"Epoch 17/20 | Train Loss: 0.0077 | Val Loss: 0.0138 | Val AUPRC: 0.6390 | Val F1 (Opt): 0.7627 (Tau: 0.954) | Waktu: 20.8s (Train: 17.2s, Val: 3.4s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":1888.232853182,"data":"Epoch 18/20 | Train Loss: 0.0076 | Val Loss: 0.0134 | Val AUPRC: 0.6252 | Val F1 (Opt): 0.7283 (Tau: 0.834) | Waktu: 20.7s (Train: 17.2s, Val: 3.4s)\r\n"}
+,{"stream_name":"stdout","time":1908.778088125,"data":"Epoch 19/20 | Train Loss: 0.0064 | Val Loss: 0.0126 | Val AUPRC: 0.6387 | Val F1 (Opt): 0.7590 (Tau: 0.837) | Waktu: 20.5s (Train: 17.0s, Val: 3.4s)\r\n"}
+,{"stream_name":"stdout","time":1929.390959605,"data":"Epoch 20/20 | Train Loss: 0.0070 | Val Loss: 0.0134 | Val AUPRC: 0.6355 | Val F1 (Opt): 0.7590 (Tau: 0.900) | Waktu: 20.6s (Train: 17.1s, Val: 3.4s)\r\n"}
+,{"stream_name":"stdout","time":1929.390996149,"data":"\r\n"}
+,{"stream_name":"stdout","time":1929.391003858,"data":"[CHECKPOINT] Model GNN terbaik disimpan ke: /model/exp25_standalone_graphsage/runs/exp25_topology_seed_42_k15x10/exp25_topology_best_gnn.pt (AUPRC: 0.6390 pada Epoch 17)\r\n"}
+,{"stream_name":"stdout","time":1929.391010661,"data":"\r\n"}
+,{"stream_name":"stdout","time":1929.391016395,"data":"======================================================================\r\n"}
+,{"stream_name":"stdout","time":1929.39102211,"data":"  EVALUASI END-TO-END STANDALONE GRAPHSAGE (TANPA XGBOOST)\r\n"}
+,{"stream_name":"stdout","time":1929.391028209,"data":"======================================================================\r\n"}
+,{"stream_name":"stdout","time":1941.266893041,"data":"\r\n"}
+,{"stream_name":"stdout","time":1941.266940245,"data":"======================================================================\r\n"}
+,{"stream_name":"stdout","time":1941.266945833,"data":"  HASIL AKHIR PENGUJIAN EXP25 STANDALONE GRAPHSAGE PADA TEST SET (283,529 TRANSAKSI, 421 FRAUD)\r\n"}
+,{"stream_name":"stdout","time":1941.266950726,"data":"  • Run ID               : exp25_topology_seed_42_k15x10\r\n"}
+,{"stream_name":"stdout","time":1941.266955799,"data":"  • AUPRC                : 0.946661\r\n"}
+,{"stream_name":"stdout","time":1941.266960647,"data":"  • ROC-AUC              : 0.999945\r\n"}
+,{"stream_name":"stdout","time":1941.266974979,"data":"  • MAP                  : 0.946661\r\n"}
+,{"stream_name":"stdout","time":1941.266978651,"data":"  • NDCG                 : 0.990928\r\n"}
+,{"stream_name":"stdout","time":1941.266982049,"data":"  • Accuracy (Opt Tau)   : 0.999728\r\n"}
+,{"stream_name":"stdout","time":1941.266985475,"data":"  • F1-Score (Opt Tau)   : 0.909730 (Tau: 0.9568)\r\n"}
+,{"stream_name":"stdout","time":1941.266988995,"data":"  • Precision (Opt Tau)  : 0.898148\r\n"}
+,{"stream_name":"stdout","time":1941.266992584,"data":"  • Recall (Opt Tau)     : 0.921615\r\n"}
+,{"stream_name":"stdout","time":1941.266998313,"data":"  • FP / FN (Opt Tau)    : 44 / 33\r\n"}
+,{"stream_name":"stdout","time":1941.267001758,"data":"  • F1-Score (Tau=0.50)  : 0.881675 (Acc: 0.9996, Prec: 0.7884, Rec: 1.0000)\r\n"}
+,{"stream_name":"stdout","time":1941.267005336,"data":"  • Inference Latency    : 0.03 ms / 1.000 tx (7.94s total)\r\n"}
+,{"stream_name":"stdout","time":1941.267009531,"data":"  • Run Dir              : ../../result/exp25_standalone_graphsage/runs/exp25_topology_seed_42_k15x10\r\n"}
+,{"stream_name":"stdout","time":1941.267013064,"data":"  • Log File             : ../../result/exp25_standalone_graphsage/logs/exp25_topology_seed_42_k15x10.log\r\n"}
+,{"stream_name":"stdout","time":1941.267016974,"data":"  • Total Time           : 485.7 detik\r\n"}
+,{"stream_name":"stdout","time":1941.267021174,"data":"======================================================================\r\n"}
+,{"stream_name":"stdout","time":1953.455381038,"data":"======================================================================\r\n"}
+,{"stream_name":"stdout","time":1953.455409481,"data":"  EXP25: STANDALONE GRAPHSAGE WITH PROPOSAL NEIGHBOR SAMPLING\r\n"}
+,{"stream_name":"stdout","time":1953.455414589,"data":"  Run ID  : exp25_importance_seed_42_k15x10\r\n"}
+,{"stream_name":"stdout","time":1953.455418302,"data":"  Sampler : IMPORTANCE | Seed: 42 | Fan-out: [15, 10] | Power p: 1.0 | Device: cuda\r\n"}
+,{"stream_name":"stdout","time":1953.455422002,"data":"  Run Dir : ../../result/exp25_standalone_graphsage/runs/exp25_importance_seed_42_k15x10\r\n"}
+,{"stream_name":"stdout","time":1953.45542577,"data":"  Log File: ../../result/exp25_standalone_graphsage/logs/exp25_importance_seed_42_k15x10.log\r\n"}
+,{"stream_name":"stdout","time":1953.455429666,"data":"======================================================================\r\n"}
+,{"stream_name":"stdout","time":1953.455433264,"data":"Loading data from /kaggle/input/datasets/ealtman2019/credit-card-transactions/credit_card_transactions-ibm_v2.csv (Filter: Year \u003e= 2018, nrows=None)...\r\n"}
+,{"stream_name":"stdout","time":1993.535969151,"data":"Memproses 3782053 baris data mentah...\r\n"}
+,{"stream_name":"stdout","time":1993.535997189,"data":"Parsing timestamps...\r\n"}
+,{"stream_name":"stdout","time":2000.501439161,"data":"Sorting chronologically...\r\n"}
+,{"stream_name":"stdout","time":2005.375077738,"data":"Cleaning Amount \u0026 Target Label...\r\n"}
+,{"stream_name":"stdout","time":2008.672293796,"data":"\r\n"}
+,{"stream_name":"stdout","time":2008.672339635,"data":"Melakukan pembagian temporal window strictly chronologic...\r\n"}
+,{"stream_name":"stdout","time":2009.535365384,"data":"\r\n"}
+,{"stream_name":"stdout","time":2009.535398753,"data":"[STRICT ANTI-LEAKAGE] Menerapkan preprocessing (Mode: clean, Cyclical Time: True, Amount Log: True)...\r\n"}
+,{"stream_name":"stdout","time":2009.535403182,"data":"  • Fitur High-Cardinality ('Zip', 'Merchant City') DIHAPUS dari input!\r\n"}
+,{"stream_name":"stdout","time":2009.535422152,"data":"  • Amount Scaler fit pada Train: mean=42.8491, std=80.8563\r\n"}
+,{"stream_name":"stdout","time":2009.535427438,"data":"  • Amount Log Scaler fit pada Train: mean=3.1358, std=1.3914\r\n"}
+,{"stream_name":"stdout","time":2009.687221808,"data":"  • Kolom 'Use Chip': 3 kategori train dipelajari (OOV di Val: 0, di Test: 0)\r\n"}
+,{"stream_name":"stdout","time":2009.889547263,"data":"  • Kolom 'Merchant State': 96 kategori train dipelajari (OOV di Val: 80, di Test: 98)\r\n"}
+,{"stream_name":"stdout","time":2010.245238712,"data":"  • Kolom 'MCC': 109 kategori train dipelajari (OOV di Val: 0, di Test: 0)\r\n"}
+,{"stream_name":"stdout","time":2010.499313657,"data":"  • Kolom 'Errors?': 14 kategori train dipelajari (OOV di Val: 2, di Test: 3)\r\n"}
+,{"stream_name":"stdout","time":2010.600232339,"data":"  • Ditambahkan 4 fitur waktu siklik: ['hour_sin', 'hour_cos', 'dow_sin', 'dow_cos']\r\n"}
+,{"stream_name":"stdout","time":2010.600273593,"data":"Total fitur transaksi bersih (feature_cols): 10 fitur -\u003e ['Amount', 'amount_log', 'Use Chip', 'Merchant State', 'MCC', 'Errors?', 'hour_sin', 'hour_cos', 'dow_sin', 'dow_cos']\r\n"}
+,{"stream_name":"stdout","time":2010.600280843,"data":"Membangun HeteroData graf (424341 transaksi)...\r\n"}
+,{"stream_name":"stdout","time":2010.752835964,"data":"HeteroData selesai: 424341 tx, 1523 users, 20410 merchants.\r\n"}
+,{"stream_name":"stdout","time":2010.752865855,"data":"Membangun HeteroData graf (141270 transaksi)...\r\n"}
+,{"stream_name":"stdout","time":2010.803313553,"data":"HeteroData selesai: 141270 tx, 1521 users, 12587 merchants.\r\n"}
+,{"stream_name":"stdout","time":2010.803374891,"data":"Membangun HeteroData graf (283529 transaksi)...\r\n"}
+,{"stream_name":"stdout","time":2010.905704306,"data":"HeteroData selesai: 283529 tx, 1526 users, 16860 merchants.\r\n"}
+,{"stream_name":"stdout","time":2012.071385141,"data":"\r\n"}
+,{"stream_name":"stdout","time":2012.071417735,"data":"======================================================================\r\n"}
+,{"stream_name":"stdout","time":2012.071422391,"data":"  MEMULAI PELATIHAN STANDALONE HETEROGRAPHSAGE DENGAN TELEMETRI GRANULAR\r\n"}
+,{"stream_name":"stdout","time":2012.071426417,"data":"======================================================================\r\n"}
+,{"stream_name":"stdout","time":2032.763601163,"data":"Epoch 01/20 | Train Loss: 0.1035 | Val Loss: 0.0329 | Val AUPRC: 0.0720 | Val F1 (Opt): 0.1829 (Tau: 0.510) | Waktu: 20.7s (Train: 17.1s, Val: 3.4s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":2053.017886147,"data":"Epoch 02/20 | Train Loss: 0.0653 | Val Loss: 0.0421 | Val AUPRC: 0.1985 | Val F1 (Opt): 0.2656 (Tau: 0.767) | Waktu: 20.3s (Train: 16.8s, Val: 3.4s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":2073.553347129,"data":"Epoch 03/20 | Train Loss: 0.0531 | Val Loss: 0.0498 | Val AUPRC: 0.3353 | Val F1 (Opt): 0.4148 (Tau: 0.815) | Waktu: 20.5s (Train: 17.1s, Val: 3.3s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":2093.9108292,"data":"Epoch 04/20 | Train Loss: 0.0499 | Val Loss: 0.0196 | Val AUPRC: 0.2429 | Val F1 (Opt): 0.3196 (Tau: 0.488) | Waktu: 20.4s (Train: 17.0s, Val: 3.2s)\r\n"}
+,{"stream_name":"stdout","time":2114.587040078,"data":"Epoch 05/20 | Train Loss: 0.0465 | Val Loss: 0.1072 | Val AUPRC: 0.3078 | Val F1 (Opt): 0.3913 (Tau: 0.954) | Waktu: 20.6s (Train: 16.9s, Val: 3.5s)\r\n"}
+,{"stream_name":"stdout","time":2135.234156044,"data":"Epoch 06/20 | Train Loss: 0.0431 | Val Loss: 0.0206 | Val AUPRC: 0.3578 | Val F1 (Opt): 0.4202 (Tau: 0.694) | Waktu: 20.8s (Train: 17.4s, Val: 3.2s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":2155.828600903,"data":"Epoch 07/20 | Train Loss: 0.0407 | Val Loss: 0.0245 | Val AUPRC: 0.4326 | Val F1 (Opt): 0.4758 (Tau: 0.770) | Waktu: 20.6s (Train: 17.2s, Val: 3.3s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":2176.348058459,"data":"Epoch 08/20 | Train Loss: 0.0351 | Val Loss: 0.0221 | Val AUPRC: 0.4743 | Val F1 (Opt): 0.5181 (Tau: 0.767) | Waktu: 20.5s (Train: 17.1s, Val: 3.3s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":2196.578846393,"data":"Epoch 09/20 | Train Loss: 0.0343 | Val Loss: 0.0434 | Val AUPRC: 0.4929 | Val F1 (Opt): 0.5619 (Tau: 0.908) | Waktu: 20.3s (Train: 16.8s, Val: 3.3s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":2216.986590025,"data":"Epoch 10/20 | Train Loss: 0.0352 | Val Loss: 0.0271 | Val AUPRC: 0.4611 | Val F1 (Opt): 0.5255 (Tau: 0.848) | Waktu: 20.4s (Train: 17.0s, Val: 3.3s)\r\n"}
+,{"stream_name":"stdout","time":2237.725766312,"data":"Epoch 11/20 | Train Loss: 0.0278 | Val Loss: 0.0425 | Val AUPRC: 0.5448 | Val F1 (Opt): 0.5938 (Tau: 0.939) | Waktu: 20.7s (Train: 17.3s, Val: 3.3s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":2257.986928961,"data":"Epoch 12/20 | Train Loss: 0.0284 | Val Loss: 0.0301 | Val AUPRC: 0.5241 | Val F1 (Opt): 0.5843 (Tau: 0.862) | Waktu: 20.3s (Train: 16.9s, Val: 3.3s)\r\n"}
+,{"stream_name":"stdout","time":2278.278003709,"data":"Epoch 13/20 | Train Loss: 0.0281 | Val Loss: 0.0219 | Val AUPRC: 0.5381 | Val F1 (Opt): 0.6025 (Tau: 0.866) | Waktu: 20.3s (Train: 16.9s, Val: 3.2s)\r\n"}
+,{"stream_name":"stdout","time":2298.839870814,"data":"Epoch 14/20 | Train Loss: 0.0245 | Val Loss: 0.0242 | Val AUPRC: 0.5985 | Val F1 (Opt): 0.6625 (Tau: 0.859) | Waktu: 20.6s (Train: 17.1s, Val: 3.4s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":2319.114346722,"data":"Epoch 15/20 | Train Loss: 0.0194 | Val Loss: 0.0192 | Val AUPRC: 0.6109 | Val F1 (Opt): 0.6894 (Tau: 0.862) | Waktu: 20.3s (Train: 16.9s, Val: 3.3s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":2339.167690592,"data":"Epoch 16/20 | Train Loss: 0.0188 | Val Loss: 0.0229 | Val AUPRC: 0.6156 | Val F1 (Opt): 0.7034 (Tau: 0.905) | Waktu: 20.0s (Train: 16.8s, Val: 3.2s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":2359.299133069,"data":"Epoch 17/20 | Train Loss: 0.0171 | Val Loss: 0.0233 | Val AUPRC: 0.5279 | Val F1 (Opt): 0.6035 (Tau: 0.864) | Waktu: 20.1s (Train: 16.7s, Val: 3.3s)\r\n"}
+,{"stream_name":"stdout","time":2379.454285094,"data":"Epoch 18/20 | Train Loss: 0.0143 | Val Loss: 0.0164 | Val AUPRC: 0.5728 | Val F1 (Opt): 0.6352 (Tau: 0.884) | Waktu: 20.2s (Train: 16.8s, Val: 3.2s)\r\n"}
+,{"stream_name":"stdout","time":2399.745564883,"data":"Epoch 19/20 | Train Loss: 0.0118 | Val Loss: 0.0141 | Val AUPRC: 0.6422 | Val F1 (Opt): 0.7642 (Tau: 0.793) | Waktu: 20.2s (Train: 16.8s, Val: 3.3s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":2419.943503204,"data":"Epoch 20/20 | Train Loss: 0.0103 | Val Loss: 0.0155 | Val AUPRC: 0.6349 | Val F1 (Opt): 0.7550 (Tau: 0.877) | Waktu: 20.2s (Train: 16.8s, Val: 3.3s)\r\n"}
+,{"stream_name":"stdout","time":2419.943544501,"data":"\r\n"}
+,{"stream_name":"stdout","time":2419.943549259,"data":"[CHECKPOINT] Model GNN terbaik disimpan ke: /model/exp25_standalone_graphsage/runs/exp25_importance_seed_42_k15x10/exp25_importance_best_gnn.pt (AUPRC: 0.6422 pada Epoch 19)\r\n"}
+,{"stream_name":"stdout","time":2419.943553887,"data":"\r\n"}
+,{"stream_name":"stdout","time":2419.943557871,"data":"======================================================================\r\n"}
+,{"stream_name":"stdout","time":2419.943562347,"data":"  EVALUASI END-TO-END STANDALONE GRAPHSAGE (TANPA XGBOOST)\r\n"}
+,{"stream_name":"stdout","time":2419.943566581,"data":"======================================================================\r\n"}
+,{"stream_name":"stdout","time":2431.559346366,"data":"\r\n"}
+,{"stream_name":"stdout","time":2431.559378665,"data":"======================================================================\r\n"}
+,{"stream_name":"stdout","time":2431.559384751,"data":"  HASIL AKHIR PENGUJIAN EXP25 STANDALONE GRAPHSAGE PADA TEST SET (283,529 TRANSAKSI, 421 FRAUD)\r\n"}
+,{"stream_name":"stdout","time":2431.559389316,"data":"  • Run ID               : exp25_importance_seed_42_k15x10\r\n"}
+,{"stream_name":"stdout","time":2431.559403215,"data":"  • AUPRC                : 0.941153\r\n"}
+,{"stream_name":"stdout","time":2431.559407004,"data":"  • ROC-AUC              : 0.999935\r\n"}
+,{"stream_name":"stdout","time":2431.559410606,"data":"  • MAP                  : 0.941153\r\n"}
+,{"stream_name":"stdout","time":2431.559413785,"data":"  • NDCG                 : 0.990264\r\n"}
+,{"stream_name":"stdout","time":2431.559417111,"data":"  • Accuracy (Opt Tau)   : 0.999750\r\n"}
+,{"stream_name":"stdout","time":2431.559420189,"data":"  • F1-Score (Opt Tau)   : 0.919042 (Tau: 0.8112)\r\n"}
+,{"stream_name":"stdout","time":2431.55942339,"data":"  • Precision (Opt Tau)  : 0.883772\r\n"}
+,{"stream_name":"stdout","time":2431.559426735,"data":"  • Recall (Opt Tau)     : 0.957245\r\n"}
+,{"stream_name":"stdout","time":2431.559429868,"data":"  • FP / FN (Opt Tau)    : 53 / 18\r\n"}
+,{"stream_name":"stdout","time":2431.559433494,"data":"  • F1-Score (Tau=0.50)  : 0.867495 (Acc: 0.9995, Prec: 0.7688, Rec: 0.9952)\r\n"}
+,{"stream_name":"stdout","time":2431.55943692,"data":"  • Inference Latency    : 0.03 ms / 1.000 tx (7.79s total)\r\n"}
+,{"stream_name":"stdout","time":2431.559440299,"data":"  • Run Dir              : ../../result/exp25_standalone_graphsage/runs/exp25_importance_seed_42_k15x10\r\n"}
+,{"stream_name":"stdout","time":2431.559443947,"data":"  • Log File             : ../../result/exp25_standalone_graphsage/logs/exp25_importance_seed_42_k15x10.log\r\n"}
+,{"stream_name":"stdout","time":2431.559447455,"data":"  • Total Time           : 478.1 detik\r\n"}
+,{"stream_name":"stdout","time":2431.559450763,"data":"======================================================================\r\n"}
+,{"stream_name":"stdout","time":2442.856535649,"data":"======================================================================\r\n"}
+,{"stream_name":"stdout","time":2442.856571832,"data":"  EXP25: STANDALONE GRAPHSAGE WITH PROPOSAL NEIGHBOR SAMPLING\r\n"}
+,{"stream_name":"stdout","time":2442.856575361,"data":"  Run ID  : exp25_uniform_seed_42_k25x10\r\n"}
+,{"stream_name":"stdout","time":2442.856577746,"data":"  Sampler : UNIFORM | Seed: 42 | Fan-out: [25, 10] | Device: cuda\r\n"}
+,{"stream_name":"stdout","time":2442.856580301,"data":"  Run Dir : ../../result/exp25_standalone_graphsage/runs/exp25_uniform_seed_42_k25x10\r\n"}
+,{"stream_name":"stdout","time":2442.856582844,"data":"  Log File: ../../result/exp25_standalone_graphsage/logs/exp25_uniform_seed_42_k25x10.log\r\n"}
+,{"stream_name":"stdout","time":2442.856585111,"data":"======================================================================\r\n"}
+,{"stream_name":"stdout","time":2442.856588141,"data":"Loading data from /kaggle/input/datasets/ealtman2019/credit-card-transactions/credit_card_transactions-ibm_v2.csv (Filter: Year \u003e= 2018, nrows=None)...\r\n"}
+,{"stream_name":"stdout","time":2483.050519981,"data":"Memproses 3782053 baris data mentah...\r\n"}
+,{"stream_name":"stdout","time":2483.050559305,"data":"Parsing timestamps...\r\n"}
+,{"stream_name":"stdout","time":2490.073072487,"data":"Sorting chronologically...\r\n"}
+,{"stream_name":"stdout","time":2494.888598114,"data":"Cleaning Amount \u0026 Target Label...\r\n"}
+,{"stream_name":"stdout","time":2498.081262677,"data":"\r\n"}
+,{"stream_name":"stdout","time":2498.081305382,"data":"Melakukan pembagian temporal window strictly chronologic...\r\n"}
+,{"stream_name":"stdout","time":2498.946418651,"data":"\r\n"}
+,{"stream_name":"stdout","time":2498.946456214,"data":"[STRICT ANTI-LEAKAGE] Menerapkan preprocessing (Mode: clean, Cyclical Time: True, Amount Log: True)...\r\n"}
+,{"stream_name":"stdout","time":2498.946463606,"data":"  • Fitur High-Cardinality ('Zip', 'Merchant City') DIHAPUS dari input!\r\n"}
+,{"stream_name":"stdout","time":2498.996186562,"data":"  • Amount Scaler fit pada Train: mean=42.8491, std=80.8563\r\n"}
+,{"stream_name":"stdout","time":2498.996222052,"data":"  • Amount Log Scaler fit pada Train: mean=3.1358, std=1.3914\r\n"}
+,{"stream_name":"stdout","time":2499.148464162,"data":"  • Kolom 'Use Chip': 3 kategori train dipelajari (OOV di Val: 0, di Test: 0)\r\n"}
+,{"stream_name":"stdout","time":2499.300502733,"data":"  • Kolom 'Merchant State': 96 kategori train dipelajari (OOV di Val: 80, di Test: 98)\r\n"}
+,{"stream_name":"stdout","time":2499.706094988,"data":"  • Kolom 'MCC': 109 kategori train dipelajari (OOV di Val: 0, di Test: 0)\r\n"}
+,{"stream_name":"stdout","time":2499.959621993,"data":"  • Kolom 'Errors?': 14 kategori train dipelajari (OOV di Val: 2, di Test: 3)\r\n"}
+,{"stream_name":"stdout","time":2500.061293218,"data":"  • Ditambahkan 4 fitur waktu siklik: ['hour_sin', 'hour_cos', 'dow_sin', 'dow_cos']\r\n"}
+,{"stream_name":"stdout","time":2500.061321012,"data":"Total fitur transaksi bersih (feature_cols): 10 fitur -\u003e ['Amount', 'amount_log', 'Use Chip', 'Merchant State', 'MCC', 'Errors?', 'hour_sin', 'hour_cos', 'dow_sin', 'dow_cos']\r\n"}
+,{"stream_name":"stdout","time":2500.061327026,"data":"Membangun HeteroData graf (424341 transaksi)...\r\n"}
+,{"stream_name":"stdout","time":2500.213314251,"data":"HeteroData selesai: 424341 tx, 1523 users, 20410 merchants.\r\n"}
+,{"stream_name":"stdout","time":2500.213350205,"data":"Membangun HeteroData graf (141270 transaksi)...\r\n"}
+,{"stream_name":"stdout","time":2500.264017594,"data":"HeteroData selesai: 141270 tx, 1521 users, 12587 merchants.\r\n"}
+,{"stream_name":"stdout","time":2500.264042485,"data":"Membangun HeteroData graf (283529 transaksi)...\r\n"}
+,{"stream_name":"stdout","time":2500.366079134,"data":"HeteroData selesai: 283529 tx, 1526 users, 16860 merchants.\r\n"}
+,{"stream_name":"stdout","time":2501.379845815,"data":"\r\n"}
+,{"stream_name":"stdout","time":2501.379887024,"data":"======================================================================\r\n"}
+,{"stream_name":"stdout","time":2501.379890942,"data":"  MEMULAI PELATIHAN STANDALONE HETEROGRAPHSAGE DENGAN TELEMETRI GRANULAR\r\n"}
+,{"stream_name":"stdout","time":2501.379894235,"data":"======================================================================\r\n"}
+,{"stream_name":"stdout","time":2510.196747304,"data":"Epoch 01/20 | Train Loss: 0.1047 | Val Loss: 0.0334 | Val AUPRC: 0.0800 | Val F1 (Opt): 0.1677 (Tau: 0.590) | Waktu: 8.8s (Train: 7.4s, Val: 1.3s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":2518.829540689,"data":"Epoch 02/20 | Train Loss: 0.0656 | Val Loss: 0.0437 | Val AUPRC: 0.2898 | Val F1 (Opt): 0.3536 (Tau: 0.707) | Waktu: 8.6s (Train: 7.3s, Val: 1.2s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":2527.22283519,"data":"Epoch 03/20 | Train Loss: 0.0541 | Val Loss: 0.0743 | Val AUPRC: 0.3571 | Val F1 (Opt): 0.4273 (Tau: 0.883) | Waktu: 8.4s (Train: 7.1s, Val: 1.2s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":2535.794381649,"data":"Epoch 04/20 | Train Loss: 0.0500 | Val Loss: 0.0171 | Val AUPRC: 0.3085 | Val F1 (Opt): 0.3714 (Tau: 0.516) | Waktu: 8.5s (Train: 7.2s, Val: 1.3s)\r\n"}
+,{"stream_name":"stdout","time":2544.412469238,"data":"Epoch 05/20 | Train Loss: 0.0465 | Val Loss: 0.0817 | Val AUPRC: 0.4327 | Val F1 (Opt): 0.4979 (Tau: 0.922) | Waktu: 8.6s (Train: 7.2s, Val: 1.3s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":2552.9907164,"data":"Epoch 06/20 | Train Loss: 0.0410 | Val Loss: 0.0274 | Val AUPRC: 0.4069 | Val F1 (Opt): 0.4503 (Tau: 0.851) | Waktu: 8.6s (Train: 7.2s, Val: 1.2s)\r\n"}
+,{"stream_name":"stdout","time":2561.388380795,"data":"Epoch 07/20 | Train Loss: 0.0396 | Val Loss: 0.0255 | Val AUPRC: 0.3640 | Val F1 (Opt): 0.4323 (Tau: 0.703) | Waktu: 8.4s (Train: 7.0s, Val: 1.2s)\r\n"}
+,{"stream_name":"stdout","time":2570.006541301,"data":"Epoch 08/20 | Train Loss: 0.0352 | Val Loss: 0.0263 | Val AUPRC: 0.3555 | Val F1 (Opt): 0.4141 (Tau: 0.817) | Waktu: 8.6s (Train: 7.2s, Val: 1.2s)\r\n"}
+,{"stream_name":"stdout","time":2578.573049011,"data":"Epoch 09/20 | Train Loss: 0.0332 | Val Loss: 0.0508 | Val AUPRC: 0.4698 | Val F1 (Opt): 0.5144 (Tau: 0.872) | Waktu: 8.6s (Train: 7.1s, Val: 1.3s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":2587.103811841,"data":"Epoch 10/20 | Train Loss: 0.0340 | Val Loss: 0.0320 | Val AUPRC: 0.5233 | Val F1 (Opt): 0.5796 (Tau: 0.880) | Waktu: 8.5s (Train: 7.1s, Val: 1.3s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":2595.597929224,"data":"Epoch 11/20 | Train Loss: 0.0283 | Val Loss: 0.0265 | Val AUPRC: 0.5271 | Val F1 (Opt): 0.5835 (Tau: 0.913) | Waktu: 8.5s (Train: 7.1s, Val: 1.2s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":2604.110355737,"data":"Epoch 12/20 | Train Loss: 0.0247 | Val Loss: 0.0404 | Val AUPRC: 0.5551 | Val F1 (Opt): 0.6347 (Tau: 0.900) | Waktu: 8.5s (Train: 7.1s, Val: 1.2s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":2612.469844347,"data":"Epoch 13/20 | Train Loss: 0.0229 | Val Loss: 0.0327 | Val AUPRC: 0.5992 | Val F1 (Opt): 0.6667 (Tau: 0.927) | Waktu: 8.4s (Train: 7.0s, Val: 1.3s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":2620.997685513,"data":"Epoch 14/20 | Train Loss: 0.0192 | Val Loss: 0.0230 | Val AUPRC: 0.6221 | Val F1 (Opt): 0.7052 (Tau: 0.865) | Waktu: 8.5s (Train: 7.2s, Val: 1.2s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":2629.500214332,"data":"Epoch 15/20 | Train Loss: 0.0123 | Val Loss: 0.0172 | Val AUPRC: 0.6357 | Val F1 (Opt): 0.7324 (Tau: 0.878) | Waktu: 8.5s (Train: 7.2s, Val: 1.2s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":2638.169695906,"data":"Epoch 16/20 | Train Loss: 0.0133 | Val Loss: 0.0158 | Val AUPRC: 0.6077 | Val F1 (Opt): 0.7059 (Tau: 0.851) | Waktu: 8.7s (Train: 7.2s, Val: 1.3s)\r\n"}
+,{"stream_name":"stdout","time":2646.838778075,"data":"Epoch 17/20 | Train Loss: 0.0108 | Val Loss: 0.0232 | Val AUPRC: 0.5818 | Val F1 (Opt): 0.6694 (Tau: 0.904) | Waktu: 8.6s (Train: 7.3s, Val: 1.2s)\r\n"}
+,{"stream_name":"stdout","time":2655.526854023,"data":"Epoch 18/20 | Train Loss: 0.0082 | Val Loss: 0.0172 | Val AUPRC: 0.6254 | Val F1 (Opt): 0.7345 (Tau: 0.940) | Waktu: 8.7s (Train: 7.3s, Val: 1.3s)\r\n"}
+,{"stream_name":"stdout","time":2664.326402299,"data":"Epoch 19/20 | Train Loss: 0.0114 | Val Loss: 0.0147 | Val AUPRC: 0.6385 | Val F1 (Opt): 0.7521 (Tau: 0.842) | Waktu: 8.8s (Train: 7.4s, Val: 1.2s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":2672.840016174,"data":"Epoch 20/20 | Train Loss: 0.0086 | Val Loss: 0.0134 | Val AUPRC: 0.6379 | Val F1 (Opt): 0.7627 (Tau: 0.947) | Waktu: 8.5s (Train: 7.1s, Val: 1.3s)\r\n"}
+,{"stream_name":"stdout","time":2672.890741479,"data":"\r\n"}
+,{"stream_name":"stdout","time":2672.890786721,"data":"[CHECKPOINT] Model GNN terbaik disimpan ke: /model/exp25_standalone_graphsage/runs/exp25_uniform_seed_42_k25x10/exp25_uniform_best_gnn.pt (AUPRC: 0.6385 pada Epoch 19)\r\n"}
+,{"stream_name":"stdout","time":2672.890793679,"data":"\r\n"}
+,{"stream_name":"stdout","time":2672.890798316,"data":"======================================================================\r\n"}
+,{"stream_name":"stdout","time":2672.89080294,"data":"  EVALUASI END-TO-END STANDALONE GRAPHSAGE (TANPA XGBOOST)\r\n"}
+,{"stream_name":"stdout","time":2672.890807541,"data":"======================================================================\r\n"}
+,{"stream_name":"stdout","time":2677.298172893,"data":"\r\n"}
+,{"stream_name":"stdout","time":2677.29819777,"data":"======================================================================\r\n"}
+,{"stream_name":"stdout","time":2677.29820221,"data":"  HASIL AKHIR PENGUJIAN EXP25 STANDALONE GRAPHSAGE PADA TEST SET (283,529 TRANSAKSI, 421 FRAUD)\r\n"}
+,{"stream_name":"stdout","time":2677.298243995,"data":"  • Run ID               : exp25_uniform_seed_42_k25x10\r\n"}
+,{"stream_name":"stdout","time":2677.298268183,"data":"  • AUPRC                : 0.944391\r\n"}
+,{"stream_name":"stdout","time":2677.298272038,"data":"  • ROC-AUC              : 0.999932\r\n"}
+,{"stream_name":"stdout","time":2677.298275971,"data":"  • MAP                  : 0.944391\r\n"}
+,{"stream_name":"stdout","time":2677.298279655,"data":"  • NDCG                 : 0.991213\r\n"}
+,{"stream_name":"stdout","time":2677.298282716,"data":"  • Accuracy (Opt Tau)   : 0.999700\r\n"}
+,{"stream_name":"stdout","time":2677.298286049,"data":"  • F1-Score (Opt Tau)   : 0.901734 (Tau: 0.8449)\r\n"}
+,{"stream_name":"stdout","time":2677.298289398,"data":"  • Precision (Opt Tau)  : 0.878378\r\n"}
+,{"stream_name":"stdout","time":2677.298292347,"data":"  • Recall (Opt Tau)     : 0.926366\r\n"}
+,{"stream_name":"stdout","time":2677.29829553,"data":"  • FP / FN (Opt Tau)    : 54 / 31\r\n"}
+,{"stream_name":"stdout","time":2677.298299045,"data":"  • F1-Score (Tau=0.50)  : 0.812016 (Acc: 0.9993, Prec: 0.6858, Rec: 0.9952)\r\n"}
+,{"stream_name":"stdout","time":2677.298302561,"data":"  • Inference Latency    : 0.01 ms / 1.000 tx (2.74s total)\r\n"}
+,{"stream_name":"stdout","time":2677.298306232,"data":"  • Run Dir              : ../../result/exp25_standalone_graphsage/runs/exp25_uniform_seed_42_k25x10\r\n"}
+,{"stream_name":"stdout","time":2677.298309797,"data":"  • Log File             : ../../result/exp25_standalone_graphsage/logs/exp25_uniform_seed_42_k25x10.log\r\n"}
+,{"stream_name":"stdout","time":2677.298314186,"data":"  • Total Time           : 234.4 detik\r\n"}
+,{"stream_name":"stdout","time":2677.298317623,"data":"======================================================================\r\n"}
+,{"stream_name":"stdout","time":2688.964731261,"data":"======================================================================\r\n"}
+,{"stream_name":"stdout","time":2688.96477551,"data":"  EXP25: STANDALONE GRAPHSAGE WITH PROPOSAL NEIGHBOR SAMPLING\r\n"}
+,{"stream_name":"stdout","time":2688.964782163,"data":"  Run ID  : exp25_topology_seed_42_k25x10\r\n"}
+,{"stream_name":"stdout","time":2688.96478777,"data":"  Sampler : TOPOLOGY | Seed: 42 | Fan-out: [25, 10] | Power p: 1.0 | Device: cuda\r\n"}
+,{"stream_name":"stdout","time":2688.964792998,"data":"  Run Dir : ../../result/exp25_standalone_graphsage/runs/exp25_topology_seed_42_k25x10\r\n"}
+,{"stream_name":"stdout","time":2688.964798355,"data":"  Log File: ../../result/exp25_standalone_graphsage/logs/exp25_topology_seed_42_k25x10.log\r\n"}
+,{"stream_name":"stdout","time":2688.964804563,"data":"======================================================================\r\n"}
+,{"stream_name":"stdout","time":2688.964810155,"data":"Loading data from /kaggle/input/datasets/ealtman2019/credit-card-transactions/credit_card_transactions-ibm_v2.csv (Filter: Year \u003e= 2018, nrows=None)...\r\n"}
+,{"stream_name":"stdout","time":2728.637487283,"data":"Memproses 3782053 baris data mentah...\r\n"}
+,{"stream_name":"stdout","time":2728.637517986,"data":"Parsing timestamps...\r\n"}
+,{"stream_name":"stdout","time":2735.506336057,"data":"Sorting chronologically...\r\n"}
+,{"stream_name":"stdout","time":2740.326608251,"data":"Cleaning Amount \u0026 Target Label...\r\n"}
+,{"stream_name":"stdout","time":2743.723650514,"data":"\r\n"}
+,{"stream_name":"stdout","time":2743.723711087,"data":"Melakukan pembagian temporal window strictly chronologic...\r\n"}
+,{"stream_name":"stdout","time":2744.68880261,"data":"\r\n"}
+,{"stream_name":"stdout","time":2744.688829799,"data":"[STRICT ANTI-LEAKAGE] Menerapkan preprocessing (Mode: clean, Cyclical Time: True, Amount Log: True)...\r\n"}
+,{"stream_name":"stdout","time":2744.688849653,"data":"  • Fitur High-Cardinality ('Zip', 'Merchant City') DIHAPUS dari input!\r\n"}
+,{"stream_name":"stdout","time":2744.688855234,"data":"  • Amount Scaler fit pada Train: mean=42.8491, std=80.8563\r\n"}
+,{"stream_name":"stdout","time":2744.688859358,"data":"  • Amount Log Scaler fit pada Train: mean=3.1358, std=1.3914\r\n"}
+,{"stream_name":"stdout","time":2744.841344684,"data":"  • Kolom 'Use Chip': 3 kategori train dipelajari (OOV di Val: 0, di Test: 0)\r\n"}
+,{"stream_name":"stdout","time":2745.04436333,"data":"  • Kolom 'Merchant State': 96 kategori train dipelajari (OOV di Val: 80, di Test: 98)\r\n"}
+,{"stream_name":"stdout","time":2745.450790664,"data":"  • Kolom 'MCC': 109 kategori train dipelajari (OOV di Val: 0, di Test: 0)\r\n"}
+,{"stream_name":"stdout","time":2745.654243731,"data":"  • Kolom 'Errors?': 14 kategori train dipelajari (OOV di Val: 2, di Test: 3)\r\n"}
+,{"stream_name":"stdout","time":2745.806622533,"data":"  • Ditambahkan 4 fitur waktu siklik: ['hour_sin', 'hour_cos', 'dow_sin', 'dow_cos']\r\n"}
+,{"stream_name":"stdout","time":2745.806679434,"data":"Total fitur transaksi bersih (feature_cols): 10 fitur -\u003e ['Amount', 'amount_log', 'Use Chip', 'Merchant State', 'MCC', 'Errors?', 'hour_sin', 'hour_cos', 'dow_sin', 'dow_cos']\r\n"}
+,{"stream_name":"stdout","time":2745.806701933,"data":"Membangun HeteroData graf (424341 transaksi)...\r\n"}
+,{"stream_name":"stdout","time":2745.908114299,"data":"HeteroData selesai: 424341 tx, 1523 users, 20410 merchants.\r\n"}
+,{"stream_name":"stdout","time":2745.908146695,"data":"Membangun HeteroData graf (141270 transaksi)...\r\n"}
+,{"stream_name":"stdout","time":2746.01016121,"data":"HeteroData selesai: 141270 tx, 1521 users, 12587 merchants.\r\n"}
+,{"stream_name":"stdout","time":2746.010217523,"data":"Membangun HeteroData graf (283529 transaksi)...\r\n"}
+,{"stream_name":"stdout","time":2746.111475498,"data":"HeteroData selesai: 283529 tx, 1526 users, 16860 merchants.\r\n"}
+,{"stream_name":"stdout","time":2747.835152375,"data":"\r\n"}
+,{"stream_name":"stdout","time":2747.83517806,"data":"======================================================================\r\n"}
+,{"stream_name":"stdout","time":2747.83521015,"data":"  MEMULAI PELATIHAN STANDALONE HETEROGRAPHSAGE DENGAN TELEMETRI GRANULAR\r\n"}
+,{"stream_name":"stdout","time":2747.83521411,"data":"======================================================================\r\n"}
+,{"stream_name":"stdout","time":2768.386027305,"data":"Epoch 01/20 | Train Loss: 0.1085 | Val Loss: 0.0423 | Val AUPRC: 0.0641 | Val F1 (Opt): 0.1360 (Tau: 0.641) | Waktu: 20.5s (Train: 17.2s, Val: 3.2s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":2788.538463073,"data":"Epoch 02/20 | Train Loss: 0.0646 | Val Loss: 0.0227 | Val AUPRC: 0.1751 | Val F1 (Opt): 0.2540 (Tau: 0.547) | Waktu: 20.2s (Train: 16.7s, Val: 3.3s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":2808.931300209,"data":"Epoch 03/20 | Train Loss: 0.0529 | Val Loss: 0.0550 | Val AUPRC: 0.3052 | Val F1 (Opt): 0.3405 (Tau: 0.843) | Waktu: 20.4s (Train: 16.9s, Val: 3.3s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":2829.083795921,"data":"Epoch 04/20 | Train Loss: 0.0479 | Val Loss: 0.0218 | Val AUPRC: 0.3432 | Val F1 (Opt): 0.3945 (Tau: 0.663) | Waktu: 20.2s (Train: 16.9s, Val: 3.2s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":2849.371499583,"data":"Epoch 05/20 | Train Loss: 0.0470 | Val Loss: 0.1262 | Val AUPRC: 0.3609 | Val F1 (Opt): 0.4093 (Tau: 0.938) | Waktu: 20.3s (Train: 16.8s, Val: 3.3s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":2869.41748083,"data":"Epoch 06/20 | Train Loss: 0.0421 | Val Loss: 0.0230 | Val AUPRC: 0.2528 | Val F1 (Opt): 0.3181 (Tau: 0.769) | Waktu: 20.0s (Train: 16.7s, Val: 3.2s)\r\n"}
+,{"stream_name":"stdout","time":2889.59344002,"data":"Epoch 07/20 | Train Loss: 0.0402 | Val Loss: 0.0329 | Val AUPRC: 0.4498 | Val F1 (Opt): 0.5115 (Tau: 0.824) | Waktu: 20.2s (Train: 16.7s, Val: 3.3s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":2910.09589139,"data":"Epoch 08/20 | Train Loss: 0.0336 | Val Loss: 0.0250 | Val AUPRC: 0.4741 | Val F1 (Opt): 0.5330 (Tau: 0.865) | Waktu: 20.5s (Train: 17.0s, Val: 3.4s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":2930.68925333,"data":"Epoch 09/20 | Train Loss: 0.0301 | Val Loss: 0.0359 | Val AUPRC: 0.5455 | Val F1 (Opt): 0.5964 (Tau: 0.915) | Waktu: 20.6s (Train: 17.2s, Val: 3.3s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":2951.393914613,"data":"Epoch 10/20 | Train Loss: 0.0299 | Val Loss: 0.0273 | Val AUPRC: 0.4724 | Val F1 (Opt): 0.5426 (Tau: 0.856) | Waktu: 20.7s (Train: 17.2s, Val: 3.3s)\r\n"}
+,{"stream_name":"stdout","time":2972.191260915,"data":"Epoch 11/20 | Train Loss: 0.0266 | Val Loss: 0.0247 | Val AUPRC: 0.5695 | Val F1 (Opt): 0.6490 (Tau: 0.894) | Waktu: 20.8s (Train: 17.2s, Val: 3.4s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":2992.954041097,"data":"Epoch 12/20 | Train Loss: 0.0219 | Val Loss: 0.0224 | Val AUPRC: 0.5797 | Val F1 (Opt): 0.6583 (Tau: 0.845) | Waktu: 20.8s (Train: 17.3s, Val: 3.4s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":3013.754200232,"data":"Epoch 13/20 | Train Loss: 0.0234 | Val Loss: 0.0244 | Val AUPRC: 0.6170 | Val F1 (Opt): 0.7026 (Tau: 0.869) | Waktu: 20.7s (Train: 17.2s, Val: 3.4s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":3034.358805803,"data":"Epoch 14/20 | Train Loss: 0.0179 | Val Loss: 0.0169 | Val AUPRC: 0.6121 | Val F1 (Opt): 0.6826 (Tau: 0.735) | Waktu: 20.7s (Train: 17.2s, Val: 3.4s)\r\n"}
+,{"stream_name":"stdout","time":3055.157405118,"data":"Epoch 15/20 | Train Loss: 0.0123 | Val Loss: 0.0180 | Val AUPRC: 0.6402 | Val F1 (Opt): 0.7435 (Tau: 0.911) | Waktu: 20.8s (Train: 17.2s, Val: 3.4s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":3076.064539047,"data":"Epoch 16/20 | Train Loss: 0.0129 | Val Loss: 0.0141 | Val AUPRC: 0.6448 | Val F1 (Opt): 0.7629 (Tau: 0.919) | Waktu: 20.9s (Train: 17.3s, Val: 3.5s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":3096.804203089,"data":"Epoch 17/20 | Train Loss: 0.0099 | Val Loss: 0.0155 | Val AUPRC: 0.6256 | Val F1 (Opt): 0.7510 (Tau: 0.935) | Waktu: 20.8s (Train: 17.2s, Val: 3.5s)\r\n"}
+,{"stream_name":"stdout","time":3117.359475471,"data":"Epoch 18/20 | Train Loss: 0.0078 | Val Loss: 0.0135 | Val AUPRC: 0.6311 | Val F1 (Opt): 0.7430 (Tau: 0.851) | Waktu: 20.6s (Train: 17.1s, Val: 3.4s)\r\n"}
+,{"stream_name":"stdout","time":3138.103061789,"data":"Epoch 19/20 | Train Loss: 0.0096 | Val Loss: 0.0129 | Val AUPRC: 0.6444 | Val F1 (Opt): 0.7639 (Tau: 0.906) | Waktu: 20.7s (Train: 17.2s, Val: 3.4s)\r\n"}
+,{"stream_name":"stdout","time":3159.017465469,"data":"Epoch 20/20 | Train Loss: 0.0065 | Val Loss: 0.0137 | Val AUPRC: 0.6353 | Val F1 (Opt): 0.7540 (Tau: 0.914) | Waktu: 20.9s (Train: 17.3s, Val: 3.4s)\r\n"}
+,{"stream_name":"stdout","time":3159.017497103,"data":"\r\n"}
+,{"stream_name":"stdout","time":3159.017501778,"data":"[CHECKPOINT] Model GNN terbaik disimpan ke: /model/exp25_standalone_graphsage/runs/exp25_topology_seed_42_k25x10/exp25_topology_best_gnn.pt (AUPRC: 0.6448 pada Epoch 16)\r\n"}
+,{"stream_name":"stdout","time":3159.01750601,"data":"\r\n"}
+,{"stream_name":"stdout","time":3159.017509752,"data":"======================================================================\r\n"}
+,{"stream_name":"stdout","time":3159.017513692,"data":"  EVALUASI END-TO-END STANDALONE GRAPHSAGE (TANPA XGBOOST)\r\n"}
+,{"stream_name":"stdout","time":3159.017517439,"data":"======================================================================\r\n"}
+,{"stream_name":"stdout","time":3171.048838442,"data":"\r\n"}
+,{"stream_name":"stdout","time":3171.048883804,"data":"======================================================================\r\n"}
+,{"stream_name":"stdout","time":3171.048889035,"data":"  HASIL AKHIR PENGUJIAN EXP25 STANDALONE GRAPHSAGE PADA TEST SET (283,529 TRANSAKSI, 421 FRAUD)\r\n"}
+,{"stream_name":"stdout","time":3171.048892485,"data":"  • Run ID               : exp25_topology_seed_42_k25x10\r\n"}
+,{"stream_name":"stdout","time":3171.048897108,"data":"  • AUPRC                : 0.950603\r\n"}
+,{"stream_name":"stdout","time":3171.04890089,"data":"  • ROC-AUC              : 0.999948\r\n"}
+,{"stream_name":"stdout","time":3171.048904874,"data":"  • MAP                  : 0.950603\r\n"}
+,{"stream_name":"stdout","time":3171.048908118,"data":"  • NDCG                 : 0.991705\r\n"}
+,{"stream_name":"stdout","time":3171.048911469,"data":"  • Accuracy (Opt Tau)   : 0.999753\r\n"}
+,{"stream_name":"stdout","time":3171.048914783,"data":"  • F1-Score (Opt Tau)   : 0.917647 (Tau: 0.9111)\r\n"}
+,{"stream_name":"stdout","time":3171.048918126,"data":"  • Precision (Opt Tau)  : 0.909091\r\n"}
+,{"stream_name":"stdout","time":3171.048921437,"data":"  • Recall (Opt Tau)     : 0.926366\r\n"}
+,{"stream_name":"stdout","time":3171.048924707,"data":"  • FP / FN (Opt Tau)    : 39 / 31\r\n"}
+,{"stream_name":"stdout","time":3171.048929587,"data":"  • F1-Score (Tau=0.50)  : 0.877487 (Acc: 0.9996, Prec: 0.7846, Rec: 0.9952)\r\n"}
+,{"stream_name":"stdout","time":3171.048933073,"data":"  • Inference Latency    : 0.03 ms / 1.000 tx (8.06s total)\r\n"}
+,{"stream_name":"stdout","time":3171.048936479,"data":"  • Run Dir              : ../../result/exp25_standalone_graphsage/runs/exp25_topology_seed_42_k25x10\r\n"}
+,{"stream_name":"stdout","time":3171.048941943,"data":"  • Log File             : ../../result/exp25_standalone_graphsage/logs/exp25_topology_seed_42_k25x10.log\r\n"}
+,{"stream_name":"stdout","time":3171.048945206,"data":"  • Total Time           : 482.1 detik\r\n"}
+,{"stream_name":"stdout","time":3171.048949144,"data":"======================================================================\r\n"}
+,{"stream_name":"stdout","time":3182.580035038,"data":"======================================================================\r\n"}
+,{"stream_name":"stdout","time":3182.580069665,"data":"  EXP25: STANDALONE GRAPHSAGE WITH PROPOSAL NEIGHBOR SAMPLING\r\n"}
+,{"stream_name":"stdout","time":3182.580074261,"data":"  Run ID  : exp25_importance_seed_42_k25x10\r\n"}
+,{"stream_name":"stdout","time":3182.580077877,"data":"  Sampler : IMPORTANCE | Seed: 42 | Fan-out: [25, 10] | Power p: 1.0 | Device: cuda\r\n"}
+,{"stream_name":"stdout","time":3182.580081823,"data":"  Run Dir : ../../result/exp25_standalone_graphsage/runs/exp25_importance_seed_42_k25x10\r\n"}
+,{"stream_name":"stdout","time":3182.580085445,"data":"  Log File: ../../result/exp25_standalone_graphsage/logs/exp25_importance_seed_42_k25x10.log\r\n"}
+,{"stream_name":"stdout","time":3182.580089122,"data":"======================================================================\r\n"}
+,{"stream_name":"stdout","time":3182.580092701,"data":"Loading data from /kaggle/input/datasets/ealtman2019/credit-card-transactions/credit_card_transactions-ibm_v2.csv (Filter: Year \u003e= 2018, nrows=None)...\r\n"}
+,{"stream_name":"stdout","time":3222.885910622,"data":"Memproses 3782053 baris data mentah...\r\n"}
+,{"stream_name":"stdout","time":3222.885951424,"data":"Parsing timestamps...\r\n"}
+,{"stream_name":"stdout","time":3229.811587735,"data":"Sorting chronologically...\r\n"}
+,{"stream_name":"stdout","time":3234.73635579,"data":"Cleaning Amount \u0026 Target Label...\r\n"}
+,{"stream_name":"stdout","time":3237.980090751,"data":"\r\n"}
+,{"stream_name":"stdout","time":3237.980136274,"data":"Melakukan pembagian temporal window strictly chronologic...\r\n"}
+,{"stream_name":"stdout","time":3238.94484198,"data":"\r\n"}
+,{"stream_name":"stdout","time":3238.944867371,"data":"[STRICT ANTI-LEAKAGE] Menerapkan preprocessing (Mode: clean, Cyclical Time: True, Amount Log: True)...\r\n"}
+,{"stream_name":"stdout","time":3238.944872294,"data":"  • Fitur High-Cardinality ('Zip', 'Merchant City') DIHAPUS dari input!\r\n"}
+,{"stream_name":"stdout","time":3238.94487723,"data":"  • Amount Scaler fit pada Train: mean=42.8491, std=80.8563\r\n"}
+,{"stream_name":"stdout","time":3238.944881214,"data":"  • Amount Log Scaler fit pada Train: mean=3.1358, std=1.3914\r\n"}
+,{"stream_name":"stdout","time":3239.096821093,"data":"  • Kolom 'Use Chip': 3 kategori train dipelajari (OOV di Val: 0, di Test: 0)\r\n"}
+,{"stream_name":"stdout","time":3239.30040246,"data":"  • Kolom 'Merchant State': 96 kategori train dipelajari (OOV di Val: 80, di Test: 98)\r\n"}
+,{"stream_name":"stdout","time":3239.70670453,"data":"  • Kolom 'MCC': 109 kategori train dipelajari (OOV di Val: 0, di Test: 0)\r\n"}
+,{"stream_name":"stdout","time":3239.961121943,"data":"  • Kolom 'Errors?': 14 kategori train dipelajari (OOV di Val: 2, di Test: 3)\r\n"}
+,{"stream_name":"stdout","time":3240.113335492,"data":"  • Ditambahkan 4 fitur waktu siklik: ['hour_sin', 'hour_cos', 'dow_sin', 'dow_cos']\r\n"}
+,{"stream_name":"stdout","time":3240.113379322,"data":"Total fitur transaksi bersih (feature_cols): 10 fitur -\u003e ['Amount', 'amount_log', 'Use Chip', 'Merchant State', 'MCC', 'Errors?', 'hour_sin', 'hour_cos', 'dow_sin', 'dow_cos']\r\n"}
+,{"stream_name":"stdout","time":3240.113387522,"data":"Membangun HeteroData graf (424341 transaksi)...\r\n"}
+,{"stream_name":"stdout","time":3240.266491306,"data":"HeteroData selesai: 424341 tx, 1523 users, 20410 merchants.\r\n"}
+,{"stream_name":"stdout","time":3240.266523224,"data":"Membangun HeteroData graf (141270 transaksi)...\r\n"}
+,{"stream_name":"stdout","time":3240.316349436,"data":"HeteroData selesai: 141270 tx, 1521 users, 12587 merchants.\r\n"}
+,{"stream_name":"stdout","time":3240.316382567,"data":"Membangun HeteroData graf (283529 transaksi)...\r\n"}
+,{"stream_name":"stdout","time":3240.418651261,"data":"HeteroData selesai: 283529 tx, 1526 users, 16860 merchants.\r\n"}
+,{"stream_name":"stdout","time":3241.635543644,"data":"\r\n"}
+,{"stream_name":"stdout","time":3241.635588486,"data":"======================================================================\r\n"}
+,{"stream_name":"stdout","time":3241.635595116,"data":"  MEMULAI PELATIHAN STANDALONE HETEROGRAPHSAGE DENGAN TELEMETRI GRANULAR\r\n"}
+,{"stream_name":"stdout","time":3241.635600107,"data":"======================================================================\r\n"}
+,{"stream_name":"stdout","time":3262.494827972,"data":"Epoch 01/20 | Train Loss: 0.1038 | Val Loss: 0.0337 | Val AUPRC: 0.0757 | Val F1 (Opt): 0.1813 (Tau: 0.551) | Waktu: 20.8s (Train: 17.3s, Val: 3.4s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":3282.999994717,"data":"Epoch 02/20 | Train Loss: 0.0645 | Val Loss: 0.0407 | Val AUPRC: 0.1691 | Val F1 (Opt): 0.2355 (Tau: 0.817) | Waktu: 20.5s (Train: 17.0s, Val: 3.4s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":3303.536908633,"data":"Epoch 03/20 | Train Loss: 0.0520 | Val Loss: 0.0465 | Val AUPRC: 0.3638 | Val F1 (Opt): 0.4412 (Tau: 0.841) | Waktu: 20.5s (Train: 17.0s, Val: 3.3s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":3324.137945702,"data":"Epoch 04/20 | Train Loss: 0.0498 | Val Loss: 0.0187 | Val AUPRC: 0.2757 | Val F1 (Opt): 0.3407 (Tau: 0.518) | Waktu: 20.6s (Train: 17.2s, Val: 3.3s)\r\n"}
+,{"stream_name":"stdout","time":3344.467785271,"data":"Epoch 05/20 | Train Loss: 0.0464 | Val Loss: 0.1184 | Val AUPRC: 0.3289 | Val F1 (Opt): 0.3901 (Tau: 0.947) | Waktu: 20.3s (Train: 16.9s, Val: 3.3s)\r\n"}
+,{"stream_name":"stdout","time":3364.963198607,"data":"Epoch 06/20 | Train Loss: 0.0437 | Val Loss: 0.0200 | Val AUPRC: 0.3104 | Val F1 (Opt): 0.3966 (Tau: 0.712) | Waktu: 20.5s (Train: 17.1s, Val: 3.3s)\r\n"}
+,{"stream_name":"stdout","time":3385.812442615,"data":"Epoch 07/20 | Train Loss: 0.0418 | Val Loss: 0.0267 | Val AUPRC: 0.4509 | Val F1 (Opt): 0.5022 (Tau: 0.815) | Waktu: 20.8s (Train: 17.4s, Val: 3.3s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":3406.685068125,"data":"Epoch 08/20 | Train Loss: 0.0350 | Val Loss: 0.0213 | Val AUPRC: 0.4330 | Val F1 (Opt): 0.4854 (Tau: 0.753) | Waktu: 20.9s (Train: 17.4s, Val: 3.4s)\r\n"}
+,{"stream_name":"stdout","time":3427.742359756,"data":"Epoch 09/20 | Train Loss: 0.0318 | Val Loss: 0.0457 | Val AUPRC: 0.5389 | Val F1 (Opt): 0.5939 (Tau: 0.905) | Waktu: 21.0s (Train: 17.4s, Val: 3.5s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":3448.749734802,"data":"Epoch 10/20 | Train Loss: 0.0320 | Val Loss: 0.0269 | Val AUPRC: 0.4808 | Val F1 (Opt): 0.5353 (Tau: 0.834) | Waktu: 21.0s (Train: 17.4s, Val: 3.5s)\r\n"}
+,{"stream_name":"stdout","time":3469.59700835,"data":"Epoch 11/20 | Train Loss: 0.0266 | Val Loss: 0.0270 | Val AUPRC: 0.5720 | Val F1 (Opt): 0.6239 (Tau: 0.917) | Waktu: 20.8s (Train: 17.3s, Val: 3.4s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":3490.511133378,"data":"Epoch 12/20 | Train Loss: 0.0256 | Val Loss: 0.0324 | Val AUPRC: 0.5438 | Val F1 (Opt): 0.6045 (Tau: 0.884) | Waktu: 20.9s (Train: 17.4s, Val: 3.4s)\r\n"}
+,{"stream_name":"stdout","time":3511.256935163,"data":"Epoch 13/20 | Train Loss: 0.0228 | Val Loss: 0.0210 | Val AUPRC: 0.5465 | Val F1 (Opt): 0.6075 (Tau: 0.841) | Waktu: 20.7s (Train: 17.2s, Val: 3.4s)\r\n"}
+,{"stream_name":"stdout","time":3531.96961493,"data":"Epoch 14/20 | Train Loss: 0.0186 | Val Loss: 0.0210 | Val AUPRC: 0.6179 | Val F1 (Opt): 0.6970 (Tau: 0.821) | Waktu: 20.7s (Train: 17.2s, Val: 3.4s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":3552.558543619,"data":"Epoch 15/20 | Train Loss: 0.0140 | Val Loss: 0.0153 | Val AUPRC: 0.6172 | Val F1 (Opt): 0.7098 (Tau: 0.758) | Waktu: 20.6s (Train: 17.1s, Val: 3.4s)\r\n"}
+,{"stream_name":"stdout","time":3573.381803587,"data":"Epoch 16/20 | Train Loss: 0.0141 | Val Loss: 0.0150 | Val AUPRC: 0.6321 | Val F1 (Opt): 0.7295 (Tau: 0.762) | Waktu: 20.8s (Train: 17.2s, Val: 3.4s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":3593.825176744,"data":"Epoch 17/20 | Train Loss: 0.0112 | Val Loss: 0.0167 | Val AUPRC: 0.6185 | Val F1 (Opt): 0.7189 (Tau: 0.820) | Waktu: 20.5s (Train: 17.0s, Val: 3.3s)\r\n"}
+,{"stream_name":"stdout","time":3614.086536685,"data":"Epoch 18/20 | Train Loss: 0.0099 | Val Loss: 0.0147 | Val AUPRC: 0.6201 | Val F1 (Opt): 0.7237 (Tau: 0.854) | Waktu: 20.3s (Train: 16.8s, Val: 3.4s)\r\n"}
+,{"stream_name":"stdout","time":3634.269186281,"data":"Epoch 19/20 | Train Loss: 0.0087 | Val Loss: 0.0132 | Val AUPRC: 0.6347 | Val F1 (Opt): 0.7621 (Tau: 0.866) | Waktu: 20.2s (Train: 16.7s, Val: 3.3s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":3654.727549315,"data":"Epoch 20/20 | Train Loss: 0.0095 | Val Loss: 0.0163 | Val AUPRC: 0.6354 | Val F1 (Opt): 0.7550 (Tau: 0.913) | Waktu: 20.5s (Train: 16.9s, Val: 3.4s) [BEST]\r\n"}
+,{"stream_name":"stdout","time":3654.778511633,"data":"\r\n"}
+,{"stream_name":"stdout","time":3654.778536957,"data":"[CHECKPOINT] Model GNN terbaik disimpan ke: /model/exp25_standalone_graphsage/runs/exp25_importance_seed_42_k25x10/exp25_importance_best_gnn.pt (AUPRC: 0.6354 pada Epoch 20)\r\n"}
+,{"stream_name":"stdout","time":3654.778541829,"data":"\r\n"}
+,{"stream_name":"stdout","time":3654.778567476,"data":"======================================================================\r\n"}
+,{"stream_name":"stdout","time":3654.778572018,"data":"  EVALUASI END-TO-END STANDALONE GRAPHSAGE (TANPA XGBOOST)\r\n"}
+,{"stream_name":"stdout","time":3654.778588465,"data":"======================================================================\r\n"}
+,{"stream_name":"stdout","time":3666.697180571,"data":"\r\n"}
+,{"stream_name":"stdout","time":3666.697219677,"data":"======================================================================\r\n"}
+,{"stream_name":"stdout","time":3666.697226114,"data":"  HASIL AKHIR PENGUJIAN EXP25 STANDALONE GRAPHSAGE PADA TEST SET (283,529 TRANSAKSI, 421 FRAUD)\r\n"}
+,{"stream_name":"stdout","time":3666.697230722,"data":"  • Run ID               : exp25_importance_seed_42_k25x10\r\n"}
+,{"stream_name":"stdout","time":3666.697235826,"data":"  • AUPRC                : 0.916562\r\n"}
+,{"stream_name":"stdout","time":3666.697240257,"data":"  • ROC-AUC              : 0.999918\r\n"}
+,{"stream_name":"stdout","time":3666.697244307,"data":"  • MAP                  : 0.916562\r\n"}
+,{"stream_name":"stdout","time":3666.697248946,"data":"  • NDCG                 : 0.985174\r\n"}
+,{"stream_name":"stdout","time":3666.697253081,"data":"  • Accuracy (Opt Tau)   : 0.999718\r\n"}
+,{"stream_name":"stdout","time":3666.697257175,"data":"  • F1-Score (Opt Tau)   : 0.906542 (Tau: 0.9501)\r\n"}
+,{"stream_name":"stdout","time":3666.697261441,"data":"  • Precision (Opt Tau)  : 0.891954\r\n"}
+,{"stream_name":"stdout","time":3666.6972657,"data":"  • Recall (Opt Tau)     : 0.921615\r\n"}
+,{"stream_name":"stdout","time":3666.697270045,"data":"  • FP / FN (Opt Tau)    : 47 / 33\r\n"}
+,{"stream_name":"stdout","time":3666.697274178,"data":"  • F1-Score (Tau=0.50)  : 0.811175 (Acc: 0.9993, Prec: 0.6823, Rec: 1.0000)\r\n"}
+,{"stream_name":"stdout","time":3666.69727859,"data":"  • Inference Latency    : 0.03 ms / 1.000 tx (8.09s total)\r\n"}
+,{"stream_name":"stdout","time":3666.697283159,"data":"  • Run Dir              : ../../result/exp25_standalone_graphsage/runs/exp25_importance_seed_42_k25x10\r\n"}
+,{"stream_name":"stdout","time":3666.697287452,"data":"  • Log File             : ../../result/exp25_standalone_graphsage/logs/exp25_importance_seed_42_k25x10.log\r\n"}
+,{"stream_name":"stdout","time":3666.697291944,"data":"  • Total Time           : 484.1 detik\r\n"}
+,{"stream_name":"stdout","time":3666.697296104,"data":"======================================================================\r\n"}
+,{"stream_name":"stdout","time":3681.56719122,"data":"Mengumpulkan metrik dari: /result/exp25_standalone_graphsage\r\n"}
+,{"stream_name":"stdout","time":3684.196025113,"data":"Paired Aggregation Status: partial\r\n"}
+,{"stream_name":"stdout","time":3689.71657423,"data":"Fan-out Sensitivity Status: complete (9 runs)\r\n"}
+,{"stream_name":"stderr","time":3693.287135107,"data":"/usr/local/lib/python3.13/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":3693.287173813,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":3693.466633089,"data":"/usr/local/lib/python3.13/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":3693.466694702,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":3694.212674861,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to notebook\n"}
+,{"stream_name":"stderr","time":3694.356392647,"data":"[NbConvertApp] Writing 274998 bytes to __notebook__.ipynb\n"}
+,{"stream_name":"stderr","time":3696.795420582,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to html\n"}
+,{"stream_name":"stderr","time":3697.697117859,"data":"[NbConvertApp] Writing 1029521 bytes to __results__.html\n"}
+]

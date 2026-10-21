@@ -304,6 +304,12 @@ def main() -> None:
     parser.add_argument("--nrows", type=int, default=None)
     parser.add_argument("--num-neighbors", type=int, nargs=2, default=None, help="Ukuran fan-out sampling tetangga [k1, k2] (default dari config)")
     parser.add_argument("--power-exponent", type=float, default=None, help="Pangkat eksponen pembobotan sampling tetangga p (default: 1.0 dari config)")
+    parser.add_argument("--reference-date", type=str, default=None, help="Tanggal acuan awal T0 (default dari config)")
+    parser.add_argument("--train-days", type=int, default=None, help="Jumlah hari data latih (default dari config, misal 90 untuk Lean Graph)")
+    parser.add_argument("--val-days", type=int, default=None, help="Jumlah hari data validasi (default dari config, misal 30)")
+    parser.add_argument("--gap-days", type=int, default=None, help="Jumlah hari embargo gap (default dari config, misal 8)")
+    parser.add_argument("--test-days", type=int, default=None, help="Jumlah hari data uji (default dari config, misal 60)")
+    parser.add_argument("--start-year", type=int, default=None, help="Tahun awal pemuatan data (default dari config, misal 2018)")
     parser.add_argument("--run-id", type=str, default=None, help="ID unik untuk run ini (default: auto timestamped)")
     parser.add_argument("--log-to-file", action="store_true", default=None, help="Paksa aktifkan pencatatan log ke file")
     parser.add_argument("--no-log-to-file", action="store_true", help="Nonaktifkan pencatatan log ke file")
@@ -338,12 +344,21 @@ def main() -> None:
     num_neighbors = list(args.num_neighbors) if args.num_neighbors is not None else t_cfg.get("num_neighbors", [25, 10])
     power_exponent = float(args.power_exponent) if args.power_exponent is not None else float(s_cfg.get("power_exponent", 1.0))
 
+    # Konfigurasi Jendela Waktu (Mendukung Lean Graph & Temporal Overrides)
+    reference_date = args.reference_date or tw_cfg.get("reference_date", "2018-01-01")
+    train_days = int(args.train_days if args.train_days is not None else tw_cfg.get("train_days", 300))
+    val_days = int(args.val_days if args.val_days is not None else tw_cfg.get("val_days", 30))
+    gap_days = int(args.gap_days if args.gap_days is not None else tw_cfg.get("gap_days", 8))
+    test_days = int(args.test_days if args.test_days is not None else tw_cfg.get("test_days", 60))
+    start_year = int(args.start_year if args.start_year is not None else cfg.get("data", {}).get("start_year", 2016))
+
     # 1. Tentukan Run ID
     timestamp_str = datetime.now().strftime("%Y%m%d_%H%M%S")
     nrows_tag = f"_nr{nrows}" if nrows is not None else ""
     k_tag = f"_k{num_neighbors[0]}x{num_neighbors[1]}"
+    tr_tag = f"_tr{train_days}d" if train_days != 300 else ""
     p_tag = f"_p{power_exponent:.1f}".replace(".", "p") if (power_exponent != 1.0 and sampling_method != "uniform") else ""
-    default_run_id = f"exp25_{sampling_method}_s{seed}{k_tag}{p_tag}{nrows_tag}_{timestamp_str}"
+    default_run_id = f"exp25_{sampling_method}_s{seed}{k_tag}{tr_tag}{p_tag}{nrows_tag}_{timestamp_str}"
     run_id = args.run_id or exp_cfg.get("run_id") or default_run_id
 
     # 2. Tentukan Direktori Output
@@ -406,18 +421,26 @@ def main() -> None:
     # 1. Pemuatan & Pembagian Temporal
     t_prep_start = time.time()
     data_path = cfg.get("data", {}).get("transactions")
+    data_file = Path(data_path)
+    if not data_file.is_file():
+        for search_root in [Path("/kaggle/input"), Path("../../dataset"), Path("../dataset")]:
+            if search_root.is_dir():
+                matches = list(search_root.rglob("credit_card_transactions-ibm_v2.csv"))
+                if matches:
+                    data_path = str(matches[0].resolve())
+                    break
     train_df, val_df, test_df, gap_df, stats_dict = load_and_split_raw_data(
         file_path=data_path,
-        start_year=cfg.get("data", {}).get("start_year", 2016),
+        start_year=start_year,
         nrows=nrows,
-        reference_date=tw_cfg.get("reference_date", "2018-01-01"),
-        train_days=tw_cfg.get("train_days", 300),
-        val_days=tw_cfg.get("val_days", 30),
-        gap_days=tw_cfg.get("gap_days", 8),
-        test_days=tw_cfg.get("test_days", 60),
+        reference_date=reference_date,
+        train_days=train_days,
+        val_days=val_days,
+        gap_days=gap_days,
+        test_days=test_days,
     )
 
-    # 2. Preprocessing Fitur Tabular (Clean 10-d)
+    # 2. Preprocessing Fitur Tabular
     train_df, val_df, test_df, gap_df, feature_cols, art_prep = apply_strict_anti_leakage_preprocessing(
         train_df=train_df,
         val_df=val_df,
@@ -426,6 +449,7 @@ def main() -> None:
         feature_mode=feat_cfg.get("mode", "clean"),
         use_cyclical_time=feat_cfg.get("use_cyclical_time", True),
         use_amount_log=feat_cfg.get("use_amount_log", True),
+        categorical_columns=feat_cfg.get("categorical_columns", None),
     )
 
     # 3. Konstruksi Graf HeteroData

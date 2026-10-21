@@ -86,7 +86,19 @@ Secara default $p = 1.0$ (skala linier proposal). Jika ingin menaikkan ketajaman
 - **Atau lewat `config.reference.yaml`:**
   Ubah baris `power_exponent: 1.0` menjadi `power_exponent: 2.0`.
 
-### F. Menjalankan Agregasi & Visualisasi Mandiri Kapan Saja:
+### F. Menjalankan Skenario C (Lean / Data-Constrained Graph — Train 90 Hari):
+Untuk menguji performa model pada graf yang lebih jarang/ramping (*sparse*) dengan data latih 90 hari terbaru:
+```cmd
+python run_seed.py --config config.lean.yaml --methods all --fanouts 5,5 --seeds 42 --device cuda
+```
+Atau langsung lewat `main.py` per metode:
+```cmd
+python main.py --config config.lean.yaml --sampling uniform --num-neighbors 5 5 --seed 42 --device cuda
+python main.py --config config.lean.yaml --sampling topology --num-neighbors 5 5 --seed 42 --device cuda
+python main.py --config config.lean.yaml --sampling importance --num-neighbors 5 5 --seed 42 --device cuda
+```
+
+### G. Menjalankan Agregasi & Visualisasi Mandiri Kapan Saja:
 ```cmd
 python aggregate_exp25.py
 ```

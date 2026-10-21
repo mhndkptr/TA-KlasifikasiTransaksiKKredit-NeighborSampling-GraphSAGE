@@ -135,7 +135,8 @@ def apply_strict_anti_leakage_preprocessing(
     gap_df: pd.DataFrame = None,
     feature_mode: str = "clean",
     use_cyclical_time: bool = True,
-    use_amount_log: bool = True
+    use_amount_log: bool = True,
+    categorical_columns: list = None
 ) -> tuple:
     """
     Menerapkan Strict Anti-Leakage Preprocessing Protocol (EXP21D Golden Master):
@@ -153,14 +154,20 @@ def apply_strict_anti_leakage_preprocessing(
             df_split['amount_log'] = np.log1p(np.maximum(0.0, df_split['Amount'].values)).astype(np.float32)
 
     # Tentukan atribut kategorikal yang diizinkan
-    if feature_mode == "clean":
+    if categorical_columns is not None:
+        cat_columns = [col for col in categorical_columns if col in ['Use Chip', 'Merchant State', 'MCC', 'Errors?']]
+        print(f"  • Menggunakan fitur kategorikal kustom: {cat_columns}")
+    elif feature_mode == "clean":
         cat_columns = ['Use Chip', 'Merchant State', 'MCC', 'Errors?']
         print("  • Fitur High-Cardinality ('Zip', 'Merchant City') DIHAPUS dari input!")
     elif feature_mode == "clean_basic":
         cat_columns = ['Use Chip', 'MCC', 'Errors?']
         print(f"  • Menggunakan fitur kategorikal minimal: {cat_columns}")
+    elif feature_mode == "reduced":
+        cat_columns = ['Use Chip', 'MCC', 'Errors?']
+        print("  • Mode 'reduced': Fitur 'Merchant State' DIHAPUS! Menggunakan ['Use Chip', 'MCC', 'Errors?']")
     else:
-        raise ValueError(f"Feature mode '{feature_mode}' tidak dikenal. Pilih 'clean' atau 'clean_basic'.")
+        raise ValueError(f"Feature mode '{feature_mode}' tidak dikenal. Pilih 'clean', 'clean_basic', atau 'reduced'.")
 
     # A. Standarisasi Fitur Numerik (Amount) — FIT HANYA DI TRAIN
     scaler_amount = StandardScaler()

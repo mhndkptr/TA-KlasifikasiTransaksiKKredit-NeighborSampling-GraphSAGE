@@ -1,0 +1,18 @@
+{
+  "id": "muhammadhendikaputra/exp25-standalone-graphsage-realistic-gap-45d",
+  "title": "EXP25 Standalone GraphSAGE Realistic Gap 45d",
+  "code_file": "exp25_standalone_graphsage_gap45d.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": "true",
+  "enable_gpu": true,
+  "enable_tpu": false,
+  "enable_internet": true,
+  "machine_shape": "NvidiaTeslaT4",
+  "dataset_sources": [
+    "ealtman2019/credit-card-transactions"
+  ],
+  "competition_sources": [],
+  "kernel_sources": [],
+  "model_sources": []
+}

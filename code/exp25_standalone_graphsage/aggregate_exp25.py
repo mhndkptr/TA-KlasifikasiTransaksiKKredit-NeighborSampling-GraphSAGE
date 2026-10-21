@@ -400,8 +400,13 @@ def aggregate_fanout_comparison(result_root: str | Path, budgets: list[int] | No
 
 
 def main() -> None:
+    default_res = (
+        "result/exp25_standalone_graphsage"
+        if Path("result/exp25_standalone_graphsage").is_dir()
+        else "../../result/exp25_standalone_graphsage"
+    )
     parser = argparse.ArgumentParser(description="EXP25 Standalone GraphSAGE Results Aggregator")
-    parser.add_argument("--result-dir", default="../../result/exp25_standalone_graphsage", help="Direktori hasil")
+    parser.add_argument("--result-dir", default=default_res, help="Direktori hasil")
     parser.add_argument("--seeds", type=int, nargs="*", default=[42, 100, 2026, 3407, 8713], help="Daftar seed")
     parser.add_argument("--budgets", type=int, nargs="*", default=[100, 250, 500, 1000], help="Operational budgets")
     args = parser.parse_args()
